@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="artist.form"
+    errors="0" failures="0" hostname="" id="" package="artist.form" skipped="0"
+    tests="1" time="4.996" timestamp="Fri, 03 Feb 2017 10:29:38 GMT">
+  
+    <testcase name="Exercise 5 Artist" time="4.996" assertions="12">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+  
+  </testsuite>
+</testsuites>

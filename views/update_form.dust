@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{title}</title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <h1 class="heading">Edit Resource {resource}</h1>
+    <form method="POST" action="/{resource}/{id}">
+        <input type="hidden" name="_method" value="PUT">
+    	{#fields}
+    		{field_name}</br>
+    		<input type="text" name="{field_name}" value="{field_value}"></input></br>
+    	{/fields}
+  		<button name="updateResource" type="submit">Edit Resource</button>
+	</form>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+body {
+  padding: 50px;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+.heading {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  color: #666;
+  font-style: italic;
+  font-size: 24px;
+}
+
+.h3 {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  color: #666;
+  font-style: italic;
+  font-size: 20px;
+}
+.links {
+  margin: 0;
+  padding: 0;
+}
+.link {
+  list-style: none;
+  margin-bottom: 10px;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 300px;
+  padding: 8px 14px 6px 14px;
+}
+.address-record >dl {
+  margin-top: 7px;
+  margin-bottom: 5px;
+}
+.rel {
+  font-weight: 500;
+  color: #943c3c;
+}
+.address-field {
+  color: #9da0a4;
+}
+.address-field {
+  display: inline-block;
+}
+.address-value {
+  display: inline-block;
+  margin: 0;
+}

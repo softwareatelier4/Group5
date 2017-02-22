@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+
+var http = require('http');
+var fs = require('fs');
+var child = require('child_process');
+
+var dest = 'selenium-server-standalone-2.48.2.jar';
+var url = 'http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar';
+
+var download = function(url, dest, cb) {
+  process.stdout.write('downloading '+ dest + '...');
+
+  var file = fs.createWriteStream(dest);
+  var request = http.get(url, function(response) {
+    response.pipe(file);
+    file.on('finish', function() {
+      process.stdout.write('done! \n');
+      file.close(cb);  // close() is async, call cb after close completes.
+    });
+  }).on('error', function(err) { // Handle errors
+    process.stdout.write('done!\n');
+    fs.unlinkSync(dest); // Delete the file.
+    if (cb) cb(err.message);
+  });
+};
+
+var unzip = function(source, destination, cb){
+  process.stdout.write('unzipping '+ source + ' into ' + destination + '...');
+  var unzip = child.spawn("unzip", ["-o", "-j", source]);
+
+  //some zip files need this
+  unzip.stdout.on("data", function(d) {});
+
+  var error = null;
+
+  unzip.stderr.on("data", function(chunk) {
+    error || (error = "");
+    return error += chunk;
+  });
+
+  unzip.on("error", function(err) {
+    process.stderr.write("unzip failed")
+    
+    if(err.code =="ENOENT"){
+      process.stderr.write ("unzip command not found. Please check the unzip command is installed")
+    }else{
+       process.stderr.write(err);
+    }
+    return cb(error.message);
+  });
+
+  return unzip.on("exit", function() {
+
+    if (error != null) {
+      process.stderr.write(error);
+    }else{
+      process.stdout.write('done!\n');
+    }
+    return cb(error);
+  });
+}
+
+
+ //download selenium
+download(url, dest, function(errMsg){
+  if(errMsg){
+    process.stderr.write(errMsg);
+    process.exit();
+  }else{
+
+    var dest2 = "chromedriver_mac32.zip";
+    var url2 = "http://chromedriver.storage.googleapis.com/2.20/chromedriver_mac32.zip"
+
+    //download chromedriver
+    download(url2, dest2, function(errMsg){
+      if(errMsg){
+        process.stderr.write(errMsg);
+        process.exit();
+      }else{
+        var source = dest2;
+        var dest3 = "chromedriver";
+
+        // unzip chrome driver
+        unzip(source, dest3, function(err){
+          if(err){
+            return process.exit();
+          }
+
+          //remove zip
+          fs.unlinkSync(source); // Delete the zip file.
+
+          //make it executable
+          process.stdout.write('Make ' + source + ' executable...');
+          child.execSync('chmod u+x ' + dest3);
+          process.stdout.write('done!\n');
+          process.exit();
+        })        
+      }
+      
+    })
+  }
+  
+})

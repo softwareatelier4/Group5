@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{title}</title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <h1 class="heading">{title}</h1>
+    <h3>Resources</h3>
+    <ul class="links">
+    {#links}
+      <li class="link">
+        <span class="rel">{rel}</span> 
+        <a href="{href}">{href}</a>
+      </li>
+    {/links}
+    </ul>
+    <p>Note that the resources response bodies are in JSON format with <code>Content-Type: application/json</code>
+    </p>
+    
+  </body>
+</html>
