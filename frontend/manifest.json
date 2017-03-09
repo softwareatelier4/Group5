@@ -1,0 +1,6 @@
+{
+  "name": "jobadvisor",
+  "short_name": "jobadvisor",
+  "start_url": "/",
+  "display": "standalone"
+}

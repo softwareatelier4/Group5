@@ -1,4 +1,4 @@
- {
+{
   "name": "wa-exercise-5-2014-2015",
   "version": "0.0.0",
   "description": "Exercise 5 of Web Atelier@inf.usi.ch. Express.js and Mongoose",
@@ -29,14 +29,15 @@
     "dustjs-linkedin": "^2.7.2",
     "express": "^4.13.3",
     "method-override": "^2.3.5",
+    "mocha-jenkins-reporter": "^0.3.6",
     "mongodb": "^2.2.22",
     "mongoose": "^4.1.11",
     "morgan": "^1.6.1",
-    "supertest": "^1.1.0",
-    "mocha-jenkins-reporter":"^0.3.6"
+    "polymer-cli": "^0.17.0",
+    "supertest": "^1.1.0"
   },
   "devDependencies": {
-        "nightwatch": "^0.8.6",
-        "should": "^4.0.4"
+    "nightwatch": "^0.8.6",
+    "should": "^4.0.4"
   }
 }
