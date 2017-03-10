@@ -1,0 +1,32 @@
+<dom-module id="ja-results-list">
+
+  <template>
+    <style>
+      /* CSS rules for your element */
+    </style>
+
+    <!-- local DOM for your element -->
+
+    <div>This is a list</div> <!-- data bindings in local DOM -->
+    <content></content>
+
+  </template>
+
+  <script>
+    // element registration
+    Polymer({
+      is: "ja-results-list",
+
+      // add properties and methods on the element's prototype
+
+      properties: {
+        // declare properties for the element's public API
+        greeting: {
+          type: String,
+          value: "This is a list"
+        }
+      }
+    });
+  </script>
+
+</dom-module>
