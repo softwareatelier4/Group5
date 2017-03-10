@@ -1,14 +1,13 @@
 {
-  "name": "wa-exercise-5-2014-2015",
+  "name": "JobAdvisor",
   "version": "0.0.0",
-  "description": "Exercise 5 of Web Atelier@inf.usi.ch. Express.js and Mongoose",
+  "description": "JobAdvisor things. Express.js and Mongoose",
   "main": "app.js",
   "scripts": {
-    "install": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriver",
-    "start": "DEBUG='atelierbeats-server' ./bin/www",
-    "test": "npm run test-mocha && npm start | node seed.js && ./nightwatch",
-    "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec ./test/ex1 ./test/ex2 ./test/ex3 ./test/ex4 --colors --reporter mocha-jenkins-reporter",
-    "test-nightwatch": "node seed.js && ./nightwatch"
+    "install": "chmod -R u+x ./bin/",
+    "start": "DEBUG='jobadvisor-server' ./bin/www",
+    "test": "npm run test-mocha && npm start | node seed.js",
+    "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec --colors --reporter mocha-jenkins-reporter"
   },
   "keywords": [
     "Node.js",
@@ -17,7 +16,7 @@
     "Mongoose",
     "REST"
   ],
-  "author": "Masiar Babazadeh, Vincenzo Ferme, Vasileios Triglianos",
+  "author": "Francesco Sani, Thomas Del Prete, Alexander Fischer, Samuele Bischof, Lorenzo Spoleti, Davide Bucher, Camillo Malnati, Emanuele Giuseppe Esposito",
   "license": "MIT",
   "dependencies": {
     "adaro": "^1.0.0",
@@ -37,7 +36,6 @@
     "supertest": "^1.1.0"
   },
   "devDependencies": {
-    "nightwatch": "^0.8.6",
     "should": "^4.0.4"
   }
 }
