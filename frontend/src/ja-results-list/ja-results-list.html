@@ -7,7 +7,7 @@
 
     <!-- local DOM for your element -->
 
-    <div>This is a list</div> <!-- data bindings in local DOM -->
+    <div>Results for {{keyword}}</div> <!-- data bindings in local DOM -->
     <content></content>
 
   </template>
@@ -24,7 +24,11 @@
         greeting: {
           type: String,
           value: "This is a list"
-        }
+        },
+        keyword: {
+          type: String,
+          value: "keyword"
+        },
       }
     });
   </script>

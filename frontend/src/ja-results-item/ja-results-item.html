@@ -1,13 +1,26 @@
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
 <dom-module id="ja-results-item">
 
   <template>
     <style>
       /* CSS rules for your element */
+      :host {
+        display: block;
+        margin: 20px 0;
+      }
+
+      paper-card {
+        width: 100%;
+      }
     </style>
 
     <!-- local DOM for your element -->
 
-    <div>{{greeting}}</div> <!-- data bindings in local DOM -->
+    <paper-card>
+      <div class="card-content">This is a search result</div>
+      <div class="card-actions">Actions go here</div>
+    </paper-card>
 
   </template>
 
@@ -23,7 +36,7 @@
         greeting: {
           type: String,
           value: "This is a list element"
-        }
+        },
       }
     });
   </script>
