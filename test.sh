@@ -1,3 +1,4 @@
+npm install -g bower polymer
 npm install
 npm run test-mocha
 npm start &
