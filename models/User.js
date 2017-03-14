@@ -1,14 +1,12 @@
-/** @module models/Album
-* The Album Model.
+/** @module models/User
+* The User Model.
 * Schema:
-* _id            String       required   Unique identifier of the album
-* name           String       required   Name of the album
-* artist         ObjectId     required   Artist who performs in this album. It should be the `_id` of an Artist model document.
-* artwork        String       optional   URL of the artwork picture for the album. Default ''
-* tracks         [ObjectId]   required   Tracks that this album contains. They should be `_id`s of Track Model documents.
-* dateCreated    Date         required   Date the album was created. Default: Date.now()
-* dateReleased   Date         required   Date the album was released. Default: Date.now()
-* label          String       optional   Record label of this album. Default: 'USI-INF records'
+* userName        String       required   Username
+* firstName       String       required   First Name of the user.
+* lastName        String       optional   Last Name of the user.
+* password        String       required   Password
+* email           String       required   user email
+* comm_rating     Number       required   Rating of comments he receives (0-10);
 */
 
 
@@ -20,10 +18,6 @@ const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 
-/** @constructor
-* @augments AbstractSoundCollectionSchemaInstance
-* @param {Object} definition
-*/
 const userSchema = new mongoose.Schema(
   {
     userName : { type: String, required: true },
