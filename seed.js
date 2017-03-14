@@ -1,4 +1,4 @@
-/** 
+/**
 * Standalond db seed
 */
 var seed = require('./test/seedDb').seed;
