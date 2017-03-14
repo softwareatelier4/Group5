@@ -1,14 +1,19 @@
-/** @module models/Album
-* The Album Model.
+/** @module models/Freelancer
+* The Freelancer Model.
 * Schema:
-* _id            String       required   Unique identifier of the album
-* name           String       required   Name of the album
-* artist         ObjectId     required   Artist who performs in this album. It should be the `_id` of an Artist model document.
-* artwork        String       optional   URL of the artwork picture for the album. Default ''
-* tracks         [ObjectId]   required   Tracks that this album contains. They should be `_id`s of Track Model documents.
-* dateCreated    Date         required   Date the album was created. Default: Date.now()
-* dateReleased   Date         required   Date the album was released. Default: Date.now()
-* label          String       optional   Record label of this album. Default: 'USI-INF records'
+* _id            String       required    Unique identifier of the freelancer.
+* firstName      String       required    Name of the freelancer.
+* lastName       String       required    Lastname of the freelancer.
+* address        String       required    Address of the freelancer.
+* description    String       optional    Description of the freelancer.
+* category       String       optional    Job category of the freelancer.
+* rating         Integer      optional    Rating of the freelancer.
+* userName       String       required    Username used to login
+* password       String       required    Hashed password used to login
+* email          String       required    Email of the freelancer.
+* phone number   String       required    Phone number of the freelancer.
+* location       String       required    Location of the freelancer.
+* price          Integer      optional    Average price of the freelancer.
 */
 
 
@@ -19,11 +24,6 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-
-/** @constructor
-* @augments AbstractSoundCollectionSchemaInstance
-* @param {Object} definition
-*/
 const FreelancerSchema = new mongoose.Schema(
   {
     firstName : { type: String, required: true },
