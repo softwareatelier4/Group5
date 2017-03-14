@@ -24,11 +24,6 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-
-/** @constructor
-* @augments AbstractSoundCollectionSchemaInstance
-* @param {Object} definition
-*/
 const FreelancerSchema = new mongoose.Schema(
   {
     firstName : { type: String, required: true },
