@@ -1,7 +1,9 @@
 npm install
 npm run test-mocha
-npm start &
+npm run start-jenkins &
 node seed.js
-polymer test frontend/test -l chrome
-./nightwatch
-pkill "myapp"
+cd frontend
+bower install
+cd ..
+#polymer test frontend/test -l chrome
+pkill "JobAdvisor"

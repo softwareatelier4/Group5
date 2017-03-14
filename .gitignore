@@ -2,8 +2,6 @@ node_modules
 bower_components
 .DS_Store
 npm-debug.log
-chromedriver
-selenium-server-standalone-2.48.2.jar
-test/nightwatch-reports
 coverage
 jenkins-test-results.xml
+npm-debug.log.3975227406
