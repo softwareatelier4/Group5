@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "install": "chmod -R u+x ./bin/",
-    "start": "DEBUG='jobadvisor-server' ./bin/www",
+    "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "test": "npm run test-mocha && npm start | node seed.js",
     "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec --colors --reporter mocha-jenkins-reporter"
   },
@@ -19,6 +19,7 @@
   "author": "Francesco Sani, Thomas Del Prete, Alexander Fischer, Samuele Bischof, Lorenzo Spoleti, Davide Bucher, Camillo Malnati, Emanuele Giuseppe Esposito",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.14.1",
