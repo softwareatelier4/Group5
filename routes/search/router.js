@@ -5,7 +5,7 @@ const router = express.Router();
 const middleware =  require('../middleware');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const Profile = mongoose.model('Profile');
+const Freelancer = mongoose.model('Freelancer');
 const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
@@ -15,7 +15,7 @@ router.all('/', middleware.supportedMethods('GET'));
 router.get('/', function(req, res, next) {
   res.status(200);
 
-  Profile.find(req.query, function(err, profiles) {
+  Freelancer.find(req.query, function(err, profiles) {
     if (err) return console.error(err);
     res.json(profiles);
   });
