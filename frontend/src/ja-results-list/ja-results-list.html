@@ -8,7 +8,13 @@
     <!-- local DOM for your element -->
 
     <div>Results for {{keyword}}</div> <!-- data bindings in local DOM -->
-    <content></content>
+    <template is="dom-repeat" items="{{results}}" as="result">
+      <ja-results-item first-name="{{result.firstName}}"
+                       last-name="{{result.lastName}}"
+                       profession="{{result.profession}}"
+                       location="{{result.location}}">
+      </ja-results-item>
+    </template>
 
   </template>
 
@@ -29,6 +35,31 @@
           type: String,
           value: "keyword"
         },
+
+        results: {
+          type: Array,
+          value:
+          [
+            {
+              firstName: "Mario",
+              lastName: "Rossi",
+              location: "Lugano",
+              profession: "Plumber"
+            },
+            {
+              firstName: "Luca",
+              lastName: "Bernasconi",
+              location: "Mendrisio",
+              profession: "Painter"
+            },
+            {
+              firstName: "Gianni",
+              lastName: "Rezzonico",
+              location: "Bellinzona",
+              profession: "Graphic Designer"
+            },
+          ]
+        }
       }
     });
   </script>

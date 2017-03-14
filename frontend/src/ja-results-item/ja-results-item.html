@@ -18,7 +18,7 @@
     <!-- local DOM for your element -->
 
     <paper-card>
-      <div class="card-content">This is a search result</div>
+      <div class="card-content">{{firstName}} {{lastName}} {{profession}} {{location}}</div>
       <div class="card-actions">Actions go here</div>
     </paper-card>
 
@@ -35,7 +35,23 @@
         // declare properties for the element's public API
         greeting: {
           type: String,
-          value: "This is a list element"
+          value: ""
+        },
+        firstName: {
+          type: String,
+          value: ""
+        },
+        lastName: {
+          type: String,
+          value: ""
+        },
+        profession: {
+          type: String,
+          value: ""
+        },
+        location: {
+          type: String,
+          value: ""
         },
       }
     });
