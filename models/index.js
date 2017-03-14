@@ -4,5 +4,10 @@
 'use strict';
 
 var mongoose = require('mongoose');
+require('./Freelancer');
+require('./User');
 
-module.exports = {}
+module.exports = {
+  'Freelancer' : mongoose.model('Freelancer'),
+  'User' : mongoose.model('User')
+}
