@@ -1,59 +1,45 @@
-/** @module users/User
-* The User Model
+/** @module models/User
+* The User Model.
 * Schema:
-* _id           ObjectId                    Unique identifier of the user
-* userName      String     required         Username of the user
-* email         String     required         Email address of the user
-* password      String     required         Password for the user account
-* firstName     String                      First name of the user. Default: username
-* lastName      String                      Last name of the user. Default: username
-* dateCreated   Date       required         Date the user was created.  Default: Date.now()
-* playlists     [PlaylistSchema]            Playlists of the user. Default: []
+* userName        String       required   Username
+* firstName       String       required   First Name of the user.
+* lastName        String       optional   Last Name of the user.
+* password        String       required   Password
+* email           String       required   user email
+* comm_rating     Number       required   Rating of comments he receives (0-10);
 */
 
-//<!-- build:remove -->
 
 'use strict';
 
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
-var SALT_WORK_FACTOR = 10;
-var PlaylistSchema = require('./Playlist');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-//<!-- /build -->
 
-/** @constructor
-* @param {Object} definition
-*/
-var userSchema = new mongoose.Schema(
-//<!-- build:remove -->
-
-{
-  userName : { type: String, required: true },
-  firstName: { type: String },
-  lastName : { type: String },
-  password : { type: String, required: true },
-  email   : { type: String, required: true },
-  dateCreated : { type: Date, required: true, default: Date.now },
-  playlists : { type: [PlaylistSchema], default: [] }
-}
-
-//<!-- /build -->
+const userSchema = new mongoose.Schema(
+  {
+    userName : { type: String, required: true },
+    firstName: { type: String },
+    lastName : { type: String },
+    password : { type: String, required: true },
+    email   : { type: String, required: true },
+    comm_rating : { type: Number }
+  }
 );
-
-//<!-- build:remove -->
 
 userSchema.pre('save', function (next) {
   //default for firstName is userName
-  if( this.firstName === undefined 
-    || this.firstName === null 
+  if( this.firstName === undefined
+    || this.firstName === null
     || this.firstName.toString().trim() === ''){
     this.firstName = this.userName;
   }
-  
+
   //default for lastName is userName
-  if( this.lastName === undefined 
-    || this.lastName === null 
+  if( this.lastName === undefined
+    || this.lastName === null
     || this.lastName.toString().trim() === ''){
     this.lastName = this.userName;
   }
@@ -61,7 +47,7 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre('save', function(next) {
-  var user = this;
+  const user = this;
 
   // return if the password was not modified.
   if (!user.isModified('password')) { return next(); }
@@ -90,5 +76,3 @@ userSchema.methods.isValidPassword = function isValidPassword(candidate, callbac
 
 //register model
 mongoose.model('User', userSchema);
-
-//<!-- /build -->
