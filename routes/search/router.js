@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Profile = mongoose.model('Profile');
 const config = require('../../config');
-const session = require('express-session');
 
 const fieldsFilter = { '__v': 0 };
 

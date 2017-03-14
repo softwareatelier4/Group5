@@ -12,13 +12,7 @@ router.all('/', middleware.supportedMethods('GET, OPTIONS'));
 
 //list users
 router.get('/', function(req, res, next) {
-  var links = []
-  if(req.accepts('text/html')){
-    res.render('index', {title:"Totally Not AtelierBeats API Server", links:links});
-  }else{
-    res.json(links)
-  }
-
+  
 });
 /** router for /users */
 module.exports = router;

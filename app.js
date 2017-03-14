@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var dustjs = require('adaro');
 var app = express();
 var methodOverride = require('method-override')
 
@@ -17,11 +16,6 @@ mongoose.connect(config.mongoUrl + config.mongoDbName);
 //<!-- build:remove -->
 require('./models');
 //<!-- /build -->
-
-// dustjs view engine setup
-app.engine('dust', dustjs.dust());
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'dust');
 
 //configure app
 app.use(logger('dev'));
