@@ -17,6 +17,14 @@
       <iron-icon icon="search" suffix></iron-icon>
     </paper-input>
     <paper-button id="button-search">Search</paper-button>
+
+    <iron-ajax
+            id="search-request"
+            url="http://localhost:8080/search/"
+            params='{"words": "' + this.$['field-search'].value + '"}'
+            handle-as="json"
+            on-response="handleResponse">
+    </iron-ajax>
   </template>
 
   <script>
@@ -25,16 +33,20 @@
       is: 'search-element',
 
       listeners: {
-        'button-seach.tap': 'search'
+        'button-search.tap': 'search'
       },
 
       properties: {
       }, 
       
       search: function(e) {
-        console.log('search');
-        this.$.requestSearch
-      }
+        console.log(this.$['field-search'].value);
+        this.$['search-request'].generateRequest();
+      },
+
+      handleResponse: function (data) {
+        this.repos = data.detail.response;
+      },
 
     });
   </script>
