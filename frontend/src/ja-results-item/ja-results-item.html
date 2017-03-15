@@ -13,46 +13,43 @@
       paper-card {
         width: 100%;
       }
+
+      .result-name {
+        font-size: 24px;
+        text-decoration: none;
+      }
+
+      .result-profession {
+
+      }
+
+      .result-location {
+        float: right;
+      }
+
+
     </style>
 
-    <!-- local DOM for your element -->
-
     <paper-card>
-      <div class="card-content">{{firstName}} {{lastName}} {{profession}} {{location}}</div>
-      <div class="card-actions">Actions go here</div>
+      <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a></div>
+      <div class="card-actions"><span class="result-profession">{{result.profession}}</span> <span class="result-location">{{result.location}}</span></div>
     </paper-card>
 
   </template>
 
   <script>
-    // element registration
     Polymer({
       is: "ja-results-item",
 
-      // add properties and methods on the element's prototype
-
       properties: {
-        // declare properties for the element's public API
-        greeting: {
-          type: String,
-          value: ""
-        },
-        firstName: {
-          type: String,
-          value: ""
-        },
-        lastName: {
-          type: String,
-          value: ""
-        },
-        profession: {
-          type: String,
-          value: ""
-        },
-        location: {
-          type: String,
-          value: ""
-        },
+        /**
+         * The current result, containing some of the freelancer info to show on the list
+         * @type {Object}
+         */
+        result: {
+          type: Object,
+          value: {}
+        }
       }
     });
   </script>

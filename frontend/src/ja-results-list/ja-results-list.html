@@ -9,10 +9,7 @@
 
     <div>Results for {{keyword}}</div> <!-- data bindings in local DOM -->
     <template is="dom-repeat" items="{{results}}" as="result">
-      <ja-results-item first-name="{{result.firstName}}"
-                       last-name="{{result.lastName}}"
-                       profession="{{result.profession}}"
-                       location="{{result.location}}">
+      <ja-results-item result="{{result}}">
       </ja-results-item>
     </template>
 
@@ -41,18 +38,21 @@
           value:
           [
             {
+              _id: "asjohfahjlksdfjklhkjhasdf",
               firstName: "Mario",
               lastName: "Rossi",
               location: "Lugano",
               profession: "Plumber"
             },
             {
+              _id: "sdfjsjdfjksdjkasljkdasjjj",
               firstName: "Luca",
               lastName: "Bernasconi",
               location: "Mendrisio",
               profession: "Painter"
             },
             {
+              _id: "sdfgdfgkdkfgkjdf",
               firstName: "Gianni",
               lastName: "Rezzonico",
               location: "Bellinzona",
