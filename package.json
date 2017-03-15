@@ -4,11 +4,12 @@
   "description": "JobAdvisor things. Express.js and Mongoose",
   "main": "app.js",
   "scripts": {
-    "install": "chmod -R u+x ./bin/",
+    "install": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriver",
     "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "start-jenkins": "DEBUG='jobadvisor-server' ./bin/www",
     "test": "npm run test-mocha && npm start | node seed.js",
-    "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec --colors --reporter mocha-jenkins-reporter"
+    "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec --colors --reporter mocha-jenkins-reporter",
+    "test-nightwatch": "node seed.js && ./nightwatch"
   },
   "keywords": [
     "Node.js",
@@ -36,6 +37,7 @@
     "supertest": "^1.1.0"
   },
   "devDependencies": {
+    "nightwatch": "^0.8.6",
     "should": "^4.0.4"
   }
 }

@@ -7,7 +7,7 @@
 
     <!-- local DOM for your element -->
 
-    <div>Results for {{keyword}}</div> <!-- data bindings in local DOM -->
+    <div id="results-title">Results for {{keyword}}</div> <!-- data bindings in local DOM -->
     <template is="dom-repeat" items="{{results}}" as="result">
       <ja-results-item result="{{result}}">
       </ja-results-item>
