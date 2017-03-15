@@ -6,22 +6,18 @@ var bodyParser = require('body-parser');
 var app = express();
 var methodOverride = require('method-override')
 
-// Connect to MongoDB here
-//<!-- build:remove -->
+// Connection to MongoDB
 var mongoose   = require('mongoose');
 mongoose.connect(config.mongoUrl + config.mongoDbName);
-//<!-- /build -->
 
-// Register model definition here
-//<!-- build:remove -->
+// Model definition registration
 require('./models');
-//<!-- /build -->
 
 //configure app
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());    // parse application/json
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 app.use(methodOverride(
 function(req, res){
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -32,13 +28,12 @@ function(req, res){
 }
 ));
 
-// Initialize routers here
-//<!-- build:remove -->
+// Initialize routers
 
 var routers = require('./routes/routers');
 app.use('/', routers.root);
 
-//<!-- /build -->
+app.use('/search', routers.search);
 
 module.exports = app;
 process.title = 'JobAdvisor'
