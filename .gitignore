@@ -5,3 +5,4 @@ npm-debug.log
 coverage
 jenkins-test-results.xml
 npm-debug.log.3975227406
+frontend/test/nightwatch-reports
