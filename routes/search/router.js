@@ -15,7 +15,14 @@ router.all('/', middleware.supportedMethods('GET'));
 router.get('/', function(req, res, next) {
   res.status(200);
 
-  Freelancer.find(req.query, function(err, profiles) {
+  var searchFilter = {};
+  for (var k in req.query) {
+    if (req.query.hasOwnProperty(k)) {
+      searchFilter[k] = new RegExp(req.query[k], "i")
+    }
+  }
+
+  Freelancer.find(searchFilter, function(err, profiles) {
     if (err) return console.error(err);
     res.json(profiles);
   });
