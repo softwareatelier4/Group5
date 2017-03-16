@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+<dom-module id="ja-search-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-input id="field-search">
+      <iron-icon icon="search" suffix></iron-icon>
+    </paper-input>
+    <paper-button id="button-search">Search</paper-button>
+
+    <iron-ajax
+            id="search-request"
+            url="http://localhost:3000/search/"
+            params='{"category": "' + this.$['field-search'].value + '"}'
+            handle-as="json"
+            on-response="{{result}}"
+    </iron-ajax>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'search-element',
+
+      listeners: {
+        'button-search.tap': 'search'
+      },
+
+      properties: {
+        result: {
+          type: Object,
+          value: {},
+          reflectToAttribute: true,
+        },
+      },
+
+
+      
+      search: function(e) {
+        console.log(this.$['field-search'].value);
+        this.$['search-request'].generateRequest();
+      },
+
+    });
+  </script>
+</dom-module>
