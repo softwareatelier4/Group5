@@ -26,11 +26,9 @@ var files = {
    "address"       : "Via coihsaoidf",
    "description"   : "Description",
    "rating" : 3,
-   "userName" : "esposem",
-   "password" : "ohboy",
    "email" : "ciao@yahoo.com",
    "phone_number" : "+41 4442323223",
-   "location" : "Via delle minchie 32",
+   "location" : "Lugano",
    "price" : 300
   }
  ]
