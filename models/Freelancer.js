@@ -6,10 +6,8 @@
 * lastName       String       required    Lastname of the freelancer.
 * address        String       required    Address of the freelancer.
 * description    String       optional    Description of the freelancer.
-* category       String       optional    Job category of the freelancer.
+* profession     String       optional    Job category of the freelancer.
 * rating         Integer      optional    Rating of the freelancer.
-* userName       String       required    Username used to login
-* password       String       required    Hashed password used to login
 * email          String       required    Email of the freelancer.
 * phone number   String       required    Phone number of the freelancer.
 * location       String       required    Location of the freelancer.
@@ -35,10 +33,8 @@ const FreelancerSchema = new mongoose.Schema(
     lastName : { type: String, required: true },
     address : { type: String, required: true },
     description : { type: String},
-    category :{ type: ['Plumber', 'Electricist', 'Gardener', 'None'], default: 'None'},
+    profession :{ type: String, default: 'Other'},
     rating: { type: Number },
-    userName: { type: String, required : true},
-    password:{ type: String, required : true},
     email: { type: String, required : true},
     phone_number: { type: String, required : true},
     location: { type: String, required: true },
