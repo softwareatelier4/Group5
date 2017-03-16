@@ -62,6 +62,7 @@ describe('Ex1: Freelancer Model', function(done){
 
     it('should fail if firstName is empty, null, or undefined', function(done){
       var freelancer = new Freelancer();
+      freelancer.firstName = undefined;
       freelancer.lastName = 'Bubu';
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
