@@ -6,3 +6,5 @@ coverage
 jenkins-test-results.xml
 npm-debug.log.3975227406
 frontend/test/nightwatch-reports
+chromedriver
+selenium-server-standalone-2.48.2.jar
