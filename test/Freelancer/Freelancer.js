@@ -4,10 +4,10 @@
 var mongoose   = require('mongoose');
 
 var should = require('should');
-var utils =  require('./utils');
+var utils =  require('../utils');
 
 //load model
-require('../models/Freelancer');
+require('../../models/Freelancer');
 
 describe('Ex1: Freelancer Model', function(done){
 
@@ -70,6 +70,62 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
     });
+
+    it('should fail if lastName is empty, null, or undefined', function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.address = 'sasgfkb';
+      freelancer.email = 'askhb@as.askug';
+      freelancer.phone_number = '19821';
+      freelancer.location = 'Lugano';
+      freelancer.profession = 'IT guy';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+    });
+
+    it('should fail if address is empty, null, or undefined', function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.lastName = 'Bubu';
+      freelancer.email = 'askhb@as.askug';
+      freelancer.phone_number = '19821';
+      freelancer.location = 'Lugano';
+      freelancer.profession = 'IT guy';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+    });
+
+    it('should fail if email is empty, null, or undefined', function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.lastName = 'Bubu';
+      freelancer.address = 'sasgfkb';
+      freelancer.phone_number = '19821';
+      freelancer.location = 'Lugano';
+      freelancer.profession = 'IT guy';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+    });
+
+    it('should fail if phone_number is empty, null, or undefined', function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.lastName = 'Bubu';
+      freelancer.address = 'sasgfkb';
+      freelancer.email = 'askhb@as.askug';
+      freelancer.location = 'Lugano';
+      freelancer.profession = 'IT guy';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+    });
+
+    it('should fail if location is empty, null, or undefined', function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.lastName = 'Bubu';
+      freelancer.address = 'sasgfkb';
+      freelancer.email = 'askhb@as.askug';
+      freelancer.phone_number = '19821';
+      freelancer.profession = 'IT guy';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+    });
+
 
     it('if profession is empty; null; or undefined, it should get assigned the value `Other`',
       function(done){
