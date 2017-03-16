@@ -21,15 +21,40 @@ var files = {
  name : 'Freelancer',
  data : [
   {
-   "firstName"          : "Ciao",
-   "lastName"         : "Computer Networking",
+   "firstName"          : "Mario",
+   "lastName"         : "Rossi",
+   "address"       : "Via san gottardo 12",
+   "description"   : "Description",
+   "rating" : 3,
+   "email" : "ciao@yahoo.com",
+   "phone_number" : "+41 4442323223",
+   "location" : "Lugano",
+   "price" : 300,
+   "profession": "Painter"
+  },
+  {
+   "firstName"          : "Luca",
+   "lastName"         : "Bernasconi",
+   "address"       : "Via coihsaoidf",
+   "description"   : "Description",
+   "rating" : 3,
+   "email" : "ciao@yahoo.com",
+   "phone_number" : "+41 4442323223",
+   "location" : "Bellinzona",
+   "price" : 300,
+   "profession": "Plumber"
+  },
+  {
+   "firstName"          : "Giovanni",
+   "lastName"         : "Rezzonico",
    "address"       : "Via coihsaoidf",
    "description"   : "Description",
    "rating" : 3,
    "email" : "ciao@yahoo.com",
    "phone_number" : "+41 4442323223",
    "location" : "Lugano",
-   "price" : 300
+   "price" : 300,
+   "profession":"painter"
   }
  ]
 }

@@ -15,7 +15,7 @@ router.all('/', middleware.supportedMethods('GET'));
 router.get('/', function(req, res, next) {
   res.status(200);
 
-  Freelancer.find(req.params, function(err, profiles) {
+  Freelancer.find(req.query, function(err, profiles) {
     if (err) return console.error(err);
     res.json(profiles);
   });
