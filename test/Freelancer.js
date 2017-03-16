@@ -47,12 +47,12 @@ describe('Ex1: Freelancer Model', function(done){
     it('should persist a freelancer with valid properties', function(done){
       var freelancer = new Freelancer();
       freelancer.firstName = 'Mark Knopfler';
-      freelancer.lastName = 'Rock, roots rock, Celtic rock, blues-rock';
+      freelancer.lastName = 'Dire Straits';
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'tua mamma';
-      freelancer.profession = 'coglione';
+      freelancer.location = 'Lugano';
+      freelancer.profession = 'IT guy';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(freelancer);
@@ -62,12 +62,12 @@ describe('Ex1: Freelancer Model', function(done){
 
     it('should fail if firstName is empty, null, or undefined', function(done){
       var freelancer = new Freelancer();
-      freelancer.lastName = 'Rock, roots rock, Celtic rock, blues-rock';
+      freelancer.lastName = 'Bubu';
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'tua mamma';
-      freelancer.profession = 'coglione';
+      freelancer.location = 'Lugano';
+      freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
     });
 
@@ -75,11 +75,11 @@ describe('Ex1: Freelancer Model', function(done){
       function(done){
       var freelancer = new Freelancer();
       freelancer.firstName = 'Mark Knopfler';
-      freelancer.lastName = 'Rock, roots rock, Celtic rock, blues-rock';
+      freelancer.lastName = 'Dire Straits';
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'tua mamma';
+      freelancer.location = 'Belli';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         freelancer.profession.should.equal('Other');
