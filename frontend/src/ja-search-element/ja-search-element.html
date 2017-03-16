@@ -22,14 +22,14 @@
             url="http://localhost:3000/search/"
             params='{"category": "' + this.$['field-search'].value + '"}'
             handle-as="json"
-            on-response="{{result}}"
+            on-response="handleResponse">
     </iron-ajax>
   </template>
 
   <script>
     Polymer({
 
-      is: 'search-element',
+      is: 'ja-search-element',
 
       listeners: {
         'button-search.tap': 'search'
@@ -44,11 +44,14 @@
       },
 
 
-      
       search: function(e) {
         console.log(this.$['field-search'].value);
         this.$['search-request'].generateRequest();
       },
+
+      handleResponse: function(response) {
+        this.set('result', response);
+      }
 
     });
   </script>
