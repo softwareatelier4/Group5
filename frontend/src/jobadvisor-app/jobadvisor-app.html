@@ -11,8 +11,8 @@
       }
     </style>
     <h1>Welcome to JobAdvisor</h1>
-    <ja-search-element></ja-search-element>
-    <ja-results-list>
+    <ja-search-element results={{results}}></ja-search-element>
+    <ja-results-list results={{results}}>
     </ja-results-list>
   </template>
   <script>
@@ -25,6 +25,18 @@
           type: String,
           value: 'jobadvisor-app',
         },
+        results: {
+          type: Array,
+          value: [],
+          observer: '_resultsChanged',
+          notify: true,
+          reflectToAttribute: true,
+        },
+      },
+
+      _resultsChanged: function(results) {
+        console.log('Set results in app', results);
+        this.results = results;
       },
 
     });

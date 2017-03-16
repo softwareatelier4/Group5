@@ -22,7 +22,7 @@
             url="http://localhost:3000/search/"
             params='{"category": "' + this.$['field-search'].value + '"}'
             handle-as="json"
-            on-response="handleResponse">
+            on-response="_handleResponse">
     </iron-ajax>
   </template>
 
@@ -36,10 +36,11 @@
       },
 
       properties: {
-        result: {
-          type: Object,
-          value: {},
+        results: {
+          type: Array,
+          value: [],
           reflectToAttribute: true,
+          notify: true,
         },
       },
 
@@ -49,8 +50,10 @@
         this.$['search-request'].generateRequest();
       },
 
-      handleResponse: function(response) {
-        this.set('result', response);
+      _handleResponse: function(response) {
+        this.results = response.detail.response;
+        // this.set('results', response.detail.response);
+        console.log(response.detail.response);
       }
 
     });

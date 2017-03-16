@@ -35,31 +35,40 @@
 
         results: {
           type: Array,
+          observer: '_resultsChanged',
+          notify: true,
+          // reflectToAttribute: true,
           value:
           [
-            {
-              _id: "asjohfahjlksdfjklhkjhasdf",
-              firstName: "Mario",
-              lastName: "Rossi",
-              location: "Lugano",
-              profession: "Plumber"
-            },
-            {
-              _id: "sdfjsjdfjksdjkasljkdasjjj",
-              firstName: "Luca",
-              lastName: "Bernasconi",
-              location: "Mendrisio",
-              profession: "Painter"
-            },
-            {
-              _id: "sdfgdfgkdkfgkjdf",
-              firstName: "Gianni",
-              lastName: "Rezzonico",
-              location: "Bellinzona",
-              profession: "Graphic Designer"
-            },
+            // {
+            //   _id: "asjohfahjlksdfjklhkjhasdf",
+            //   firstName: "Mario",
+            //   lastName: "Rossi",
+            //   location: "Lugano",
+            //   profession: "Plumber"
+            // },
+            // {
+            //   _id: "sdfjsjdfjksdjkasljkdasjjj",
+            //   firstName: "Luca",
+            //   lastName: "Bernasconi",
+            //   location: "Mendrisio",
+            //   profession: "Painter"
+            // },
+            // {
+            //   _id: "sdfgdfgkdkfgkjdf",
+            //   firstName: "Gianni",
+            //   lastName: "Rezzonico",
+            //   location: "Bellinzona",
+            //   profession: "Graphic Designer"
+            // },
           ]
-        }
+        },
+      },
+
+
+      _resultsChanged: function(results) {
+        console.log(results);
+        this.results = results;
       }
     });
   </script>
