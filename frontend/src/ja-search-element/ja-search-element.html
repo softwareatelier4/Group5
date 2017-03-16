@@ -53,8 +53,8 @@
 
       search: function(e) {
         console.log(this.$['field-search'].value);
-        this.req = {"profession": this.$['field-search'].value,
-                    "location": this.$['location-search'].value};
+        this.req = {"profession": "/"this.$['field-search'].value"/i",
+                    "location": "/"this.$['location-search'].value}"/i";
         this.$['search-request'].generateRequest();
       },
 
