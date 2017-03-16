@@ -12,15 +12,21 @@
         display: block;
       }
     </style>
-    <paper-input id="field-search">
+    <!--<paper-input id="field-search">
+      <iron-icon icon="search" suffix></iron-icon>
+    </paper-input>-->
+    <paper-input id="field-search" label="profession">
       <iron-icon icon="search" suffix></iron-icon>
     </paper-input>
-    <paper-button id="button-search">Search</paper-button>
+    <paper-input id="location-search" label="location">
+      <iron-icon icon="search" suffix></iron-icon>
+    </paper-input>
+    <paper-button id="button-search" raised>Search</paper-button>
 
     <iron-ajax
             id="search-request"
             url="http://localhost:3000/search/"
-            params='{"category": "' + this.$['field-search'].value + '"}'
+            params='{{req}}'
             handle-as="json"
             on-response="_handleResponse">
     </iron-ajax>
@@ -47,6 +53,8 @@
 
       search: function(e) {
         console.log(this.$['field-search'].value);
+        this.req = {"profession": this.$['field-search'].value,
+                    "location": this.$['location-search'].value};
         this.$['search-request'].generateRequest();
       },
 
