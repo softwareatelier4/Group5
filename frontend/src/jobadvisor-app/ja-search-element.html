@@ -5,7 +5,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
-<dom-module id="search-element">
+<dom-module id="ja-search-element">
   <template>
     <style>
       :host {
@@ -13,17 +13,16 @@
       }
     </style>
     <paper-input id="field-search">
-    <!-- <paper-input always-float-label label="search"> -->
       <iron-icon icon="search" suffix></iron-icon>
     </paper-input>
     <paper-button id="button-search">Search</paper-button>
 
     <iron-ajax
             id="search-request"
-            url="http://localhost:8080/search/"
-            params='{"words": "' + this.$['field-search'].value + '"}'
+            url="http://localhost:3000/search/"
+            params='{"category": "' + this.$['field-search'].value + '"}'
             handle-as="json"
-            on-response="handleResponse">
+            on-response="{{result}}"
     </iron-ajax>
   </template>
 
@@ -37,15 +36,18 @@
       },
 
       properties: {
-      }, 
+        result: {
+          type: Object,
+          value: {},
+          reflectToAttribute: true,
+        },
+      },
+
+
       
       search: function(e) {
         console.log(this.$['field-search'].value);
         this.$['search-request'].generateRequest();
-      },
-
-      handleResponse: function (data) {
-        this.repos = data.detail.response;
       },
 
     });
