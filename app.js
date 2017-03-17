@@ -34,6 +34,18 @@ var routers = require('./routes/routers');
 app.use('/', routers.root);
 
 app.use('/search', routers.search);
+app.use('/freelancer', routers.freelancer);
+
+app.use('*', function(req,res, next){
+  if(req.accepts('html')){
+    const options = {
+        root: __dirname + '/frontend/',
+      };
+    return res.sendFile('index.html', options);
+  }
+
+  next();
+})
 
 module.exports = app;
 process.title = 'JobAdvisor'
