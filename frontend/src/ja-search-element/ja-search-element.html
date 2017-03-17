@@ -48,21 +48,33 @@
           reflectToAttribute: true,
           notify: true,
         },
+        location: {
+          type: String,
+          value: "location",
+          reflectToAttribute: true,
+          notify: true,
+        },
+        profession: {
+          type: String,
+          value: "profession",
+          reflectToAttribute: true,
+          notify: true,
+        },
       },
 
 
       search: function(e) {
         console.log(this.$['field-search'].value);
-        this.req = {"profession": this.$['field-search'].value,
-                    "location": this.$['location-search'].value};
+        this.profession = this.$['field-search'].value;
+        this.location = this.$['location-search'].value;
+        this.req = {"profession": this.profession,
+                    "location": this.location};
         this.$['search-request'].generateRequest();
       },
 
       _handleResponse: function(response) {
         this.results = response.detail.response;
-        // this.set('results', response.detail.response);
-        console.log(response.detail.response);
-      }
+      },
 
     });
   </script>

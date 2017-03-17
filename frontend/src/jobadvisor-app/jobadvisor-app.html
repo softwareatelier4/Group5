@@ -36,8 +36,8 @@
       fallback-selection="search"
       role="main">
       <div title="search">
-        <ja-search-element results={{results}}></ja-search-element>
-        <ja-results-list results={{results}}></ja-results-list>
+        <ja-search-element results={{results}} location={{location}} profession={{profession}}></ja-search-element>
+        <ja-results-list results={{results}} location={{location}} profession={{profession}}></ja-results-list>
       </div>
       <div title="freelancer">
         Profile for ID {{subrouteData.id}}
@@ -73,6 +73,20 @@
           type: String,
           reflectToAttribute: true,
         },
+        location: {
+          type: String,
+          value: "",
+          observer: '_locationChanged',
+          // reflectToAttribute: true,
+          // notify: true,
+        },
+        profession: {
+          type: String,
+          value: "",
+          observer: '_professionChanged',
+          // reflectToAttribute: true,
+          // notify: true,
+        },
       },
 
       observers: [
@@ -81,6 +95,13 @@
 
       _resultsChanged: function(results) {
         this.results = results;
+      },
+      _professionChanged: function(profession) {
+        console.log("Changed", profession);
+        this.profession = profession;
+      },
+      _locationChanged: function(location) {
+        this.location = location;
       },
 
       _routePageChanged: function(page) {

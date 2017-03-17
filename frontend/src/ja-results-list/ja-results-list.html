@@ -26,13 +26,19 @@
           type: String,
           value: "This is a list"
         },
-        profession: {
-          type: String,
-          value: "profession"
-        },
         location: {
           type: String,
-          value: "location"
+          value: "location",
+          observer: '_locationChanged',
+          // reflectToAttribute: true,
+          notify: true,
+        },
+        profession: {
+          type: String,
+          value: "profession",
+          observer: '_professionChanged',
+          // reflectToAttribute: true,
+          notify: true,
         },
         results: {
           type: Array,
@@ -42,8 +48,14 @@
         },
       },
 
+      _professionChanged: function(profession) {
+        this.profession = profession;
+      },
+      _locationChanged: function(location) {
+        this.location = location;
+      },
+
       _resultsChanged: function(results) {
-        console.log(results);
         this.results = results;
       }
     });
