@@ -7,7 +7,7 @@
 
     <!-- local DOM for your element -->
 
-    <div id="results-title">Results for {{keyword}}</div> <!-- data bindings in local DOM -->
+    <div id="results-title">Results for {{profession}} around {{location}}</div>
     <template is="dom-repeat" items="{{results}}" as="result">
       <ja-results-item result="{{result}}">
       </ja-results-item>
@@ -20,51 +20,27 @@
     Polymer({
       is: "ja-results-list",
 
-      // add properties and methods on the element's prototype
-
       properties: {
         // declare properties for the element's public API
         greeting: {
           type: String,
           value: "This is a list"
         },
-        keyword: {
+        profession: {
           type: String,
-          value: "keyword"
+          value: "profession"
         },
-
+        location: {
+          type: String,
+          value: "location"
+        },
         results: {
           type: Array,
           observer: '_resultsChanged',
           notify: true,
-          // reflectToAttribute: true,
-          value:
-          [
-            // {
-            //   _id: "asjohfahjlksdfjklhkjhasdf",
-            //   firstName: "Mario",
-            //   lastName: "Rossi",
-            //   location: "Lugano",
-            //   profession: "Plumber"
-            // },
-            // {
-            //   _id: "sdfjsjdfjksdjkasljkdasjjj",
-            //   firstName: "Luca",
-            //   lastName: "Bernasconi",
-            //   location: "Mendrisio",
-            //   profession: "Painter"
-            // },
-            // {
-            //   _id: "sdfgdfgkdkfgkjdf",
-            //   firstName: "Gianni",
-            //   lastName: "Rezzonico",
-            //   location: "Bellinzona",
-            //   profession: "Graphic Designer"
-            // },
-          ]
+          value: []
         },
       },
-
 
       _resultsChanged: function(results) {
         console.log(results);
@@ -72,5 +48,4 @@
       }
     });
   </script>
-
 </dom-module>

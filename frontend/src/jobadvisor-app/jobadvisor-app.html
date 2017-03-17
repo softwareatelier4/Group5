@@ -1,4 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<!-- <link rel="import" href="../../bower_components/app-location/app-location.html"> -->
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../ja-results-list/ja-results-list.html">
 <link rel="import" href="../ja-results-item/ja-results-item.html">
 <link rel="import" href="../ja-search-element/ja-search-element.html">
@@ -10,10 +14,36 @@
         display: block;
       }
     </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+       route="{{route}}"
+       pattern="/:view"
+       data="{{routeData}}"
+       tail="{{subroute}}">
+    </app-route>
+    <app-route
+      route="{{subroute}}"
+      pattern="/:id"
+      data="{{subrouteData}}">
+    </app-route>
+
     <h1>Welcome to JobAdvisor</h1>
-    <ja-search-element results={{results}}></ja-search-element>
-    <ja-results-list results={{results}}>
-    </ja-results-list>
+
+    <iron-pages
+      selected="[[routeData.view]]"
+      attr-for-selected="title"
+      fallback-selection="search"
+      role="main">
+      <div title="search">
+        <ja-search-element results={{results}}></ja-search-element>
+        <ja-results-list results={{results}}></ja-results-list>
+      </div>
+      <div title="freelancer">
+        Profile for ID {{subrouteData.id}}
+      </div>
+    </iron-pages>
+
   </template>
   <script>
     Polymer({
@@ -32,11 +62,29 @@
           notify: true,
           reflectToAttribute: true,
         },
+        route: {
+          type: Object,
+        },
+        view: {
+          type: String,
+          reflectToAttribute: true,
+        },
+        subroute: {
+          type: String,
+          reflectToAttribute: true,
+        },
       },
 
+      observers: [
+        '_routePageChanged(routeData.view)',
+      ],
+
       _resultsChanged: function(results) {
-        console.log('Set results in app', results);
         this.results = results;
+      },
+
+      _routePageChanged: function(page) {
+        this.view = page;
       },
 
     });

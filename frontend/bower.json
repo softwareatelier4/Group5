@@ -2,10 +2,12 @@
   "name": "jobadvisor",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
+    "polymer": "Polymer/polymer#^1.7.0",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
     "paper-input": "PolymerElements/paper-input#^1.1.23",
-    "iron-icons": "PolymerElements/iron-icons#^1.2.0"
+    "iron-icons": "PolymerElements/iron-icons#^1.2.0",
+    "iron-pages": "PolymerElements/iron-pages#^1.0.8",
+    "app-route": "PolymerElements/app-route#^0.9.3"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

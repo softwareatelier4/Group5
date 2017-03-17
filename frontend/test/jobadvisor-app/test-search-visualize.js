@@ -1,5 +1,5 @@
 module.exports = {
-  'Test nightwatch' : function (client) {
+  'Test results view' : function (client) {
     client
       .url('http://localhost:8080/')
       .waitForElementVisible('body', 1000)
