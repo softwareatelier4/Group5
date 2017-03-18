@@ -9,23 +9,30 @@ module.exports = {
       .waitForElementVisible('#field-search', 1000)
       .waitForElementVisible('#location-search', 1000)
       .waitForElementVisible('#button-search', 1000)
-      .waitForElementVisible('#results-title', 1000)
-      .end();
+      .waitForElementVisible('#results-title', 1000);
   },
 
   'Test input' : function (client) {
     client
       .url('http://localhost:3000')
-      .waitForElementVisible('jobadvisor-app', 10000)
-      .waitForElementVisible('#field-search', 1000)
-      .waitForElementVisible('#location-search', 1000)
-      .waitForElementVisible('#button-search', 1000)
-      .waitForElementVisible('#results-title', 1000)
-      .setValue('#field-search', 'Painter')
-      .setValue('#location-search', 'Lugano')
+      .setValue('#field-search', 'Plumber')
+      .setValue('#location-search', 'Bellinzona')
       .click('#button-search')
       .pause(1000)
-      .assert.containsText('#results-title', 'Results for Painter around Lugano')
+      .assert.containsText('#results-title', 'Results for Plumber around Bellinzona')
+      .waitForElementVisible('ja-results-item', 1000)
+      .waitForElementVisible('ja-results-item:nth-child(2)', 1000)
+      .waitForElementVisible('ja-results-item:nth-child(2) > paper-card', 1000)
+      .waitForElementVisible('ja-results-item:nth-child(2) .result-name', 1000)
+      .assert.containsText('ja-results-item:nth-child(2) .result-name',
+                           'Luca Bernasconi')
+      .assert.containsText('ja-results-item:nth-child(2) .result-profession',
+                           'Plumber')
+      .assert.containsText('ja-results-item:nth-child(2) .result-location',
+                           'Bellinzona')
+      .click('ja-results-item:nth-child(2) a')
+      .pause(1000)
+      .assert.urlContains('http://localhost:3000/freelancer/')
       .end();
   },
 };
