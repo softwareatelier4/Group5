@@ -1,0 +1,43 @@
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="ja-profile">
+
+  <template>
+    <!-- /*<style>
+      /* CSS rules for your element */
+      /* boh */
+    </style>*/ -->
+      <div>
+        Name : {{id}}
+      <div>
+
+     <iron-ajax
+      id="ajax"
+      auto
+      url="/freelancer/" + {{id}}
+      method="GET"
+      handle-as="json"
+      content-type ="application/json"
+      on-response="finished">
+    </iron-ajax>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-profile",
+
+      properties: {
+        id: {
+          type: String
+        }
+      },
+      ready: function(){
+        console.log("CREATED");
+      },
+      finished : function(e){
+        console.log(e);
+      }
+    });
+  </script>
+
+</dom-module>

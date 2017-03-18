@@ -80,7 +80,7 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.phone_number = '19821';
       freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
-      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'lastName', done );
     });
 
     it('should fail if address is empty, null, or undefined', function(done){
@@ -91,7 +91,7 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.phone_number = '19821';
       freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
-      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'address', done );
     });
 
     it('should fail if email is empty, null, or undefined', function(done){
@@ -102,7 +102,7 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.phone_number = '19821';
       freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
-      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'email', done );
     });
 
     it('should fail if phone_number is empty, null, or undefined', function(done){
@@ -113,7 +113,7 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.email = 'askhb@as.askug';
       freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
-      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'phone_number', done );
     });
 
     it('should fail if location is empty, null, or undefined', function(done){
@@ -124,7 +124,7 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
       freelancer.profession = 'IT guy';
-      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'location', done );
     });
 
 

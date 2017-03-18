@@ -6,7 +6,7 @@
 <link rel="import" href="../ja-results-list/ja-results-list.html">
 <link rel="import" href="../ja-results-item/ja-results-item.html">
 <link rel="import" href="../ja-search-element/ja-search-element.html">
-
+<link rel="import" href="../ja-freelancer-profile/ja-profile.html">
 <dom-module id="jobadvisor-app">
   <template>
     <style>
@@ -40,7 +40,7 @@
         <ja-results-list results={{results}} location={{location}} profession={{profession}}></ja-results-list>
       </div>
       <div title="freelancer">
-        Profile for ID {{subrouteData.id}}
+        <ja-profile id={{subrouteData.id}}> </ja-profile>
       </div>
     </iron-pages>
 

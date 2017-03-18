@@ -17,14 +17,17 @@ router.get('/:freelancerid', function(req, res, next) {
     if (err) return next (err);
     if (!freelancer) {
       res.status(404);
+      console.log("NOT FOUND");
       res.json({
         statusCode: 404,
         message: "Not Found"
       });
       return;
     }
-    addLinks(freelancer);
+    // addLinks(freelancer);
     res.json(freelancer);
+    // res.sendFile('src/ja-freelancer-profile/ja-profile.html', { root: 'frontend/' });
+
   });
 });
 
