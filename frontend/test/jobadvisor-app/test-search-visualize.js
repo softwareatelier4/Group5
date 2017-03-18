@@ -14,7 +14,6 @@ module.exports = {
 
   'Test input' : function (client) {
     client
-      .url('http://localhost:3000')
       .setValue('#field-search', 'Plumber')
       .setValue('#location-search', 'Bellinzona')
       .click('#button-search')
