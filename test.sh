@@ -5,5 +5,6 @@ node seed.js
 cd frontend
 bower install
 cd ..
+./nightwatch
 #polymer test frontend/test -l chrome
 pkill "JobAdvisor"
