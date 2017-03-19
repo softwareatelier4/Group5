@@ -2,35 +2,77 @@
 <dom-module id="ja-profile">
 
   <template>
-    <!-- /*<style>
+    <style>
       /* CSS rules for your element */
       /* boh */
-    </style>*/ -->
-      <div>
-        <div id="id">
-        Id : {{id}} <br>
-        </div>
 
+      #container{
+        width : 100%;
+        padding : 10px;
+      }
+
+      #firstname {
+        display: block;
+      }
+
+      #middle{
+        width:30%;
+        display: inline-block;
+      }
+
+      #imagediv{
+        float: left;
+        width: 30%;
+      }
+      #image {
+        width: 50%;
+        height: auto;
+      }
+
+      #ads{
+        float:right;
+        width:30%;
+      }
+
+    </style>
+
+    <section id = "container">
+
+      <!-- image : {{image}} -->
+
+      <div id="imagediv">
+        <img id ="image" src={{image}} />
+      </div>
+
+
+      <section id="middle">
+        <div>
+          <div id="id">
+            Id : {{id}} <br>
+          </div>
+        </br>
         <div id="firstname">
           firstname : {{firstname}}  <br>
         </div>
-
         <div id="lastname">
           lastname : {{lastname}}  <br>
         </div>
-
+      </br>
         <div id="address">
           address : {{address}}  <br>
         </div>
-
+      </br>
         <div id="description">
           description : {{description}}  <br>
         </div>
-        <!-- image : {{image}} -->
+      </section>
 
-        <div id="image">
-          <img src={{image}} />
-        </div>
+      <div id="ads">
+        placeholder for something
+      </div>
+
+</section>
+
 
         <iron-ajax
          id="ajax"
