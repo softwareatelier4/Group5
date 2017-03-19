@@ -39,6 +39,7 @@ const FreelancerSchema = new mongoose.Schema(
     phone_number: { type: String, required : true},
     location: { type: String, required: true },
     price:{ type: Number },
+    image: {type: String, default: '/src/images/blank-user.jpg'},
   }
 );
 

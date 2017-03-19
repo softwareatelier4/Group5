@@ -7,18 +7,25 @@
       /* boh */
     </style>*/ -->
       <div>
-        Name : {{id}}
+        Id : {{id}} <br>
+        firstname : {{firstname}}  <br>
+        lastname : {{lastname}}  <br>
+        address : {{address}}  <br>
+        description : {{description}}  <br>
+        <!-- image : {{image}} -->
+
+        <img src={{image}} />
+        <iron-ajax
+         id="ajax"
+         url="/freelancer/{{id}}"
+         method="GET"
+         handle-as="json"
+         content-type ="application/json"
+         on-response="finished">
+       </iron-ajax>
       <div>
 
-     <iron-ajax
-      id="ajax"
-      auto
-      url="/freelancer/" + {{id}}
-      method="GET"
-      handle-as="json"
-      content-type ="application/json"
-      on-response="finished">
-    </iron-ajax>
+
 
   </template>
 
@@ -28,14 +35,48 @@
 
       properties: {
         id: {
-          type: String
-        }
+          type: String,
+          observer: '_idchanged'
+        },
+        firstname: {
+          type : String
+        },
+        lastname: {
+          type : String
+        },
+        address: {
+          type : String
+        },
+        description : {
+          type : String
+        },
+        image : {
+          type : String
+        },
       },
       ready: function(){
-        console.log("CREATED");
+        if(this.id !== "" && this.id !== undefined){
+          let ajaxel = this.$.ajax;
+          ajaxel.generateRequest();
+        }
       },
+
+      _idchanged: function(id){
+        this.id = id;
+        if(this.id !== "" && this.id !== undefined){
+          let ajaxel = this.$.ajax;
+          ajaxel.generateRequest();
+        }
+      },
+
       finished : function(e){
-        console.log(e);
+        let res = e.detail.response;
+        // console.log(res);
+        this.firstname = res.firstName;
+        this.lastname = res.lastName;
+        this.address = res.address;
+        this.description = res.description;
+        this.image = res.image;
       }
     });
   </script>
