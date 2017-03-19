@@ -49,7 +49,7 @@ describe('Backend search tests', function(){
     it('should list all freelancers profiles matching the search criteria: location', function(done) {
 
       request(app)
-      .get('/freelancer/?profession=&location=Bellinzona')
+      .get('/search/?profession=&location=Bellinzona')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
       .expect(200)
