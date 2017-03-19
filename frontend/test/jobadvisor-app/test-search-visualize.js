@@ -27,8 +27,8 @@ module.exports = {
 
   'Test input' : function (client) {
     client
-      .setValue('#field-search', 'Plumber')
-      .setValue('#location-search', 'Bellinzona')
+      .setValue('#field-search input', 'Plumber')
+      .setValue('#location-search input', 'Bellinzona')
       .click('#button-search')
       .pause(1000)
       .assert.containsText('#results-title', 'Results for Plumber around Bellinzona')
