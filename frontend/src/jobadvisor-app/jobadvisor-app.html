@@ -28,7 +28,8 @@
       data="{{subrouteData}}">
     </app-route>
 
-    <h1 id="page-title">JobAdvisor</h1>
+  <div id="container">
+  <h1 id="page-title">JobAdvisor</h1>
 
     <iron-pages
       selected="[[routeData.view]]"
@@ -43,6 +44,9 @@
         <ja-profile id={{subrouteData.id}}> </ja-profile>
       </div>
     </iron-pages>
+  
+</div>
+    
 
   </template>
   <script>
