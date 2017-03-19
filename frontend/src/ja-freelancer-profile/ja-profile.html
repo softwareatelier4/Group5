@@ -7,14 +7,31 @@
       /* boh */
     </style>*/ -->
       <div>
+        <div id="id">
         Id : {{id}} <br>
-        firstname : {{firstname}}  <br>
-        lastname : {{lastname}}  <br>
-        address : {{address}}  <br>
-        description : {{description}}  <br>
+        </div>
+
+        <div id="firstname">
+          firstname : {{firstname}}  <br>
+        </div>
+
+        <div id="lastname">
+          lastname : {{lastname}}  <br>
+        </div>
+
+        <div id="address">
+          address : {{address}}  <br>
+        </div>
+
+        <div id="description">
+          description : {{description}}  <br>
+        </div>
         <!-- image : {{image}} -->
 
-        <img src={{image}} />
+        <div id="image">
+          <img src={{image}} />
+        </div>
+
         <iron-ajax
          id="ajax"
          url="/freelancer/{{id}}"
@@ -23,9 +40,8 @@
          content-type ="application/json"
          on-response="finished">
        </iron-ajax>
-      <div>
 
-
+     </div>
 
   </template>
 
