@@ -24,38 +24,38 @@ var freelancer = {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd5"),
       "firstName"     : "Mario",
       "lastName"      : "Rossi",
-      "address"       : "Via san gottardo 12",
-      "description"   : "Description",
+      "address"       : "Via San Gottardo 12, 6900 Lugano",
+      "description"   : "Description here",
       "rating"        : 3,
-      "email"         : "ciao@yahoo.com",
+      "email"         : "mario.rossi@gmail.com",
       "phone_number"  : "+41 4442323223",
       "location"      : "Lugano",
-      "price"         : 300,
+      "price"         : 100,
       "profession"    : "Painter"
     },
     {
       "firstName"     : "Luca",
       "lastName"      : "Bernasconi",
-      "address"       : "Via coihsaoidf",
+      "address"       : "Via stazione 22, 6500 Bellinzona",
       "description"   : "Description",
       "rating"        : 3,
-      "email"         : "ciao@yahoo.com",
-      "phone_number"  : "+41 4442323223",
+      "email"         : "luca.bernasconi@yahoo.com",
+      "phone_number"  : "+41 79234729",
       "location"      : "Bellinzona",
-      "price"         : 300,
+      "price"         : 120,
       "profession"    : "Plumber"
     },
     {
       "firstName"     : "Giovanni",
       "lastName"      : "Rezzonico",
-      "address"       : "Via coihsaoidf",
+      "address"       : "Via Centrale 42, 6912 Lugano",
       "description"   : "Description",
       "rating"        : 3,
-      "email"         : "ciao@yahoo.com",
-      "phone_number"  : "+41 4442323223",
+      "email"         : "giovanni.rezzonico@gmail.com",
+      "phone_number"  : "+41 782347723",
       "location"      : "Lugano",
-      "price"         : 300,
-      "profession"    :"painter"
+      "price"         : 95,
+      "profession"    : "Painter"
     }
   ]
 }
