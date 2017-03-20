@@ -68,14 +68,14 @@
 
     </section>
 
-        <iron-ajax
-         id="ajax"
-         url="/freelancer/{{id}}"
-         method="GET"
-         handle-as="json"
-         content-type ="application/json"
-         on-response="_finished">
-       </iron-ajax>
+    <iron-ajax
+     id="ajax"
+     url="/freelancer/{{id}}"
+     method="GET"
+     handle-as="json"
+     content-type ="application/json"
+     on-response="_finished">
+    </iron-ajax>
 
   </template>
 
@@ -103,6 +103,21 @@
         image : {
           type : String
         },
+        price : {
+          type : String
+        },
+        location : {
+          type : String
+        },
+        profession : {
+          type : String
+        },
+        phone : {
+          type : String
+        },
+        email : {
+          type : String
+        },
       },
 
       ready: function(){
@@ -127,6 +142,11 @@
         this.lastname = res.lastName;
         this.address = res.address;
         this.description = res.description;
+        this.email = res.email;
+        this.phone = res.phone;
+        this.location = res.location;
+        this.price = res.price;
+        this.profession = res.profession;
         this.image = res.image;
       }
     });
