@@ -2,15 +2,7 @@
 
   <template>
     <style>
-      /* CSS rules for your element */
-      #results-title {
-        padding-top: 5px;
-      }
     </style>
-
-    <!-- local DOM for your element -->
-
-    <div id="results-title">Results for {{profession}} around {{location}}</div>
     <template is="dom-repeat" items="{{results}}" as="result">
       <ja-results-item id="fl-{{result._id}}" result="{{result}}">
       </ja-results-item>
@@ -60,7 +52,7 @@
 
       _resultsChanged: function(results) {
         this.results = results;
-      }
+      },
     });
   </script>
 </dom-module>
