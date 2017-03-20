@@ -1,5 +1,7 @@
 body {
     background-color: #081827;  
+    font-family: 'Roboto', Serif;
+    font-weight: lighter;
 }
 
 a {
