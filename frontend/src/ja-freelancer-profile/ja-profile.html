@@ -3,6 +3,7 @@
 
   <template>
     <style>
+
       /* CSS rules for your element */
       /* boh */
 
@@ -11,7 +12,6 @@
         padding : 10px;
         color: white;
       }
-
       #firstname {
         display: block;
       }
@@ -19,7 +19,6 @@
         width:30%;
         display: inline-block;
       }
-
       #imagediv{
         float: left;
         width: 30%;
@@ -28,7 +27,6 @@
         width: 50%;
         height: auto;
       }
-
       #ads{
         float:right;
         width:30%;
@@ -36,42 +34,39 @@
 
     </style>
 
-    <section id = "container">
 
-      <!-- image : {{image}} -->
-
+  <section id = "container">
+    
       <div id="imagediv">
         <img id ="image" src={{image}} />
       </div>
 
-
       <section id="middle">
-        <div>
           <div id="id">
-            Id : {{id}} <br>
+              Id : {{id}} <br>
           </div>
-        </br>
-        <div id="firstname">
-          firstname : {{firstname}}  <br>
-        </div>
-        <div id="lastname">
-          lastname : {{lastname}}  <br>
-        </div>
       </br>
-        <div id="address">
-          address : {{address}}  <br>
-        </div>
+          <div id="firstname">
+              firstname : {{firstname}}  <br>
+          </div>
+          <div id="lastname">
+              lastname : {{lastname}}  <br>
+          </div>
       </br>
-        <div id="description">
-          description : {{description}}  <br>
-        </div>
+          <div id="address">
+              address : {{address}}  <br>
+          </div>
+      </br>
+          <div id="description">
+              description : {{description}}  <br>
+          </div>
       </section>
 
       <div id="ads">
         placeholder for something
       </div>
 
-</section>
+  </section>
 
 
         <iron-ajax
