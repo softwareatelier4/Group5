@@ -3,78 +3,123 @@
 
   <template>
     <style>
-
       /* CSS rules for your element */
       /* boh */
 
-      #container{
-        width : 100%;
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
         color: dimgray;
         background: white;
         border-radius: 3px;
       }
-      #firstname {
-        display: block;
-      }
-      #middle{
-        width:30%;
+
+      #left {
+        width: calc(50% - 40px);
         display: inline-block;
         padding: 20px;
+        font-weight: normal;
       }
-      #imagediv{
-        float: left;
-        width: 80px;
+
+      #right {
+        width: calc(50% - 40px);
+        display: inline-block;
+        padding: 20px;
+        font-weight: normal;
+      }
+
+      #price {
+        width: 100%;
         padding: 20px;
       }
+
+      #description {
+        width: 100%;
+        padding: 20px;
+      }
+
+      #imagediv {
+        float: top left;
+        width: 150px;
+      }
+
       #image {
         width: 100%;
       }
-      #ads{
-        padding: 20px;
-        float:right;
-        width:30%;
+
+      #name {
+        display: block;
+        text-transform: uppercase;
+        color: rgb(200, 30, 38);
       }
 
+      #profession {
+        text-transform: uppercase;
+      }
+
+      .divisor {
+        display: block;
+        border-width: 0.1px;
+        border-color: whitesmoke;
+        border-style: solid;
+        width: 100%;
+        height: 0;
+      }
     </style>
 
-    <section id = "container">
+    <section id="container">
 
-      <div id="imagediv">
-        <img id="image" src={{image}} />
-      </div>
+      <section id="left">
 
-      <section id="middle">
+        <div id="imagediv">
+          <img id="image" src={{image}} />
+        </div>
 
-          <div id="firstname">
-              firstname : {{firstname}}
-          </div>
-          <div id="lastname">
-              lastname : {{lastname}}
-          </div>
+        <div id="name">
+          {{lastname}} {{firstname}}
+        </div>
 
-          <div id="address">
-              address : {{address}}
-          </div>
-
-          <div id="description">
-              description : {{description}}
-          </div>
+        <div id="profession">
+          {{profession}}
+        </div>
 
       </section>
 
-      <div id="ads">
-        placeholder for something
-      </div>
+      <section id="right">
+
+        <div id="address">
+          ADDRESS <br> {{address}}
+        </div>
+
+        <br><br>
+
+        <div id="phone">
+          PHONE <br> {{phone_number}}
+        </div>
+
+        <br><br> E-MAIL
+        <div id="email">
+          {{email}}
+        </div>
+
+      </section>
+
+      <section class="divisor"></section>
+
+      <section id="price">
+        Cost/hour: {{price}} CHF
+      </section>
+
+      <section class="divisor"></section>
+
+      <section id="description">
+        {{description}}
+      </section>
 
     </section>
 
-    <iron-ajax
-     id="ajax"
-     url="/freelancer/{{id}}"
-     method="GET"
-     handle-as="json"
-     content-type ="application/json"
-     on-response="_finished">
+    <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
     </iron-ajax>
 
   </template>
@@ -89,61 +134,62 @@
           observer: '_idchanged'
         },
         firstname: {
-          type : String
+          type: String
         },
         lastname: {
-          type : String
+          type: String
         },
         address: {
-          type : String
+          type: String
         },
-        description : {
-          type : String
+        description: {
+          type: String
         },
-        image : {
-          type : String
+        image: {
+          type: String
         },
-        price : {
-          type : String
+        price: {
+          type: String
         },
-        location : {
-          type : String
+        location: {
+          type: String
         },
-        profession : {
-          type : String
+        profession: {
+          type: String
         },
-        phone : {
-          type : String
+        phone_number: {
+          type: String
         },
-        email : {
-          type : String
+        email: {
+          type: String
         },
       },
 
-      ready: function(){
-        if(this.id !== "" && this.id !== undefined){
+      ready: function () {
+        if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
       },
 
-      _idchanged: function(id){
+      _idchanged: function (id) {
         this.id = id;
-        if(this.id !== "" && this.id !== undefined){
+        if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
       },
 
-      _finished : function(e){
+      _finished: function (e) {
         const res = e.detail.response;
+        console.log(res);
         // console.log(res);
         this.firstname = res.firstName;
         this.lastname = res.lastName;
         this.address = res.address;
         this.description = res.description;
         this.email = res.email;
-        this.phone = res.phone;
+        this.phone_number = res.phone_number;
         this.location = res.location;
         this.price = res.price;
         this.profession = res.profession;
