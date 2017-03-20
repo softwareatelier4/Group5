@@ -1,4 +1,4 @@
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <dom-module id="ja-profile">
 
   <template>
@@ -34,40 +34,36 @@
 
     </style>
 
-
-  <section id = "container">
+    <section id = "container">
 
       <div id="imagediv">
-        <img id ="image" src={{image}} />
+        <img id="image" src={{image}} />
       </div>
 
       <section id="middle">
-          <div id="id">
-              Id : {{id}} <br>
-          </div>
-        </br>
+
           <div id="firstname">
-              firstname : {{firstname}}  <br>
+              firstname : {{firstname}}
           </div>
           <div id="lastname">
-              lastname : {{lastname}}  <br>
+              lastname : {{lastname}}
           </div>
-        </br>
+
           <div id="address">
-              address : {{address}}  <br>
+              address : {{address}}
           </div>
-        </br>
+
           <div id="description">
-              description : {{description}}  <br>
+              description : {{description}}
           </div>
+
       </section>
 
       <div id="ads">
         placeholder for something
       </div>
 
-  </section>
-
+    </section>
 
         <iron-ajax
          id="ajax"
@@ -75,10 +71,8 @@
          method="GET"
          handle-as="json"
          content-type ="application/json"
-         on-response="finished">
+         on-response="_finished">
        </iron-ajax>
-
-     </div>
 
   </template>
 
@@ -107,9 +101,10 @@
           type : String
         },
       },
+
       ready: function(){
         if(this.id !== "" && this.id !== undefined){
-          let ajaxel = this.$.ajax;
+          const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
       },
@@ -117,12 +112,12 @@
       _idchanged: function(id){
         this.id = id;
         if(this.id !== "" && this.id !== undefined){
-          let ajaxel = this.$.ajax;
+          const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
       },
 
-      finished : function(e){
+      _finished : function(e){
         const res = e.detail.response;
         // console.log(res);
         this.firstname = res.firstName;

@@ -21,7 +21,6 @@ var freelancer = {
   name : 'Freelancer',
   data : [
     {
-      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd5"),
       "firstName"     : "Mario",
       "lastName"      : "Rossi",
       "address"       : "Via san gottardo 12",
@@ -34,6 +33,7 @@ var freelancer = {
       "profession"    : "Painter"
     },
     {
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd5"),
       "firstName"     : "Luca",
       "lastName"      : "Bernasconi",
       "address"       : "Via coihsaoidf",
