@@ -30,12 +30,14 @@ module.exports = {
       .click('ja-results-item:nth-child(1) a')
       .pause(1000)
       .assert.urlContains('http://localhost:3000/freelancer/')
-      // .pause(10000)
       .waitForElementVisible('#imagediv', 1000)
       .waitForElementVisible('#description', 1000)
-      .waitForElementVisible('#firstname', 1000)
-      .waitForElementVisible('#lastname', 1000)
+      .waitForElementVisible('#name', 1000)
       .waitForElementVisible('#address', 1000)
+      .waitForElementVisible('#profession', 1000)
+      .waitForElementVisible('#phone', 1000)
+      .waitForElementVisible('#email', 1000)
+      .waitForElementVisible('#price', 1000)
       .end();
   },
 
@@ -47,9 +49,12 @@ module.exports = {
       .waitForElementVisible('ja-profile', 10000)
       .waitForElementVisible('#imagediv', 1000)
       .waitForElementVisible('#description', 1000)
-      .waitForElementVisible('#firstname', 1000)
-      .waitForElementVisible('#lastname', 1000)
+      .waitForElementVisible('#name', 1000)
       .waitForElementVisible('#address', 1000)
+      .waitForElementVisible('#profession', 1000)
+      .waitForElementVisible('#phone', 1000)
+      .waitForElementVisible('#email', 1000)
+      .waitForElementVisible('#price', 1000)
       .end();
   },
 };
