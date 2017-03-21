@@ -26,7 +26,7 @@ module.exports.errorIfNullUndefinedOrEmpty = function errorIfNullUndefinedOrEmpt
   //check undefined
   obj[prop] = undefined;
   obj.save(function(err, saved){
-   checkValidationErrorFields(err, prop);
+    checkValidationErrorFields(err, prop);
 
     //check null
     obj[prop] = null;
@@ -51,7 +51,7 @@ module.exports.errorIfNullOrUndefined = function errorIfNullOrUndefined(obj, pro
   //check undefined
   obj[prop] = undefined;
   obj.save(function(err, saved){
-   checkValidationErrorFields(err, prop)
+    checkValidationErrorFields(err, prop)
 
     //check null
     obj[prop] = null;
@@ -104,7 +104,7 @@ module.exports.errorIfArrayObjectIdReferencesAreWrong = function errorIfArrayObj
   //try to assign a value that is not an array
   obj[prop] = "Hello"
   obj.save(function(err, saved){
-   checkCastErrorFields(err, prop, "Array");
+    checkCastErrorFields(err, prop, "Array");
 
     //check with String
     obj[prop] = [Math.random().toString(36).substring(7)];
@@ -171,6 +171,25 @@ module.exports.connectAndDropDb = function connectAndDropDb(done){
     });
   }
 }
+
+module.exports.matchProfessionInText = function matchProfessionInText(text, freelancer){
+  text.indexOf(freelancer.profession).should.be.greaterThan(-1, "profession should match");
+}
+
+module.exports.matchLocationInText = function matchLocationInText(text, freelancer){
+  text.indexOf(freelancer.location).should.be.greaterThan(-1, "location should match");
+}
+
+module.exports.matchFreelancerIdInText = function matchFreelancerIdInText(text, freelancer){
+  text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "id should match");
+}
+// text.indexOf(freelancer.profession).should.be.greaterThan(-1, "profession should match");
+// text.indexOf(freelancer.location).should.be.greaterThan(-1, "location should match");
+// text.indexOf(freelancer.firstName).should.be.greaterThan(-1, "firstName should match");
+// text.indexOf(freelancer.lastName).should.be.greaterThan(-1, "lastName should match");
+// text.indexOf(freelancer.address).should.be.greaterThan(-1, "address should match");
+// text.indexOf(freelancer.description).should.be.greaterThan(-1, "description should match");
+
 
 function searchLinks(links, rel, href){
   var found = false;

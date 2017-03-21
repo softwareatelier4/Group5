@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<dom-module id="ja-results-item">
+
+  <template>
+    <style>
+      /* CSS rules for your element */
+      :host {
+        display: block;
+        margin: 20px 0;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+      .result-name {
+        font-size: 24px;
+        text-decoration: none;
+      }
+
+      .result-profession {
+
+      }
+
+      .result-location {
+        float: right;
+      }
+
+
+    </style>
+
+    <paper-card>
+      <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a></div>
+      <div class="card-actions"><span class="result-profession">{{result.profession}}</span> <span class="result-location">{{result.location}}</span></div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-results-item",
+
+      properties: {
+        /**
+         * The current result, containing some of the freelancer info to show on the list
+         * @type {Object}
+         */
+        result: {
+          type: Object,
+          value: {}
+        }
+      }
+    });
+  </script>
+
+</dom-module>

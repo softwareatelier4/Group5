@@ -1,0 +1,58 @@
+<dom-module id="ja-results-list">
+
+  <template>
+    <style>
+    </style>
+    <template is="dom-repeat" items="{{results}}" as="result">
+      <ja-results-item id="fl-{{result._id}}" result="{{result}}">
+      </ja-results-item>
+    </template>
+
+  </template>
+
+  <script>
+    // element registration
+    Polymer({
+      is: "ja-results-list",
+
+      properties: {
+        // declare properties for the element's public API
+        greeting: {
+          type: String,
+          value: "This is a list"
+        },
+        location: {
+          type: String,
+          value: "location",
+          observer: '_locationChanged',
+          // reflectToAttribute: true,
+          notify: true,
+        },
+        profession: {
+          type: String,
+          value: "profession",
+          observer: '_professionChanged',
+          // reflectToAttribute: true,
+          notify: true,
+        },
+        results: {
+          type: Array,
+          observer: '_resultsChanged',
+          notify: true,
+          value: []
+        },
+      },
+
+      _professionChanged: function(profession) {
+        this.profession = profession;
+      },
+      _locationChanged: function(location) {
+        this.location = location;
+      },
+
+      _resultsChanged: function(results) {
+        this.results = results;
+      },
+    });
+  </script>
+</dom-module>
