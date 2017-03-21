@@ -1,0 +1,109 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-search/paper-search.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+<dom-module id="ja-search-element">
+  <template>
+    <style>
+
+      :host {
+        display: block;
+      }
+      #div-search {
+        display: flex;
+        width: 100%;
+        /*box-shadow: 0px 0px 4px #888888;*/
+      }
+      paper-search-bar {
+        flex-basis: 45%;
+      }
+      #field-search {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+      paper-button {
+        /*max-width: 30px;*/
+        box-shadow: none !important;
+        flex-basis: 10%;
+        background: #F2D847;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        margin: 0px;
+      }
+
+
+    </style>
+    
+    <div id="div-search" on-keydown="checkForEnter">
+      <paper-search-bar label="test" id="field-search" hide-filter-button icon="work" placeholder="Profession"> </paper-search-bar>
+      <paper-search-bar label="test" id="location-search" hide-filter-button icon="home" placeholder="Location"> </paper-search-bar>
+    <paper-button id="button-search" raised><iron-icon icon="search" suffix></iron-icon></paper-button>
+    </div>
+
+    <iron-ajax
+            id="search-request"
+            url="http://localhost:3000/search/"
+            params='{{req}}'
+            handle-as="json"
+            on-response="_handleResponse">
+    </iron-ajax>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ja-search-element',
+
+      listeners: {
+        'button-search.tap': 'search'
+      },
+
+      properties: {
+        results: {
+          type: Array,
+          value: [],
+          reflectToAttribute: true,
+          notify: true,
+        },
+        location: {
+          type: String,
+          value: "location",
+          reflectToAttribute: true,
+          notify: true,
+        },
+        profession: {
+          type: String,
+          value: "profession",
+          reflectToAttribute: true,
+          notify: true,
+        },
+      },
+
+      checkForEnter: function (e) {
+                // check if 'enter' was pressed
+                // if (e.keyCode === 13) {
+                //     this.search();
+                // } 
+                this.search();
+            },
+
+      search: function(e) {
+        console.log(this.$['field-search'].query);
+        this.profession = this.$['field-search'].query;
+        this.location = this.$['location-search'].query;
+        this.req = {"profession": this.profession,
+                    "location": this.location};
+        this.$['search-request'].generateRequest();
+      },
+
+      _handleResponse: function(response) {
+        this.results = response.detail.response;
+      },
+
+    });
+  </script>
+</dom-module>
