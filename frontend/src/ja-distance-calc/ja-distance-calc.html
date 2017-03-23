@@ -30,11 +30,16 @@
         userLocation: {
           type: String,
           value: "Lugano, Switzerland",
+        },
+        searchedLocation: {
+          type: String,
         }
       },
 
       _resultsChanged: function(results) {
         this.results = results;
+        if (this.searchedLocation !== "")
+          this.userLocation = this.searchedLocation;
         this._computeDistances(this.results);
       },
 
@@ -45,7 +50,6 @@
             const lat = position.coords.latitude.toString();
             const lng = position.coords.longitude.toString();
             this.userLocation = lat + ", " + lng;
-            // console.log("User location:", this.userLocation);
           }.bind(this));
         }
       },
@@ -69,10 +73,6 @@
       ready: function() {
         this._getUserLocation();
       },
-
-
-
-
     });
   </script>
 
