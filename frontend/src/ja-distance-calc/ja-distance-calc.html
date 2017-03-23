@@ -27,6 +27,10 @@
           observer: '_resultsChanged',
           reflectToAttribute: true,
         },
+        userLocation: {
+          type: String,
+          value: "Lugano, Switzerland",
+        }
       },
 
       _resultsChanged: function(results) {
@@ -34,17 +38,39 @@
         this._computeDistances(this.results);
       },
 
+      _getUserLocation: function() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            console.log(position);
+            const lat = position.coords.latitude.toString();
+            const lng = position.coords.longitude.toString();
+            this.userLocation = lat + ", " + lng;
+            // console.log("User location:", this.userLocation);
+          }.bind(this));
+        }
+      },
+
       _computeDistances: function(results) {
         results.forEach(function(item) {
-          console.log(item.address);
+          console.log("Current user location for request", this.userLocation);
           this.req_distance = {
-            origins: "Lugano, Switzerland",
+            origins: this.userLocation,
             destinations: item.address,
           };
           this.$['distance-request'].generateRequest();
 
         }.bind(this));
       },
+
+      _handleResponse: function(response) {
+        // TODO: update fields
+      },
+
+      ready: function() {
+        this._getUserLocation();
+      },
+
+
 
 
     });
