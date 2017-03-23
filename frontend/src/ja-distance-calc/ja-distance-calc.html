@@ -3,14 +3,50 @@
   <template>
     <style>
     </style>
+
+    <iron-ajax
+      auto
+      id="distance-request"
+      url="https://maps.googleapis.com/maps/api/distancematrix/json"
+      params='{{req_distance}}'
+      handle-as="json"
+      on-response="_handleResponse">
+    </iron-ajax>
   </template>
+
+ <!-- AIzaSyBVciKKAq5jjZxpn_PNfNCCLbUPKxFIIkc -->
 
   <script>
     Polymer({
       is: "ja-distance-calc",
 
       properties: {
-      }
+        results: {
+          type: Object,
+          value: {},
+          observer: '_resultsChanged',
+          reflectToAttribute: true,
+        },
+      },
+
+      _resultsChanged: function(results) {
+        this.results = results;
+        this._computeDistances(this.results);
+      },
+
+      _computeDistances: function(results) {
+        results.forEach(function(item) {
+          console.log(item.address);
+          this.req_distance = {
+            origins: "Lugano, Switzerland",
+            destinations: item.address,
+          };
+          this.$['distance-request'].generateRequest();
+
+        }.bind(this));
+      },
+
+
     });
   </script>
 
