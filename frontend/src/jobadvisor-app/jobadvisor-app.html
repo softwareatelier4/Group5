@@ -43,7 +43,7 @@
       role="main">
       <div title="search">
         <ja-search-element results={{results}} location={{location}} profession={{profession}}></ja-search-element>
-        <ja-results-list results={{results}} location={{location}} profession={{profession}}></ja-results-list>
+        <ja-results-list results={{results}} location={{location}} profession={{profession}} user-location={{userLocation}}></ja-results-list>
       </div>
       <div title="freelancer">
         <ja-profile id={{subrouteData.id}}> </ja-profile>
@@ -96,6 +96,12 @@
           // reflectToAttribute: true,
           // notify: true,
         },
+        userLocation: {
+          type: String,
+          value: "Lugano, Switzerland",
+          notify: true,
+          reflectToAttribute: true,
+        },
       },
 
       observers: [
@@ -115,6 +121,21 @@
 
       _routePageChanged: function(page) {
         this.view = page;
+      },
+
+      _getUserLocation: function() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            console.log(position);
+            const lat = position.coords.latitude.toString();
+            const lng = position.coords.longitude.toString();
+            this.userLocation = lat + ", " + lng;
+          }.bind(this));
+        }
+      },
+
+      ready: function() {
+        this._getUserLocation();
       },
 
     });
