@@ -4,7 +4,7 @@
     <style>
     </style>
     <template is="dom-repeat" items="{{results}}" as="result">
-      <ja-results-item id="fl-{{result._id}}" result="{{result}}">
+      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location={{location}}>
       </ja-results-item>
     </template>
 
@@ -25,7 +25,7 @@
           type: String,
           value: "location",
           observer: '_locationChanged',
-          // reflectToAttribute: true,
+          reflectToAttribute: true,
           notify: true,
         },
         profession: {
