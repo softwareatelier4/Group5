@@ -23,16 +23,21 @@
 
       }
 
-      .result-location {
+      .result-location, .result-distance {
         float: right;
       }
 
 
-    </style>
 
+
+    </style>
+    <ja-distance-calc result={{result}} searched-location={{location}}></ja-distance-calc>
     <paper-card>
-      <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a></div>
-      <div class="card-actions"><span class="result-profession">{{result.profession}}</span> <span class="result-location">{{result.location}}</span></div>
+      <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a>
+      <span class="result-distance">{{result.distance}}</span>
+      </div>
+      <div class="card-actions"><span class="result-profession">{{result.profession}}</span> <span class="result-location">{{result.location}}</span>
+      </div>
     </paper-card>
 
   </template>
@@ -49,8 +54,19 @@
         result: {
           type: Object,
           value: {}
-        }
-      }
+        },
+        location: {
+          type: String,
+          value: "",
+          observer: '_locationChanged',
+          reflectToAttribute: true,
+          notify: true,
+        },
+      },
+
+      _locationChanged: function(location) {
+        this.location = location;
+      },
     });
   </script>
 

@@ -21,10 +21,10 @@
       is: "ja-distance-calc",
 
       properties: {
-        results: {
+        result: {
           type: Object,
           value: {},
-          observer: '_resultsChanged',
+          observer: '_resultChanged',
           reflectToAttribute: true,
         },
         userLocation: {
@@ -33,14 +33,16 @@
         },
         searchedLocation: {
           type: String,
+          value: "Lugano, Switzerland"
         }
       },
 
-      _resultsChanged: function(results) {
-        this.results = results;
-        if (this.searchedLocation !== "")
+      _resultChanged: function(result) {
+        console.log("Result", result, this.userLocation);
+        this.result = result;
+        if (this.searchedLocation != "")
           this.userLocation = this.searchedLocation;
-        this._computeDistances(this.results);
+        this._computeDistances(this.result);
       },
 
       _getUserLocation: function() {
@@ -54,20 +56,20 @@
         }
       },
 
-      _computeDistances: function(results) {
-        results.forEach(function(item) {
-          console.log("Current user location for request", this.userLocation);
-          this.req_distance = {
-            origins: this.userLocation,
-            destinations: item.address,
-          };
-          this.$['distance-request'].generateRequest();
-
-        }.bind(this));
+      _computeDistances: function(result) {
+        console.log("Current user location for request", this.userLocation);
+        this.req_distance = {
+          origins: this.userLocation,
+          destinations: result.address,
+        };
+        this.$['distance-request'].generateRequest();
       },
 
       _handleResponse: function(response) {
-        // TODO: update fields
+        if (response.detail.response.rows[0]) {
+          const value = response.detail.response.rows[0].elements[0].distance.text;
+          this.set('result.distance', value);
+        }
       },
 
       ready: function() {
