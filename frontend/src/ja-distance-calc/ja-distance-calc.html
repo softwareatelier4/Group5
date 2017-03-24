@@ -30,6 +30,8 @@
         userLocation: {
           type: String,
           value: "Lugano, Switzerland",
+          // reflectToAttribute: true,
+          // observer: '_userLocationChanged',
         },
         searchedLocation: {
           type: String,
@@ -45,36 +47,42 @@
         this._computeDistances(this.result);
       },
 
-      _getUserLocation: function() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            console.log(position);
-            const lat = position.coords.latitude.toString();
-            const lng = position.coords.longitude.toString();
-            this.userLocation = lat + ", " + lng;
-          }.bind(this));
-        }
-      },
+      // _getUserLocation: function() {
+      //   if (navigator.geolocation) {
+      //     navigator.geolocation.getCurrentPosition(function(position) {
+      //       console.log(position);
+      //       const lat = position.coords.latitude.toString();
+      //       const lng = position.coords.longitude.toString();
+      //       this.userLocation = lat + ", " + lng;
+      //     }.bind(this));
+      //   }
+      // },
 
       _computeDistances: function(result) {
         console.log("Current user location for request", this.userLocation);
         this.req_distance = {
-          origins: this.userLocation,
+          origins: this.userLocation ? this.userLocation: "Lugano, Switzerland",
           destinations: result.address,
         };
         this.$['distance-request'].generateRequest();
       },
 
       _handleResponse: function(response) {
-        if (response.detail.response.rows[0]) {
+        const status = response.detail.response.rows[0].elements[0].status;
+        if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
           const value = response.detail.response.rows[0].elements[0].distance.text;
           this.set('result.distance', value);
         }
       },
 
-      ready: function() {
-        this._getUserLocation();
+      _userLocationChanged: function(userLocation) {
+        console.log("Changed user location", userLocation);
+        // this.userLocation = userLocation;
       },
+
+      // ready: function() {
+      //   this._getUserLocation();
+      // },
     });
   </script>
 

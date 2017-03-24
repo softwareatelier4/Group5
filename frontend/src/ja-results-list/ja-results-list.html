@@ -4,7 +4,7 @@
     <style>
     </style>
     <template is="dom-repeat" items="{{results}}" as="result">
-      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location={{location}}>
+      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location={{location}} user-location={{userLocation}}>
       </ja-results-item>
     </template>
 
@@ -40,6 +40,11 @@
           observer: '_resultsChanged',
           notify: true,
           value: []
+        },
+        userLocation: {
+          type: String,
+          value: "Lugano, Switzerland",
+          reflectToAttribute: true,
         },
       },
 
