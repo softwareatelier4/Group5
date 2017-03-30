@@ -41,6 +41,7 @@ describe('Backend review tests', function(){
       test_date = new Date();
 
       review_test = {
+        "_id"                  : ObjectId("5625fc2bd82b84d23d8c7bd6"),
         "date"                : test_date,
         "comment"             : "che bel lavoro",
         "rating"              : 5
@@ -57,7 +58,7 @@ describe('Backend review tests', function(){
         var body = res.body;
         body.should.be.empty;
 
-        //check if freelacner reviews were updated
+        //check if freelancer reviews were updated
         request(app)
         .get('/freelancer/' + freelancers[0]._id.toString())
         .set('Accept', 'application/json')
@@ -65,7 +66,7 @@ describe('Backend review tests', function(){
         .expect(200)
         .end(function(err, res){
           var resText = res.text;
-          utils.matchFreelancerReview(res.text, review_test);
+          utils.matchFreelancerReview(res.text, JSON.stringify(review_test));
           done();
         });
       });
