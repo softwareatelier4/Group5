@@ -144,7 +144,7 @@
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
-    <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="PUT" handle-as="json" content-type="application/json" on-response="_done">
+    <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
 
     </iron-ajax>
 
@@ -246,7 +246,9 @@
 
       _call: function() {
         const ajaxel = this.$.ajax2;
-        ajaxel.body= { comment: this.$.comm, rating: this.$.ratenum};
+        const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value};
+        // console.log(this.$.ratenum.value);
+        ajaxel.body= obj;
         ajaxel.generateRequest();
         console.log("waiting to send the request");
       },
