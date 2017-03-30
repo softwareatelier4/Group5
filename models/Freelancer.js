@@ -21,6 +21,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const ReviewSchema = require('./Review');
 
 
 /** @constructor
@@ -29,63 +30,65 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 */
 const FreelancerSchema = new mongoose.Schema(
   {
-    firstName : { type: String, required: true },
-    lastName : { type: String, required: true },
-    address : { type: String, required: true },
-    description : { type: String},
-    profession :{ type: String, default: 'Other'},
-    rating: { type: Number },
-    email: { type: String, required : true},
-    phone_number: { type: String, required : true},
-    location: { type: String, required: true },
-    price:{ type: Number },
-    image: {type: String, default: '/src/images/blank-user.jpg'},
+    firstName     : { type: String, required: true },
+    lastName      : { type: String, required: true },
+    address       : { type: String, required: true },
+    description   : { type: String},
+    profession    : { type: String, default: 'Other'},
+    category      : { type: String, enum:['Boh', 'Qualcosa', 'Mammt', 'Other'], default:'Other' },
+    rating        : { type: Number },
+    email         : { type: String, required : true},
+    phone_number  : { type: String, required : true},
+    location      : { type: String, required: true },
+    price         : { type: Number },
+    image         : { type: String, default: '/src/images/blank-user.jpg'},
+    reviews       : { type: [ReviewSchema], default:[]},
   }
 );
 
-FreelancerSchema.pre('save', function (next) {
-  //default for firstName is userName
-  if( this.firstName === undefined
-    || this.firstName === null
-    || this.firstName.toString().trim() === ''){
-    this.firstName = this.userName;
-  }
+// FreelancerSchema.pre('save', function (next) {
+//   //default for firstName is userName
+//   if( this.firstName === undefined
+//     || this.firstName === null
+//     || this.firstName.toString().trim() === ''){
+//     this.firstName = this.userName;
+//   }
+//
+//   //default for lastName is userName
+//   if( this.lastName === undefined
+//     || this.lastName === null
+//     || this.lastName.toString().trim() === ''){
+//     this.lastName = this.userName;
+//   }
+//   return next();
+// });
 
-  //default for lastName is userName
-  if( this.lastName === undefined
-    || this.lastName === null
-    || this.lastName.toString().trim() === ''){
-    this.lastName = this.userName;
-  }
-  return next();
-});
-
-FreelancerSchema.pre('save', function(next) {
-  const user = this;
-
-  // return if the password was not modified.
-  if (!user.isModified('password')) { return next(); }
-
-  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-      if (err) { return next(err); }
-
-      bcrypt.hash(user.password, salt, function(err, hash) {
-          if (err) { return next(err); }
-
-          user.password = hash;
-          next();
-      });
-  });
-});
+// FreelancerSchema.pre('save', function(next) {
+//   const user = this;
+//
+//   // return if the password was not modified.
+//   if (!user.isModified('password')) { return next(); }
+//
+//   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+//       if (err) { return next(err); }
+//
+//       bcrypt.hash(user.password, salt, function(err, hash) {
+//           if (err) { return next(err); }
+//
+//           user.password = hash;
+//           next();
+//       });
+//   });
+// });
 
 
-FreelancerSchema.methods.isValidPassword = function isValidPassword(candidate, callback) {
-  bcrypt.compare(candidate, this.password, function onPwdCompare(err, isMatch) {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, isMatch);
-  });
-};
+// FreelancerSchema.methods.isValidPassword = function isValidPassword(candidate, callback) {
+//   bcrypt.compare(candidate, this.password, function onPwdCompare(err, isMatch) {
+//     if (err) {
+//       return callback(err);
+//     }
+//     callback(null, isMatch);
+//   });
+// };
 //register model
 mongoose.model('Freelancer', FreelancerSchema);
