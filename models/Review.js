@@ -18,8 +18,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 
@@ -31,9 +29,10 @@ const ReviewSchema = new mongoose.Schema(
   {
     rating : { type: Number, required: true },
     comment : { type: String},
-    date : { type: Date, default: Date.now },
+    date : { type: Date },
   }
 );
+
 
 //register model
 mongoose.model('Review', ReviewSchema);

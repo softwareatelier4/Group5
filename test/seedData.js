@@ -17,7 +17,7 @@ var users = {
   ]
 }
 const d = new Date();
-const n = d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+// const n = d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 var freelancer = {
   name : 'Freelancer',
   data : [
@@ -33,7 +33,7 @@ var freelancer = {
       "location"      : "Lugano",
       "price"         : 100,
       "profession"    : "Painter",
-      "reviews"       : [{"rating" : 3, "comment" : "Optional", "date": n }],
+      "reviews"       : [{"rating" : 3, "comment" : "Optional", "date": d }],
 
     },
     {
