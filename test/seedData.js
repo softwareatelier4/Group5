@@ -31,7 +31,9 @@ var freelancer = {
       "phone_number"  : "+41 4442323223",
       "location"      : "Lugano",
       "price"         : 100,
-      "profession"    : "Painter"
+      "profession"    : "Painter",
+      "reviews"       : [{"rating" : 3, "comment" : "Optional" }],
+
     },
     {
       "firstName"     : "Luca",
