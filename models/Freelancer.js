@@ -21,6 +21,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const ReviewSchema = require('./Review');
 
 
 /** @constructor
@@ -34,12 +35,14 @@ const FreelancerSchema = new mongoose.Schema(
     address : { type: String, required: true },
     description : { type: String},
     profession :{ type: String, default: 'Other'},
+    category : {type:String, enum:['Boh', 'Qualcosa', 'Mammt', 'Other'], default:'Other' },
     rating: { type: Number },
     email: { type: String, required : true},
     phone_number: { type: String, required : true},
     location: { type: String, required: true },
     price:{ type: Number },
     image: {type: String, default: '/src/images/blank-user.jpg'},
+    reviews: {type: [ReviewSchema], default:[]},
   }
 );
 
