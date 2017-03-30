@@ -37,8 +37,8 @@
 
 
     </style>
-    
-    <div id="div-search" on-keydown="checkForEnter">
+
+    <div id="div-search" on-input="checkForEnter">
       <paper-search-bar label="test" id="field-search" hide-filter-button icon="work" placeholder="Profession"> </paper-search-bar>
       <paper-search-bar label="test" id="location-search" hide-filter-button icon="home" placeholder="Location"> </paper-search-bar>
     <paper-button id="button-search" raised><iron-icon icon="search" suffix></iron-icon></paper-button>
@@ -87,12 +87,12 @@
                 // check if 'enter' was pressed
                 // if (e.keyCode === 13) {
                 //     this.search();
-                // } 
+                // }
                 this.search();
             },
 
       search: function(e) {
-        console.log(this.$['field-search'].query);
+        // console.log(this.$['field-search'].query);
         this.profession = this.$['field-search'].query;
         this.location = this.$['location-search'].query;
         this.req = {"profession": this.profession,
