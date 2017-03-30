@@ -16,7 +16,8 @@ var users = {
     },
   ]
 }
-
+const d = new Date();
+// const n = d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
 var freelancer = {
   name : 'Freelancer',
   data : [
@@ -31,7 +32,9 @@ var freelancer = {
       "phone_number"  : "+41 4442323223",
       "location"      : "Lugano",
       "price"         : 100,
-      "profession"    : "Painter"
+      "profession"    : "Painter",
+      "reviews"       : [{"rating" : 3, "comment" : "Optional", "date": d }],
+
     },
     {
       "firstName"     : "Luca",
@@ -56,7 +59,20 @@ var freelancer = {
       "location"      : "Lugano",
       "price"         : 95,
       "profession"    : "Painter"
-    }
+    },
+    // {
+    //   "firstName"     : "Giovanni",
+    //   "lastName"      : "Rezzonico",
+    //   "address"       : "Via Centrale 42, 6912 Lugano",
+    //   "description"   : "Description",
+    //   "rating"        : 3,
+    //   "email"         : "giovanni.rezzonico@gmail.com",
+    //   "phone_number"  : "+41 782347723",
+    //   "location"      : "Lugano",
+    //   "price"         : 95,
+    //   "profession"    : "Painter"
+    // }
+
   ]
 }
 

@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="ja-review-element">
+
+  <template>
+    <style>
+
+    </style>
+    <div id="comment">
+      Comment : {{comment}}
+    </div>
+    <div id="rate">
+      Rate : {{rating}}
+    </div>
+    <div id="date">
+      Date : {{_changedate(date)}}
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-review-element",
+      properties: {
+        comment : {
+          type: String
+        },
+        rating : {
+          type: Number
+        },
+        date: {
+          type: Date
+        }
+      },
+
+      _changedate : function(date){
+        const d = new Date(date);
+        return d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear();
+      }
+    });
+  </script>
+
+</dom-module>
