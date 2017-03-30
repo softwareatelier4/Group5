@@ -246,8 +246,9 @@
 
       _call: function() {
         const ajaxel = this.$.ajax2;
-        const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value};
-        // console.log(this.$.ratenum.value);
+        const d = new Date();
+        const n = d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: n};
         ajaxel.body= obj;
         ajaxel.generateRequest();
         console.log("waiting to send the request");
