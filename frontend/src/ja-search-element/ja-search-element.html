@@ -59,10 +59,13 @@
         <button onclick="toggleDropdown()" class="dropbtn"></button>
         <paper-search-bar label="test" id="category-dropdown" hide-filter-button icon="work" placeholder="Category &#9660;"> </paper-search-bar>
 
-    </style>
-
-    <div id="div-search" on-input="checkForEnter">
-      <paper-search-bar label="test" id="field-search" hide-filter-button icon="work" placeholder="Profession"> </paper-search-bar>
+        <div id="dropdown-elements" class="dropdown-content">
+          <a class="category-links" href="#">Boh</a>
+          <a class="category-links" href="#">Qualcosa</a>
+          <a class="category-links" href="#">Plumber</a>
+          <a class="category-links" href="#">Other</a>
+        </div>
+      </div>
       <paper-search-bar label="test" id="location-search" hide-filter-button icon="home" placeholder="Location"> </paper-search-bar>
       <paper-button id="button-search" raised>
         <iron-icon icon="search" suffix></iron-icon>
@@ -110,16 +113,17 @@
       },
 
       checkForEnter: function (e) {
-                // check if 'enter' was pressed
-                // if (e.keyCode === 13) {
-                //     this.search();
-                // }
-                this.search();
-            },
+        // check if 'enter' was pressed
+        // if (e.keyCode === 13) {
+        //     this.search();
+        // } 
+        this.search();
+      },
 
-      search: function(e) {
-        // console.log(this.$['field-search'].query);
-        this.profession = this.$['field-search'].query;
+      search: function (e) {
+        console.log(this.$['field-search'].query);
+        this.general = this.$['field-search'].query;
+        this.category = this.$['category-dropdown'].query;
         this.location = this.$['location-search'].query;
         this.req = {
           "general": this.general,
