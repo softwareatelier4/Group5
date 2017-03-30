@@ -127,11 +127,11 @@
       <section id="reviews" style="width: 100%;">
         <div id="rating" style="display:flex;" >
           Rating <br/>
-          <textarea rows="5" style="width:80%"> </textarea>
+          <textarea rows="5" style="width:80%" id="comm"> </textarea>
           RATING
-          <input type="text">  </input>
+          <input type="text" id="ratenum">  </input>
         </div>
-        <input id="review" type="submit" value="Rate!" on-click="_call" /> 
+        <input id="review" type="submit" value="Rate!" on-click="_call" />
         <template is="dom-repeat" items="{{reviews}}" as="result">
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
           <br/>
@@ -144,7 +144,7 @@
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
-    <iron-ajax id="ajax2" url="/reviews/{{id}}" method="PUT" handle-as="json" content-type="application/json" on-response="_done">
+    <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="PUT" handle-as="json" content-type="application/json" on-response="_done">
 
     </iron-ajax>
 
@@ -246,8 +246,8 @@
 
       _call: function() {
         const ajaxel = this.$.ajax2;
-        ajaxel.params= { comment: "tanto lo so che non funziona un c***o", rating: "0"};
-
+        ajaxel.body= { comment: this.$.comm, rating: this.$.ratenum};
+        ajaxel.generateRequest();
         console.log("waiting to send the request");
       },
 
