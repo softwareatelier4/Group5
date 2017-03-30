@@ -124,17 +124,21 @@
       <section id="description">
         Description : {{description}}
       </section>
-      <section id="ratings" style="width: 100%;">
+      <section id="reviews" style="width: 100%;">
+        <div id="rating" style="display:flex;" >
+          Rating <br/>
+          <textarea rows="5" style="width:80%"> </textarea>
+          RATING
+          <input type="text">  </input>
+        </div>
+        <input id="review" type="submit" value="Rate!" on-click="_call" /> 
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          {{showresult(result)}}
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
           <br/>
         </template>
       </section>
 
       <!-- <section id="review"> -->
-        Rating <br/>
-        <textarea rows="5" style="width:100%"> </textarea><input id="review" type="submit" value="Rate!" on-click="_call" />
 
       <!-- </section> -->
     </section>
@@ -251,13 +255,7 @@
         console.log("done!");
       },
 
-      showresult: function(el){
-        console.log("called");
-        console.log(this.$.ratings.childNodes[1]);
-        // this.comment.innerHTML += el.comment;
-        // this.date.innerHTML += el.rating;
-        // this.rate.innerHTML += el.date;
-      },
+
     });
   </script>
 
