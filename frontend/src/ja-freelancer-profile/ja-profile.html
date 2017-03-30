@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-review-element/ja-review-element.html">
 <dom-module id="ja-profile">
 
   <template>
@@ -84,6 +85,13 @@
           {{profession}}
         </div>
 
+        <div id="rating">
+          Rating : {{rating}}/*****
+        </div>
+        <div id="category">
+          Category : {{category}}
+        </div>
+
       </section>
 
       <section id="right">
@@ -95,12 +103,12 @@
         <br><br>
 
         <div id="phone">
-          PHONE <br> {{phone_number}}
+          PHONE <br> <a id="phonelink" > {{phone_number}} </a>
         </div>
 
         <br><br> E-MAIL
         <div id="email">
-          {{email}}
+          <a id="emaillink">{{email}}</a>
         </div>
 
       </section>
@@ -114,12 +122,26 @@
       <section class="divisor"></section>
 
       <section id="description">
-        {{description}}
+        Description : {{description}}
+      </section>
+      <section id="ratings" style="width: 100%;">
+        <template is="dom-repeat" items="{{reviews}}" as="result">
+          {{showresult(result)}}
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
+          <br/>
+        </template>
       </section>
 
+      <!-- <section id="review"> -->
+        Rating <br/>
+        <textarea rows="5" style="width:100%"> </textarea><input id="review" type="submit" value="Rate!" on-click="_call" />
+
+      <!-- </section> -->
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
+    <iron-ajax id="ajax2" url="/reviews/{{id}}" method="PUT" handle-as="json" content-type="application/json" on-response="_done">
+
     </iron-ajax>
 
   </template>
@@ -163,6 +185,15 @@
         email: {
           type: String
         },
+        rating: {
+          type: String
+        },
+        category: {
+          type: String
+        },
+        reviews: {
+          type: Array
+        }
       },
 
       ready: function () {
@@ -182,8 +213,8 @@
 
       _finished: function (e) {
         const res = e.detail.response;
-        console.log(res);
-        // console.log(res);
+        this.$.emaillink.href = "mailto:" + res.email;
+        this.$.phonelink.href = "tel:" + res.phone_number.replace(/\s+/g, '');;
         this.firstname = res.firstName;
         this.lastname = res.lastName;
         this.address = res.address;
@@ -194,7 +225,39 @@
         this.price = res.price;
         this.profession = res.profession;
         this.image = res.image;
-      }
+        this.rating = this._setrating(res.rating);
+        this.category = res.category;
+        this.reviews = res.reviews;
+        console.log(res.reviews[0]);
+      },
+
+      _setrating: function(n){
+        res = ""
+        while(n > 0){
+          res += "*";
+          n--;
+        }
+        return res;
+      },
+
+      _call: function() {
+        const ajaxel = this.$.ajax2;
+        ajaxel.params= { comment: "tanto lo so che non funziona un c***o", rating: "0"};
+
+        console.log("waiting to send the request");
+      },
+
+      _done: function(){
+        console.log("done!");
+      },
+
+      showresult: function(el){
+        console.log("called");
+        console.log(this.$.ratings.childNodes[1]);
+        // this.comment.innerHTML += el.comment;
+        // this.date.innerHTML += el.rating;
+        // this.rate.innerHTML += el.date;
+      },
     });
   </script>
 
