@@ -4,7 +4,6 @@
   "description": "JobAdvisor things. Express.js and Mongoose",
   "main": "app.js",
   "scripts": {
-    "install": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriver",
     "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "start-jenkins": "DEBUG='jobadvisor-server' ./bin/www",
     "test": "npm run test-mocha && npm start | node seed.js",
