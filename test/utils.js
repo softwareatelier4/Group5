@@ -183,13 +183,12 @@ module.exports.matchLocationInText = function matchLocationInText(text, freelanc
 module.exports.matchFreelancerIdInText = function matchFreelancerIdInText(text, freelancer){
   text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "id should match");
 }
-// text.indexOf(freelancer.profession).should.be.greaterThan(-1, "profession should match");
-// text.indexOf(freelancer.location).should.be.greaterThan(-1, "location should match");
-// text.indexOf(freelancer.firstName).should.be.greaterThan(-1, "firstName should match");
-// text.indexOf(freelancer.lastName).should.be.greaterThan(-1, "lastName should match");
-// text.indexOf(freelancer.address).should.be.greaterThan(-1, "address should match");
-// text.indexOf(freelancer.description).should.be.greaterThan(-1, "description should match");
 
+module.exports.matchFreelancerReview = function matchFreelancerReview(text, review){
+  console.log(text)
+  console.log(review)
+  text.indexOf(review).should.be.greaterThan(-1, "review should match");
+}
 
 function searchLinks(links, rel, href){
   var found = false;

@@ -34,7 +34,7 @@ router.get('/:freelancerid', function(req, res, next) {
 router.post('/:freelancerid/review', function(req, res, next) {
   var toAdd = new Review(req.body);
   toAdd.save(onModelSave(res, 201, false));
-  Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"Reviews": toAdd}},
+  Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"reviews": toAdd}},
   {safe: true, upsert: true, new : true}, function(err, freelancer){
     if (err) return next (err);
     if (!freelancer) {
@@ -43,7 +43,7 @@ router.post('/:freelancerid/review', function(req, res, next) {
         message: "Bad Request"
       });
     }});
-    return res.status(201).send();
+    return;
   });
 
 

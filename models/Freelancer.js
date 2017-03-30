@@ -30,19 +30,19 @@ const ReviewSchema = require('./Review');
 */
 const FreelancerSchema = new mongoose.Schema(
   {
-    firstName : { type: String, required: true },
-    lastName : { type: String, required: true },
-    address : { type: String, required: true },
-    description : { type: String},
-    profession :{ type: String, default: 'Other'},
-    category : {type:String, enum:['Boh', 'Qualcosa', 'Plumber', 'Other'], default:'Other' },
-    rating: { type: Number },
-    email: { type: String, required : true},
-    phone_number: { type: String, required : true},
-    location: { type: String, required: true },
-    price:{ type: Number },
-    image: {type: String, default: '/src/images/blank-user.jpg'},
-    reviews: {type: [ReviewSchema], default:[]},
+    firstName     : { type: String, required: true },
+    lastName      : { type: String, required: true },
+    address       : { type: String, required: true },
+    description   : { type: String},
+    profession    : { type: String, default: 'Other'},
+    category      : { type: String, enum:['Boh', 'Qualcosa', 'Mammt', 'Other'], default:'Other' },
+    rating        : { type: Number },
+    email         : { type: String, required : true},
+    phone_number  : { type: String, required : true},
+    location      : { type: String, required: true },
+    price         : { type: Number },
+    image         : { type: String, default: '/src/images/blank-user.jpg'},
+    reviews       : { type: [ReviewSchema], default:[]},
   }
 );
 
