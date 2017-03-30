@@ -4,7 +4,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWdeAEXHXX_d7UsPOsPgkBJvdL5dE9rHA &libraries=places"></script>
+
 
 <dom-module id="ja-search-element">
   <template>
@@ -98,6 +99,18 @@
         this.req = {"profession": this.profession,
                     "location": this.location};
         this.$['search-request'].generateRequest();
+      },
+
+      ready: function() {
+
+        const inputEl = this.$['location-search'].childNodes[1].childNodes[3];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+
+        autocomplete.addListener('place_changed', function() {
+          const address = autocomplete.getPlace().formatted_address;
+          this.location = address;
+          this.$['location-search'].query = address;
+        }.bind(this));
       },
 
       _handleResponse: function(response) {
