@@ -2,7 +2,12 @@
 
   <template>
     <style>
+      h3 {
+        color: white;
+      }
     </style>
+    <h3>Your current location is {{location}}</h3>
+
     <template is="dom-repeat" items="{{results}}" as="result">
       <ja-results-item id="fl-{{result._id}}" result="{{result}}" location={{location}} user-location={{userLocation}}>
       </ja-results-item>
@@ -16,11 +21,6 @@
       is: "ja-results-list",
 
       properties: {
-        // declare properties for the element's public API
-        greeting: {
-          type: String,
-          value: "This is a list"
-        },
         location: {
           type: String,
           value: "location",
@@ -54,9 +54,17 @@
       _locationChanged: function(location) {
         this.location = location;
       },
-
       _resultsChanged: function(results) {
+        console.log("sorting results", results);
+        this.results.sort(function(a, b) {
+          return a.distance_value < b.distance_value;
+        });
         this.results = results;
+      },
+
+      _locationView: function() {
+        console.log(this.location, this.userLocation);
+        return this.location;
       },
     });
   </script>

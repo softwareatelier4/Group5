@@ -47,17 +47,6 @@
         this._computeDistances(this.result);
       },
 
-      // _getUserLocation: function() {
-      //   if (navigator.geolocation) {
-      //     navigator.geolocation.getCurrentPosition(function(position) {
-      //       console.log(position);
-      //       const lat = position.coords.latitude.toString();
-      //       const lng = position.coords.longitude.toString();
-      //       this.userLocation = lat + ", " + lng;
-      //     }.bind(this));
-      //   }
-      // },
-
       _computeDistances: function(result) {
         console.log("Current user location for request", this.userLocation);
         this.req_distance = {
@@ -70,8 +59,10 @@
       _handleResponse: function(response) {
         const status = response.detail.response.rows[0].elements[0].status;
         if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
-          const value = response.detail.response.rows[0].elements[0].distance.text;
-          this.set('result.distance', value);
+          const text = response.detail.response.rows[0].elements[0].distance.text;
+          const value = response.detail.response.rows[0].elements[0].distance.value;
+          this.set('result.distance_text', text);
+          this.set('result.distance_value', value);
         }
       },
 
@@ -79,10 +70,6 @@
         console.log("Changed user location", userLocation);
         // this.userLocation = userLocation;
       },
-
-      // ready: function() {
-      //   this._getUserLocation();
-      // },
     });
   </script>
 
