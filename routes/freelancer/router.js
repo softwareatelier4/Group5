@@ -43,8 +43,7 @@ router.post('/:freelancerid/review', function(req, res, next) {
         message: "Bad Request"
       });
     }});
-    // return res.status(201).send();
-    return;
+    return res.status(201).send();
   });
 
 

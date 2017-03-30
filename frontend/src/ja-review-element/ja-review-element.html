@@ -12,7 +12,7 @@
       Rate : {{rating}}
     </div>
     <div id="date">
-      Date : {{date}}
+      Date : {{_changedate(date)}}
     </div>
 
   </template>
@@ -31,6 +31,11 @@
           type: Date
         }
       },
+
+      _changedate : function(date){
+        const d = new Date(date);
+        return d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear();
+      }
     });
   </script>
 
