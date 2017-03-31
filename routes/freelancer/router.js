@@ -25,9 +25,7 @@ router.get('/:freelancerid', function(req, res, next) {
       });
       return;
     }
-    // addLinks(freelancer);
     res.json(freelancer);
-    // res.sendFile('src/ja-freelancer-profile/ja-profile.html', { root: 'frontend/' });
   });
 });
 
