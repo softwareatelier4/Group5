@@ -4,8 +4,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
+<link rel="import" href="../../bower_components/shibui-dropdown-menu/shibui-dropdown-menu.html">
 
 <dom-module id="ja-search-element">
   <template>
@@ -14,22 +13,30 @@
         display: block;
       }
 
-      #container-dropdown {
+      #div-dropdown {
         flex-basis: 20%;
+        background: #fff;
       }
 
-      #container-dropdown button {
-        position: absolute;
+      #div-dropdown button {
+        border: none;
+        padding: 5px;
+        margin: 0;
         width: 100%;
-        height: 100%;
-        z-index: 20;
+        /* this is completely hardcoded will change later */
+        height: 46.38px;
         background-color: rgba(0, 0, 0, 0);
+        text-align: left;
+        color: #757575;
+        cursor: pointer;
       }
 
-      #container-dropdown paper-search-bar {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+      #div-dropdown:hover {
+        background: #F7F8FB;
+      }
+
+      #div-dropdown button:focus {
+        outline: none;
       }
 
       #location-search {
@@ -55,17 +62,16 @@
 
     <div id="div-search" on-keydown="checkForEnter">
       <paper-search-bar label="test" id="field-search" hide-filter-button icon="search" placeholder="General"> </paper-search-bar>
-      <div id="container-dropdown" class="dropdown">
-        <button onclick="toggleDropdown()" class="dropbtn"></button>
-        <paper-search-bar label="test" id="category-dropdown" hide-filter-button icon="work" placeholder="Category &#9660;"> </paper-search-bar>
-
-        <div id="dropdown-elements" class="dropdown-content">
-          <a class="category-links" href="#">Boh</a>
-          <a class="category-links" href="#">Qualcosa</a>
-          <a class="category-links" href="#">Plumber</a>
-          <a class="category-links" href="#">Other</a>
-        </div>
+      <div id="div-dropdown">
+        <button id="dropdown-toggle" value=""><iron-icon icon="work" suffix style="color: #9B9B9B"></iron-icon> Category : Any </button>
+        <shibui-dropdown id="shibui-dropdown" opened="{{opened}}">
+          <a on-tap="_selectCategory">Any</a>
+          <a on-tap="_selectCategory">Painter</a>
+          <a on-tap="_selectCategory">Plumber</a>
+          <a on-tap="_selectCategory">Scrum master</a>
+        </shibui-dropdown>
       </div>
+
       <paper-search-bar label="test" id="location-search" hide-filter-button icon="home" placeholder="Location"> </paper-search-bar>
       <paper-button id="button-search" raised>
         <iron-icon icon="search" suffix></iron-icon>
@@ -82,7 +88,8 @@
       is: 'ja-search-element',
 
       listeners: {
-        'button-search.tap': 'search'
+        'button-search.tap': 'search',
+        'dropdown-toggle.tap': '_toggleDropdown',
       },
 
       properties: {
@@ -123,44 +130,31 @@
       search: function (e) {
         console.log(this.$['field-search'].query);
         this.general = this.$['field-search'].query;
-        this.category = this.$['category-dropdown'].query;
-        this.location = this.$['location-search'].query;
+        this.category = this.$['dropdown-toggle'].value;
         this.req = {
           "general": this.general,
-          "category": this.category,
-          "location": this.location
+          "category": this.category
         };
         this.$['search-request'].generateRequest();
       },
 
+      _toggleDropdown: function (e) {
+        this.$['shibui-dropdown'].toggle();
+      },
+
+      _selectCategory: function (e) {
+        this.$['dropdown-toggle'].innerHTML =
+          "<iron-icon icon='work' suffix style='color: #9B9B9B'></iron-icon> Category : " + e.target.innerHTML;
+        if (e.target.innerHTML == "Any") {
+          this.$['dropdown-toggle'].value = "";
+        } else {
+          this.$['dropdown-toggle'].value = e.target.innerHTML;
+        }
+      },
       _handleResponse: function (response) {
         this.results = response.detail.response;
       },
 
     });
-
-    function toggleDropdown() {
-      document.getElementById("dropdown-elements").classList.toggle("show");
-    }
-
-    $(document).on("click touchend", ".category-links", function () {
-      document.getElementById("category-dropdown").query = $(this).text();
-      console.log($(this).text());
-    });
-
-    // Close the dropdown menu if the user clicks outside of it
-    window.onclick = function (event) {
-      if (!event.target.matches('.dropbtn')) {
-
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
   </script>
 </dom-module>
