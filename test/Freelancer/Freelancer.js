@@ -9,7 +9,7 @@ var utils =  require('../utils');
 //load model
 require('../../models/Freelancer');
 
-describe('Ex1: Freelancer Model', function(done){
+describe('Freelancer Model', function(done){
 
   describe('Freelancer model definition', function(){
     it('should have a constructor', function(){
@@ -51,8 +51,8 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
+      freelancer.category = 'IT Services';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(freelancer);
@@ -67,7 +67,6 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
     });
@@ -78,7 +77,6 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'lastName', done );
     });
@@ -89,7 +87,6 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.lastName = 'Bubu';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'address', done );
     });
@@ -100,7 +97,6 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.lastName = 'Bubu';
       freelancer.address = 'sasgfkb';
       freelancer.phone_number = '19821';
-      freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'email', done );
     });
@@ -111,35 +107,49 @@ describe('Ex1: Freelancer Model', function(done){
       freelancer.lastName = 'Bubu';
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
-      freelancer.location = 'Lugano';
       freelancer.profession = 'IT guy';
       utils.errorIfNullUndefinedOrEmpty(freelancer, 'phone_number', done );
     });
 
-    it('should fail if location is empty, null, or undefined', function(done){
+    it('should fail if profession is empty, null, or undefined', function(done){
       var freelancer = new Freelancer();
       freelancer.firstName = 'Mark Knopfler';
       freelancer.lastName = 'Bubu';
       freelancer.address = 'sasgfkb';
       freelancer.email = 'askhb@as.askug';
-      freelancer.phone_number = '19821';
-      freelancer.profession = 'IT guy';
-      utils.errorIfNullUndefinedOrEmpty(freelancer, 'location', done );
+      freelancer.phone_number = '+41 72112412';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'profession', done );
     });
 
 
-    it('if profession is empty; null; or undefined, it should get assigned the value `Other`',
+    it('if category is empty, null, or undefined, it should get assigned the value `Other`',
       function(done){
       var freelancer = new Freelancer();
       freelancer.firstName = 'Mark Knopfler';
       freelancer.lastName = 'Dire Straits';
       freelancer.address = 'sasgfkb';
+      freelancer.profession = 'I fix stuff';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
-      freelancer.location = 'Belli';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
-        freelancer.profession.should.equal('Other');
+        freelancer.category.should.equal('Other');
+        done();
+      });
+    });
+
+    it('if image is empty, null, or undefined, it should get assigned the value `/src/images/blank-user.jpg`',
+      function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.lastName = 'Dire Straits';
+      freelancer.address = 'sasgfkb';
+      freelancer.profession = 'I fix stuff';
+      freelancer.email = 'askhb@as.askug';
+      freelancer.phone_number = '19821';
+      freelancer.save(function(err, saved){
+        should.not.exist(err, 'No error should occur');
+        freelancer.image.should.equal('/src/images/blank-user.jpg');
         done();
       });
     });

@@ -8,6 +8,7 @@ var methodOverride = require('method-override')
 
 // Connection to MongoDB
 var mongoose   = require('mongoose');
+mongoose.promise = global.Promise;
 mongoose.connect(config.mongoUrl + config.mongoDbName);
 
 // Model definition registration
