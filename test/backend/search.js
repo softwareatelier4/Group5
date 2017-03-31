@@ -9,7 +9,6 @@ var seedDb = require('../seedDb');
 var request = require('supertest');
 var utils = require('../utils');
 var freelancers;
-var freelancer_testing;
 
 describe('Backend search tests', function(){
 
@@ -18,68 +17,34 @@ describe('Backend search tests', function(){
     before(seed);
     after(utils.dropDb);
 
-    it('should list all freelancers profiles matching the search criteria: profession', function(done) {
-
-      freelancer_testing = {
-        "firstName"           : "Luca",
-        "lastName"            : "Bernasconi",
-        "address"             : "Via coihsaoidf",
-        "description"         : "Description",
-        "profession"          : "Painter",
-        "category"            : "Other",
-        "rating"              : 3,
-        "email"               : "ciao@yahoo.com",
-        "phone_number"        : "+41 4442323223",
-        "location"            : "Bellinzona",
-        "price"               : 300,
-        "image"               : "/src/images/blank-user.jpg",
-        "reviews"             : "[{\"rating\" : 3, \"comment\": \"bravissimo\"}]"
-      };
+    it('should list all freelancers profiles matching the search criteria in any field', function(done) {
 
       request(app)
-      .get('/search/?profession=Painter')
+      .get('/search/?general=painter&category=')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
       .expect(200)
       .end(function(err, res){
         freelancers.forEach(function(freelancer) {
-          utils.matchProfessionInText(res.text, freelancer_testing);
+          utils.matchProfessionInText(res.text, freelancers[0]);
         });
         done();
       });
     });
 
-    it('should list all freelancers profiles matching the search criteria: location', function(done) {
+    it('should list all freelancers profiles matching the search criteria in any field and the category researched', function(done) {
 
       request(app)
-      .get('/search/?profession=&location=Bellinzona')
+      .get('/search/?general=mario&category=Other')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
       .expect(200)
       .end(function(err, res){
         freelancers.forEach(function(freelancer) {
-          utils.matchLocationInText(res.text, freelancer_testing);
+          utils.matchLocationInText(res.text, freelancers[0]);
         });
         done();
       });
-    });
-  });
-
-  describe('GET /freelancer/:freelancerid', function(){
-    before(seed);
-    after(utils.dropDb);
-
-    it('should list the freelancer profile matching the id', function(done) {
-
-      request(app)
-      .get('/freelancer/' + freelancers[0]._id.toString())
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(200)
-      .end(function(err, res){
-        utils.matchFreelancerIdInText(res.text, freelancers[0]);
-      });
-      done();
     });
   });
 });

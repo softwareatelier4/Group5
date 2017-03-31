@@ -28,10 +28,8 @@ router.get('/', function(req, res, next) {
       }
       queryArray.push(newJson);
     });
-    console.log(queryArray);
     Freelancer.find().or(queryArray).exec(function(err, profiles) {
       if (err) return console.error(err);
-      console.log(profiles);
       res.json(profiles);
     });
   }
