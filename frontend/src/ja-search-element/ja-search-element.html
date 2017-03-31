@@ -39,6 +39,17 @@
         outline: none;
       }
 
+      shibui-dropdown{
+        max-height: 300px;
+        overflow: auto;
+      }
+
+      shibui-dropdown a{ 
+        top: 127px;
+      }
+
+              
+
       #location-search {
         flex-basis: 20%;
       }
@@ -66,9 +77,20 @@
         <button id="dropdown-toggle" value=""><iron-icon icon="work" suffix style="color: #9B9B9B"></iron-icon> Category : Any </button>
         <shibui-dropdown id="shibui-dropdown" opened="{{opened}}">
           <a on-tap="_selectCategory">Any</a>
-          <a on-tap="_selectCategory">Painter</a>
-          <a on-tap="_selectCategory">Plumber</a>
-          <a on-tap="_selectCategory">Scrum master</a>
+          <a on-tap="_selectCategory">Tecnical Services</a>
+          <a on-tap="_selectCategory">IT Services</a>
+          <a on-tap="_selectCategory">Design</a>
+          <a on-tap="_selectCategory">Management</a>
+          <a on-tap="_selectCategory">Retail</a>
+          <a on-tap="_selectCategory">Human Resources</a>
+          <a on-tap="_selectCategory">Marketing</a>
+          <a on-tap="_selectCategory">Consulting</a>
+          <a on-tap="_selectCategory">Advertising</a>
+          <a on-tap="_selectCategory">Logistics</a>
+          <a on-tap="_selectCategory">Real Estate</a>
+          <a on-tap="_selectCategory">Social Work</a>
+          <a on-tap="_selectCategory">Healthcare</a>
+          <a on-tap="_selectCategory">Other</a>
         </shibui-dropdown>
       </div>
 
