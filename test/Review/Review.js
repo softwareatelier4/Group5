@@ -48,7 +48,7 @@ describe('Review Model', function(done){
       var review = new Review();
       review.rating = 3;
       review.comment = 'Dire Straits';
-      review.date = Date.now();
+      review.date = new Date();
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(review);
@@ -60,15 +60,15 @@ describe('Review Model', function(done){
       var review = new Review();
       review.rating = '';
       review.comment = 'Bubu';
-      review.date = Date.now();
+      review.date = new Date();
       utils.errorIfNullUndefinedOrEmpty(review, 'rating', done );
     });
 
     it('should fail if rating is null', function(done){
       var review = new Review();
       review.rating = null;
-      review.address = 'sasgfkb';
-      review.email = 'askhb@as.askug';
+      review.comment = 'sasgfkb';
+      review.date = new Date();
       utils.errorIfNullUndefinedOrEmpty(review, 'rating', done );
     });
 
@@ -76,15 +76,25 @@ describe('Review Model', function(done){
       var review = new Review();
       review.rating = undefined;
       review.comment = 'Bubu';
-      review.date = Date.now();
+      review.date = new Date();
       utils.errorIfNullUndefinedOrEmpty(review, 'rating', done );
+    });
+
+    it('should pass if comment is empty,null or undefined ', function(done){
+      var review = new Review();
+      review.rating = 4;
+      review.date = '';
+      review.save(function(err, saved){
+        should.not.exist(err, 'No error should occur');
+        saved.should.eql(review);
+        done();
+      });
     });
 
     it('should pass if date is empty, ', function(done){
       var review = new Review();
       review.rating = 4;
       review.comment = 'Bubu';
-      review.date = '';
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(review);
