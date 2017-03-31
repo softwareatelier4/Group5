@@ -21,16 +21,19 @@ describe('Backend search tests', function(){
     it('should list all freelancers profiles matching the search criteria: profession', function(done) {
 
       freelancer_testing = {
-        "firstName"          : "Luca",
-        "lastName"         : "Bernasconi",
-        "address"       : "Via coihsaoidf",
-        "description"   : "Description",
-        "rating" : 3,
-        "email" : "ciao@yahoo.com",
-        "phone_number" : "+41 4442323223",
-        "location" : "Bellinzona",
-        "price" : 300,
-        "profession": "Painter"
+        "firstName"           : "Luca",
+        "lastName"            : "Bernasconi",
+        "address"             : "Via coihsaoidf",
+        "description"         : "Description",
+        "profession"          : "Painter",
+        "category"            : "Other",
+        "rating"              : 3,
+        "email"               : "ciao@yahoo.com",
+        "phone_number"        : "+41 4442323223",
+        "location"            : "Bellinzona",
+        "price"               : 300,
+        "image"               : "/src/images/blank-user.jpg",
+        "reviews"             : "[{\"rating\" : 3, \"comment\": \"bravissimo\"}]"
       };
 
       request(app)

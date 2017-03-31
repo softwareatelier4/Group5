@@ -3,6 +3,8 @@
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 
+var date = new Date();
+
 var users = {
   name : 'User',
   data : [
@@ -17,7 +19,55 @@ var users = {
   ]
 }
 
-var freelancer = {
+var reviews = {
+  name : "Review",
+  data : [
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd6"),
+      "date"                : date,
+      "comment"             : "nice job",
+      "rating"              : 5
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd7"),
+      "date"                : date,
+      "comment"             : "very kind",
+      "rating"              : 4
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd8"),
+      "date"                : date,
+      "comment"             : "awful work",
+      "rating"              : 1
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd9"),
+      "date"                : date,
+      "comment"             : "nice and helpful",
+      "rating"              : 5
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be1"),
+      "date"                : date,
+      "comment"             : "not really good",
+      "rating"              : 2
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be2"),
+      "date"                : date,
+      "comment"             : "cheap salary",
+      "rating"              : 3
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be3"),
+      "date"                : date,
+      "comment"             : "perfect job",
+      "rating"              : 5
+    },
+  ]
+}
+
+var freelancers = {
   name : 'Freelancer',
   data : [
     {
@@ -25,43 +75,92 @@ var freelancer = {
       "firstName"     : "Mario",
       "lastName"      : "Rossi",
       "address"       : "Via San Gottardo 12, 6900 Lugano",
-      "description"   : "Description here",
       "rating"        : 3,
       "email"         : "mario.rossi@gmail.com",
       "phone_number"  : "+41 4442323223",
-      "location"      : "Lugano",
       "price"         : 100,
-      "profession"    : "Painter"
+      "profession"    : "Painter",
+      "reviews"       : [reviews[2]],
+
     },
     {
-      "firstName"     : "Luca",
-      "lastName"      : "Bernasconi",
-      "address"       : "Via stazione 22, 6500 Bellinzona",
-      "description"   : "Description",
-      "rating"        : 3,
-      "email"         : "luca.bernasconi@yahoo.com",
-      "phone_number"  : "+41 79234729",
-      "location"      : "Bellinzona",
-      "price"         : 120,
-      "profession"    : "Plumber"
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
+      "firstName"     : "Alexander",
+      "lastName"      : "Fischer",
+      "address"       : "Via Morobbi 13, 6592 Sant'Antonino",
+      "description"   : "I'm the best scrum Master in Lugano.",
+      "profession"    : "Cow Master",
+      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
+      "category"      : "Management",
+      "rating"        : 5,
+      "email"         : "alexander.scrummaster@hotmail.ru",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 50,
+      "reviews"       : [reviews[4]]
     },
     {
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
       "firstName"     : "Giovanni",
       "lastName"      : "Rezzonico",
       "address"       : "Via Centrale 42, 6912 Lugano",
-      "description"   : "Description",
-      "rating"        : 3,
+      "description"   : "I'm the painter you are searching for",
+      "profession"    : "Painter",
+      "category"      : "Tecnical Services",
+      "rating"        : 4,
       "email"         : "giovanni.rezzonico@gmail.com",
-      "phone_number"  : "+41 782347723",
-      "location"      : "Lugano",
-      "price"         : 95,
-      "profession"    : "Painter"
-    }
+      "phone_number"  : "+41 78 234 77 23",
+      "price"         : 20,
+      "reviews"       : [reviews[3], reviews[5]]
+    },
+    {
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd8"),
+      "firstName"     : "Francesco",
+      "lastName"      : "Sani",
+      "address"       : "Via Cantonale 9, 6694 Lavizzara",
+      "description"   : "Implementing search filtering is my life",
+      "profession"    : "Warehouseman",
+      "category"      : "Logistics",
+      "rating"        : 5,
+      "email"         : "francesco@hotmail.ch",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 60,
+      "reviews"       : [reviews[5]],
+    },
+    {
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd9"),
+      "firstName"     : "Emanuele",
+      "lastName"      : "Giovinazzi",
+      "address"       : "Regulastrasse 19, 8046 Zürich",
+      "profession"    : "Design",
+      "category"      : "Management",
+      "rating"        : 1,
+      "email"         : "the.painter@hotmail.ch",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 100,
+      "reviews"       : [reviews[2]],
+    },
+    {
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bf1"),
+      "firstName"     : "GianMarco",
+      "lastName"      : "Palazzi",
+      "address"       : "Piazza Duomo, 22100 Como",
+      "description"   : "I'm your man",
+      "profession"    : "Consulting",
+      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
+      "category"      : "Management",
+      "rating"        : 5,
+      "email"         : "real.giamma@hotmail.it",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 100,
+      "reviews"       : [reviews[3]],
+    },
+
   ]
 }
 
 var seedData = [];
-seedData.push(freelancer);
+seedData.push(freelancers);
 seedData.push(users);
+seedData.push(reviews)
 
 module.exports = seedData;
