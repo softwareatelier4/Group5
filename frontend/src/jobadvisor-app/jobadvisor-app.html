@@ -31,11 +31,13 @@
       data="{{subrouteData}}">
     </app-route>
 
-  <div id="outmost-container">
+  <div id="title-container">
+  <a href="/"><img id="page-title" src="../images/logo.png"></a>
+  </div>
 
-  <a href="/"><h1 id="page-title">JobAdvisor</h1></a>
+  <div id="background-results"></div>
 
-
+  <div id="inner-container">
     <iron-pages
       selected="[[routeData.view]]"
       attr-for-selected="title"
@@ -49,8 +51,7 @@
         <ja-profile id={{subrouteData.id}}> </ja-profile>
       </div>
     </iron-pages>
-
-</div>
+  </div>
 
 
   </template>

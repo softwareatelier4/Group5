@@ -9,7 +9,7 @@ var utils =  require('../utils');
 //load model
 require('../../models/Freelancer');
 
-describe('Ex1: Freelancer Model', function(done){
+describe('Freelancer Model', function(done){
 
   describe('Freelancer model definition', function(){
     it('should have a constructor', function(){
