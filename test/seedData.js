@@ -66,7 +66,7 @@ var reviews = {
     },
   ]
 }
-
+// console.log(reviews.data[2]);
 var freelancers = {
   name : 'Freelancer',
   data : [
@@ -80,7 +80,7 @@ var freelancers = {
       "phone_number"  : "+41 4442323223",
       "price"         : 100,
       "profession"    : "Painter",
-      "reviews"       : [reviews[2]],
+      "reviews"       : [reviews.data[2]],
 
     },
     {
@@ -96,7 +96,7 @@ var freelancers = {
       "email"         : "alexander.scrummaster@hotmail.ru",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 50,
-      "reviews"       : [reviews[4]]
+      "reviews"       : [reviews.data[4]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -110,7 +110,7 @@ var freelancers = {
       "email"         : "giovanni.rezzonico@gmail.com",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 20,
-      "reviews"       : [reviews[3], reviews[5]]
+      "reviews"       : [reviews.data[3], reviews.data[5]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd8"),
@@ -124,7 +124,7 @@ var freelancers = {
       "email"         : "francesco@hotmail.ch",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 60,
-      "reviews"       : [reviews[5]],
+      "reviews"       : [reviews.data[5]],
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd9"),
@@ -137,7 +137,7 @@ var freelancers = {
       "email"         : "the.painter@hotmail.ch",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
-      "reviews"       : [reviews[2]],
+      "reviews"       : [reviews.data[2]],
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bf1"),
@@ -152,7 +152,7 @@ var freelancers = {
       "email"         : "real.giamma@hotmail.it",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
-      "reviews"       : [reviews[3]],
+      "reviews"       : [reviews.data[3]],
     },
 
   ]
