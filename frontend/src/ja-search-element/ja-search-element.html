@@ -116,12 +116,12 @@
         // check if 'enter' was pressed
         // if (e.keyCode === 13) {
         //     this.search();
-        // } 
+        // }
         this.search();
       },
 
       search: function (e) {
-        console.log(this.$['field-search'].query);
+        // console.log(this.$['field-search'].query);
         this.general = this.$['field-search'].query;
         this.category = this.$['category-dropdown'].query;
         this.location = this.$['location-search'].query;
@@ -145,7 +145,7 @@
 
     $(document).on("click touchend", ".category-links", function () {
       document.getElementById("category-dropdown").query = $(this).text();
-      console.log($(this).text());
+      // console.log($(this).text());
     });
 
     // Close the dropdown menu if the user clicks outside of it
