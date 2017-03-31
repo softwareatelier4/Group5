@@ -1,14 +1,11 @@
 <dom-module id="ja-results-list">
   <template>
     <style>
-      h3 {
-        color: white;
-      }
     </style>
-    <h3>Your current location is {{location}}</h3>
+    <h3>Showing results around [[location]]</h3>
 
-    <template is="dom-repeat" items="{{results}}" as="result">
-      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location={{location}} user-location={{userLocation}}>
+    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value">
+      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location=[[location]] user-location=[[userLocation]]>
       </ja-results-item>
     </template>
 
@@ -24,14 +21,13 @@
           type: String,
           value: "location",
           observer: '_locationChanged',
-          reflectToAttribute: true,
-          notify: true,
+          // reflectToAttribute: true,
+          // notify: true,
         },
         profession: {
           type: String,
           value: "profession",
           observer: '_professionChanged',
-          // reflectToAttribute: true,
           notify: true,
         },
         results: {
@@ -40,30 +36,26 @@
           notify: true,
           value: []
         },
-        userLocation: {
-          type: String,
-          value: "Lugano, Switzerland",
-          reflectToAttribute: true,
-        },
       },
 
       _professionChanged: function(profession) {
         this.profession = profession;
       },
+
       _locationChanged: function(location) {
-        this.location = location;
+        console.log("Location", location);
+
       },
       _resultsChanged: function(results) {
-        console.log("sorting results", results);
-        this.results.sort(function(a, b) {
-          return a.distance_value < b.distance_value;
-        });
         this.results = results;
       },
 
       _locationView: function() {
-        console.log(this.location, this.userLocation);
         return this.location;
+      },
+
+      _sortByDistance: function(a, b) {
+        return a.distance_value > b.distance_value;
       },
     });
   </script>

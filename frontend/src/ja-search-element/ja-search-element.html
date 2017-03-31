@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWdeAEXHXX_d7UsPOsPgkBJvdL5dE9rHA &libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ&libraries=places"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
 
@@ -74,7 +74,11 @@
       </paper-button>
     </div>
 
-    <iron-ajax id="search-request" url="http://localhost:3000/search/" params='{{req}}' handle-as="json" on-response="_handleResponse">
+    <iron-ajax  id="search-request"
+                url="http://localhost:3000/search/"
+                params='{{req}}'
+                handle-as="json"
+                on-response="_handleResponse">
     </iron-ajax>
   </template>
 
@@ -99,6 +103,7 @@
           value: "general",
           reflectToAttribute: true,
           notify: true,
+          observer: '_locationChanged',
         },
         category: {
           type: String,
@@ -112,21 +117,26 @@
           reflectToAttribute: true,
           notify: true,
         },
+        // userLocation: {
+        //   type: String,
+        //   value: "asdasd",
+        //   observer: '_userLocationChanged',
+        // },
       },
 
       checkForEnter: function (e) {
         // check if 'enter' was pressed
-        // if (e.keyCode === 13) {
-        //     this.search();
-        // } 
-        this.search();
+        if (e.keyCode === 13) {
+            this.search();
+        }
+        // this.search();
       },
 
       search: function (e) {
-        console.log(this.$['field-search'].query);
         this.general = this.$['field-search'].query;
         this.category = this.$['category-dropdown'].query;
-        this.location = this.$['location-search'].query;
+        this.set('location', this._correctLocation(this.$['location-search'].query));
+        // this.location = this._correctLocation(this.$['location-search'].query);
         this.req = {
           "general": this.general,
           "category": this.category,
@@ -135,20 +145,30 @@
         this.$['search-request'].generateRequest();
       },
 
-      ready: function() {
+      _correctLocation: function(location){
+        return location;
+      },
 
+      _locationChanged: function(location) {
+      },
+
+      ready: function() {
         const inputEl = this.$['location-search'].childNodes[1].childNodes[3];
         var autocomplete = new google.maps.places.Autocomplete(inputEl);
 
         autocomplete.addListener('place_changed', function() {
-          const address = autocomplete.getPlace().formatted_address;
-          this.location = address;
+          var address = autocomplete.getPlace().formatted_address || "";
           this.$['location-search'].query = address;
+          this.set('location', address);
         }.bind(this));
       },
 
       _handleResponse: function(response) {
         this.results = response.detail.response;
+      },
+
+      _userLocationChanged: function(location) {
+        console.log("user changed to",location);
       },
 
     });

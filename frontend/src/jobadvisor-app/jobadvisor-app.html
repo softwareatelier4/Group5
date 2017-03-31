@@ -44,8 +44,8 @@
       fallback-selection="search"
       role="main">
       <div title="search">
-        <ja-search-element results={{results}} location={{location}} profession={{profession}}></ja-search-element>
-        <ja-results-list results={{results}} location={{location}} profession={{profession}} user-location={{userLocation}}></ja-results-list>
+        <ja-search-element results={{results}} location={{location}} profession={{profession}} user-location={{userLocation}}></ja-search-element>
+        <ja-results-list results={{results}} location={{location}} profession={{profession}} user-location=[[userLocation]]></ja-results-list>
       </div>
       <div title="freelancer">
         <ja-profile id={{subrouteData.id}}> </ja-profile>
@@ -101,7 +101,7 @@
           type: String,
           value: "Lugano, Switzerland",
           notify: true,
-          reflectToAttribute: true,
+          // reflectToAttribute: true,
         },
       },
 
@@ -116,9 +116,10 @@
         console.log("Changed", profession);
         this.profession = profession;
       },
-      _locationChanged: function(location) {
-        this.location = location;
-      },
+      // _locationChanged: function(location) {
+      //   console.log("Called location in app");
+      //   this.location = location;
+      // },
 
       _routePageChanged: function(page) {
         this.view = page;

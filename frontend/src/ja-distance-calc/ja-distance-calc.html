@@ -5,7 +5,6 @@
     </style>
 
     <iron-ajax
-      auto
       id="distance-request"
       url="https://maps.googleapis.com/maps/api/distancematrix/json"
       params='{{req_distance}}'
@@ -14,7 +13,7 @@
     </iron-ajax>
   </template>
 
- <!-- AIzaSyBVciKKAq5jjZxpn_PNfNCCLbUPKxFIIkc -->
+ <!--  Google maps API key AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ  -->
 
   <script>
     Polymer({
@@ -27,48 +26,52 @@
           observer: '_resultChanged',
           reflectToAttribute: true,
         },
-        userLocation: {
+        location: {
           type: String,
-          value: "Lugano, Switzerland",
-          // reflectToAttribute: true,
-          // observer: '_userLocationChanged',
+          value: "",
+          observer: '_locationChanged',
+          notify: true,
         },
-        searchedLocation: {
-          type: String,
-          value: "Lugano, Switzerland"
-        }
+        // userLocation: {
+        //   type: String,
+        //   value: "asdasd",
+        //   observer: '_userLocationChanged',
+        // },
       },
 
       _resultChanged: function(result) {
-        console.log("Result", result, this.userLocation);
         this.result = result;
-        if (this.searchedLocation != "")
-          this.userLocation = this.searchedLocation;
-        this._computeDistances(this.result);
       },
 
       _computeDistances: function(result) {
-        console.log("Current user location for request", this.userLocation);
         this.req_distance = {
-          origins: this.userLocation ? this.userLocation: "Lugano, Switzerland",
+          origins: this.location || this.userLocation,
           destinations: result.address,
+          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
         };
         this.$['distance-request'].generateRequest();
       },
 
       _handleResponse: function(response) {
-        const status = response.detail.response.rows[0].elements[0].status;
-        if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
-          const text = response.detail.response.rows[0].elements[0].distance.text;
-          const value = response.detail.response.rows[0].elements[0].distance.value;
-          this.set('result.distance_text', text);
-          this.set('result.distance_value', value);
+        const rows = response.detail.response.rows[0];
+        if (rows) {
+          status = response.detail.response.rows[0].elements[0].status;
+          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
+            const text = response.detail.response.rows[0].elements[0].distance.text;
+            const value = response.detail.response.rows[0].elements[0].distance.value;
+            this.set('result.distance_text', text);
+            this.set('result.distance_value', value);
+          }
         }
       },
 
-      _userLocationChanged: function(userLocation) {
-        console.log("Changed user location", userLocation);
-        // this.userLocation = userLocation;
+      _locationChanged: function(location) {
+        console.log("Current location", location, this.location);
+        this._computeDistances(this.result);
+      },
+      _userLocationChanged: function(location) {
+        console.log("Current <US</USE>location", location);
+        // this._computeDistances(this.result);
       },
     });
   </script>
