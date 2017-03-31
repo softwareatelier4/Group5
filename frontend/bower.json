@@ -8,7 +8,9 @@
     "iron-icons": "PolymerElements/iron-icons#^1.2.0",
     "iron-pages": "PolymerElements/iron-pages#^1.0.8",
     "app-route": "PolymerElements/app-route#^0.9.3",
-    "paper-search": "Collaborne/paper-search#^1.2.3"
+    "paper-search": "Collaborne/paper-search#^1.2.3",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
+    "shibui-dropdown-menu": "ShibuiElements/shibui-dropdown-menu#^1.0.3"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
