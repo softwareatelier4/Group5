@@ -4,7 +4,6 @@
   "description": "JobAdvisor things. Express.js and Mongoose",
   "main": "app.js",
   "scripts": {
-    "install": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriver",
     "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "start-jenkins": "DEBUG='jobadvisor-server' ./bin/www",
     "test": "npm run test-mocha && npm start | node seed.js",
@@ -31,7 +30,7 @@
     "method-override": "^2.3.5",
     "mocha-jenkins-reporter": "^0.3.6",
     "mongodb": "^2.2.22",
-    "mongoose": "^4.1.11",
+    "mongoose": "^4.9.2",
     "morgan": "^1.6.1",
     "polymer-cli": "^0.17.0",
     "supertest": "^1.1.0"
