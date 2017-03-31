@@ -77,7 +77,7 @@
           <img id="image" src={{image}} />
         </div>
 
-        <div id="name">
+        <div id="name" >
           {{lastname}} {{firstname}}
         </div>
 
@@ -163,6 +163,9 @@
   </template>
 
   <script>
+  // (function () {
+  //   'use strict';
+
     Polymer({
       is: "ja-profile",
 
@@ -243,7 +246,7 @@
       },
 
       _setrating: function(n){
-        res = ""
+        var res = ""
         while(n > 0){
           res += "*";
           n--;
@@ -252,19 +255,19 @@
       },
 
       _call: function() {
-        if(this.$.comm.value !== " "){
-          this.$.commentarea.style.color = "";
-          this.$.comm.style["border-color"]= "";
+        // if(this.$.comm.value !== " "){
+          // this.$.commentarea.style.color = "";
+          // this.$.comm.style["border-color"]= "";
 
           const ajaxel = this.$.ajax2;
           const d = new Date();
           const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: d};
           ajaxel.body= obj;
           ajaxel.generateRequest();
-        }else {
-          this.$.commentarea.style.color = "red";
-          this.$.comm.style["border-color"]= "red";
-        }
+        // }else {
+        //   this.$.commentarea.style.color = "red";
+        //   this.$.comm.style["border-color"]= "red";
+        // }
 
       },
 
@@ -279,6 +282,8 @@
 
 
     });
+
+  // })();
   </script>
 
 </dom-module>
