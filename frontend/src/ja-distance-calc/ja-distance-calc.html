@@ -4,13 +4,13 @@
     <style>
     </style>
 
-    <iron-ajax
+    <!-- <iron-ajax
       id="distance-request"
       url="https://maps.googleapis.com/maps/api/distancematrix/json"
       params='{{req_distance}}'
       handle-as="json"
       on-response="_handleResponse">
-    </iron-ajax>
+    </iron-ajax> -->
   </template>
 
  <!--  Google maps API key AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ  -->
@@ -41,17 +41,18 @@
 
       _resultChanged: function(result) {
         this.result = result;
+        console.log("results", result);
       },
 
-      _computeDistances: function(result) {
-        this.userLocation = this.userLocation || "Lugano, Switzerland";
-        this.req_distance = {
-          origins: this.location || this.userLocation,
-          destinations: result.address,
-          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
-        };
-        this.$['distance-request'].generateRequest();
-      },
+      // _computeDistances: function(result) {
+      //   this.userLocation = this.userLocation || "Lugano, Switzerland";
+      //   this.req_distance = {
+      //     origins: this.location || this.userLocation,
+      //     destinations: result.address,
+      //     key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+      //   };
+      //   this.$['distance-request'].generateRequest();
+      // },
 
       _handleResponse: function(response) {
         const rows = response.detail.response.rows[0];
@@ -70,7 +71,7 @@
       _locationChanged: function(location) {
         console.log("Current location", location, this.location);
         setTimeout(function() {
-          this._computeDistances(this.result);
+          // this._computeDistances(this.result);
         }.bind(this))
       },
       _userLocationChanged: function(location) {
