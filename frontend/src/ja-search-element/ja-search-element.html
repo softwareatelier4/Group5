@@ -148,7 +148,11 @@
 
       _correctLocation: function(location){
         console.log("Correct location", location || this.userLocation);
-        return location || this.userLocation;
+        if (this.userLocation.length > 0)
+          return location || this.userLocation;
+        else {
+          return location || "Lugano, Switzerland";
+        }
       },
 
       _locationChanged: function(location) {
@@ -166,7 +170,7 @@
       },
 
       _handleResponse: function(response) {
-        // TODO: problem here? distances get overwritten
+        // problem: distances get overwritten
         // save distances
         var distances = {};
         for (var result of this.results) {
