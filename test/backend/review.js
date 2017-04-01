@@ -9,9 +9,7 @@ var seedDb = require('../seedDb');
 var request = require('supertest');
 var utils = require('../utils');
 var freelancers;
-var freelancer_testing;
-var test_date;
-var review_test;
+var reviews;
 
 describe('Backend review tests', function(){
 
@@ -21,56 +19,53 @@ describe('Backend review tests', function(){
     after(utils.dropDb);
 
     it('should post a new review to the freelancer profile', function(done) {
-
-      freelancer_testing = {
-        "firstName"           : "Luca",
-        "lastName"            : "Bernasconi",
-        "address"             : "Via coihsaoidf",
-        "description"         : "Description",
-        "profession"          : "Painter",
-        "category"            : "Other",
-        "rating"              : 3,
-        "email"               : "ciao@yahoo.com",
-        "phone_number"        : "+41 4442323223",
-        "location"            : "Bellinzona",
-        "price"               : 300,
-        "image"               : "/src/images/blank-user.jpg",
-        "reviews"             : "[{\"rating\" : 3, \"comment\": \"bravissimo\"}]"
-      };
-
-      test_date = new Date();
-
-      review_test = {
-        "_id"                  : ObjectId("5625fc2bd82b84d23d8c7bd6"),
-        "date"                : test_date,
-        "comment"             : "che bel lavoro",
-        "rating"              : 5
-
-      }
+      console.log(reviews[0]);
 
       request(app)
       .post('/freelancer/' + freelancers[0]._id.toString() + '/review')
+      .send(reviews[0])
+      .expect(201)
+      .end(function(err, res){
+        // var body = res.body;
+        // body.should.be.empty;
+
+        if(err) console.log(err);
+
+        res.body.should.have.property('reviews');
+        res.body.reviews.should.have.property(reviews[0]);
+        done()
+
+        //check if freelancer reviews were updated
+        // request(app)
+        // .get('/freelancer/' + freelancers[0]._id.toString())
+        // .set('Accept', 'application/json')
+        // .expect('Content-Type', /json/, 'it should respond with json' )
+        // .expect(200)
+        // .end(function(err, res){
+        //   var resText = res.text;
+        //   utils.matchFreelancerReview(res.text, JSON.stringify(reviews[0]));
+        //   done();
+        // });
+      });
+
+    });
+
+    it('should give back a 404 status if the review is posted to a freelancer profile that does not exists', function(done) {
+      request(app)
+      .put('/freelancer/' + freelancers[0]._id.toString() + '/review')
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
-      .send(review_test)
+      .send(reviews[0])
       .expect(204)
       .end(function(err, res){
         var body = res.body;
         body.should.be.empty;
 
-        //check if freelancer reviews were updated
         request(app)
-        .get('/freelancer/' + freelancers[0]._id.toString())
+        .get('/freelancer/' + ObjectId().toString())
         .set('Accept', 'application/json')
-        .expect('Content-Type', /json/, 'it should respond with json' )
-        .expect(200)
-        .end(function(err, res){
-          var resText = res.text;
-          utils.matchFreelancerReview(res.text, JSON.stringify(review_test));
-          done();
-        });
+        .expect(404, done);
       });
-
     });
 
   });
@@ -83,6 +78,7 @@ function seed(done){
   seedDb.seed(function(err, seedData){
     if (err) return done(err);
     freelancers = seedData[0].data;
+    reviews = seedData[2].data;
     done();
   });
 }

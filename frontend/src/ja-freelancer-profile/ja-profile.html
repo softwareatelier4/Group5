@@ -77,7 +77,7 @@
           <img id="image" src={{image}} />
         </div>
 
-        <div id="name">
+        <div id="name" >
           {{lastname}} {{firstname}}
         </div>
 
@@ -126,12 +126,24 @@
       </section>
       <section id="reviews" style="width: 100%;">
         <div id="rating" style="display:flex;" >
-          Rating <br/>
-          <textarea rows="5" style="width:80%" id="comm"> </textarea>
+          <div id="commentarea" style="width:80%">
+            COMMENT <br/>
+            <textarea rows="5" style="width:100%" id="comm"> </textarea>
+          </div>
+          <div id="rate" style="width:20%; padding-left: 20px;">
           RATING
-          <input type="text" id="ratenum">  </input>
+          <select id="ratenum" style="width:90%">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="4">5</option>
+          </select>
+          <!-- <input type="text" style="width:90%; " id="ratenum">  </input> -->
+          <input id="review" type="submit" value="Rate!" on-click="_call" />
+          </div>
         </div>
-        <input id="review" type="submit" value="Rate!" on-click="_call" />
+
         <template is="dom-repeat" items="{{reviews}}" as="result">
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
           <br/>
@@ -151,6 +163,9 @@
   </template>
 
   <script>
+  // (function () {
+  //   'use strict';
+
     Polymer({
       is: "ja-profile",
 
@@ -175,9 +190,6 @@
           type: String
         },
         price: {
-          type: String
-        },
-        location: {
           type: String
         },
         profession: {
@@ -225,18 +237,16 @@
         this.description = res.description;
         this.email = res.email;
         this.phone_number = res.phone_number;
-        this.location = res.location;
         this.price = res.price;
         this.profession = res.profession;
         this.image = res.image;
         this.rating = this._setrating(res.rating);
         this.category = res.category;
-        this.reviews = res.reviews;
-        console.log(res.reviews[0]);
+        this.reviews = res.reviews.slice().reverse(); ;
       },
 
       _setrating: function(n){
-        res = ""
+        var res = ""
         while(n > 0){
           res += "*";
           n--;
@@ -245,21 +255,35 @@
       },
 
       _call: function() {
-        const ajaxel = this.$.ajax2;
-        const d = new Date();
-        // const n = d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear() + " at " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: d};
-        ajaxel.body= obj;
-        ajaxel.generateRequest();
-        console.log("waiting to send the request");
+        // if(this.$.comm.value !== " "){
+          // this.$.commentarea.style.color = "";
+          // this.$.comm.style["border-color"]= "";
+
+          const ajaxel = this.$.ajax2;
+          const d = new Date();
+          const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: d};
+          ajaxel.body= obj;
+          ajaxel.generateRequest();
+        // }else {
+        //   this.$.commentarea.style.color = "red";
+        //   this.$.comm.style["border-color"]= "red";
+        // }
+
       },
 
-      _done: function(){
-        console.log("done!");
+      _done: function(el){
+        const d = new Date();
+        const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: d};
+        this.$.comm.value = " ";
+        this.$.ratenum.value= "1";
+        this.push('reviews', obj);
+        this.reviews = this.reviews.slice().reverse();
       },
 
 
     });
+
+  // })();
   </script>
 
 </dom-module>
