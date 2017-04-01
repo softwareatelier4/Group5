@@ -71,7 +71,7 @@
         console.log("Current location", location, this.location);
         setTimeout(function() {
           this._computeDistances(this.result);
-        }.bind(this), 100)
+        }.bind(this))
       },
       _userLocationChanged: function(location) {
         console.log("Current <US</USE>location", location);
