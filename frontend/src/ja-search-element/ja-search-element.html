@@ -170,25 +170,31 @@
       },
 
       _handleResponse: function(response) {
+
+        this.results = response.detail.response;
+
+        // trigger location changed
+        var temp = this.location;
+        this.location = "";
+        this.location = temp;
         // problem: distances get overwritten
         // save distances
-        var distances = {};
-        for (var result of this.results) {
-          distances[result._id] = {};
-          distances[result._id].text = result.distance_text;
-          distances[result._id].value = result.distance_value;
-        }
-        console.log("Saved distances", distances);
-        this.results = response.detail.response;
-        console.log("Obj before", this.results);
-        // re apply distances
-        for (var result of this.results) {
-          if (distances[result._id]) {
-            result.distance_text = distances[result._id].text;
-            result.distance_value = distances[result._id].value;
-          }
-        }
-        console.log("obj after", this.results);
+        // var distances = {};
+        // for (var result of this.results) {
+        //   distances[result._id] = {};
+        //   distances[result._id].text = result.distance_text;
+        //   distances[result._id].value = result.distance_value;
+        // }
+        // console.log("Saved distances", distances);
+        // this.results = response.detail.response;
+        // console.log("Obj before", this.results);
+        // // re apply distances
+        // for (var result of this.results) {
+        //   if (distances[result._id]) {
+        //     result.distance_text = distances[result._id].text;
+        //     result.distance_value = distances[result._id].value;
+        //   }
+        // }
 
       },
 
