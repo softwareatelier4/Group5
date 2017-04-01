@@ -185,9 +185,13 @@ module.exports.matchFreelancerIdInText = function matchFreelancerIdInText(text, 
 }
 
 module.exports.matchFreelancerReview = function matchFreelancerReview(text, review){
-  console.log(text)
-  console.log(review)
+  console.log(text);
+  console.log(review);
   text.indexOf(review).should.be.greaterThan(-1, "review should match");
+}
+
+module.exports.matchIDInText = function matchIDInText(text, freelancer){
+  text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "profession should match");
 }
 
 function searchLinks(links, rel, href){
