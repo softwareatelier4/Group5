@@ -35,6 +35,14 @@
   <a href="/"><img id="page-title" src="../images/logo.png"></a>
   </div>
 
+  <iron-ajax
+    id="reverse-geo-request"
+    url="https://maps.googleapis.com/maps/api/geocode/json"
+    params='{{req_reversegeo}}'
+    handle-as="json"
+    on-response="_handleResponse">
+  </iron-ajax>
+
   <div id="background-results"></div>
 
   <div id="inner-container">
@@ -44,11 +52,11 @@
       fallback-selection="search"
       role="main">
       <div title="search">
-        <ja-search-element results={{results}} location={{location}} profession={{profession}} user-location={{userLocation}}></ja-search-element>
-        <ja-results-list results={{results}} location={{location}} profession={{profession}} user-location=[[userLocation]]></ja-results-list>
+        <ja-search-element results={{results}} location={{location}} user-location=[[userLocation]] profession={{profession}}></ja-search-element>
+        <ja-results-list results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
       </div>
       <div title="freelancer">
-        <ja-profile id={{subrouteData.id}}> </ja-profile>
+        <ja-profile id={{subrouteData.id}}></ja-profile>
       </div>
     </iron-pages>
   </div>
@@ -57,7 +65,6 @@
   </template>
   <script>
     Polymer({
-
       is: 'jobadvisor-app',
 
       properties: {
@@ -67,10 +74,8 @@
         },
         results: {
           type: Array,
-          value: [],
+          value: function(){return[];},
           observer: '_resultsChanged',
-          notify: true,
-          reflectToAttribute: true,
         },
         route: {
           type: Object,
@@ -85,10 +90,10 @@
         },
         location: {
           type: String,
-          value: "",
+          value: "Lugano, Switzerland",
           observer: '_locationChanged',
           // reflectToAttribute: true,
-          // notify: true,
+          notify: true,
         },
         profession: {
           type: String,
@@ -99,7 +104,7 @@
         },
         userLocation: {
           type: String,
-          value: "Lugano, Switzerland",
+          value: "",
           notify: true,
           // reflectToAttribute: true,
         },
@@ -113,13 +118,12 @@
         this.results = results;
       },
       _professionChanged: function(profession) {
-        console.log("Changed", profession);
         this.profession = profession;
       },
-      // _locationChanged: function(location) {
-      //   console.log("Called location in app");
-      //   this.location = location;
-      // },
+      _locationChanged: function(location) {
+
+        // this.location = location;
+      },
 
       _routePageChanged: function(page) {
         this.view = page;
@@ -128,16 +132,31 @@
       _getUserLocation: function() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
-            console.log(position);
             const lat = position.coords.latitude.toString();
             const lng = position.coords.longitude.toString();
-            this.userLocation = lat + ", " + lng;
+            this.req_reversegeo = {
+              latlng: lat + "," + lng,
+              key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+            };
+            this.$['reverse-geo-request'].generateRequest();
+
           }.bind(this));
         }
       },
 
       ready: function() {
         this._getUserLocation();
+      },
+
+      _handleResponse: function(response) {
+        const resp = response.detail.response;
+        if (response) {
+          this.userLocation = resp.results[0].formatted_address;
+          this.location = resp.results[0].formatted_address;
+          console.log("Reverse geo response", resp.results[0].formatted_address);
+          window.localStorage['userLocation'] = resp.results[0].formatted_address;
+        }
+
       },
 
     });
