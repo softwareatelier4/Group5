@@ -95,7 +95,9 @@
         background-color: #eee;
       }
 
-      #div-filters paper-range-slider {flex: wrap;}
+      #div-filters paper-range-slider {
+        flex: wrap;
+      }
 
       .filter-title {
         position: relative;
@@ -207,6 +209,21 @@
           reflectToAttribute: true,
           notify: true,
         },
+        filters: {
+          type: Object,
+          value: {
+            minDistance: 'slider-distance'.valueMin,
+            maxDistance: 'slider-distance'.valueMax,
+            minTime: 'slider-time'.valueMin,
+            maxTime: 'slider-time'.valueMax,
+            minRating: 'slider-rating'.valueMin,
+            maxRating: 'slider-rating'.valueMax,
+            minPrice: 'slider-price'.valueMin,
+            maxPrice: 'slider-price'.valueMax,
+          },
+          reflectToAttribute: true,
+          notify: true,
+        },
         // userLocation: {
         //   type: String,
         //   value: "asdasd",
@@ -223,6 +240,17 @@
       },
 
       search: function (e) {
+        // filling filter Object
+        this.filters.minDistance = this.$['slider-distance'].valueMin;
+        this.filters.maxDistance = this.$['slider-distance'].valueMax;
+        this.filters.maxTime = this.$['slider-time'].valueMax;
+        this.filters.minTime = this.$['slider-time'].valueMin;
+        this.filters.maxRating = this.$['slider-rating'].valueMax;
+        this.filters.minRating = this.$['slider-rating'].valueMin;
+        this.filters.maxPrice = this.$['slider-price'].valueMax;
+        this.filters.minPrice = this.$['slider-price'].valueMin;
+        // console.log(this.filters);
+
         this.general = this.$['field-search'].query;
         // this.category = this.$['category-dropdown'].query;
         this.set('location', this._correctLocation(this.$['location-search'].query));
