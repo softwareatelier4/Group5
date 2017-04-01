@@ -59,6 +59,7 @@
           if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
             const text = response.detail.response.rows[0].elements[0].distance.text;
             const value = response.detail.response.rows[0].elements[0].distance.value;
+            // console.log(text);
             this.set('result.distance_text', text);
             this.set('result.distance_value', value);
           }
