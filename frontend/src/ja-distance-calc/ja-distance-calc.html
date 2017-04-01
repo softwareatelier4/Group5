@@ -44,6 +44,7 @@
       },
 
       _computeDistances: function(result) {
+        this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {
           origins: this.location || this.userLocation,
           destinations: result.address,
