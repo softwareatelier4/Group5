@@ -39,13 +39,6 @@ a {
     height: 150px;
 }
 
-#div-search {
-    padding-bottom: 20px;
-    display: flex;
-    width: 100%;
-    top: 100px;
-}
-
 #inner-container {
     position: absolute;
     top: 100px;
@@ -56,7 +49,7 @@ a {
 #background-results {
     z-index: -1;
     position: absolute;
-    top: 165px;
+    top: 200px;
     background: rgb(249, 250, 251);
     height: calc(100% - 165px);
     width: 100%;
