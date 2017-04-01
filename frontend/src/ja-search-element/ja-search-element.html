@@ -5,6 +5,10 @@
 <link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/shibui-dropdown-menu/shibui-dropdown-menu.html">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ&libraries=places"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script> -->
+
 
 <dom-module id="ja-search-element">
   <template>
@@ -44,11 +48,11 @@
         overflow: auto;
       }
 
-      shibui-dropdown a{ 
+      shibui-dropdown a{
         top: 127px;
       }
 
-              
+
 
       #location-search {
         flex-basis: 20%;
@@ -70,6 +74,7 @@
         margin: 0px;
       }
     </style>
+
 
     <div id="div-search" on-keydown="checkForEnter">
       <paper-search-bar label="test" id="field-search" icon="search" placeholder="General"> </paper-search-bar>
@@ -99,8 +104,19 @@
         <iron-icon icon="search" suffix></iron-icon>
       </paper-button>
     </div>
+    <iron-ajax
+      id="distance-request"
+      url="https://maps.googleapis.com/maps/api/distancematrix/json"
+      params='{{req_distance}}'
+      handle-as="json"
+      on-response="_handleResponseDistance">
+    </iron-ajax>
 
-    <iron-ajax id="search-request" url="http://localhost:3000/search/" params='{{req}}' handle-as="json" on-response="_handleResponse">
+    <iron-ajax  id="search-request"
+                url="http://localhost:3000/search/"
+                params='{{req}}'
+                handle-as="json"
+                on-response="_handleResponse">
     </iron-ajax>
   </template>
 
@@ -126,6 +142,7 @@
           value: "general",
           reflectToAttribute: true,
           notify: true,
+          observer: '_locationChanged',
         },
         category: {
           type: String,
@@ -139,25 +156,56 @@
           reflectToAttribute: true,
           notify: true,
         },
+        // userLocation: {
+        //   type: String,
+        //   value: "asdasd",
+        //   observer: '_userLocationChanged',
+        // },
       },
 
       checkForEnter: function (e) {
         // check if 'enter' was pressed
-        // if (e.keyCode === 13) {
-        //     this.search();
-        // }
-        this.search();
+        if (e.keyCode === 13) {
+            this.search();
+        }
+        // this.search();
       },
 
       search: function (e) {
-        // console.log(this.$['field-search'].query);
         this.general = this.$['field-search'].query;
+        // this.category = this.$['category-dropdown'].query;
+        this.set('location', this._correctLocation(this.$['location-search'].query));
+        // this.location = this._correctLocation(this.$['location-search'].query);
         this.category = this.$['dropdown-toggle'].value;
         this.req = {
           "general": this.general,
           "category": this.category
         };
         this.$['search-request'].generateRequest();
+      },
+
+      _correctLocation: function(location){
+        console.log("Correct location", location || this.userLocation);
+        if (this.userLocation.length > 0)
+          return location || this.userLocation;
+        else {
+          return location || "Lugano, Switzerland";
+        }
+      },
+
+      _locationChanged: function(location) {
+      },
+
+      ready: function() {
+        const inputEl = this.$['location-search'].childNodes[1].childNodes[3];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+
+        autocomplete.addListener('place_changed', function() {
+          var address = autocomplete.getPlace().formatted_address || "";
+          this.$['location-search'].query = address;
+          this.set('location', address);
+          this.search();
+        }.bind(this));
       },
 
       _toggleDropdown: function (e) {
@@ -173,10 +221,58 @@
           this.$['dropdown-toggle'].value = e.target.innerHTML;
         }
       },
+
       _handleResponse: function (response) {
         this.results = response.detail.response;
+
+        // trigger location changed
+        // otherwise it wouldn't re-compute the distances when the
+        // location doesn't change
+        var temp = this.location;
+        this.location = "";
+        this.location = temp;
+
+
+        this.userLocation = this.userLocation || "Lugano, Switzerland";
+        var dest = [];
+        for (var result of this.results) {
+          dest.push(result.address);
+        }
+        console.log("destinations", dest);
+        var dest_joined = dest.join('|')
+        console.log("destinations joined", dest_joined);
+        this.req_distance = {
+          origins: this.$['location-search'].query || this.userLocation,
+          destinations: dest_joined,
+          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+        };
+        this.$['distance-request'].generateRequest();
+
       },
 
+      _userLocationChanged: function(location) {
+        console.log("user changed to",location);
+      },
+
+      _resultsChanged: function(results) {
+        console.log("RESULTS:SEARCH");
+        this.results = results;
+
+      },
+
+      _handleResponseDistance: function(response) {
+        const rows = response.detail.response.rows[0];
+        if (rows) {
+          status = response.detail.response.rows[0].elements[0].status;
+          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
+            var resp = response.detail.response.rows[0];
+            for (var index in this.results) {
+              this.set('results.'+index+'.distance_text', resp.elements[index].distance.text);
+              this.set('results.'+index+'.distance_value', resp.elements[index].distance.value);
+            }
+          }
+        }
+      },
     });
   </script>
 </dom-module>

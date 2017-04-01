@@ -1,10 +1,11 @@
 <dom-module id="ja-results-list">
-
   <template>
     <style>
     </style>
-    <template is="dom-repeat" items="{{results}}" as="result">
-      <ja-results-item id="fl-{{result._id}}" result="{{result}}">
+    <h3>Showing results around [[location]]</h3>
+
+    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value">
+      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location=[[location]] user-location=[[userLocation]]>
       </ja-results-item>
     </template>
 
@@ -16,23 +17,17 @@
       is: "ja-results-list",
 
       properties: {
-        // declare properties for the element's public API
-        greeting: {
-          type: String,
-          value: "This is a list"
-        },
         location: {
           type: String,
           value: "location",
           observer: '_locationChanged',
           // reflectToAttribute: true,
-          notify: true,
+          // notify: true,
         },
         profession: {
           type: String,
           value: "profession",
           observer: '_professionChanged',
-          // reflectToAttribute: true,
           notify: true,
         },
         results: {
@@ -46,12 +41,21 @@
       _professionChanged: function(profession) {
         this.profession = profession;
       },
-      _locationChanged: function(location) {
-        this.location = location;
-      },
 
+      _locationChanged: function(location) {
+        console.log("Location", location);
+
+      },
       _resultsChanged: function(results) {
         this.results = results;
+      },
+
+      _locationView: function() {
+        return this.location;
+      },
+
+      _sortByDistance: function(a, b) {
+        return a.distance_value > b.distance_value;
       },
     });
   </script>
