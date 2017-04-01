@@ -70,3 +70,12 @@ ja-results-list {
     left: 10%;
     width: 80%;
 }*/
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
