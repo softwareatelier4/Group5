@@ -69,6 +69,16 @@
       }
     </style>
 
+    <iron-ajax
+      id="distance-request"
+      url="https://maps.googleapis.com/maps/api/distancematrix/json"
+      params='{{req_distance}}'
+      handle-as="json"
+      on-response="_handleResponseDistance">
+    </iron-ajax>
+
+    <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
+
     <section id="container">
 
       <section id="left">
@@ -109,6 +119,11 @@
         <br><br> E-MAIL
         <div id="email">
           <a id="emaillink">{{email}}</a>
+        </div>
+
+        <br><br>
+        <div id="distance">
+          Distance from you: {{distance}}
         </div>
 
       </section>
@@ -197,13 +212,25 @@
         },
         reviews: {
           type: Array
-        }
+        },
+
+        distance: {
+          type: String,
+        },
+
+        userLocation: {
+          type: String,
+          value: "",
+          notify: true,
+          // reflectToAttribute: true,
+        },
       },
 
       ready: function () {
         if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
+
         }
       },
 
@@ -233,6 +260,15 @@
         this.category = res.category;
         this.reviews = res.reviews;
         console.log(res.reviews[0]);
+
+
+        this.userLocation = this.userLocation || "Lugano, Switzerland";
+        this.req_distance = {
+          origins: this.location || this.userLocation,
+          destinations: this.address,
+          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+        };
+        this.$['distance-request'].generateRequest();
       },
 
       _setrating: function(n){
@@ -242,6 +278,20 @@
           n--;
         }
         return res;
+      },
+
+      _handleResponseDistance: function(response) {
+        const rows = response.detail.response.rows[0];
+        if (rows) {
+          status = response.detail.response.rows[0].elements[0].status;
+          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
+            const text = response.detail.response.rows[0].elements[0].distance.text;
+            const value = response.detail.response.rows[0].elements[0].distance.value;
+            // console.log(text);
+            this.set('distance', text);
+            // this.set('result.distance_value', value);
+          }
+        }
       },
 
       _call: function() {
