@@ -52,10 +52,11 @@
       _filterItems: function (item) {
         console.log("filtering", item.distance_value);
         // return false;
+
         var distance = item.distance_value
                   && (item.distance_value/1000 >= this.filters.minDistance)
                   && (item.distance_value/1000 <= this.filters.maxDistance);
-
+        if (!item.distance_value) distance = true;
         var rating = (item.rating >= this.filters.minRating)
                   && (item.rating <= this.filters.maxRating);
 
@@ -64,7 +65,7 @@
         console.log("time", item.time_value/3600);
         var time = (item.time_value/3600 >= this.filters.minTime)
                   && (item.time_value/3600 <= this.filters.maxTime);
-
+        if (!item.time_value) time = true;
         // console.log(distance && rating && price);
         // if (distance) return
         return distance && rating && price && time;
