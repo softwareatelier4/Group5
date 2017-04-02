@@ -1,19 +1,29 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <dom-module id="ja-review-element">
 
   <template>
     <style>
 
+      paper-card {
+        width: 100%;
+        padding: 20px;
+        margin: 10px 0 10px 0;
+      }
+
     </style>
-    <div id="comment">
-      Comment : {{comment}}
-    </div>
-    <div id="rate">
-      Rate : {{rating}}
-    </div>
-    <div id="date">
-      Date : {{_changedate(date)}}
-    </div>
+    <paper-card>
+      <div id="comment">
+        Comment : {{comment}}
+      </div>
+      <div id="rate">
+        Rate : {{rating}}
+      </div>
+      <div id="date">
+        Date : {{_changedate(date)}}
+      </div>
+    </paper-card>
+
 
   </template>
 
@@ -21,10 +31,10 @@
     Polymer({
       is: "ja-review-element",
       properties: {
-        comment : {
+        comment: {
           type: String
         },
-        rating : {
+        rating: {
           type: Number
         },
         date: {
@@ -32,9 +42,9 @@
         }
       },
 
-      _changedate : function(date){
+      _changedate: function (date) {
         const d = new Date(date);
-        return d.getDate() + "/" +d.getMonth() + "/" + d.getFullYear();
+        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
       }
     });
   </script>

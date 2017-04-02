@@ -8,12 +8,23 @@
       /* boh */
 
       #container {
+        position: fixed;
+        height: 100%;
+        width: 80%!important;
+        top: 100px;
+        bottom: 0px;
         display: flex;
+        overflow: scroll;
         flex-wrap: wrap;
         width: 100%;
         color: dimgray;
         background: white;
         border-radius: 3px;
+        padding-bottom: 10px;
+      }
+
+      #container::-webkit-scrollbar {
+        display: none;
       }
 
       #left {
@@ -67,14 +78,43 @@
         width: 100%;
         height: 0;
       }
+
+      textarea {
+        border-color: lightgray;
+      }
+
+      #reviews {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      #rate {
+        position: relative;
+        width: 20%;
+        padding-left: 20px;
+      }
+
+      #commentarea {
+        position: relative;
+        width: 120%;
+      }
+      /* rate button */
+
+      #review {
+        width: calc(100% - 20px);
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+      }
+      /* rating menu */
+
+      #ratenum {
+        width: 100%!important;
+      }
     </style>
 
-    <iron-ajax
-      id="distance-request"
-      url="https://maps.googleapis.com/maps/api/distancematrix/json"
-      params='{{req_distance}}'
-      handle-as="json"
-      on-response="_handleResponseDistance">
+    <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
+      handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
 
     <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
@@ -87,7 +127,7 @@
           <img id="image" src={{image}} />
         </div>
 
-        <div id="name" >
+        <div id="name">
           {{lastname}} {{firstname}}
         </div>
 
@@ -113,7 +153,7 @@
         <br><br>
 
         <div id="phone">
-          PHONE <br> <a id="phonelink" > {{phone_number}} </a>
+          PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
         <br><br> E-MAIL
@@ -140,22 +180,22 @@
         Description : {{description}}
       </section>
       <section id="reviews" style="width: 100%;">
-        <div id="rating" style="display:flex;" >
+        <div id="rating" style="display:flex;">
           <div id="commentarea" style="width:80%">
             COMMENT <br/>
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
           </div>
-          <div id="rate" style="width:20%; padding-left: 20px;">
-          RATING
-          <select id="ratenum" style="width:90%">
+          <div id="rate">
+            RATING
+            <select id="ratenum" style="width:90%">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="4">5</option>
           </select>
-          <!-- <input type="text" style="width:90%; " id="ratenum">  </input> -->
-          <input id="review" type="submit" value="Rate!" on-click="_call" />
+            <!-- <input type="text" style="width:90%; " id="ratenum">  </input> -->
+            <input id="review" type="submit" value="Rate!" on-click="_call" />
           </div>
         </div>
 
@@ -171,15 +211,15 @@
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
-    <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
+      <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
 
-    </iron-ajax>
+      </iron-ajax>
 
   </template>
 
   <script>
-  // (function () {
-  //   'use strict';
+    // (function () {
+    //   'use strict';
 
     Polymer({
       is: "ja-profile",
@@ -282,16 +322,16 @@
         this.$['distance-request'].generateRequest();
       },
 
-      _setrating: function(n){
+      _setrating: function (n) {
         var res = ""
-        while(n > 0){
+        while (n > 0) {
           res += "*";
           n--;
         }
         return res;
       },
 
-      _handleResponseDistance: function(response) {
+      _handleResponseDistance: function (response) {
         const rows = response.detail.response.rows[0];
         if (rows) {
           status = response.detail.response.rows[0].elements[0].status;
@@ -305,16 +345,20 @@
         }
       },
 
-      _call: function() {
+      _call: function () {
         // if(this.$.comm.value !== " "){
-          // this.$.commentarea.style.color = "";
-          // this.$.comm.style["border-color"]= "";
+        // this.$.commentarea.style.color = "";
+        // this.$.comm.style["border-color"]= "";
 
-          const ajaxel = this.$.ajax2;
-          const d = new Date();
-          const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: d};
-          ajaxel.body= obj;
-          ajaxel.generateRequest();
+        const ajaxel = this.$.ajax2;
+        const d = new Date();
+        const obj = {
+          comment: this.$.comm.value,
+          rating: this.$.ratenum.value,
+          date: d
+        };
+        ajaxel.body = obj;
+        ajaxel.generateRequest();
         // }else {
         //   this.$.commentarea.style.color = "red";
         //   this.$.comm.style["border-color"]= "red";
@@ -322,11 +366,15 @@
 
       },
 
-      _done: function(el){
+      _done: function (el) {
         const d = new Date();
-        const obj = { comment: this.$.comm.value, rating: this.$.ratenum.value, date: d};
+        const obj = {
+          comment: this.$.comm.value,
+          rating: this.$.ratenum.value,
+          date: d
+        };
         this.$.comm.value = " ";
-        this.$.ratenum.value= "1";
+        this.$.ratenum.value = "1";
         this.push('reviews', obj);
         this.reviews = this.reviews.slice().reverse();
       },
@@ -334,7 +382,7 @@
 
     });
 
-  // })();
+    // })();
   </script>
 
 </dom-module>

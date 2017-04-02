@@ -17,7 +17,7 @@ a {
 #page-title {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
-    width: 400px;
+    width: 300px;
 }
 
 #results-title {
@@ -33,7 +33,7 @@ a {
 
 #title-container{
     position: absolute;
-    top: 10px;
+    top: 35px;
     left: 10%;
     width: 80%;
     height: 150px;
@@ -57,7 +57,7 @@ a {
     z-index: -1;
     position: absolute;
     top: 165px;
-    background: rgb(249, 250, 251);
+    background: rgb(239, 240, 241);
     height: calc(100% - 165px);
     width: 100%;
     left: 0;
