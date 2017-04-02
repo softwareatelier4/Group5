@@ -224,6 +224,7 @@
           },
           reflectToAttribute: true,
           notify: true,
+          observer: '_filtersChanged'
         },
         // userLocation: {
         //   type: String,
@@ -240,16 +241,24 @@
         // this.search();
       },
 
+
+      _filtersChanged: function(filters) {
+        // console.log("filters", filters);
+      },
+
       search: function (e) {
         // filling filter Object
-        this.filters.minDistance = this.$['slider-distance'].valueMin;
-        this.filters.maxDistance = this.$['slider-distance'].valueMax;
-        this.filters.maxTime = this.$['slider-time'].valueMax;
-        this.filters.minTime = this.$['slider-time'].valueMin;
-        this.filters.maxRating = this.$['slider-rating'].valueMax;
-        this.filters.minRating = this.$['slider-rating'].valueMin;
-        this.filters.maxPrice = this.$['slider-price'].valueMax;
-        this.filters.minPrice = this.$['slider-price'].valueMin;
+        this.set('filters', {});
+        this.set('filters.minDistance', this.$['slider-distance'].valueMin);
+        this.set('filters.maxDistance', this.$['slider-distance'].valueMax);
+        this.set('filters.maxTime', this.$['slider-time'].valueMax);
+        this.set('filters.minTime', this.$['slider-time'].valueMin);
+        this.set('filters.maxRating', this.$['slider-rating'].valueMax);
+        this.set('filters.minRating', this.$['slider-rating'].valueMin);
+        this.set('filters.maxPrice', this.$['slider-price'].valueMax);
+        this.set('filters.minPrice', this.$['slider-price'].valueMin);
+        // console.log(this.filters);
+        // this.notifyPath('filters');
         // console.log(this.filters);
 
         this.general = this.$['field-search'].query;
