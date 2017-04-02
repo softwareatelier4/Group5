@@ -169,7 +169,11 @@
       handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
 
-    <iron-ajax id="search-request" url="http://localhost:3000/search/" params='{{req}}' handle-as="json" on-response="_handleResponse">
+    <iron-ajax  id="search-request"
+                url="http://localhost:3000/search/"
+                params="{{req}}"
+                handle-as="json"
+                on-response="_handleResponse">
     </iron-ajax>
   </template>
 
@@ -274,8 +278,8 @@
 
       _locationChanged: function (location) {},
 
-      ready: function () {
-        const inputEl = this.$['location-search'].childNodes[1].childNodes[3];
+      ready: function() {
+        var inputEl = this.$['location-search'].childNodes[1].childNodes[3];
         var autocomplete = new google.maps.places.Autocomplete(inputEl);
 
         autocomplete.addListener('place_changed', function () {
@@ -313,8 +317,8 @@
 
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         var dest = [];
-        for (var result of this.results) {
-          dest.push(result.address);
+        for (var index in this.results) {
+          dest.push(this.results[index].address);
         }
         console.log("destinations", dest);
         var dest_joined = dest.join('|')
