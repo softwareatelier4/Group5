@@ -25,13 +25,22 @@
       .result-location, .result-distance {
         float: right;
       }
+
+
     </style>
     <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
     <paper-card>
       <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a>
-      <span class="result-distance">{{result.distance_text}}</span>
+      <div class="img">
+        <img src="{{result.image}}" alt="">
       </div>
-      <div class="card-actions"><span class="result-profession">{{result.profession}}</span> <span class="result-location">{{result.location}}</span>
+      <span class="result-distance">{{result.distance_text}}, {{result.time_text}}</span>
+
+      </div>
+      <div class="card-actions">
+        <div class="result-profession">{{result.profession}}</div>
+        <div class="result-rating">Rating: {{result.rating}}</div>
+        <div class="result-time">Price/hour: {{result.price}}</div>
       </div>
     </paper-card>
 
