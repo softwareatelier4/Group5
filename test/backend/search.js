@@ -41,7 +41,7 @@ describe('Backend search tests', function(){
       .expect(200)
       .end(function(err, res){
         freelancers.forEach(function(freelancer) {
-          utils.matchLocationInText(res.text, freelancers[0]);
+          utils.matchProfessionInText(res.text, freelancers[0]);
         });
         done();
       });
