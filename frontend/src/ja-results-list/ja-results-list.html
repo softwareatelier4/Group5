@@ -1,10 +1,12 @@
 <dom-module id="ja-results-list">
   <template>
     <style>
+
     </style>
     <h3>Showing results around [[location]]</h3>
 
-    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value">
+    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value"
+      filter="{{_filterItems}}">
       <ja-results-item id="fl-{{result._id}}" result="{{result}}" location=[[location]] user-location=[[userLocation]]>
       </ja-results-item>
     </template>
@@ -36,25 +38,46 @@
           notify: true,
           value: []
         },
+        filters: {
+          type: Object,
+          value: {},
+          reflectToAttribute: true,
+          observer: '_filtersChanged',
+        },
       },
 
-      _professionChanged: function(profession) {
+      _professionChanged: function (profession) {
         this.profession = profession;
       },
 
-      _locationChanged: function(location) {
+      _filterItems: function (item) {
+        return item.distance_value > filters.minDistance
+            && item.distance_value < filters.maxDistance
+            // && item.time > filters.minTime
+            // && item.time < filters.maxTime
+            && item.rating > filters.minRating
+            && item.rating < filters.maxRating
+            && item.price > filters.minPrice
+            && item.price < filters.maxPrice
+      },
+
+      _locationChanged: function (location) {
         console.log("Location", location);
 
       },
-      _resultsChanged: function(results) {
+      _resultsChanged: function (results) {
         this.results = results;
       },
 
-      _locationView: function() {
+      _locationView: function () {
         return this.location;
       },
 
-      _sortByDistance: function(a, b) {
+      _filtersChanged: function (filters) {
+        console.log("filters in list", filters);
+      },
+
+      _sortByDistance: function (a, b) {
         return a.distance_value > b.distance_value;
       },
     });

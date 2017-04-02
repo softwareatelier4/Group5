@@ -13,53 +13,38 @@
 <dom-module id="jobadvisor-app">
   <template>
     <style>
-      :host {
+       :host {
         display: block;
       }
     </style>
 
     <app-location route="{{route}}"></app-location>
-    <app-route
-       route="{{route}}"
-       pattern="/:view"
-       data="{{routeData}}"
-       tail="{{subroute}}">
+    <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
-    <app-route
-      route="{{subroute}}"
-      pattern="/:id"
-      data="{{subrouteData}}">
+    <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-  <div id="title-container">
-  <a href="/"><img id="page-title" src="../images/logo.png"></a>
-  </div>
+    <div id="title-container">
+      <a href="/"><img id="page-title" src="../images/logo.png"></a>
+    </div>
 
-  <iron-ajax
-    id="reverse-geo-request"
-    url="https://maps.googleapis.com/maps/api/geocode/json"
-    params='{{req_reversegeo}}'
-    handle-as="json"
-    on-response="_handleResponse">
-  </iron-ajax>
+    <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
+      on-response="_handleResponse">
+    </iron-ajax>
 
-  <div id="background-results"></div>
+    <div id="background-results"></div>
 
-  <div id="inner-container">
-    <iron-pages
-      selected="[[routeData.view]]"
-      attr-for-selected="title"
-      fallback-selection="search"
-      role="main">
-      <div title="search">
-        <ja-search-element results={{results}} location={{location}} user-location=[[userLocation]] profession={{profession}}></ja-search-element>
-        <ja-results-list results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
-      </div>
-      <div title="freelancer">
-        <ja-profile id={{subrouteData.id}} user-location={{userLocation}}></ja-profile>
-      </div>
-    </iron-pages>
-  </div>
+    <div id="inner-container">
+      <iron-pages selected="[[routeData.view]]" attr-for-selected="title" fallback-selection="search" role="main">
+        <div title="search">
+          <ja-search-element filters={{filters}} results={{results}} location={{location}} user-location=[[userLocation]] profession={{profession}}></ja-search-element>
+          <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
+        </div>
+        <div title="freelancer">
+          <ja-profile id={{subrouteData.id}} user-location={{userLocation}}></ja-profile>
+        </div>
+      </iron-pages>
+    </div>
 
 
   </template>
@@ -74,7 +59,9 @@
         },
         results: {
           type: Array,
-          value: function(){return[];},
+          value: function () {
+            return [];
+          },
           observer: '_resultsChanged',
         },
         route: {
@@ -105,8 +92,12 @@
         userLocation: {
           type: String,
           value: "",
-          notify: true,
-          // reflectToAttribute: true,
+          // notify: true,
+          reflectToAttribute: true,
+        },
+        filters: {
+          type: Object,
+          observer: '_filtersChanged',
         },
       },
 
@@ -114,24 +105,28 @@
         '_routePageChanged(routeData.view)',
       ],
 
-      _resultsChanged: function(results) {
+      _resultsChanged: function (results) {
         this.results = results;
       },
-      _professionChanged: function(profession) {
+      _filtersChanged: function (filters) {
+        // console.log("changing filters", filters)
+        this.filters = filters;
+      },
+      _professionChanged: function (profession) {
         this.profession = profession;
       },
-      _locationChanged: function(location) {
+      _locationChanged: function (location) {
 
         // this.location = location;
       },
 
-      _routePageChanged: function(page) {
+      _routePageChanged: function (page) {
         this.view = page;
       },
 
-      _getUserLocation: function() {
+      _getUserLocation: function () {
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
+          navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude.toString();
             const lng = position.coords.longitude.toString();
             this.req_reversegeo = {
@@ -144,11 +139,11 @@
         }
       },
 
-      ready: function() {
+      ready: function () {
         this._getUserLocation();
       },
 
-      _handleResponse: function(response) {
+      _handleResponse: function (response) {
         const resp = response.detail.response;
         if (response) {
           this.userLocation = resp.results[0].formatted_address;
