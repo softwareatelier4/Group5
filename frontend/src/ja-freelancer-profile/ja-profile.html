@@ -180,9 +180,9 @@
         Description : {{description}}
       </section>
       <section id="reviews" style="width: 100%;">
-        <div id="rating" style="display:flex;">
+        <div id="user-rating" style="display:flex;" >
           <div id="commentarea" style="width:80%">
-            COMMENT <br/>
+            <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
           </div>
           <div id="rate">
@@ -201,7 +201,7 @@
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
-          <br/>
+          <!-- <br/> -->
         </template>
       </section>
 
@@ -210,10 +210,9 @@
       <!-- </section> -->
     </section>
 
-    <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
-      <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
-
-      </iron-ajax>
+    <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
+    <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
+    </iron-ajax>
 
   </template>
 
