@@ -5,8 +5,7 @@
     </style>
     <h3>Showing results around [[location]]</h3>
 
-    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value"
-      filter="{{_filterItems}}">
+    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value" filter="_filterItems">
       <ja-results-item id="fl-{{result._id}}" result="{{result}}" location=[[location]] user-location=[[userLocation]]>
       </ja-results-item>
     </template>
@@ -51,14 +50,21 @@
       },
 
       _filterItems: function (item) {
-        return item.distance_value > filters.minDistance
-            && item.distance_value < filters.maxDistance
-            // && item.time > filters.minTime
-            // && item.time < filters.maxTime
-            && item.rating > filters.minRating
-            && item.rating < filters.maxRating
-            && item.price > filters.minPrice
-            && item.price < filters.maxPrice
+        console.log("filtering", item.distance_value);
+        // return false;
+        var distance = item.distance_value
+                  && (item.distance_value/1000 >= this.filters.minDistance)
+                  && (item.distance_value/1000 <= this.filters.maxDistance);
+
+        var rating = (item.rating >= this.filters.minRating)
+                  && (item.rating <= this.filters.maxRating);
+
+        var price = (item.price >= this.filters.minPrice)
+                  && (item.price <= this.filters.maxPrice)
+
+        console.log(distance && rating && price);
+        // if (distance) return
+        return distance && rating && price;
       },
 
       _locationChanged: function (location) {
