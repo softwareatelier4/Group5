@@ -357,6 +357,8 @@
             for (var index in this.results) {
               this.set('results.' + index + '.distance_text', resp.elements[index].distance.text);
               this.set('results.' + index + '.distance_value', resp.elements[index].distance.value);
+              this.set('results.' + index + '.time_text', resp.elements[index].duration.text);
+              this.set('results.' + index + '.time_value', resp.elements[index].duration.value);
             }
           }
         }

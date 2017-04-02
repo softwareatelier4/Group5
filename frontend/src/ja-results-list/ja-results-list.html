@@ -60,11 +60,14 @@
                   && (item.rating <= this.filters.maxRating);
 
         var price = (item.price >= this.filters.minPrice)
-                  && (item.price <= this.filters.maxPrice)
+                  && (item.price <= this.filters.maxPrice);
+        console.log("time", item.time_value/3600);
+        var time = (item.time_value/3600 >= this.filters.minTime)
+                  && (item.time_value/3600 <= this.filters.maxTime);
 
-        console.log(distance && rating && price);
+        // console.log(distance && rating && price);
         // if (distance) return
-        return distance && rating && price;
+        return distance && rating && price && time;
       },
 
       _locationChanged: function (location) {
