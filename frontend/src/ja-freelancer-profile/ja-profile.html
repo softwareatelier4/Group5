@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-review-element/ja-review-element.html">
 <dom-module id="ja-profile">
 
   <template>
@@ -7,12 +8,23 @@
       /* boh */
 
       #container {
+        position: fixed;
+        height: calc(100% - 110px);
+        width: 80%!important;
+        top: 100px;
+        bottom: 0px;
         display: flex;
+        overflow: scroll;
         flex-wrap: wrap;
         width: 100%;
         color: dimgray;
         background: white;
         border-radius: 3px;
+        padding-bottom: 10px;
+      }
+
+      #container::-webkit-scrollbar {
+        display: none;
       }
 
       #left {
@@ -66,7 +78,46 @@
         width: 100%;
         height: 0;
       }
+
+      textarea {
+        border-color: lightgray;
+      }
+
+      #reviews {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      #rate {
+        position: relative;
+        width: 20%;
+        padding-left: 20px;
+      }
+
+      #commentarea {
+        position: relative;
+        width: 120%;
+      }
+      /* rate button */
+
+      #review {
+        width: calc(100% - 20px);
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+      }
+      /* rating menu */
+
+      #ratenum {
+        width: 100%!important;
+      }
     </style>
+
+    <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
+      handle-as="json" on-response="_handleResponseDistance">
+    </iron-ajax>
+
+    <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
 
     <section id="container">
 
@@ -84,6 +135,13 @@
           {{profession}}
         </div>
 
+        <div id="rating">
+          Rating : {{rating}}/*****
+        </div>
+        <div id="category">
+          Category : {{category}}
+        </div>
+
       </section>
 
       <section id="right">
@@ -95,12 +153,17 @@
         <br><br>
 
         <div id="phone">
-          PHONE <br> {{phone_number}}
+          PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
         <br><br> E-MAIL
         <div id="email">
-          {{email}}
+          <a id="emaillink">{{email}}</a>
+        </div>
+
+        <br><br>
+        <div id="distance">
+          Distance from you: {{distance}}
         </div>
 
       </section>
@@ -114,17 +177,49 @@
       <section class="divisor"></section>
 
       <section id="description">
-        {{description}}
+        Description : {{description}}
+      </section>
+      <section id="reviews" style="width: 100%;">
+        <div id="user-rating" style="display:flex;" >
+          <div id="commentarea" style="width:80%">
+            <!-- COMMENT <br/> -->
+            <textarea rows="5" style="width:100%" id="comm"> </textarea>
+          </div>
+          <div id="rate">
+            RATING
+            <select id="ratenum" style="width:90%">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="4">5</option>
+          </select>
+            <!-- <input type="text" style="width:90%; " id="ratenum">  </input> -->
+            <input id="review" type="submit" value="Rate!" on-click="_call" />
+          </div>
+        </div>
+
+        <template is="dom-repeat" items="{{reviews}}" as="result">
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
+          <!-- <br/> -->
+        </template>
       </section>
 
+      <!-- <section id="review"> -->
+
+      <!-- </section> -->
     </section>
 
-    <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished">
+    <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
+    <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
     </iron-ajax>
 
   </template>
 
   <script>
+    // (function () {
+    //   'use strict';
+
     Polymer({
       is: "ja-profile",
 
@@ -151,9 +246,6 @@
         price: {
           type: String
         },
-        location: {
-          type: String
-        },
         profession: {
           type: String
         },
@@ -163,12 +255,33 @@
         email: {
           type: String
         },
+        rating: {
+          type: String
+        },
+        category: {
+          type: String
+        },
+        reviews: {
+          type: Array
+        },
+
+        distance: {
+          type: String,
+        },
+
+        userLocation: {
+          type: String,
+          value: "",
+          notify: true,
+          // reflectToAttribute: true,
+        },
       },
 
       ready: function () {
         if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
+
         }
       },
 
@@ -182,20 +295,93 @@
 
       _finished: function (e) {
         const res = e.detail.response;
-        console.log(res);
-        // console.log(res);
+        this.$.emaillink.href = "mailto:" + res.email;
+        this.$.phonelink.href = "tel:" + res.phone_number.replace(/\s+/g, '');;
         this.firstname = res.firstName;
         this.lastname = res.lastName;
         this.address = res.address;
         this.description = res.description;
         this.email = res.email;
         this.phone_number = res.phone_number;
-        this.location = res.location;
         this.price = res.price;
         this.profession = res.profession;
         this.image = res.image;
-      }
+        this.rating = this._setrating(res.rating);
+        this.category = res.category;
+        this.reviews = res.reviews;
+        console.log(res.reviews[0]);
+
+
+        this.userLocation = this.userLocation || "Lugano, Switzerland";
+        this.req_distance = {
+          origins: this.location || this.userLocation,
+          destinations: this.address,
+          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+        };
+        this.$['distance-request'].generateRequest();
+      },
+
+      _setrating: function (n) {
+        var res = ""
+        while (n > 0) {
+          res += "*";
+          n--;
+        }
+        return res;
+      },
+
+      _handleResponseDistance: function (response) {
+        const rows = response.detail.response.rows[0];
+        if (rows) {
+          status = response.detail.response.rows[0].elements[0].status;
+          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
+            const text = response.detail.response.rows[0].elements[0].distance.text;
+            const value = response.detail.response.rows[0].elements[0].distance.value;
+            // console.log(text);
+            this.set('distance', text);
+            // this.set('result.distance_value', value);
+          }
+        }
+      },
+
+      _call: function () {
+        // if(this.$.comm.value !== " "){
+        // this.$.commentarea.style.color = "";
+        // this.$.comm.style["border-color"]= "";
+
+        const ajaxel = this.$.ajax2;
+        const d = new Date();
+        const obj = {
+          comment: this.$.comm.value,
+          rating: this.$.ratenum.value,
+          date: d
+        };
+        ajaxel.body = obj;
+        ajaxel.generateRequest();
+        // }else {
+        //   this.$.commentarea.style.color = "red";
+        //   this.$.comm.style["border-color"]= "red";
+        // }
+
+      },
+
+      _done: function (el) {
+        const d = new Date();
+        const obj = {
+          comment: this.$.comm.value,
+          rating: this.$.ratenum.value,
+          date: d
+        };
+        this.$.comm.value = " ";
+        this.$.ratenum.value = "1";
+        this.push('reviews', obj);
+        this.reviews = this.reviews.slice().reverse();
+      },
+
+
     });
+
+    // })();
   </script>
 
 </dom-module>

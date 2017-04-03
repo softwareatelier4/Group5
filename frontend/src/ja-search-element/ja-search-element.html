@@ -4,27 +4,72 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<link rel="import" href="../../bower_components/shibui-dropdown-menu/shibui-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ&libraries=places"></script>
+
 
 <dom-module id="ja-search-element">
   <template>
     <style>
-
-      :host {
+       :host {
         display: block;
       }
+      /* ======================= SEARCH ======================= */
+
       #div-search {
+        /*padding-bottom: 20px;*/
         display: flex;
         width: 100%;
-        /*box-shadow: 0px 0px 4px #888888;*/
+        top: 100px;
       }
-      paper-search-bar {
-        flex-basis: 45%;
+
+      #div-dropdown {
+        flex-basis: 20%;
+        background: #fff;
       }
+
+      #div-dropdown button {
+        border: none;
+        padding: 5px;
+        margin: 0;
+        width: 100%;
+        /* this is completely hardcoded will change later */
+        height: 46.38px;
+        background-color: rgba(0, 0, 0, 0);
+        text-align: left;
+        color: #757575;
+        cursor: pointer;
+      }
+
+      #div-dropdown:hover {
+        background: #F7F8FB;
+      }
+
+      #div-dropdown button:focus {
+        outline: none;
+      }
+
+      shibui-dropdown {
+        max-height: 300px;
+        overflow: auto;
+      }
+
+      shibui-dropdown a {
+        top: 127px;
+      }
+
+      #location-search {
+        flex-basis: 20%;
+      }
+
       #field-search {
+        flex-basis: 51%;
         border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
+        /*border-bottom-left-radius: 3px;*/
       }
+
       paper-button {
         /*max-width: 30px;*/
         box-shadow: none !important;
@@ -32,24 +77,107 @@
         background: #F2D847;
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
         margin: 0px;
       }
+      /* ======================= FILTERS ======================= */
 
+      #div-filters {
+        /*padding-bottom: 35px;*/
+        margin-bottom: 30px;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+        height: auto;
+        top: 145px;
+        background-color: #eee;
+      }
 
+      #div-filters paper-range-slider {
+        flex: wrap;
+        flex-grow: 1;
+      }
+
+      .filter-title {
+        position: relative;
+        flex-grow: 1;
+        padding-left: 20px;
+        /*bottom: 6px;*/
+        /*margin-left: 5px;*/
+        font-size: 12px;
+      }
     </style>
-    
+
+
     <div id="div-search" on-keydown="checkForEnter">
-      <paper-search-bar label="test" id="field-search" hide-filter-button icon="work" placeholder="Profession"> </paper-search-bar>
-      <paper-search-bar label="test" id="location-search" hide-filter-button icon="home" placeholder="Location"> </paper-search-bar>
-    <paper-button id="button-search" raised><iron-icon icon="search" suffix></iron-icon></paper-button>
+      <paper-search-bar hide-filter-button label="test" id="field-search" icon="search" placeholder="General"> </paper-search-bar>
+      <div id="div-dropdown">
+        <button id="dropdown-toggle" value=""><iron-icon icon="work" suffix style="color: #9B9B9B"></iron-icon> Category : Any </button>
+        <shibui-dropdown id="shibui-dropdown" opened="{{opened}}">
+          <a on-tap="_selectCategory">Any</a>
+          <a on-tap="_selectCategory">Tecnical Services</a>
+          <a on-tap="_selectCategory">IT Services</a>
+          <a on-tap="_selectCategory">Design</a>
+          <a on-tap="_selectCategory">Management</a>
+          <a on-tap="_selectCategory">Retail</a>
+          <a on-tap="_selectCategory">Human Resources</a>
+          <a on-tap="_selectCategory">Marketing</a>
+          <a on-tap="_selectCategory">Consulting</a>
+          <a on-tap="_selectCategory">Advertising</a>
+          <a on-tap="_selectCategory">Logistics</a>
+          <a on-tap="_selectCategory">Real Estate</a>
+          <a on-tap="_selectCategory">Social Work</a>
+          <a on-tap="_selectCategory">Healthcare</a>
+          <a on-tap="_selectCategory">Other</a>
+        </shibui-dropdown>
+      </div>
+
+      <paper-search-bar label="test" id="location-search" hide-filter-button icon="home" placeholder="Your location"> </paper-search-bar>
+      <paper-button id="button-search" raised>
+        <iron-icon icon="search" suffix></iron-icon>
+      </paper-button>
+    </div>
+    <div id="div-filters">
+      <!--<div>-->
+      <div class="filter-title">
+        <p> Distance(km) : </p>
+      </div>
+      <paper-range-slider id="slider-distance" pin value-max="500" min="0" max="300"></paper-range-slider>
+      <!--</div>-->
+      <!--<div>-->
+      <div class="filter-title">
+        <p> Time by car : </p>
+      </div>
+      <paper-range-slider id="slider-time" pin step="0.5" value-max="500" min="0" max="8"></paper-range-slider>
+      <!--</div>
+      <div>-->
+      <div class="filter-title">
+        <p> Rating : </p>
+      </div>
+      <paper-range-slider id="slider-rating" pin min="0" max="5"></paper-range-slider>
+      <!--</div>
+      <div>-->
+      <div class="filter-title">
+        <p> Price range : </p>
+      </div>
+      <paper-range-slider id="slider-price" pin min="0" max="300"></paper-range-slider>
+      <!--</div>-->
     </div>
 
-    <iron-ajax
-            id="search-request"
-            url="http://localhost:3000/search/"
-            params='{{req}}'
-            handle-as="json"
-            on-response="_handleResponse">
+
+
+    <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
+      handle-as="json" on-response="_handleResponseDistance">
+    </iron-ajax>
+
+    <iron-ajax  id="search-request"
+                url="http://localhost:3000/search/"
+                params="{{req}}"
+                handle-as="json"
+                on-response="_handleResponse">
     </iron-ajax>
   </template>
 
@@ -59,7 +187,8 @@
       is: 'ja-search-element',
 
       listeners: {
-        'button-search.tap': 'search'
+        'button-search.tap': 'search',
+        'dropdown-toggle.tap': '_toggleDropdown',
       },
 
       properties: {
@@ -69,41 +198,178 @@
           reflectToAttribute: true,
           notify: true,
         },
+        general: {
+          type: String,
+          value: "general",
+          reflectToAttribute: true,
+          notify: true,
+          observer: '_locationChanged',
+        },
+        category: {
+          type: String,
+          value: "category",
+          reflectToAttribute: true,
+          notify: true,
+        },
         location: {
           type: String,
           value: "location",
           reflectToAttribute: true,
           notify: true,
         },
-        profession: {
-          type: String,
-          value: "profession",
+        filters: {
+          type: Object,
+          value: {
+            minDistance: 'slider-distance'.valueMin,
+            maxDistance: 'slider-distance'.valueMax,
+            minTime: 'slider-time'.valueMin,
+            maxTime: 'slider-time'.valueMax,
+            minRating: 'slider-rating'.valueMin,
+            maxRating: 'slider-rating'.valueMax,
+            minPrice: 'slider-price'.valueMin,
+            maxPrice: 'slider-price'.valueMax,
+          },
           reflectToAttribute: true,
           notify: true,
+          observer: '_filtersChanged'
         },
+        // userLocation: {
+        //   type: String,
+        //   value: "asdasd",
+        //   observer: '_userLocationChanged',
+        // },
       },
 
       checkForEnter: function (e) {
-                // check if 'enter' was pressed
-                // if (e.keyCode === 13) {
-                //     this.search();
-                // } 
-                this.search();
-            },
+        // check if 'enter' was pressed
+        if (e.keyCode === 13) {
+          this.search();
+        }
+        // this.search();
+      },
 
-      search: function(e) {
-        console.log(this.$['field-search'].query);
-        this.profession = this.$['field-search'].query;
-        this.location = this.$['location-search'].query;
-        this.req = {"profession": this.profession,
-                    "location": this.location};
+
+      _filtersChanged: function(filters) {
+        // console.log("filters", filters);
+      },
+
+      search: function (e) {
+        // filling filter Object
+        this.set('filters', {});
+        this.set('filters.minDistance', this.$['slider-distance'].valueMin);
+        this.set('filters.maxDistance', this.$['slider-distance'].valueMax);
+        this.set('filters.maxTime', this.$['slider-time'].valueMax);
+        this.set('filters.minTime', this.$['slider-time'].valueMin);
+        this.set('filters.maxRating', this.$['slider-rating'].valueMax);
+        this.set('filters.minRating', this.$['slider-rating'].valueMin);
+        this.set('filters.maxPrice', this.$['slider-price'].valueMax);
+        this.set('filters.minPrice', this.$['slider-price'].valueMin);
+        // console.log(this.filters);
+        // this.notifyPath('filters');
+        // console.log(this.filters);
+
+        this.general = this.$['field-search'].query;
+        // this.category = this.$['category-dropdown'].query;
+        this.set('location', this._correctLocation(this.$['location-search'].query));
+        // this.location = this._correctLocation(this.$['location-search'].query);
+        this.category = this.$['dropdown-toggle'].value;
+        this.req = {
+          "general": this.general,
+          "category": this.category
+        };
         this.$['search-request'].generateRequest();
       },
 
-      _handleResponse: function(response) {
-        this.results = response.detail.response;
+      _correctLocation: function (location) {
+        console.log("Correct location", location || this.userLocation);
+        if (this.userLocation.length > 0)
+          return location || this.userLocation;
+        else {
+          return location || "Lugano, Switzerland";
+        }
       },
 
+      _locationChanged: function (location) {},
+
+      ready: function() {
+        var inputEl = this.$['location-search'].childNodes[1].childNodes[3];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+
+        autocomplete.addListener('place_changed', function () {
+          var address = autocomplete.getPlace().formatted_address || "";
+          this.$['location-search'].query = address;
+          this.set('location', address);
+          this.search();
+        }.bind(this));
+      },
+
+      _toggleDropdown: function (e) {
+        this.$['shibui-dropdown'].toggle();
+      },
+
+      _selectCategory: function (e) {
+        this.$['dropdown-toggle'].innerHTML =
+          "<iron-icon icon='work' suffix style='color: #9B9B9B'></iron-icon> Category : " + e.target.innerHTML;
+        if (e.target.innerHTML == "Any") {
+          this.$['dropdown-toggle'].value = "";
+        } else {
+          this.$['dropdown-toggle'].value = e.target.innerHTML;
+        }
+      },
+
+      _handleResponse: function (response) {
+        this.results = response.detail.response;
+
+        // trigger location changed
+        // otherwise it wouldn't re-compute the distances when the
+        // location doesn't change
+        var temp = this.location;
+        this.location = "";
+        this.location = temp;
+
+
+        this.userLocation = this.userLocation || "Lugano, Switzerland";
+        var dest = [];
+        for (var index in this.results) {
+          dest.push(this.results[index].address);
+        }
+        console.log("destinations", dest);
+        var dest_joined = dest.join('|')
+        console.log("destinations joined", dest_joined);
+        this.req_distance = {
+          origins: this.$['location-search'].query || this.userLocation,
+          destinations: dest_joined,
+          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+        };
+        this.$['distance-request'].generateRequest();
+
+      },
+
+      _userLocationChanged: function (location) {
+        console.log("user changed to", location);
+      },
+
+      _resultsChanged: function (results) {
+        console.log("RESULTS:SEARCH");
+        this.results = results;
+
+      },
+
+      _handleResponseDistance: function (response) {
+        const rows = response.detail.response.rows[0];
+        if (rows) {
+          status = response.detail.response.rows[0].elements[0].status;
+          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
+            var resp = response.detail.response.rows[0];
+            for (var index in this.results) {
+              this.set('results.' + index + '.distance_text', resp.elements[index].distance.text);
+              this.set('results.' + index + '.distance_value', resp.elements[index].distance.value);
+              this.set('results.' + index + '.time_text', resp.elements[index].duration.text);
+              this.set('results.' + index + '.time_value', resp.elements[index].duration.value);
+            }
+          }
+        }
+      },
     });
   </script>
 </dom-module>

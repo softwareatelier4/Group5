@@ -6,55 +6,50 @@
 <link rel="import" href="../ja-results-list/ja-results-list.html">
 <link rel="import" href="../ja-results-item/ja-results-item.html">
 <link rel="import" href="../ja-search-element/ja-search-element.html">
+<link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <dom-module id="jobadvisor-app">
   <template>
     <style>
-      :host {
+       :host {
         display: block;
       }
     </style>
 
     <app-location route="{{route}}"></app-location>
-    <app-route
-       route="{{route}}"
-       pattern="/:view"
-       data="{{routeData}}"
-       tail="{{subroute}}">
+    <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
-    <app-route
-      route="{{subroute}}"
-      pattern="/:id"
-      data="{{subrouteData}}">
+    <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-  <div id="outmost-container">
-  <a href="/"><h1 id="page-title">JobAdvisor</h1></a>
+    <div id="title-container">
+      <a href="/"><img id="page-title" src="../images/logo.png"></a>
+    </div>
 
+    <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
+      on-response="_handleResponse">
+    </iron-ajax>
 
-    <iron-pages
-      selected="[[routeData.view]]"
-      attr-for-selected="title"
-      fallback-selection="search"
-      role="main">
-      <div title="search">
-        <ja-search-element results={{results}} location={{location}} profession={{profession}}></ja-search-element>
-        <ja-results-list results={{results}} location={{location}} profession={{profession}}></ja-results-list>
-      </div>
-      <div title="freelancer">
-        <ja-profile id={{subrouteData.id}}> </ja-profile>
-      </div>
-    </iron-pages>
+    <div id="background-results"></div>
 
-</div>
+    <div id="inner-container">
+      <iron-pages selected="[[routeData.view]]" attr-for-selected="title" fallback-selection="search" role="main">
+        <div title="search">
+          <ja-search-element filters={{filters}} results={{results}} location={{location}} user-location=[[userLocation]] profession={{profession}}></ja-search-element>
+          <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
+        </div>
+        <div title="freelancer">
+          <ja-profile id={{subrouteData.id}} user-location={{userLocation}}></ja-profile>
+        </div>
+      </iron-pages>
+    </div>
 
 
   </template>
   <script>
     Polymer({
-
       is: 'jobadvisor-app',
 
       properties: {
@@ -64,10 +59,10 @@
         },
         results: {
           type: Array,
-          value: [],
+          value: function () {
+            return [];
+          },
           observer: '_resultsChanged',
-          notify: true,
-          reflectToAttribute: true,
         },
         route: {
           type: Object,
@@ -82,10 +77,10 @@
         },
         location: {
           type: String,
-          value: "",
+          value: "Lugano, Switzerland",
           observer: '_locationChanged',
           // reflectToAttribute: true,
-          // notify: true,
+          notify: true,
         },
         profession: {
           type: String,
@@ -94,25 +89,69 @@
           // reflectToAttribute: true,
           // notify: true,
         },
+        userLocation: {
+          type: String,
+          value: "",
+          // notify: true,
+          reflectToAttribute: true,
+        },
+        filters: {
+          type: Object,
+          observer: '_filtersChanged',
+        },
       },
 
       observers: [
         '_routePageChanged(routeData.view)',
       ],
 
-      _resultsChanged: function(results) {
+      _resultsChanged: function (results) {
         this.results = results;
       },
-      _professionChanged: function(profession) {
-        console.log("Changed", profession);
+      _filtersChanged: function (filters) {
+        // console.log("changing filters", filters)
+        this.filters = filters;
+      },
+      _professionChanged: function (profession) {
         this.profession = profession;
       },
-      _locationChanged: function(location) {
-        this.location = location;
+      _locationChanged: function (location) {
+
+        // this.location = location;
       },
 
-      _routePageChanged: function(page) {
+      _routePageChanged: function (page) {
         this.view = page;
+      },
+
+      _getUserLocation: function () {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude.toString();
+            const lng = position.coords.longitude.toString();
+            this.req_reversegeo = {
+              latlng: lat + "," + lng,
+              key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+            };
+            this.$['reverse-geo-request'].generateRequest();
+
+          }.bind(this));
+        }
+      },
+
+      ready: function () {
+        this._getUserLocation();
+      },
+
+      _handleResponse: function (response) {
+        const resp = response.detail.response;
+        if (response) {
+          this.userLocation = resp.results[0].formatted_address;
+          this.location = resp.results[0].formatted_address;
+          console.log("Reverse geo response", resp.results[0].formatted_address);
+          window.localStorage['userLocation'] = resp.results[0].formatted_address;
+        }
+
       },
 
     });

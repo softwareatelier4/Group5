@@ -2,6 +2,12 @@ body {
     background-color: #081827;  
     font-family: 'Roboto', Serif;
     font-weight: lighter;
+    overflow: hidden;
+    background-image: url("../images/background.jpg");
+    background-attachment: fixed; 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
 }
 
 a {
@@ -10,33 +16,72 @@ a {
 }
 
 #page-title {
-    font-size: 4em;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
-    margin: 5px;
+    width: 300px;
 }
 
 #results-title {
     color: white;
 }
 
-#outmost-container{
+/*#title-container{
     position: absolute;
     top: 24%;
     left: 10%;
     width: 80%;
+}*/
+
+#title-container{
+    position: absolute;
+    top: 35px;
+    left: 10%;
+    width: 80%;
+    height: 150px;
 }
+
+#inner-container {
+    position: absolute;
+    overflow: scroll;
+    top: 100px;
+    bottom: 0;
+    height: calc(100% - 100px);
+    width: 80%;
+    left: 10%;
+}
+
+#inner-container::-webkit-scrollbar {
+        display: none;
+      }
+
+#background-results {
+    z-index: -1;
+    position: absolute;
+    top: 200px;
+    background: rgb(249, 250, 251);
+    height: calc(100% - 165px);
+    width: 100%;
+    left: 0;
+}
+
 
 /*ja-search-element {
     position: absolute;
     top: 40%;
     width: 80%;
     left: 10%;
+}*/
+
+ja-results-list h3 {
+    font-weight: normal;
+    color: dimgray;
 }
 
-ja-results-list {
-    position: absolute;
-    top: 48%;
-    left: 10%;
-    width: 80%;
-}*/
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
