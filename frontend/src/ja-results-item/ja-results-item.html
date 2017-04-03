@@ -32,7 +32,6 @@
       }
 
     </style>
-    <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
     <paper-card>
       <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a>
       <div class="img">
@@ -44,7 +43,7 @@
       <div class="card-actions">
         <div class="result-profession">{{result.profession}}</div>
         <div class="result-rating">Rating: {{result.rating}}</div>
-        <div class="result-time">Price/hour: {{result.price}}</div>
+        <div class="result-price">CHF/hour: {{result.price}}</div>
       </div>
     </paper-card>
 

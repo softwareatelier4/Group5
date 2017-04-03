@@ -8,7 +8,8 @@ module.exports = {
       .waitForElementVisible('ja-results-list', 1000)
       .waitForElementVisible('#field-search', 1000)
       .waitForElementVisible('#location-search', 1000)
-      .waitForElementVisible('#dropdown-toggle', 1000);
+      .waitForElementVisible('#dropdown-toggle', 1000)
+      .waitForElementVisible('#div-filters', 1000);
   },
 
   'Test input, get results and click on a profile' : function (client) {
@@ -18,6 +19,8 @@ module.exports = {
       .setValue('#location-search input', 'Lugano, Switzerland')
       .click('#button-search')
       .pause(2000)
+      .assert.containsText('ja-results-list > h3',
+                           'Lugano, Switzerland')
       .waitForElementVisible('ja-results-list', 1000)
       .waitForElementVisible('ja-results-item', 1000)
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1', 1000)
@@ -25,11 +28,17 @@ module.exports = {
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1 .result-name', 1000)
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1 .result-profession', 1000)
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1 .result-distance', 1000)
+      .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1 .result-rating', 1000)
+      .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1 .result-price', 1000)
       // Distance value doesn't show up with nightwatch
       .assert.containsText('#fl-5625fc2bd82b84d23d8c7bf1 .result-name',
                            'Gianmarco Palazzi')
       .assert.containsText('#fl-5625fc2bd82b84d23d8c7bf1 .result-profession',
                            'Web developer')
+      .assert.containsText('#fl-5625fc2bd82b84d23d8c7bf1 .result-rating',
+                           '5')
+      .assert.containsText('#fl-5625fc2bd82b84d23d8c7bf1 .result-price',
+                           '100')
       // .assert.containsText('#fl-5625fc2bd82b84d23d8c7bf1 .result-distance',
       //                      '33.2 km')
       .click('#fl-5625fc2bd82b84d23d8c7bf1 a')
@@ -55,6 +64,7 @@ module.exports = {
       .waitForElementVisible('#field-search', 1000)
       .waitForElementVisible('#location-search', 1000)
       .waitForElementVisible('#dropdown-toggle', 1000)
+      .waitForElementVisible('#div-filters', 1000)
       .end();
   },
 
@@ -69,6 +79,7 @@ module.exports = {
       .waitForElementVisible('#field-search', 1000)
       .waitForElementVisible('#location-search', 1000)
       .waitForElementVisible('#dropdown-toggle', 1000)
+      .waitForElementVisible('#div-filters', 1000)
       .waitForElementVisible('ja-search-element', 1000)
       .waitForElementVisible('ja-results-list', 1000)
       .setValue('#field-search input', ' ')
@@ -76,6 +87,8 @@ module.exports = {
       .setValue('#location-search input', 'Zurich, Switzerland')
       .click('#button-search')
       .pause(2000)
+      .assert.containsText('ja-results-list > h3',
+                           'Zurich, Switzerland')
       .waitForElementVisible('ja-results-item', 1000)
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bd6', 1000)
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bf1', 1000)
