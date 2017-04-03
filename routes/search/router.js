@@ -32,11 +32,12 @@ router.get('/', function(req, res, next) {
       if (err) return console.error(err);
       res.json(profiles);
     });
-  }
+  }else{
   Freelancer.find().exec(function(err, profiles) {
     if (err) return console.error(err);
     res.json(profiles);
   });
+}
 });
 
 module.exports = router;
