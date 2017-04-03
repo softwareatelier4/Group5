@@ -2,6 +2,7 @@ body {
     background-color: #081827;  
     font-family: 'Roboto', Serif;
     font-weight: lighter;
+    overflow: hidden;
     background-image: url("../images/background.jpg");
     background-attachment: fixed; 
     background-repeat: no-repeat;
@@ -62,14 +63,12 @@ a {
     top: 40%;
     width: 80%;
     left: 10%;
-}
-
-ja-results-list {
-    position: absolute;
-    top: 48%;
-    left: 10%;
-    width: 80%;
 }*/
+
+ja-results-list h3 {
+    font-weight: normal;
+    color: dimgray;
+}
 
 .unselectable {
     -webkit-touch-callout: none;
