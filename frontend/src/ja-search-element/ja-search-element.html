@@ -65,9 +65,9 @@
       }
 
       #field-search {
-        flex-basis: 50%;
+        flex-basis: 51%;
         border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
+        /*border-bottom-left-radius: 3px;*/
       }
 
       paper-button {
@@ -77,6 +77,7 @@
         background: #F2D847;
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
         margin: 0px;
       }
       /* ======================= FILTERS ======================= */
@@ -84,8 +85,11 @@
       #div-filters {
         /*padding-bottom: 35px;*/
         margin-bottom: 30px;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
         width: 100%;
         height: auto;
         top: 145px;
@@ -94,12 +98,15 @@
 
       #div-filters paper-range-slider {
         flex: wrap;
+        flex-grow: 1;
       }
 
       .filter-title {
         position: relative;
+        flex-grow: 1;
+        padding-left: 20px;
         /*bottom: 6px;*/
-        margin-left: 5px;
+        /*margin-left: 5px;*/
         font-size: 12px;
       }
     </style>
