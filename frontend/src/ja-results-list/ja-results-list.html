@@ -1,10 +1,17 @@
 <dom-module id="ja-results-list">
-
   <template>
     <style>
+        #resultList {
+          position: absolute;
+          overflow: scroll;
+          height: 80%;
+          bottom: 0;
+        }
     </style>
-    <template is="dom-repeat" items="{{results}}" as="result">
-      <ja-results-item id="fl-{{result._id}}" result="{{result}}">
+    <h3>Showing results around [[location]]</h3>
+
+    <template id="resultList" is="dom-repeat" items="{{results}}" as="result" sort="_sortByDistance" observe="distance_value" filter="_filterItems">
+      <ja-results-item id="fl-{{result._id}}" result="{{result}}" location=[[location]] user-location=[[userLocation]]>
       </ja-results-item>
     </template>
 
@@ -16,23 +23,17 @@
       is: "ja-results-list",
 
       properties: {
-        // declare properties for the element's public API
-        greeting: {
-          type: String,
-          value: "This is a list"
-        },
         location: {
           type: String,
           value: "location",
           observer: '_locationChanged',
           // reflectToAttribute: true,
-          notify: true,
+          // notify: true,
         },
         profession: {
           type: String,
           value: "profession",
           observer: '_professionChanged',
-          // reflectToAttribute: true,
           notify: true,
         },
         results: {
@@ -41,17 +42,58 @@
           notify: true,
           value: []
         },
+        filters: {
+          type: Object,
+          value: {},
+          reflectToAttribute: true,
+          observer: '_filtersChanged',
+        },
       },
 
-      _professionChanged: function(profession) {
+      _professionChanged: function (profession) {
         this.profession = profession;
       },
-      _locationChanged: function(location) {
-        this.location = location;
+
+      _filterItems: function (item) {
+        console.log("filtering", item.distance_value);
+        // return false;
+
+        var distance = item.distance_value
+                  && (item.distance_value/1000 >= this.filters.minDistance)
+                  && (item.distance_value/1000 <= this.filters.maxDistance);
+        if (!item.distance_value) distance = true;
+        var rating = (item.rating >= this.filters.minRating)
+                  && (item.rating <= this.filters.maxRating);
+
+        var price = (item.price >= this.filters.minPrice)
+                  && (item.price <= this.filters.maxPrice);
+        console.log("time", item.time_value/3600);
+        var time = (item.time_value/3600 >= this.filters.minTime)
+                  && (item.time_value/3600 <= this.filters.maxTime);
+        if (!item.time_value) time = true;
+        // console.log(distance && rating && price);
+        // if (distance) return
+        return distance && rating && price && time;
       },
 
-      _resultsChanged: function(results) {
+      _locationChanged: function (location) {
+        console.log("Location", location);
+
+      },
+      _resultsChanged: function (results) {
         this.results = results;
+      },
+
+      _locationView: function () {
+        return this.location;
+      },
+
+      _filtersChanged: function (filters) {
+        console.log("filters in list", filters);
+      },
+
+      _sortByDistance: function (a, b) {
+        return a.distance_value > b.distance_value;
       },
     });
   </script>

@@ -1,0 +1,84 @@
+<dom-module id="ja-distance-calc">
+
+  <template>
+    <style>
+    </style>
+
+    <!-- <iron-ajax
+      id="distance-request"
+      url="https://maps.googleapis.com/maps/api/distancematrix/json"
+      params='{{req_distance}}'
+      handle-as="json"
+      on-response="_handleResponse">
+    </iron-ajax> -->
+  </template>
+
+ <!--  Google maps API key AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ  -->
+
+  <script>
+    Polymer({
+      is: "ja-distance-calc",
+
+      properties: {
+        result: {
+          type: Object,
+          value: {},
+          observer: '_resultChanged',
+          reflectToAttribute: true,
+        },
+        location: {
+          type: String,
+          value: "",
+          observer: '_locationChanged',
+          notify: true,
+        },
+        // userLocation: {
+        //   type: String,
+        //   value: "asdasd",
+        //   observer: '_userLocationChanged',
+        // },
+      },
+
+      _resultChanged: function(result) {
+        this.result = result;
+        console.log("results", result);
+      },
+
+      // _computeDistances: function(result) {
+      //   this.userLocation = this.userLocation || "Lugano, Switzerland";
+      //   this.req_distance = {
+      //     origins: this.location || this.userLocation,
+      //     destinations: result.address,
+      //     key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+      //   };
+      //   this.$['distance-request'].generateRequest();
+      // },
+
+      _handleResponse: function(response) {
+        const rows = response.detail.response.rows[0];
+        if (rows) {
+          status = response.detail.response.rows[0].elements[0].status;
+          if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
+            const text = response.detail.response.rows[0].elements[0].distance.text;
+            const value = response.detail.response.rows[0].elements[0].distance.value;
+            // console.log(text);
+            this.set('result.distance_text', text);
+            this.set('result.distance_value', value);
+          }
+        }
+      },
+
+      _locationChanged: function(location) {
+        console.log("Current location", location, this.location);
+        setTimeout(function() {
+          // this._computeDistances(this.result);
+        }.bind(this))
+      },
+      _userLocationChanged: function(location) {
+        console.log("Current <US</USE>location", location);
+        // this._computeDistances(this.result);
+      },
+    });
+  </script>
+
+</dom-module>
