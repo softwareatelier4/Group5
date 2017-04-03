@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 
   var categories = ['firstName', 'lastName', 'address', 'description', 'profession', 'reviews'];
 
-  if (req.query.general || req.query.category) {
+  if(req.query.general || req.query.category) {
     var input = new RegExp(req.query.general, 'i');
     var queryArray = [];
     categories.forEach(function(property) {
@@ -33,6 +33,10 @@ router.get('/', function(req, res, next) {
       res.json(profiles);
     });
   }
+  Freelancer.find().exec(function(err, profiles) {
+    if (err) return console.error(err);
+    res.json(profiles);
+  });
 });
 
 module.exports = router;
