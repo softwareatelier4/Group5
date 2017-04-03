@@ -42,10 +42,17 @@ a {
 
 #inner-container {
     position: absolute;
+    overflow: scroll;
     top: 100px;
+    bottom: 0;
+    height: calc(100% - 100px);
     width: 80%;
     left: 10%;
 }
+
+#inner-container::-webkit-scrollbar {
+        display: none;
+      }
 
 #background-results {
     z-index: -1;
