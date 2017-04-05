@@ -52,6 +52,11 @@ module.exports = {
       .waitForElementVisible('#phone', 1000)
       .waitForElementVisible('#email', 1000)
       .waitForElementVisible('#price', 1000)
+      .source(function(result) {
+
+      })
+      .assert.containsText('#name',
+                           'GIANMARCO')
       // Fields content on profile don't show up when running nightwatch
   },
 
@@ -121,6 +126,9 @@ module.exports = {
       .url('http://localhost:3000/freelancer/5625fc2bd82b84d23d8c7bd5')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
+      // .source(function(response) {
+      //   console.log(response.value);
+      // })
       .waitForElementVisible('ja-profile', 10000)
       .waitForElementVisible('#imagediv', 1000)
       .waitForElementVisible('#description', 1000)

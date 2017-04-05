@@ -6,6 +6,7 @@
   "scripts": {
     "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "start-jenkins": "DEBUG='jobadvisor-server' ./bin/www",
+    "install-jenkins": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriverJenkins",
     "test": "npm run test-mocha && npm start | node seed.js",
     "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec ./test/* --colors --reporter mocha-jenkins-reporter",
     "test-nightwatch": "node seed.js && ./nightwatch"

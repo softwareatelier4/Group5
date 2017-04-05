@@ -8,9 +8,12 @@ module.exports = {
   "selenium" : {
     "start_process" : true,
     "server_path" : "./selenium-server-standalone-2.48.2.jar",
-    "log_path" : false,
+    "log_path" : "./",
     "host" : "127.0.0.1",
     "port" : 4444,
+    "cli_args" : {
+      "webdriver.chrome.driver" : "./chromedriver"
+    }
   },
 
   "test_settings" : {
@@ -24,7 +27,7 @@ module.exports = {
         "path" : ""
       },
       "desiredCapabilities": {
-        "browserName": "phantomjs",
+        "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
@@ -33,6 +36,14 @@ module.exports = {
     "firefox" : {
       "desiredCapabilities": {
         "browserName": "firefox",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true
+      }
+    },
+
+    "chrome" : {
+      "desiredCapabilities": {
+        "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
