@@ -1,7 +1,7 @@
 module.exports = {
   'Test main elements visibility' : function (client) {
     client
-      .url('http://localhost:3000')
+      .url('http://localhost:3005')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
       .waitForElementVisible('ja-search-element', 1000)
@@ -43,7 +43,7 @@ module.exports = {
       //                      '33.2 km')
       .click('#fl-5625fc2bd82b84d23d8c7bf1 a')
       .pause(1000)
-      .assert.urlContains('http://localhost:3000/freelancer/5625fc2bd82b84d23d8c7bf1')
+      .assert.urlContains('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bf1')
       .waitForElementVisible('#imagediv', 1000)
       .waitForElementVisible('#description', 1000)
       .waitForElementVisible('#name', 1000)
@@ -76,7 +76,7 @@ module.exports = {
 
   'Search only by category' : function (client) {
     client
-      .url('http://localhost:3000')
+      .url('http://localhost:3005')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
       .waitForElementVisible('ja-search-element', 1000)
@@ -108,7 +108,7 @@ module.exports = {
                            'Software Engineer')
       .click('#fl-5625fc2bd82b84d23d8c7bd6 a')
       .pause(1000)
-      .assert.urlContains('http://localhost:3000/freelancer/5625fc2bd82b84d23d8c7bd6')
+      .assert.urlContains('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd6')
       .waitForElementVisible('#imagediv', 1000)
       .waitForElementVisible('#description', 1000)
       .waitForElementVisible('#name', 1000)
@@ -123,7 +123,7 @@ module.exports = {
 
   'Test profile elements visibility' : function (client) {
     client
-      .url('http://localhost:3000/freelancer/5625fc2bd82b84d23d8c7bd5')
+      .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd5')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
       // .source(function(response) {
