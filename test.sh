@@ -7,5 +7,5 @@ node seed.js
 cd frontend
 bower install
 cd ..
-./nightwatch
+xvfb-run ./nightwatch
 pkill "JobAdvisor"
