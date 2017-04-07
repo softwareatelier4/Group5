@@ -1,0 +1,60 @@
+
+<link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+<dom-module id="ja-login">
+  <template>
+    <style>
+      #container {
+        position: fixed;
+        height: calc(100% - 110px);
+        width: 80%!important;
+        top: 100px;
+        bottom: 0px;
+        display: flex;
+        overflow: scroll;
+        flex-wrap: wrap;
+        width: 100%;
+        color: dimgray;
+        background: white;
+        border-radius: 3px;
+        padding-bottom: 10px;
+      }
+
+      paper-input {
+        display: block;
+      }
+
+      .form {
+        padding: 20px;
+      }
+    </style>
+
+    <div id="container">
+      <h3>Login page</h3>
+      <div class="form" id="login-form">
+        <paper-input label="username"></paper-input>
+        <paper-input label="password" type="password"></paper-input>
+        <paper-button raised>login</paper-button>
+      </div>
+      <div class="form" id="signup-form">
+        <gold-email-input label="your email address" required auto-validate></gold-email-input>
+        <paper-input required label="username"></paper-input>
+        <paper-input required label="password" type="password"></paper-input>
+        <paper-input required label="repeat password" type="password"></paper-input>
+        <paper-button raised>signup</paper-button>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    // element registration
+    Polymer({
+      is: "ja-login",
+
+      properties: {
+
+      },
+
+    });
+  </script>
+</dom-module>
