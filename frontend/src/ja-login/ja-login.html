@@ -1,5 +1,6 @@
 
 <link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <dom-module id="ja-login">
   <template>
     <style>
@@ -28,20 +29,41 @@
       }
     </style>
 
+    <iron-ajax id="login-request"
+               url="/login"
+               method="POST"
+               handle-as="json"
+               body={{loginBody}}
+               content-type="application/json"
+               on-response="_loginResponse"></iron-ajax>
+
+    <iron-ajax id="signup-request"
+               url="/signup"
+               method="POST"
+               handle-as="json"
+               body={{signupBody}}
+               content-type="application/json"
+               on-response="_signupResponse"></iron-ajax>
+
     <div id="container">
       <h3>Login page</h3>
-      <div class="form" id="login-form">
-        <paper-input label="username"></paper-input>
-        <paper-input label="password" type="password"></paper-input>
-        <paper-button raised>login</paper-button>
-      </div>
-      <div class="form" id="signup-form">
-        <gold-email-input label="your email address" required auto-validate></gold-email-input>
-        <paper-input required label="username"></paper-input>
-        <paper-input required label="password" type="password"></paper-input>
-        <paper-input required label="repeat password" type="password"></paper-input>
-        <paper-button raised>signup</paper-button>
-      </div>
+      <form is="iron-form" class="form" id="login-form">
+        <p id="login-error">{{loginError}}</p>
+        <paper-input min-length="3" required id="login-username" label="username"></paper-input>
+        <paper-input required id="login-password" label="password" type="password"></paper-input>
+        <paper-button id="login-button" raised>login</paper-button>
+      </form>
+      <form is="iron-form" id="signup-form">
+        <p id="login-error">{{loginError}}</p>
+        <gold-email-input id="signup-email" label="your email address" required auto-validate></gold-email-input>
+        <paper-input  id="signup-username"
+                      required
+                      label="username"
+                      error-message="invalid username"></paper-input>
+        <paper-input id="signup-password"required label="password" type="password"></paper-input>
+        <paper-input id="signup-password-check"required label="repeat password" type="password"></paper-input>
+        <paper-button id="signup-button" raised>signup</paper-button>
+      </form>
     </div>
 
   </template>
@@ -51,8 +73,42 @@
     Polymer({
       is: "ja-login",
 
+      listeners : {
+        'login-button.tap' : '_onLoginTap',
+        'signup-button.tap' : '_onSignupTap'
+      },
+
       properties: {
 
+      },
+
+      _onLoginTap: function(evt) {
+        console.log("Pressed login button");
+        let username = this.$['login-username'].value || "";
+        let password = this.$['login-password'].value || "";
+        this.loginBody = {
+          username: username,
+          password: password,
+        };
+        this.$['login-request'].generateRequest();
+      },
+
+      _onLoginResponse: function(evt) {
+        // TODO
+      },
+
+      _onSignupTap: function(evt) {
+        console.log("Pressed signup button");
+        let email = this.$['signup-email'].value || "";
+        let username = this.$['signup-username'].value || "";
+        let password = this.$['signup-password'].value || "";
+        let passwordCheck = this.$['signup-password-check'].value || "";
+        this.signupBody = {
+          email: email,
+          username: username,
+          password: password,
+        };
+        this.$['signup-request'].generateRequest();
       },
 
     });
