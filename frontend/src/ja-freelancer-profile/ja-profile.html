@@ -88,7 +88,7 @@
         padding-right: 20px;
       }
 
-      #rate {
+      #ratearea {
         position: relative;
         width: 20%;
         padding-left: 20px;
@@ -185,7 +185,7 @@
             <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
           </div>
-          <div id="rate">
+          <div id="ratearea">
             RATING
             <select id="ratenum" style="width:90%" on-change="_giverating">
             <option value="-">--Give a review--</option>
@@ -310,7 +310,7 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
-        console.log(res.reviews[0]);
+
 
 
         this.userLocation = this.userLocation || "Lugano, Switzerland";
@@ -377,8 +377,11 @@
         };
         this.$.comm.value = " ";
         this.$.ratenum.value = "-";
+        this.$.review.removeAttribute("raised");
         this.$.review.setAttribute("disabled", "");
+        this.unshift('reviews', obj);
       },
+
 
     });
 
