@@ -187,15 +187,16 @@
           </div>
           <div id="rate">
             RATING
-            <select id="ratenum" style="width:90%">
+            <select id="ratenum" style="width:90%" on-change="_giverating">
+            <option value="-">--Give a review--</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
-            <option value="4">5</option>
+            <option value="5">5</option>
           </select>
-            <!-- <input type="text" style="width:90%; " id="ratenum">  </input> -->
-            <input id="review" type="submit" value="Rate!" on-click="_call" />
+            <!-- <input id="review" type="submit" value="Rate!" on-click="_givereview" /> -->
+            <paper-button id="review" disabled style="height:20px; width: 96%; margin-top: 10px;" on-click="_givereview">Rate!</paper-button>
           </div>
         </div>
 
@@ -321,6 +322,15 @@
         this.$['distance-request'].generateRequest();
       },
 
+      _giverating: function(el){
+        if(this.$.ratenum.value !== "-"){
+          // this.$.review.attributes[1] = "enabled";
+          this.$.review.removeAttribute("disabled");
+          this.$.review.setAttribute("raised", "");
+          // console.log(this.$.review.attributes);
+        }
+      },
+
       _setrating: function (n) {
         var res = ""
         while (n > 0) {
@@ -344,25 +354,18 @@
         }
       },
 
-      _call: function () {
-        // if(this.$.comm.value !== " "){
-        // this.$.commentarea.style.color = "";
-        // this.$.comm.style["border-color"]= "";
-
-        const ajaxel = this.$.ajax2;
-        const d = new Date();
-        const obj = {
-          comment: this.$.comm.value,
-          rating: this.$.ratenum.value,
-          date: d
-        };
-        ajaxel.body = obj;
-        ajaxel.generateRequest();
-        // }else {
-        //   this.$.commentarea.style.color = "red";
-        //   this.$.comm.style["border-color"]= "red";
-        // }
-
+      _givereview: function () {
+        if(this.$.ratenum.value !== "-"){
+          const ajaxel = this.$.ajax2;
+          const d = new Date();
+          const obj = {
+            comment: this.$.comm.value,
+            rating: this.$.ratenum.value,
+            date: d
+          };
+          ajaxel.body = obj;
+          ajaxel.generateRequest();
+        }
       },
 
       _done: function (el) {
@@ -373,11 +376,9 @@
           date: d
         };
         this.$.comm.value = " ";
-        this.$.ratenum.value = "1";
-        this.push('reviews', obj);
-        this.reviews = this.reviews.slice().reverse();
+        this.$.ratenum.value = "-";
+        this.$.review.setAttribute("disabled", "");
       },
-
 
     });
 
