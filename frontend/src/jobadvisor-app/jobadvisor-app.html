@@ -8,6 +8,7 @@
 <link rel="import" href="../ja-search-element/ja-search-element.html">
 <link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <dom-module id="jobadvisor-app">
@@ -15,6 +16,11 @@
     <style>
        :host {
         display: block;
+      }
+      #signup-button{
+        float:right;
+        background-color: var(--paper-yellow-500);
+        color: blue;
       }
     </style>
 
@@ -26,6 +32,7 @@
 
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
+      <paper-button id="signup-button">SIGNUP</paper-button>
     </div>
 
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
