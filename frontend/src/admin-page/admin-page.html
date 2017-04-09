@@ -3,14 +3,14 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="stylesheet" type="text/css" href="../style/style.css">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <dom-module id="admin-page">
   <template>
     <style>
        :host {
         display: block;
-        color: white;
+        color: black;
       }
     </style>
 
@@ -20,12 +20,23 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-    test
+    <paper-button raised id="btn-send">send mail</paper-button>
+
+    <iron-ajax  id="send-mail"
+                url="http://localhost:3005/admin/"
+                params="{{req}}"
+                method="POST"
+                handle-as="json">
+    </iron-ajax>
 
   </template>
   <script>
     Polymer({
       is: 'admin-page',
+
+      listeners: {
+          'btn-send.tap': 'send',
+        },
 
       properties: {
         results: {
@@ -52,20 +63,14 @@
         this.view = page;
       },
 
-
-      ready: function () {
-        this._getUserLocation();
-      },
-
-      _handleResponse: function (response) {
-        const resp = response.detail.response;
-        if (response) {
-          this.userLocation = resp.results[0].formatted_address;
-          this.location = resp.results[0].formatted_address;
-          console.log("Reverse geo response", resp.results[0].formatted_address);
-          window.localStorage['userLocation'] = resp.results[0].formatted_address;
-        }
-
+      send: function (e) {
+        this.req = {
+          'address':'samuele.bischof@sunrise.ch',
+          'subject':'prova',
+          'content':'<i>ciao</i>',
+        };
+        this.$['send-mail'].generateRequest();
+        console.log('ciao');
       },
 
     });
