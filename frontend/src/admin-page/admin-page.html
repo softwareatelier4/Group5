@@ -22,11 +22,23 @@
 
     <paper-button raised id="btn-send">send mail</paper-button>
 
+    <paper-button raised id="btn-pending">get pending</paper-button>
+
+    <ja-pending-list results={{results}}></ja-pending-list>
+
     <iron-ajax  id="send-mail"
                 url="http://localhost:3005/admin/"
                 params="{{req}}"
                 method="POST"
                 handle-as="json">
+    </iron-ajax>
+
+    <iron-ajax  id="request-pending"
+                url="http://localhost:3005/admin/pending/"
+                params="{{req}}"
+                method="GET"
+                handle-as="json"
+                on-response="_handleResponse">
     </iron-ajax>
 
   </template>
@@ -36,6 +48,7 @@
 
       listeners: {
           'btn-send.tap': 'send',
+          'btn-pending.tap': 'getPending',
         },
 
       properties: {
@@ -71,6 +84,21 @@
         };
         this.$['send-mail'].generateRequest();
         console.log('ciao');
+      },
+
+      getPending: function (e) {
+        this.$['request-pending'].generateRequest();
+      },
+
+      _resultsChanged: function (results) {
+        this.results = results;
+      },
+
+       _handleResponse: function (response) {
+        const res = response.detail.response;
+        if (response) {
+          console.log(res);
+        }
       },
 
     });
