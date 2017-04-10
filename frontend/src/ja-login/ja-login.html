@@ -35,7 +35,7 @@
                handle-as="json"
                body={{loginBody}}
                content-type="application/json"
-               on-response="_loginResponse"></iron-ajax>
+               on-response="_onLoginResponse"></iron-ajax>
 
     <iron-ajax id="signup-request"
                url="/signup"
@@ -43,7 +43,7 @@
                handle-as="json"
                body={{signupBody}}
                content-type="application/json"
-               on-response="_signupResponse"></iron-ajax>
+               on-response="_onSignupResponse"></iron-ajax>
 
     <div id="container">
       <h3>Login page</h3>
@@ -109,6 +109,10 @@
           password: password,
         };
         this.$['signup-request'].generateRequest();
+      },
+
+      _onSignupResponse: function(evt) {
+        // TODO
       },
 
     });
