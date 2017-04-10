@@ -54,7 +54,7 @@
         <paper-button id="login-button" raised>login</paper-button>
       </form>
       <form is="iron-form" id="signup-form">
-        <p id="login-error">{{loginError}}</p>
+        <p id="signup-error">{{signupError}}</p>
         <gold-email-input id="signup-email" label="your email address" required auto-validate></gold-email-input>
         <paper-input  id="signup-username"
                       required
@@ -86,15 +86,21 @@
         console.log("Pressed login button");
         let username = this.$['login-username'].value || "";
         let password = this.$['login-password'].value || "";
-        this.loginBody = {
-          username: username,
-          password: password,
-        };
-        this.$['login-request'].generateRequest();
+        if (username.length === 0 || password.length === 0) {
+          this.loginError = "Empty field(s)";
+        } else {
+          this.loginBody = {
+            username: username,
+            password: password,
+          };
+          this.loginError = "";
+          this.$['login-request'].generateRequest();
+        }
       },
 
       _onLoginResponse: function(evt) {
         // TODO
+        console.log("login response");
       },
 
       _onSignupTap: function(evt) {
@@ -103,12 +109,19 @@
         let username = this.$['signup-username'].value || "";
         let password = this.$['signup-password'].value || "";
         let passwordCheck = this.$['signup-password-check'].value || "";
-        this.signupBody = {
-          email: email,
-          username: username,
-          password: password,
-        };
-        this.$['signup-request'].generateRequest();
+        if (email.length === 0 || username.length === 0 || password.length === 0 || passwordCheck.length === 0) {
+          this.signupError = "Empty field(s)";
+        } else if (password !== passwordCheck) {
+          this.signupError = "Passwords do not match.";
+        } else {
+          this.signupBody = {
+            email: email,
+            username: username,
+            password: password,
+          };
+          this.signupError = "";
+          this.$['signup-request'].generateRequest();
+        }
       },
 
       _onSignupResponse: function(evt) {
