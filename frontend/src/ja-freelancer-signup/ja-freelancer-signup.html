@@ -19,7 +19,7 @@
     <section id="container">
 
       <div id="_firstname">
-        <paper-input label="Firstname" id="name" auto-validate pattern="^[a-zA-Z]+" required error-message="Firstname required (only letters)!"></paper-input>
+        <paper-input label="Firstname" id="fname" auto-validate pattern="^[a-zA-Z]+" required error-message="Firstname required (only letters)!"></paper-input>
       </div>
 
       <div id="_lastname">
@@ -27,7 +27,7 @@
       </div>
 
       <div id="_email">
-        <paper-input label="eMail" id="email" auto-validate  required error-message="Email required!"></paper-input>
+        <paper-input label="email" id="femail" auto-validate  required error-message="Email required!"></paper-input>
       </div>
 
       <div id="_address">
@@ -63,19 +63,19 @@
         <paper-radio-button name="Other">Other</paper-radio-button>
       </paper-radio-group>
       </div>
-
+      <a id="rout" href="/"></a>
       <div id="_img">
       </div>
 
       <div id="_phonenumber">
-        <paper-input label="Phone number" id="phone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Numbers only!"></paper-input>
+        <paper-input label="Phone number" id="fphone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Numbers only!"></paper-input>
       </div>
 
       <div id="_price">
-        <paper-input label="Price" id="price"></paper-input>
+        <paper-input label="Price" id="fprice"></paper-input>
       </div>
 
-      <paper-button raised on-click="_clicked">
+      <paper-button id="fsubmit" raised on-click="_clicked">
         Submit
       </paper-button>
 
@@ -93,15 +93,28 @@
 
       _finished: function(el){
         console.log(el.detail.response);
+        this.$.rout.click();
+        this._clearall();
+      },
 
+      _clearall: function(){
+        this.$.fname.value = ""
+        this.$.lastname.value = ""
+        this.$.addr.value = ""
+        this.$.prof.value = ""
+        this.$.femail.value = ""
+        this.$.fphone.value = ""
+        this.$.desc.value = ""
+        this.$.selector.selected = "Other"
+        this.$.fprice.value = ""
       },
 
       _clicked: function(){
         var proceed = true;
 
-        if(this.$.name.value == ""){
+        if(this.$.fname.value == ""){
           proceed = false;
-          this.$.name.focus();
+          this.$.fname.focus();
         }
 
         if (this.$.lastname.value == "") {
@@ -119,28 +132,28 @@
           this.$.prof.focus();
         }
 
-        if (this.$.email.value == "") {
+        if (this.$.femail.value == "") {
           proceed = false;
-          this.$.email.focus();
+          this.$.femail.focus();
         }
 
-        if (this.$.phone.value == "") {
+        if (this.$.fphone.value == "") {
           proceed = false;
-          this.$.phone.focus();
+          this.$.fphone.focus();
         }
-        this.$.name.focus();
+        this.$.fname.focus();
         if(proceed){
           const ajaxel = this.$.ajax;
           const obj = {
-              firstName : this.$.name.value,
+              firstName : this.$.fname.value,
               lastName  : this.$.lastname.value,
               address  : this.$.addr.value,
               description : this.$.desc.value,
               profession : this.$.prof.value,
               category : this.$.selector.selected,
-              email  : this.$.email.value,
-              phone_number : this.$.phone.value,
-              price  : this.$.price.value,
+              email  : this.$.femail.value,
+              phone_number : this.$.fphone.value,
+              price  : this.$.fprice.value,
               image : '/src/images/blank-user.jpg',
               reviews : [],
           };
