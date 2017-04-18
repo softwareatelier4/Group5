@@ -20,12 +20,12 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = new mongoose.Schema(
   {
-    userName : { type: String, required: true },
-    firstName: { type: String },
-    lastName : { type: String },
-    password : { type: String, required: true },
-    email   : { type: String, required: true },
-    comm_rating : { type: Number }
+    userName  : { type: String, required: true },
+    firstName : { type: String },
+    lastName  : { type: String },
+    password  : { type: String, required: true },
+    email     : { type: String, required: true },
+    userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'}
   }
 );
 
