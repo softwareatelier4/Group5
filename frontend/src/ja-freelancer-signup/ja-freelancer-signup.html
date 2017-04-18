@@ -101,28 +101,34 @@
 
         if(this.$.name.value == ""){
           proceed = false;
+          this.$.name.focus();
         }
 
         if (this.$.lastname.value == "") {
           proceed = false;
+          this.$.lastname.focus();
         }
 
         if (this.$.addr.value=="") {
           proceed = false;
+          this.$.addr.focus();
         }
 
         if (this.$.prof.value=="") {
           proceed = false;
+          this.$.prof.focus();
         }
 
         if (this.$.email.value == "") {
           proceed = false;
+          this.$.email.focus();
         }
 
         if (this.$.phone.value == "") {
           proceed = false;
+          this.$.phone.focus();
         }
-
+        this.$.name.focus();
         if(proceed){
           const ajaxel = this.$.ajax;
           const obj = {
