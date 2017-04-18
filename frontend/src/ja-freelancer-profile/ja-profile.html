@@ -177,7 +177,7 @@
       <section class="divisor"></section>
 
       <section id="description">
-        Description : {{description}}
+        Description : {{_fun(description)}}
       </section>
       <section id="reviews" style="width: 100%;">
         <div id="user-rating" style="display:flex;" >
@@ -294,6 +294,12 @@
         }
       },
 
+      _fun: function(el){
+        if(el === undefined || el == "" || el === " "){
+          return "No description provided"
+        }
+      },
+      
       _finished: function (e) {
         const res = e.detail.response;
         this.$.emaillink.href = "mailto:" + res.email;
