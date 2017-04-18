@@ -18,24 +18,24 @@
 
     <section id="container">
 
-      <div id="__firstname">
-      <paper-input label="Firstname" id="name"></paper-input>
+      <div id="_firstname">
+        <paper-input label="Firstname" id="name" auto-validate pattern="^[a-zA-Z]+" required error-message="Firstname required (only letters)!"></paper-input>
       </div>
 
       <div id="_lastname">
-        <paper-input label="Lastname" id="lastname"></paper-input>
+        <paper-input label="Lastname" id="lastname" auto-validate pattern="^[a-zA-Z]+" required error-message="Lastname required (only letters)!"></paper-input>
       </div>
 
       <div id="_email">
-        <paper-input label="eMail" id="email"></paper-input>
+        <paper-input label="eMail" id="email" auto-validate  required error-message="Email required!"></paper-input>
       </div>
 
       <div id="_address">
-        <paper-input label="address" id="addr"></paper-input>
+        <paper-input label="address" id="addr" auto-validate  required error-message="Address required!"></paper-input>
       </div>
 
       <div id="_profession">
-        <paper-input label="profession" id="prof"></paper-input>
+        <paper-input label="profession" id="prof" auto-validate pattern="^[a-zA-Z]+" required error-message="Profession required (only letters)!"></paper-input>
       </div>
 
       <div id="_description">
@@ -68,7 +68,7 @@
       </div>
 
       <div id="_phonenumber">
-        <paper-input label="Phone number" id="phone"></paper-input>
+        <paper-input label="Phone number" id="phone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Numbers only!"></paper-input>
       </div>
 
       <div id="_price">
@@ -97,22 +97,51 @@
       },
 
       _clicked: function(){
-        const ajaxel = this.$.ajax;
-        const obj = {
-            firstName : this.$.name.value,
-            lastName  : this.$.lastname.value,
-            address  : this.$.addr.value,
-            description : this.$.desc.value,
-            profession : this.$.prof.value,
-            category : this.$.selector.selected,
-            email  : this.$.email.value,
-            phone_number : this.$.phone.value,
-            price  : this.$.price.value,
-            image : '/src/images/blank-user.jpg' ,
-            reviews : [],
-        };
-        ajaxel.body = obj;
-        ajaxel.generateRequest();
+        var proceed = true;
+
+        if(this.$.name.value == ""){
+          proceed = false;
+        }
+
+        if (this.$.lastname.value == "") {
+          proceed = false;
+        }
+
+        if (this.$.addr.value=="") {
+          proceed = false;
+        }
+
+        if (this.$.prof.value=="") {
+          proceed = false;
+        }
+
+        if (this.$.email.value == "") {
+          proceed = false;
+        }
+
+        if (this.$.phone.value == "") {
+          proceed = false;
+        }
+
+        if(proceed){
+          const ajaxel = this.$.ajax;
+          const obj = {
+              firstName : this.$.name.value,
+              lastName  : this.$.lastname.value,
+              address  : this.$.addr.value,
+              description : this.$.desc.value,
+              profession : this.$.prof.value,
+              category : this.$.selector.selected,
+              email  : this.$.email.value,
+              phone_number : this.$.phone.value,
+              price  : this.$.price.value,
+              image : '/src/images/blank-user.jpg',
+              reviews : [],
+          };
+          ajaxel.body = obj;
+          ajaxel.generateRequest();
+        }
+
       },
     })
 
