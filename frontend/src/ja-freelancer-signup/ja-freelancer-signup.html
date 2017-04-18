@@ -1,6 +1,10 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+
+
 <dom-module id="ja-freelancer-signup">
 
   <template>
@@ -14,33 +18,68 @@
 
     <section id="container">
 
-      <div id="firstname">
-      <paper-input label="Firstname"></paper-input>
+      <div id="__firstname">
+      <paper-input label="Firstname" id="name"></paper-input>
       </div>
 
-      <div id="lastname">
-        <paper-input label="Lastname"></paper-input>
+      <div id="_lastname">
+        <paper-input label="Lastname" id="lastname"></paper-input>
       </div>
 
-      <div id="email">
-        <paper-input label="eMail"></paper-input>
+      <div id="_email">
+        <paper-input label="eMail" id="email"></paper-input>
       </div>
 
-      <div id="address">
-        <paper-input label="address"></paper-input>
+      <div id="_address">
+        <paper-input label="address" id="addr"></paper-input>
       </div>
 
-      <div id="profession">
-        <paper-input label="profession"></paper-input>
+      <div id="_profession">
+        <paper-input label="profession" id="prof"></paper-input>
       </div>
 
-      <div id="phonenumber">
-        <paper-input label="Phone number"></paper-input>
+      <div id="_description">
+        <paper-input label="Description" id="desc"></paper-input>
       </div>
 
-      <paper-button>
+      <div id="_category">
+        Category <br />
+        <paper-radio-group id="selector" selected="Other">
+        <!-- <paper-input label="Category" id="cat"></paper-input> -->
+        <paper-radio-button name="Radio"> Radio  </paper-radio-button>
+        <paper-radio-button name="Tecnical Services">Tecnical Services</paper-radio-button>
+        <paper-radio-button name="IT Services">IT Services</paper-radio-button>
+        <paper-radio-button name="Design">Design</paper-radio-button>
+        <paper-radio-button name="Management">Management</paper-radio-button>
+        <paper-radio-button name="Retail">Retail</paper-radio-button>
+        <paper-radio-button name="Human Resources">Human Resources</paper-radio-button>
+        <paper-radio-button name="Marketing">Marketing</paper-radio-button>
+        <paper-radio-button name="Consulting">Consulting</paper-radio-button>
+        <paper-radio-button name="Advertising">Advertising</paper-radio-button>
+        <paper-radio-button name="Logistics">Logistics</paper-radio-button>
+        <paper-radio-button name="Real Estate">Real Estate</paper-radio-button>
+        <paper-radio-button name="Social Work">Social Work</paper-radio-button>
+        <paper-radio-button name="Healthcare">Healthcare</paper-radio-button>
+        <paper-radio-button name="Other">Other</paper-radio-button>
+      </paper-radio-group>
+      </div>
+
+      <div id="_img">
+      </div>
+
+      <div id="_phonenumber">
+        <paper-input label="Phone number" id="phone"></paper-input>
+      </div>
+
+      <div id="_price">
+        <paper-input label="Price" id="price"></paper-input>
+      </div>
+
+      <paper-button raised on-click="_clicked">
         Submit
       </paper-button>
+
+      <iron-ajax id="ajax" url="/freelancer/" method="POST" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
 
 
     </section>
@@ -52,6 +91,29 @@
     Polymer({
       is: "ja-freelancer-signup",
 
+      _finished: function(el){
+        console.log(el.detail.response);
+
+      },
+
+      _clicked: function(){
+        const ajaxel = this.$.ajax;
+        const obj = {
+            firstName : this.$.name.value,
+            lastName  : this.$.lastname.value,
+            address  : this.$.addr.value,
+            description : this.$.desc.value,
+            profession : this.$.prof.value,
+            category : this.$.selector.selected,
+            email  : this.$.email.value,
+            phone_number : this.$.phone.value,
+            price  : this.$.price.value,
+            image : '/src/images/blank-user.jpg' ,
+            reviews : [],
+        };
+        ajaxel.body = obj;
+        ajaxel.generateRequest();
+      },
     })
 
   </script>
