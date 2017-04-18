@@ -11,7 +11,7 @@ const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
 
-router.all('/', middleware.supportedMethods('GET'));
+router.all('/', middleware.supportedMethods('GET, POST'));
 
 router.get('/:freelancerid', function(req, res, next) {
   Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function(err, freelancer){
@@ -42,6 +42,13 @@ router.post('/:freelancerid/review', function(req, res, next) {
       });
     }});
     return;
+  });
+
+router.post('/', function(req, res, next) {
+  var toAdd = new Freelancer(req.body);
+  toAdd.save();
+  res.json(toAdd._id);
+  console.log("Freelancer created");
   });
 
 
