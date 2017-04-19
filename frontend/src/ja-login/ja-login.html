@@ -99,6 +99,15 @@
       },
 
       properties: {
+        user: {
+          type: Object,
+          value: {
+            userName: "guest",
+            type: "guest"
+          },
+          reflectToAttribute: true,
+          notify: true,
+        }
       },
 
       _onLoginTap: function(evt) {
