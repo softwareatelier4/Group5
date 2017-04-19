@@ -17,6 +17,13 @@
        :host {
         display: block;
       }
+
+      .username {
+        color: white;
+      }
+      #loginBtn, #logoutBtn {
+        background-color: white;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -25,6 +32,13 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
+    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
+    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
+
+
+    <div class="username">
+      Logged in as [[user.userName]] [[user.type]]
+    </div>
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
     </div>
@@ -32,6 +46,14 @@
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
       on-response="_handleResponse">
     </iron-ajax>
+
+    <iron-ajax id="logout-request"
+               url="/logout"
+               method="POST"
+               handle-as="json"
+               body={{logoutBody}}
+               content-type="application/json"
+               on-response="_onLogoutResponse"></iron-ajax>
 
     <div id="background-results"></div>
 
@@ -42,10 +64,10 @@
           <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
         </div>
         <div title="freelancer">
-          <ja-profile id={{subrouteData.id}} user-location={{userLocation}}></ja-profile>
+          <ja-profile id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
         </div>
         <div title="login">
-          <ja-login></ja-login>
+          <ja-login user={{user}}></ja-login>
         </div>
       </iron-pages>
     </div>
@@ -55,6 +77,11 @@
   <script>
     Polymer({
       is: 'jobadvisor-app',
+
+      listeners: {
+        'loginBtn.tap': '_onLoginTap',
+        'logoutBtn.tap': '_onLogoutTap'
+      },
 
       properties: {
         prop1: {
@@ -103,6 +130,10 @@
           type: Object,
           observer: '_filtersChanged',
         },
+        user: {
+          type: Object,
+          observer: "_userChanged"
+        }
       },
 
       observers: [
@@ -111,6 +142,9 @@
 
       _resultsChanged: function (results) {
         this.results = results;
+      },
+      _userChanged: function (user) {
+        console.log(user);
       },
       _filtersChanged: function (filters) {
         // console.log("changing filters", filters)
@@ -126,6 +160,20 @@
 
       _routePageChanged: function (page) {
         this.view = page;
+      },
+
+      _onLoginTap: function(evt) {
+      },
+
+      _onLogoutTap: function(evt) {
+        this.logoutBody = {
+          // TODO
+        };
+        this.$['logout-request'].generateRequest();
+      },
+
+      _onLogoutResponse: function(response) {
+        // TODO
       },
 
       _getUserLocation: function () {
