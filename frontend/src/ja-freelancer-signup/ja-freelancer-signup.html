@@ -15,6 +15,12 @@
       padding-top: 100px;
     }
 
+    #upload {
+        --file-upload-upload-border: {
+          padding: 0;
+        }
+      }
+
     </style>
 
     <section id="container">
@@ -66,16 +72,8 @@
       </div>
       <a id="rout" href="/"></a>
 
-
-      <div id="_img">
-        <p> Choose image : </p>
-        <file-upload id="fileUp" target="/files/upload" multi="false" droppable="true" accept="image/jpeg,/image/png" method="POST">
-					<paper-button>UPLOAD</paper-button>
-				</file-upload>
-      </div>
-
       <div id="_phonenumber">
-        <paper-input label="Phone number" id="fphone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Numbers only!"></paper-input>
+        <paper-input label="Phone number" id="fphone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
       </div>
 
       <div id="_price">
@@ -85,6 +83,12 @@
       <paper-button id="fsubmit" raised on-click="_clicked">
         Submit
       </paper-button>
+
+      <div id="_img" style="visibility: hidden;">
+        <p> Choose Profile Picture : </p>
+        <file-upload raised id="upload" target="/freelancer/img/" method="POST" accept="image/*" errorText="error! please retry" > UPLOAD
+        </file-upload>
+      </div>
 
       <iron-ajax id="ajax" url="/freelancer/" method="POST" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
 
@@ -99,9 +103,14 @@
       is: "ja-freelancer-signup",
 
       _finished: function(el){
+        window.location.hash = '#upload';
         console.log(el.detail.response);
-        this.$.rout.click();
-        this._clearall();
+        this.$._img.style.visibility = "";
+        this.$.upload.target += el.detail.response;
+        console.log(this.$.upload.target);
+        // this._clearall();
+        // this.$.rout.click();
+
       },
 
       _clearall: function(){
