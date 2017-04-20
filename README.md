@@ -1,6 +1,7 @@
 # Setup and run the application
 ## Setup
 ### Basic installation:
+`npm install -g bower`
 `npm install`
 
 ### To see the distances to the freelancers, you need to install the following plug-in:
