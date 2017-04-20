@@ -136,7 +136,7 @@
         </div>
 
         <div id="rating">
-          Rating : {{rating}}/*****
+          Rating : {{_checkratisprovided(rating)}}
         </div>
         <div id="category">
           Category : {{category}}
@@ -177,7 +177,7 @@
       <section class="divisor"></section>
 
       <section id="description">
-        Description : {{_fun(description)}}
+        Description : {{_checkdescisprovided(description)}}
       </section>
       <section id="reviews" style="width: 100%;">
         <div id="user-rating" style="display:flex;" >
@@ -294,12 +294,20 @@
         }
       },
 
-      _fun: function(el){
+      _checkdescisprovided: function(el){
         if(el === undefined || el == "" || el === " "){
           return "No description provided"
         }
+        return el;
       },
-      
+
+      _checkratisprovided: function(el){
+        if(el === undefined || el == "" || el === " "){
+          return "No rating provided"
+        }
+        return el + "/*****";
+      },
+
       _finished: function (e) {
         const res = e.detail.response;
         this.$.emaillink.href = "mailto:" + res.email;

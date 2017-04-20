@@ -19,6 +19,27 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());    // parse application/json
 app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.post('/freelancer/img/:id', function(req, res) {
+  console.log(__dirname);
+  let folder = req.params.id;
+  console.log(folder);
+  // let form = new formidable.IncomingForm(
+  //   {
+  //     uploadDir: __dirname + '/app/images/' + folder,
+  //     keepExtensions: true
+  //   }
+  // );
+  //
+  // form.parse(req, function(err, fields, files) {
+  //   let fileName = files.file.name;
+  //   fs.rename(files.file.path, __dirname + '/app/images/' + folder + "/" + fileName);
+  //   res.json({name : fileName});
+  //   res.end();
+  // });
+
+});
+
 app.use(methodOverride(
 function(req, res){
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
