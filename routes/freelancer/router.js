@@ -46,11 +46,16 @@ router.post('/:freelancerid/review', function(req, res, next) {
     return;
   });
 
-router.post('/', function(req, res, next) {
+router.post('/:n', function(req, res, next) {
+  let n = req.params.n;
   var toAdd = new Freelancer(req.body);
+  if(n == 1){
+    toAdd.image = "/src/images/" + toAdd._id + ".png";
+  }else{
+    toAdd.image = "/src/images/blank-user.jpg";
+  }
   toAdd.save();
   res.json(toAdd._id);
-  console.log("Freelancer created");
   });
 
 

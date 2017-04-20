@@ -5,6 +5,8 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var app = express();
 var methodOverride = require('method-override')
+const formidable = require('formidable');
+const fs = require('fs');
 
 // Connection to MongoDB
 var mongoose   = require('mongoose');
@@ -22,21 +24,27 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.post('/freelancer/img/:id', function(req, res) {
   console.log(__dirname);
-  let folder = req.params.id;
-  console.log(folder);
-  // let form = new formidable.IncomingForm(
-  //   {
-  //     uploadDir: __dirname + '/app/images/' + folder,
-  //     keepExtensions: true
-  //   }
-  // );
-  //
-  // form.parse(req, function(err, fields, files) {
-  //   let fileName = files.file.name;
-  //   fs.rename(files.file.path, __dirname + '/app/images/' + folder + "/" + fileName);
-  //   res.json({name : fileName});
-  //   res.end();
-  // });
+  let imgname = req.params.id;
+  console.log(imgname);
+  let form = new formidable.IncomingForm(
+    {
+      uploadDir: __dirname + '/frontend/src/images',
+      keepExtensions: true
+    }
+  );
+
+  form.parse(req, function(err, fields, files) {
+    // let fileName = files.file.name;
+    // let filelen = fileName.length;
+    // let str = ""
+    // while(filelen > 0 && fileName.charAt(filelen -1) != '.'){
+    //   str = fileName.charAt(filelen -1) + str;
+    //   filelen--;
+    // }
+    fs.rename(files.file.path, __dirname + '/frontend/src/images/' + imgname + ".png");
+    res.json({name : imgname});
+    res.end();
+  });
 
 });
 

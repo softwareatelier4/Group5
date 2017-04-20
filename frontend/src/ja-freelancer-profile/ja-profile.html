@@ -171,7 +171,7 @@
       <section class="divisor"></section>
 
       <section id="price">
-        Cost/hour: {{price}} CHF
+        Cost/hour: {{_checkprisprovided(price)}}
       </section>
 
       <section class="divisor"></section>
@@ -295,17 +295,24 @@
       },
 
       _checkdescisprovided: function(el){
-        if(el === undefined || el == "" || el === " "){
+        if(el === undefined || el == "" || el === " " || el === null){
           return "No description provided"
         }
         return el;
       },
 
       _checkratisprovided: function(el){
-        if(el === undefined || el == "" || el === " "){
+        if(el === undefined || el == "" || el === " " || el === null){
           return "No rating provided"
         }
         return el + "/*****";
+      },
+
+      _checkprisprovided : function(el){
+        if(el === undefined || el == "" || el === " " || el === null){
+          return "No price provided"
+        }
+        return el + " CHF";
       },
 
       _finished: function (e) {
