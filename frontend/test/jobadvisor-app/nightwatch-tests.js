@@ -2,12 +2,17 @@ module.exports = {
 
   'Test login page elements visibility' : function (client) {
     client
-      .url('http://localhost:3005/login')
+      .url('http://localhost:3005/')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
-      .waitForElementVisible('ja-login', 1000)
+      .waitForElementVisible('#loginBtn', 1000)
+      .click('#loginBtn')
+      .pause(500)
+      .assert.urlContains('http://localhost:3005/login')
+      // .waitForElementVisible('ja-login', 1000)
       .waitForElementVisible('#login-username', 1000)
       .waitForElementVisible('#login-password', 1000)
+
       .waitForElementVisible('#login-button', 1000)
       .waitForElementVisible('#signup-form', 1000)
       .waitForElementVisible('#signup-email', 1000)
@@ -25,8 +30,9 @@ module.exports = {
       .setValue('#signup-password input', '1234')
       .setValue('#signup-password-check input', '1234')
       .click('#signup-button')
-      .pause(5000)
-      .assert.attributeEquals("#signup-email", "error-message", "")
+      .pause(1000)
+      // .waitForElementVisible('ja-search-element', 2000)
+      .assert.urlEquals('http://localhost:3005/')
       .end();
   },
 
