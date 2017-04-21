@@ -29,50 +29,50 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre('save', function (next) {
-  //default for firstName is userName
-  if( this.firstName === undefined
-    || this.firstName === null
-    || this.firstName.toString().trim() === ''){
-    this.firstName = this.userName;
-  }
+// userSchema.pre('save', function (next) {
+//   //default for firstName is userName
+//   if( this.firstName === undefined
+//     || this.firstName === null
+//     || this.firstName.toString().trim() === ''){
+//     this.firstName = this.userName;
+//   }
+//
+//   //default for lastName is userName
+//   if( this.lastName === undefined
+//     || this.lastName === null
+//     || this.lastName.toString().trim() === ''){
+//     this.lastName = this.userName;
+//   }
+//   return next();
+// });
 
-  //default for lastName is userName
-  if( this.lastName === undefined
-    || this.lastName === null
-    || this.lastName.toString().trim() === ''){
-    this.lastName = this.userName;
-  }
-  return next();
-});
-
-userSchema.pre('save', function(next) {
-  const user = this;
-
-  // return if the password was not modified.
-  if (!user.isModified('password')) { return next(); }
-
-  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-      if (err) { return next(err); }
-
-      bcrypt.hash(user.password, salt, function(err, hash) {
-          if (err) { return next(err); }
-
-          user.password = hash;
-          next();
-      });
-  });
-});
+// userSchema.pre('save', function(next) {
+//   const user = this;
+//
+//   // return if the password was not modified.
+//   if (!user.isModified('password')) { return next(); }
+//
+//   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+//       if (err) { return next(err); }
+//
+//       bcrypt.hash(user.password, salt, function(err, hash) {
+//           if (err) { return next(err); }
+//
+//           user.password = hash;
+//           next();
+//       });
+//   });
+// });
 
 
-userSchema.methods.isValidPassword = function isValidPassword(candidate, callback) {
-  bcrypt.compare(candidate, this.password, function onPwdCompare(err, isMatch) {
-    if (err) {
-      return callback(err);
-    }
-    callback(null, isMatch);
-  });
-};
+// userSchema.methods.isValidPassword = function isValidPassword(candidate, callback) {
+//   bcrypt.compare(candidate, this.password, function onPwdCompare(err, isMatch) {
+//     if (err) {
+//       return callback(err);
+//     }
+//     callback(null, isMatch);
+//   });
+// };
 
 //register model
 mongoose.model('User', userSchema);

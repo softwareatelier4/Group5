@@ -5,15 +5,43 @@ const router = express.Router();
 const middleware =  require('../middleware');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const Freelancer = mongoose.model('User');
+const User = mongoose.model('User');
 const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
 
-router.all('/', middleware.supportedMethods('GET', 'POST'));
+// router.all('/', middleware.supportedMethods('GET', 'POST'));
 
 router.post('/', function(req, res, next) {
-  var newUser = new User(req.body);
+  console.log('password required')
+  User.findOne({userName: req.body.userName}, function(err, user){
+    if(user){
+      if(req.body.password == user.password){
+        return res.json({
+          statusCode: 200,
+          message: "OK",
+          user: {
+            userName: user.userName,
+            type: user.userType
+          }
+        })
+      }else{
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      }
+    }else{
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }
+  })
+})
+
+router.post('/signup', function(req, res, next){
+  const newUser = new User(req.body);
   User.findOne({userName: newUser.userName}, function(err, user){
     if(user){
       return res.json({
@@ -21,10 +49,11 @@ router.post('/', function(req, res, next) {
         message: "Bad Request"
       });
     }else{
-      newUser.save(onModelSave(res, 201, false));
+      req.session.user = newUser;
+      newUser.save(onModelSave(res, 201, true));
     }
   })
-}
+});
 
 function onModelSave(res, status, sendItAsResponse){
   var statusCode = status || 204;
