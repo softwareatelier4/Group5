@@ -107,7 +107,7 @@
           type: Object,
           value: {
             userName: "guest",
-            type: "guest"
+            userType: "guest"
           },
           reflectToAttribute: true,
           notify: true,
@@ -132,8 +132,16 @@
       },
 
       _onLoginResponse: function(evt) {
-        // TODO
-        console.log("login response");
+        let resp = evt.detail.response;
+        if (resp.statusCode === 400) {
+          console.log("User doesn't exist or password is wrong");
+        } else if (resp.statusCode === 200){
+          // console.log(resp);
+          this.set('user', resp.user);
+          localStorage.setItem('user', JSON.stringify(resp.user));
+          location.href = '/';
+          // console.log(this.user);
+        }
       },
 
       _onSignupTap: function(evt) {
@@ -165,7 +173,16 @@
       },
 
       _onSignupResponse: function(evt) {
-        // TODO
+        let resp = evt.detail.response;
+        if (resp.statusCode === 400) {
+          console.log("User already exists");
+        } else {
+          // console.log(resp);
+          this.set('user', resp);
+          localStorage.setItem('user', JSON.stringify(resp));
+          console.log(this.user);
+          location.href = '/';
+        }
       },
 
     });

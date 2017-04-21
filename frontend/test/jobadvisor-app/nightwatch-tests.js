@@ -1,4 +1,35 @@
 module.exports = {
+
+  'Test login page elements visibility' : function (client) {
+    client
+      .url('http://localhost:3005/login')
+      .waitForElementVisible('body', 1000)
+      .waitForElementVisible('jobadvisor-app', 10000)
+      .waitForElementVisible('ja-login', 1000)
+      .waitForElementVisible('#login-username', 1000)
+      .waitForElementVisible('#login-password', 1000)
+      .waitForElementVisible('#login-button', 1000)
+      .waitForElementVisible('#signup-form', 1000)
+      .waitForElementVisible('#signup-email', 1000)
+      .waitForElementVisible('#signup-username', 1000)
+      .waitForElementVisible('#signup-password', 1000)
+      .waitForElementVisible('#signup-password-check', 1000)
+      .waitForElementVisible('#signup-button', 1000)
+      // .end();
+  },
+
+  'Test signup correct' : function (client) {
+    client
+      .setValue('#signup-email input', 'test@test.com')
+      .setValue('#signup-username input', 'myUsername')
+      .setValue('#signup-password input', '1234')
+      .setValue('#signup-password-check input', '1234')
+      .click('#signup-button')
+      .pause(5000)
+      .assert.attributeEquals("#signup-email", "error-message", "")
+      .end();
+  },
+
   'Test main elements visibility' : function (client) {
     client
       .url('http://localhost:3005')
