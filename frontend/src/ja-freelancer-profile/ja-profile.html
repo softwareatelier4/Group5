@@ -200,7 +200,7 @@
         </div>
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
           <!-- <br/> -->
         </template>
       </section>
@@ -354,7 +354,8 @@
         const obj = {
           comment: this.$.comm.value,
           rating: this.$.ratenum.value,
-          date: d
+          date: d,
+          userName: this.user.userName
         };
         ajaxel.body = obj;
         ajaxel.generateRequest();
