@@ -17,6 +17,7 @@ router.post('/', function(req, res, next) {
   User.findOne({userName: req.body.userName}, function(err, user){
     if(user){
       if(req.body.password == user.password){
+        req.session.user = user;
         return res.json({
           statusCode: 200,
           message: "OK",
