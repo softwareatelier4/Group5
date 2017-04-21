@@ -37,7 +37,7 @@
 
 
     <div class="username">
-      Logged in as [[user.userName]] [[user.type]]
+      Logged in as [[user.userName]] [[user.userType]]
     </div>
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
@@ -193,6 +193,8 @@
 
       ready: function () {
         this._getUserLocation();
+        this.set('user', JSON.parse(localStorage.getItem('user')));
+        console.log("USER", this.user);
       },
 
       _handleResponse: function (response) {
