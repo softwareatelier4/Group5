@@ -1,13 +1,9 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-pending-list/ja-pending-list.html">
 <link rel="import" href="../ja-pending-item/ja-pending-item.html">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-<dom-module id="admin-page">
+<dom-module id="ja-admin">
   <template>
     <style>
        :host {
@@ -25,7 +21,7 @@
     <ja-pending-list results={{results}}></ja-pending-list>
 
     <iron-ajax  id="request-pending"
-                url="http://localhost:3005/admin/pending/"
+                url="http://localhost:3005/admin/"
                 params="{{req}}"
                 method="GET"
                 handle-as="json"
@@ -35,7 +31,7 @@
   </template>
   <script>
     Polymer({
-      is: 'admin-page',
+      is: 'ja-admin',
 
       properties: {
         results: {
@@ -73,6 +69,7 @@
        _handleResponse: function (response) {
         if (response) {
           this.results = response.detail.response;
+          console.log(this.results);
         }
       },
 

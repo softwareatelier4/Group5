@@ -131,6 +131,10 @@
           {{lastname}} {{firstname}}
         </div>
 
+        <div id="container-verification"></div>
+
+        <div id="container-claim"></div>
+
         <div id="profession">
           {{profession}}
         </div>
@@ -180,7 +184,7 @@
         Description : {{description}}
       </section>
       <section id="reviews" style="width: 100%;">
-        <div id="user-rating" style="display:flex;" >
+        <div id="user-rating" style="display:flex;">
           <div id="commentarea" style="width:80%">
             <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
@@ -276,6 +280,10 @@
           notify: true,
           // reflectToAttribute: true,
         },
+
+        verification: {
+          type: String,
+        },
       },
 
       ready: function () {
@@ -310,6 +318,7 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
+        this.verification = res.verification;
 
 
 
@@ -320,10 +329,18 @@
           key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
         };
         this.$['distance-request'].generateRequest();
+
+        if (this.verification == 'none') {
+          this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id + ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
+        } else {
+          this.$['container-claim'].innerHTML = '';
+          this.$['container-verification'].innerHTML = this.verification;
+
+        }
       },
 
-      _giverating: function(el){
-        if(this.$.ratenum.value !== "-"){
+      _giverating: function (el) {
+        if (this.$.ratenum.value !== "-") {
           // this.$.review.attributes[1] = "enabled";
           this.$.review.removeAttribute("disabled");
           this.$.review.setAttribute("raised", "");
@@ -355,7 +372,7 @@
       },
 
       _givereview: function () {
-        if(this.$.ratenum.value !== "-"){
+        if (this.$.ratenum.value !== "-") {
           const ajaxel = this.$.ajax2;
           const d = new Date();
           const obj = {
