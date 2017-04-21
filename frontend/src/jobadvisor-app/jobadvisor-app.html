@@ -147,6 +147,7 @@
         console.log(user);
         if (this.user && this.user.userType != "guest") {
           this.$['logoutBtn'].hidden = false;
+          this.$['loginBtn'].hidden = true;
         }
       },
       _filtersChanged: function (filters) {
@@ -176,6 +177,7 @@
         });
         localStorage.removeItem('user');
         this.$['logoutBtn'].hidden = true;
+        this.$['loginBtn'].hidden = false;
         // this.logoutBody = {
         //   // TODO
         // };
