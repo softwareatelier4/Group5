@@ -70,19 +70,21 @@
       <div class="forms">
         <form is="iron-form" class="form" id="login-form">
           <p id="login-error" class="error">{{loginError}}</p>
-          <paper-input min-length="3" required id="login-username" label="username"></paper-input>
-          <paper-input required id="login-password" label="password" type="password"></paper-input>
+          <paper-input pattern="^[a-zA-Z0-9]+" required id="login-username" label="username" error-message="Insert a valid username"></paper-input>
+          <paper-input required id="login-password" pattern="^[a-zA-Z0-9]+" auto-validate label="password" type="password" error-message="Insert a valid password"></paper-input>
           <paper-button id="login-button" raised>login</paper-button>
         </form>
         <form is="iron-form" id="signup-form">
           <p id="signup-error" class="error">{{signupError}}</p>
-          <gold-email-input id="signup-email" label="your email address" required auto-validate></gold-email-input>
+          <paper-input id="signup-email" label="your email address" required auto-validate pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$' error-message="Insert a valid email"></paper-input>
           <paper-input  id="signup-username"
           required
           label="username"
-          error-message="invalid username"></paper-input>
-          <paper-input id="signup-password"required label="password" type="password"></paper-input>
-          <paper-input id="signup-password-check"required label="repeat password" type="password"></paper-input>
+          pattern="^[a-zA-Z0-9]+"
+          auto-validate
+          error-message="Insert a valid username"></paper-input>
+          <paper-input id="signup-password" required label="password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
+          <paper-input id="signup-password-check"required label="repeat password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
           <paper-button id="signup-button" raised>signup</paper-button>
         </form>
       </div>
@@ -114,11 +116,12 @@
 
       _onLoginTap: function(evt) {
         console.log("Pressed login button");
+        let valid = false;
         let username = this.$['login-username'].value || "";
         let password = this.$['login-password'].value || "";
-        if (username.length === 0 || password.length === 0) {
-          this.loginError = "Empty field(s)";
-        } else {
+        valid = this.$['login-username'].validate();
+        valid = valid && this.$['login-password'].validate();
+        if (valid) {
           this.loginBody = {
             userName: username,
             password: password,
@@ -135,22 +138,29 @@
 
       _onSignupTap: function(evt) {
         console.log("Pressed signup button");
+        let valid = false;
         let email = this.$['signup-email'].value || "";
         let username = this.$['signup-username'].value || "";
         let password = this.$['signup-password'].value || "";
         let passwordCheck = this.$['signup-password-check'].value || "";
+        valid = this.$['signup-email'].validate();
+        valid = valid && this.$['signup-username'].validate();
+        valid = valid && this.$['signup-password'].validate();
+        valid = valid && this.$['signup-password-check'].validate();
         if (email.length === 0 || username.length === 0 || password.length === 0 || passwordCheck.length === 0) {
           this.signupError = "Empty field(s)";
         } else if (password !== passwordCheck) {
           this.signupError = "Passwords do not match.";
         } else {
-          this.signupBody = {
-            email: email,
-            userName: username,
-            password: password,
-          };
-          this.signupError = "";
-          this.$['signup-request'].generateRequest();
+          if (valid){
+            this.signupBody = {
+              email: email,
+              userName: username,
+              password: password,
+            };
+            this.signupError = "";
+            this.$['signup-request'].generateRequest();
+          }
         }
       },
 
