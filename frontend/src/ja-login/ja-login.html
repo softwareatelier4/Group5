@@ -135,6 +135,7 @@
         let resp = evt.detail.response;
         if (resp.statusCode === 400) {
           console.log("User doesn't exist or password is wrong");
+          this.loginError = "User doesn't exist or password is wrong";
         } else if (resp.statusCode === 200){
           // console.log(resp);
           this.set('user', resp.user);
@@ -176,6 +177,7 @@
         let resp = evt.detail.response;
         if (resp.statusCode === 400) {
           console.log("User already exists");
+          this.signupError = "User already exists";
         } else {
           // console.log(resp);
           this.set('user', resp);
