@@ -42,6 +42,7 @@ const FreelancerSchema = new mongoose.Schema(
     price         : { type: Number },
     image         : { type: String, default: '/src/images/blank-user.jpg'},
     reviews       : { type: [ReviewSchema], default:[]},
+    verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
   }
 );
 

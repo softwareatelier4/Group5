@@ -14,7 +14,7 @@ const config = require('../../config');
 
 
 //supported methods
-router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
+router.all('/', middleware.supportedMethods('GET, POST, PUT, OPTIONS'));
 
 //list users
 router.get('/', function (req, res, next) {
@@ -26,16 +26,26 @@ router.get('/', function (req, res, next) {
 router.get('/pending/', function (req, res, next) {
   res.status(200);
 
-  Freelancer.find().exec(function (err, profiles) {
+  Freelancer.find({
+    "verification": 'pending'
+  }).exec(function (err, profiles) {
     if (err) return console.error(err);
     res.json(profiles);
   });
 
 });
 
+router.put('/', function (req, res) {
+  Freelancer.findOneAndUpdate({_id: req.query.id}, {$set:{verification: req.query.type}}).exec(function (err, profiles) {
+    if (err) return console.error(err);
+    res.json(profiles);
+  });
+});
+
 router.post('/', function (req, res) {
   mail.sendMailTo(req.query.address, req.query.content, req.query.subject)
 });
+
 
 /** router for /users */
 module.exports = router;

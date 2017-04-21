@@ -96,7 +96,8 @@ var freelancers = {
       "email"         : "alexander.scrummaster@hotmail.ru",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 50,
-      "reviews"       : [reviews.data[4]]
+      "reviews"       : [reviews.data[4]],
+      "verification"  : "pending",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -110,7 +111,8 @@ var freelancers = {
       "email"         : "giovanni.rezzonico@gmail.com",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 20,
-      "reviews"       : [reviews.data[3], reviews.data[5]]
+      "reviews"       : [reviews.data[3], reviews.data[5]],
+      "verification"  : "pending",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd8"),
@@ -125,6 +127,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 60,
       "reviews"       : [reviews.data[5]],
+      "verification"  : "pending",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd9"),
@@ -153,6 +156,23 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
+    },
+
+    {
+      "_id"           : ObjectId("5625fc2bd66b84d23d8c7bf1"),
+      "firstName"     : "Samuele",
+      "lastName"      : "Bischof",
+      "address"       : "sotto un ponte",
+      "description"   : "The best.",
+      "profession"    : "Massaggiatore ;)",
+      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
+      "category"      : "Other",
+      "rating"        : 5,
+      "email"         : "samuele.bischof@sunrise.ch",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 10000,
+      "reviews"       : [reviews.data[5]],
+      "verification"  : "pending",
     },
 
   ]
