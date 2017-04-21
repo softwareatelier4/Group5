@@ -31,15 +31,18 @@
         <div class="img">
           <img src="{{result.image}}" alt="">
         </div>
-        <paper-textarea id="comment" label="Comment"></paper-textarea>
+        <paper-textarea id="comment" label="Comment" value=""></paper-textarea>
       </div>
       <div class="card-actions">
         <paper-button id="btn-accept">Accept</paper-button>
-        <paper-button id="btn-deny" >Deny</paper-button>
+        <paper-button id="btn-deny">Deny</paper-button>
       </div>
     </paper-card>
 
     <iron-ajax id="send-mail" url="http://localhost:3005/admin/" params="{{req}}" method="POST" handle-as="json">
+    </iron-ajax>
+
+    <iron-ajax id="user-verdict" url="http://localhost:3005/admin/" params="{{req}}" method="PUT" handle-as="json">
     </iron-ajax>
 
   </template>
@@ -66,24 +69,46 @@
 
       accept: function (e) {
         this.req = {
-          // 'address': this.result.email,
-          'address': 'samuele.bischof@sunrise.ch',
+          'address': this.result.email,
+          // 'address': 'samuele.bischof@sunrise.ch',
           'subject': 'Job Advisor - Accepted',
-          'content': '<i>You have been accepted !</i> <br> <br>' + this.$['comment'].value,
+          'content': '<i>Hello ' + this.result.firstName + ' ' + this.result.lastName + ', your profile has been verified !</i> <br> <br>' + this.$['comment'].value,
         };
         this.$['send-mail'].generateRequest();
         console.log('accept mail sent to ' + this.result.email);
+
+        this.req = {
+          'id' : this.result._id ,
+          'type' : 'verified' ,
+        };
+
+         this.$['user-verdict'].generateRequest();
+
+         this.parentNode.parentNode.getPending();
+
+         this.$['comment'].value = "";
+
       },
 
       deny: function (e) {
         this.req = {
-          // 'address': this.result.email,
-          'address': 'samuele.bischof@sunrise.ch',
+          'address': this.result.email,
+          // 'address': 'samuele.bischof@sunrise.ch',
           'subject': 'Job Advisor - Denied',
-          'content': '<i>You have been denied !</i> <br> <br>' + this.$['comment'].value,
+          'content': '<i>Hello ' + this.result.firstName + ' ' + this.result.lastName + ', your profile has been denied !</i> <br> <br>' + this.$['comment'].value,
         };
         this.$['send-mail'].generateRequest();
         console.log('deny mail sent to ' + this.result.email);
+
+        this.req = {
+          'id' : this.result._id ,
+          'type' : 'none' ,
+        };
+        this.$['user-verdict'].generateRequest();
+
+        this.parentNode.parentNode.getPending();
+
+        this.$['comment'].value = "";
       },
 
     });
