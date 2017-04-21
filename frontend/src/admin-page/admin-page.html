@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-pending-list/ja-pending-list.html">
+<link rel="import" href="../ja-pending-item/ja-pending-item.html">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <dom-module id="admin-page">
   <template>
@@ -25,6 +27,7 @@
     <paper-button raised id="btn-pending">get pending</paper-button>
 
     <ja-pending-list results={{results}}></ja-pending-list>
+    <!--<ja-results-list results={{results}}></ja-results-list>-->
 
     <iron-ajax  id="send-mail"
                 url="http://localhost:3005/admin/"
@@ -95,9 +98,9 @@
       },
 
        _handleResponse: function (response) {
-        const res = response.detail.response;
         if (response) {
-          console.log(res);
+          this.results = response.detail.response;
+          console.log(this.results);
         }
       },
 
