@@ -139,6 +139,7 @@
           // console.log(resp);
           this.set('user', resp.user);
           localStorage.setItem('user', JSON.stringify(resp.user));
+          location.href = '/';
           // console.log(this.user);
         }
       },
@@ -180,6 +181,7 @@
           this.set('user', resp);
           localStorage.setItem('user', JSON.stringify(resp));
           console.log(this.user);
+          location.href = '/';
         }
       },
 
