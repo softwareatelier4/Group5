@@ -46,7 +46,7 @@
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
       on-response="_handleResponse">
     </iron-ajax>
-    
+
     <div id="background-results"></div>
 
     <div id="inner-container">
@@ -170,6 +170,7 @@
         localStorage.removeItem('user');
         this.$['logoutBtn'].hidden = true;
         this.$['loginBtn'].hidden = false;
+        location.href = '/';
       },
 
       _onLogoutResponse: function(response) {
