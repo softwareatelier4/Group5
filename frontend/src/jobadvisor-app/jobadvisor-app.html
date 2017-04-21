@@ -37,7 +37,7 @@
 
 
     <div class="username">
-      Logged in as [[user.userName]] [[user.type]]
+      Logged in as [[user.userName]] [[user.userType]]
     </div>
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
@@ -46,14 +46,6 @@
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
       on-response="_handleResponse">
     </iron-ajax>
-
-    <iron-ajax id="logout-request"
-               url="/logout"
-               method="POST"
-               handle-as="json"
-               body={{logoutBody}}
-               content-type="application/json"
-               on-response="_onLogoutResponse"></iron-ajax>
 
     <div id="background-results"></div>
 
@@ -145,6 +137,10 @@
       },
       _userChanged: function (user) {
         console.log(user);
+        if (this.user && this.user.userType != "guest") {
+          this.$['logoutBtn'].hidden = false;
+          this.$['loginBtn'].hidden = true;
+        }
       },
       _filtersChanged: function (filters) {
         // console.log("changing filters", filters)
@@ -166,10 +162,15 @@
       },
 
       _onLogoutTap: function(evt) {
-        this.logoutBody = {
-          // TODO
-        };
-        this.$['logout-request'].generateRequest();
+        console.log("Logging out");
+        this.set('user', {
+          userName: "guest",
+          userType: "guest"
+        });
+        localStorage.removeItem('user');
+        this.$['logoutBtn'].hidden = true;
+        this.$['loginBtn'].hidden = false;
+        location.href = '/';
       },
 
       _onLogoutResponse: function(response) {
@@ -193,6 +194,11 @@
 
       ready: function () {
         this._getUserLocation();
+        if (localStorage.getItem('user')) {
+          this.set('user', JSON.parse(localStorage.getItem('user')));
+          this.$['logoutBtn'].hidden = false;
+        }
+        console.log("USER", this.user);
       },
 
       _handleResponse: function (response) {

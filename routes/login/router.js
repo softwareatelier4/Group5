@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
           message: "OK",
           user: {
             userName: user.userName,
-            type: user.userType
+            userType: user.userType
           }
         })
       }else{
