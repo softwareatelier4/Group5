@@ -74,6 +74,7 @@
           'subject': 'Job Advisor - Accepted',
           'content': '<i>Hello ' + this.result.firstName + ' ' + this.result.lastName + ', your profile has been verified !</i> <br> <br>' + this.$['comment'].value,
         };
+
         this.$['send-mail'].generateRequest();
         console.log('accept mail sent to ' + this.result.email);
 
@@ -97,6 +98,7 @@
           'subject': 'Job Advisor - Denied',
           'content': '<i>Hello ' + this.result.firstName + ' ' + this.result.lastName + ', your profile has been denied !</i> <br> <br>' + this.$['comment'].value,
         };
+
         this.$['send-mail'].generateRequest();
         console.log('deny mail sent to ' + this.result.email);
 
@@ -104,8 +106,9 @@
           'id' : this.result._id ,
           'type' : 'none' ,
         };
-        this.$['user-verdict'].generateRequest();
 
+        this.$['user-verdict'].generateRequest();
+        
         this.parentNode.parentNode.getPending();
 
         this.$['comment'].value = "";

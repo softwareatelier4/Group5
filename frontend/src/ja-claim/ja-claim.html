@@ -1,0 +1,96 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<dom-module id="ja-claim">
+  <template>
+    <style>
+       :host {
+        display: block;
+        color: black;
+      }
+
+      #container {
+        position: fixed;
+        height: calc(100% - 110px);
+        width: 80%!important;
+        top: 100px;
+        bottom: 0px;
+        overflow: scroll;
+        width: 100%;
+        color: dimgray;
+        background: white;
+        border-radius: 3px;
+        padding-bottom: 10px;
+      }
+
+      #container::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+
+    
+
+    <section id="container">
+      {{id}}
+      <div id="name">
+        {{result.firstName}} {{result.lastName}}
+      </div>
+      <paper-button id="btn-upload" raised>Upload</paper-button>
+      <paper-button id="btn-send" raised>Send</paper-button>
+
+    </section>
+    <iron-ajax auto id="request-profile" url="http://localhost:3005/claim/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_handleResponse">
+    </iron-ajax>
+
+    <iron-ajax id="set-pending" url="http://localhost:3005/claim/" params="{{req}}" method="PUT" handle-as="json">
+    </iron-ajax>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'ja-claim',
+
+      listeners: {
+        'btn-send.tap': 'setPending',
+      },
+
+      properties: {
+        result: {
+          type: Array,
+          value: [],
+          notify: true,
+          observer: '_resultChanged'
+        },
+        id : {
+          type: String,
+          reflectToAttribute: true,
+        }
+      },
+
+      _handleResponse: function (response) {
+        if (response) {
+          this.result = response.detail.response;
+          console.log(response.detail.response);
+        }
+      },
+
+      _resultChanged: function (result) {
+        this.result = result;
+      },
+
+      ready: function () {
+        console.log('agawg');
+        this.$['request-profile'].generateRequest();
+      },
+
+      setPending: function () {
+        this.req = {
+          'id' : this.result._id ,
+        };
+
+        this.$['set-pending'].generateRequest();
+      }
+
+    });
+  </script>
+</dom-module>

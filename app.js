@@ -35,7 +35,7 @@ var routers = require('./routes/routers');
 app.use('/', routers.root);
 
 app.use('/search', routers.search);
-app.use('/admin', routers.admin);
+
 app.use('*', function(req,res, next){
   if(req.accepts('html')){
     const options = {
@@ -46,6 +46,9 @@ app.use('*', function(req,res, next){
 
   next();
 })
+
+app.use('/admin', routers.admin);
+app.use('/claim', routers.claim);
 app.use('/freelancer', routers.freelancer);
 
 

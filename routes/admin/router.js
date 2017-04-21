@@ -16,15 +16,9 @@ const config = require('../../config');
 //supported methods
 router.all('/', middleware.supportedMethods('GET, POST, PUT, OPTIONS'));
 
-//list users
-router.get('/', function (req, res, next) {
-  res.sendFile('admin.html', {
-    root: 'frontend/'
-  });
-});
 
-router.get('/pending/', function (req, res, next) {
-  res.status(200);
+router.get('/', function (req, res, next) {
+    res.status(200);
 
   Freelancer.find({
     "verification": 'pending'
@@ -32,7 +26,6 @@ router.get('/pending/', function (req, res, next) {
     if (err) return console.error(err);
     res.json(profiles);
   });
-
 });
 
 router.put('/', function (req, res) {

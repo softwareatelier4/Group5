@@ -8,6 +8,8 @@
 <link rel="import" href="../ja-search-element/ja-search-element.html">
 <link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
+<link rel="import" href="../ja-claim/ja-claim.html">
+<link rel="import" href="../ja-admin/ja-admin.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -49,6 +51,12 @@
         </div>
         <div title="freelancer">
           <ja-profile id={{subrouteData.id}} user-location={{userLocation}}></ja-profile>
+        </div>
+        <div title="claim">
+          <ja-claim id={{subrouteData.id}}></ja-claim>
+        </div>
+        <div title="admin">
+          <ja-admin id={{subrouteData.id}}></ja-admin>
         </div>
       </iron-pages>
     </div>
@@ -114,7 +122,6 @@
 
       _resultsChanged: function (results) {
         this.results = results;
-        console.log(this.results);
       },
       _filtersChanged: function (filters) {
         // console.log("changing filters", filters)
