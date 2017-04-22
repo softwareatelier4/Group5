@@ -6,9 +6,11 @@
   "scripts": {
     "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "start-jenkins": "DEBUG='jobadvisor-server' ./bin/www",
+    "install":"bower install",
+    "install-selenium":"./bin/installSeleniumAndChromeWebDriver",
     "install-jenkins": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriverJenkins",
-    "test": "npm run test-mocha && npm start | node seed.js",
-    "test-mocha": "JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec ./test/* --colors --reporter mocha-jenkins-reporter",
+    "test-all": "npm run test-mocha && npm run test-nightwatch",
+    "test-mocha": "node seed.js && JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec ./test/* --colors --reporter mocha-jenkins-reporter",
     "test-nightwatch": "node seed.js && ./nightwatch"
   },
   "keywords": [

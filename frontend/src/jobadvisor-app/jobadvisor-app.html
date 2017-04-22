@@ -9,6 +9,8 @@
 <link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
 <link rel="import" href="../ja-login/ja-login.html">
+<link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <dom-module id="jobadvisor-app">
@@ -36,6 +38,12 @@
         float: right;
         text-align: right;
       }
+
+      #signup-button{
+        float:right;
+        background-color: var(--paper-yellow-500);
+        color: blue;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -54,6 +62,7 @@
 
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
+      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
     </div>
 
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
@@ -73,6 +82,9 @@
         </div>
         <div title="login">
           <ja-login user={{user}}></ja-login>
+        </div>
+        <div title="signup">
+          <ja-freelancer-signup> </ja-freelancer-signup>
         </div>
       </iron-pages>
     </div>

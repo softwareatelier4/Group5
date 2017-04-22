@@ -1,3 +1,5 @@
+'use strict';
+
 var config = require('./config');
 var express = require('express');
 var path = require('path');
@@ -6,6 +8,9 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieSession = require('cookie-session')
 var app = express();
+var methodOverride = require('method-override')
+const formidable = require('formidable');
+const fs = require('fs');
 
 
 // Connection to MongoDB
@@ -21,6 +26,33 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());    // parse application/json
 app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.post('/freelancer/img/:id', function(req, res) {
+  console.log(__dirname);
+  let imgname = req.params.id;
+  console.log(imgname);
+  let form = new formidable.IncomingForm(
+    {
+      uploadDir: __dirname + '/frontend/src/images',
+      keepExtensions: true
+    }
+  );
+
+  form.parse(req, function(err, fields, files) {
+    // let fileName = files.file.name;
+    // let filelen = fileName.length;
+    // let str = ""
+    // while(filelen > 0 && fileName.charAt(filelen -1) != '.'){
+    //   str = fileName.charAt(filelen -1) + str;
+    //   filelen--;
+    // }
+    fs.rename(files.file.path, __dirname + '/frontend/src/images/' + imgname + ".png");
+    res.json({name : imgname});
+    res.end();
+  });
+
+});
+
 app.use(methodOverride(
 function(req, res){
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
