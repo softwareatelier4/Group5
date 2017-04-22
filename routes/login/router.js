@@ -18,6 +18,7 @@ router.post('/', function(req, res, next) {
     if(user){
       if(req.body.password == user.password){
         req.session.user = user;
+        res.status(200);
         return res.json({
           statusCode: 200,
           message: "OK",
@@ -27,12 +28,14 @@ router.post('/', function(req, res, next) {
           }
         })
       }else{
+        res.status(400);
         return res.json({
           statusCode: 400,
           message: "Bad Request"
         });
       }
     }else{
+      res.status(400);
       return res.json({
         statusCode: 400,
         message: "Bad Request"
@@ -45,6 +48,7 @@ router.post('/signup', function(req, res, next){
   const newUser = new User(req.body);
   User.findOne({userName: newUser.userName}, function(err, user){
     if(user){
+      res.status(400);
       return res.json({
         statusCode: 400,
         message: "Bad Request"
