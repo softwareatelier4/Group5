@@ -64,27 +64,4 @@ router.post('/:n', function(req, res, next) {
 });
 
 
-
-
-
-function onModelSave(res, status, sendItAsResponse){
-  var statusCode = status || 204;
-  var sendItAsResponse = sendItAsResponse || false;
-  return function(err, saved){
-    if (err) {
-      if (err.name === 'ValidationError'
-      || err.name === 'TypeError' ) {
-        res.status(400)
-        return res.json({
-          statusCode: 400,
-          message: "Bad Request"
-        });
-      } else {
-        res.status(200);
-        return;
-      }
-    }
-  };
-}
-
 module.exports = router;
