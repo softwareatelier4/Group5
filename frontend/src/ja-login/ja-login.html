@@ -58,7 +58,9 @@
                with-credentials="true"
                body={{loginBody}}
                content-type="application/json"
-               on-response="_onLoginResponse"></iron-ajax>
+               on-response="_onLoginResponse"
+               on-error="_onLoginError"
+               ></iron-ajax>
 
     <iron-ajax id="signup-request"
                url="/login/signup"
@@ -67,7 +69,10 @@
                handle-as="json"
                body={{signupBody}}
                content-type="application/json"
-               on-response="_onSignupResponse"></iron-ajax>
+               on-response="_onSignupResponse"
+               on-error="_onSignupError"
+
+               ></iron-ajax>
 
     <div id="container">
       <div class="forms">
@@ -94,7 +99,7 @@
           error-message="Insert a valid username"></paper-input>
           <paper-input id="signup-password" required label="password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
           <paper-input id="signup-password-check"required label="repeat password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
-          <paper-button class="signup-login" id="signup-button" raised>signup</paper-button>
+          <paper-button class="signup-login" id="user-signup-button" raised>signup</paper-button>
         </form>
       </div>
     </div>
@@ -108,7 +113,7 @@
 
       listeners : {
         'login-button.tap' : '_onLoginTap',
-        'signup-button.tap' : '_onSignupTap'
+        'user-signup-button.tap' : '_onSignupTap'
       },
 
       properties: {
@@ -182,9 +187,27 @@
         }
       },
 
+      _onSignupError: function(evt) {
+        console.log(evt);
+        let resp = evt.detail.request.xhr;
+        if (resp.status == 400) {
+          console.log("User already exists");
+          this.signupError = "User already exists";
+        }
+      },
+      _onLoginError: function(evt) {
+        let resp = evt.detail.request.xhr;
+        console.log(evt);
+        if (resp.status == 400) {
+          console.log("User doesn't exist or password is wrong");
+          this.loginError = "User doesn't exist or password is wrong";
+        }
+      },
+
       _onSignupResponse: function(evt) {
         let resp = evt.detail.response;
-        if (resp.statusCode === 400) {
+        console.log(evt);
+        if (resp.statusCode == 400) {
           console.log("User already exists");
           this.signupError = "User already exists";
         } else {

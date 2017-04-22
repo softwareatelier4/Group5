@@ -10,3 +10,4 @@ chromedriver
 selenium-server-standalone-2.48.2.jar
 .vscode
 phantomjsdriver.log
+selenium-debug.log
