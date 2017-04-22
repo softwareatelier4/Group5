@@ -194,6 +194,10 @@ module.exports.matchIDInText = function matchIDInText(text, freelancer){
   text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "profession should match");
 }
 
+module.exports.matchIDInText = function matchIDInText(text, freelancer){
+  text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "profession should match");
+}
+
 function searchLinks(links, rel, href){
   var found = false;
   for(var i=0, l=links.length; i<l; i++){

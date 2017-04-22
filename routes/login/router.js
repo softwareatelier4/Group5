@@ -10,7 +10,7 @@ const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
 
-// router.all('/', middleware.supportedMethods('GET', 'POST'));
+router.all('/', middleware.supportedMethods('POST'));
 
 router.post('/', function(req, res, next) {
   console.log('password required')
