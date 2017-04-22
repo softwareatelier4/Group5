@@ -28,6 +28,13 @@ app.use(bodyParser.json()); // parse application/json
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.post('/claim/:id', function (req, res) {
+
+  var dir = './frontend/src/claim-documents/';
+
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+
   let filename = req.params.id;
   let form = new formidable.IncomingForm({
     uploadDir: __dirname + '/frontend/src/claim-documents',
