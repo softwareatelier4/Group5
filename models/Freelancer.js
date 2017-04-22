@@ -43,6 +43,7 @@ const FreelancerSchema = new mongoose.Schema(
     image         : { type: String, default: '/src/images/blank-user.jpg'},
     reviews       : { type: [ReviewSchema], default:[]},
     verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    claimFilePath : { type: String},
   }
 );
 
