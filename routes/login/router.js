@@ -13,7 +13,6 @@ const fieldsFilter = { '__v': 0 };
 router.all('/', middleware.supportedMethods('POST'));
 
 router.post('/', function(req, res, next) {
-  console.log('password required')
   User.findOne({userName: req.body.userName}, function(err, user){
     if(user){
       if(req.body.password == user.password){

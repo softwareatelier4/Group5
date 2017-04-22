@@ -10,6 +10,7 @@ var request = require('supertest');
 var utils = require('../utils');
 var freelancers;
 var reviews;
+var date = new Date();
 
 describe('Backend review tests', function(){
 
@@ -18,59 +19,39 @@ describe('Backend review tests', function(){
     before(seed);
     after(utils.dropDb);
 
-    // it('should post a new review to the freelancer profile', function(done) {
-    //   console.log(reviews[0]);
-    //
-    //   request(app)
-    //   .post('/freelancer/' + freelancers[0]._id.toString() + '/review')
-    //   .send(reviews[0])
-    //   .expect(200)
-    //   .end(function(err, res){
-    //     // var body = res.body;
-    //     // body.should.be.empty;
-    //
-    //     if(err) console.log(err);
-    //
-    //     res.body.should.have.property('reviews');
-    //     res.body.reviews.should.have.property(reviews[0]);
-    //     done()
-    //
-    //     //check if freelancer reviews were updated
-    //     // request(app)
-    //     // .get('/freelancer/' + freelancers[0]._id.toString())
-    //     // .set('Accept', 'application/json')
-    //     // .expect('Content-Type', /json/, 'it should respond with json' )
-    //     // .expect(200)
-    //     // .end(function(err, res){
-    //     //   var resText = res.text;
-    //     //   utils.matchFreelancerReview(res.text, JSON.stringify(reviews[0]));
-    //     //   done();
-    //     // });
-    //   });
-    //
-    // });
-
-    it('should give back a 404 status if the review is posted to a freelancer profile that does not exists', function(done) {
+    it('should post a new review to the freelancer profile', function(done) {
       request(app)
-      .put('/freelancer/' + freelancers[0]._id.toString() + '/review')
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
-      .send(reviews[0])
-      .expect(204)
-      .end(function(err, res){
-        var body = res.body;
-        body.should.be.empty;
+      .post('/freelancer/' + freelancers[0]._id.toString() + '/review')
+      .send({
+        "_id"                 : ObjectId("1625fc2bd82b84d23d8c7bd6"),
+        "date"                : date,
+        "comment"             : "nice job",
+        "rating"              : 5,
+        "userName"            : "goodguy27"})
+      .expect(200, done);
+    });
 
-        request(app)
-        .get('/freelancer/' + ObjectId().toString())
-        .set('Accept', 'application/json')
-        .expect(404, done);
+    it('should give back a 400 status if the review is posted to a freelancer profile that does not exists', function(done) {
+      request(app)
+      .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/review')
+      .set('Accept', 'application/json')
+      .send({
+        "_id"                 : ObjectId("2625fc2bd82b84d23d8c7bd6"),
+        "date"                : date,
+        "comment"             : "nice job",
+        "rating"              : 5,
+        "userName"            : "goodguy27"})
+        .expect(400)
+        .end(function(err, res){
+          res = JSON.parse(res.text);
+
+          should.not.exist(err, 'No error should occur');
+        });
+        done();
       });
     });
 
   });
-});
-
 
 
 function seed(done){

@@ -49,6 +49,7 @@ describe('Review Model', function(done){
       review.rating = 3;
       review.comment = 'Dire Straits';
       review.date = new Date();
+      review.userName = 'camo';
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(review);
@@ -61,6 +62,7 @@ describe('Review Model', function(done){
       review.rating = '';
       review.comment = 'Bubu';
       review.date = new Date();
+      review.userName = 'ema';
       utils.errorIfNullUndefinedOrEmpty(review, 'rating', done );
     });
 
@@ -69,6 +71,7 @@ describe('Review Model', function(done){
       review.rating = null;
       review.comment = 'sasgfkb';
       review.date = new Date();
+      review.userName = 'ema';
       utils.errorIfNullUndefinedOrEmpty(review, 'rating', done );
     });
 
@@ -77,6 +80,7 @@ describe('Review Model', function(done){
       review.rating = undefined;
       review.comment = 'Bubu';
       review.date = new Date();
+      review.userName = 'ema';
       utils.errorIfNullUndefinedOrEmpty(review, 'rating', done );
     });
 
@@ -84,6 +88,7 @@ describe('Review Model', function(done){
       var review = new Review();
       review.rating = 4;
       review.date = '';
+      review.userName = 'ema';
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(review);
@@ -95,6 +100,7 @@ describe('Review Model', function(done){
       var review = new Review();
       review.rating = 4;
       review.comment = 'Bubu';
+      review.userName = 'ema';
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(review);
@@ -107,6 +113,7 @@ describe('Review Model', function(done){
       review.rating = 4;
       review.comment = 'Bubu';
       review.date = null;
+      review.userName = 'ema';
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(review);
@@ -118,6 +125,7 @@ describe('Review Model', function(done){
       var review = new Review();
       review.rating = 4;
       review.comment = 'Bubu';
+      review.userName = 'ema';
       review.date = undefined;
       review.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
