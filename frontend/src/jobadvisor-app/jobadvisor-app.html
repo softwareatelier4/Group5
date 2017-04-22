@@ -53,16 +53,16 @@
     </app-route>
 
     <!-- <div id="login"> -->
-      <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
-      <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
-      <div id="username">
-        [[_formatLoginStatus(user)]]
-      </div>
-    <!-- </div> -->
 
+    <!-- </div> -->
+    <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
+    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
+    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
+    <div id="username">
+      [[_formatLoginStatus(user)]]
+    </div>
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
-      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
     </div>
 
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
