@@ -26,8 +26,8 @@
         width: 100px;
       }
     </style>
-    <paper-card>
-      <div class="card-content"><a href="/freelancer/{{result._id}}"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a>
+    <paper-card id="{{result._id}}">
+      <div class="card-content"><a href="/freelancer/{{result._id}}" target="_blank"><span class="result-name">{{result.firstName}} {{result.lastName}}</span></a>
         <div class="img">
           <img src="{{result.image}}" alt="">
         </div>
@@ -36,7 +36,7 @@
       <div class="card-actions">
         <paper-button id="btn-accept">Accept</paper-button>
         <paper-button id="btn-deny">Deny</paper-button>
-        <a href="./{{result.claimFilePath}}">Download file</a>
+        <a href="{{result.claimFilePath}}" download target="_blank">Download file</a>
       </div>
     </paper-card>
 
