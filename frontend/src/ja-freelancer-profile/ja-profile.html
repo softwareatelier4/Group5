@@ -140,7 +140,7 @@
         </div>
 
         <div id="rating">
-          Rating : {{rating}}/*****
+          Rating : {{_checkratisprovided(rating)}}
         </div>
         <div id="category">
           Category : {{category}}
@@ -175,13 +175,13 @@
       <section class="divisor"></section>
 
       <section id="price">
-        Cost/hour: {{price}} CHF
+        Cost/hour: {{_checkprisprovided(price)}}
       </section>
 
       <section class="divisor"></section>
 
       <section id="description">
-        Description : {{description}}
+        Description : {{_checkdescisprovided(description)}}
       </section>
       <section id="reviews" style="width: 100%;">
         <div id="user-rating" style="display:flex;">
@@ -300,6 +300,27 @@
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
+      },
+
+      _checkdescisprovided: function(el){
+        if(el === undefined || el == "" || el === " " || el === null){
+          return "No description provided"
+        }
+        return el;
+      },
+
+      _checkratisprovided: function(el){
+        if(el === undefined || el == "" || el === " " || el === null){
+          return "No rating provided"
+        }
+        return el + "/*****";
+      },
+
+      _checkprisprovided : function(el){
+        if(el === undefined || el == "" || el === " " || el === null){
+          return "No price provided"
+        }
+        return el + " CHF";
       },
 
       _finished: function (e) {

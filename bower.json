@@ -12,7 +12,9 @@
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
     "shibui-dropdown-menu": "ShibuiElements/shibui-dropdown-menu#^1.0.3",
     "paper-range-slider": "IftachSadeh/paper-range-slider#^0.2.5",
-    "file-upload": "^2.2.1"
+    "file-upload": "^2.2.1",
+    "paper-radio-button": "PolymerElements/paper-radio-button#^1.3.3",
+    "paper-radio-group": "PolymerElements/paper-radio-group#^1.2.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

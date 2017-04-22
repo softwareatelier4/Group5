@@ -8,8 +8,12 @@
 <link rel="import" href="../ja-search-element/ja-search-element.html">
 <link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
+<<<<<<< HEAD
 <link rel="import" href="../ja-claim/ja-claim.html">
 <link rel="import" href="../ja-admin/ja-admin.html">
+=======
+<link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
+>>>>>>> 95d1ae04a52f920102fbd85583d03cecc0d390e1
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -34,7 +38,7 @@
 
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
-      <paper-button id="signup-button">SIGNUP</paper-button>
+      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
     </div>
 
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
@@ -57,6 +61,9 @@
         </div>
         <div title="admin">
           <ja-admin id={{subrouteData.id}}></ja-admin>
+        </div>
+        <div title="signup">
+          <ja-freelancer-signup></ja-freelancer-signup>
         </div>
       </iron-pages>
     </div>
