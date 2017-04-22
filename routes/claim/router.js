@@ -2,20 +2,21 @@
 
 const express = require('express');
 const router = express.Router();
-const middleware =  require('../middleware');
+const middleware = require('../middleware');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
-const Review = mongoose.model('Review');
 const config = require('../../config');
 
-const fieldsFilter = { '__v': 0 };
+const fieldsFilter = {
+  '__v': 0
+};
 
-router.all('/', middleware.supportedMethods('GET, POST, PUT'));
+router.all('/', middleware.supportedMethods('GET, PUT, POST'));
 
-router.get('/:freelancerid', function(req, res, next) {
-  Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function(err, freelancer){
-    if (err) return next (err);
+router.get('/:freelancerid', function (req, res, next) {
+  Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function (err, freelancer) {
+    if (err) return next(err);
     if (!freelancer) {
       res.status(404);
       console.log("NOT FOUND");
@@ -29,12 +30,20 @@ router.get('/:freelancerid', function(req, res, next) {
   });
 });
 
-router.put('/', function (req, res) {
-  Freelancer.findOneAndUpdate({_id: req.query.id}, {$set:{verification: "pending"}}).exec(function (err, profiles) {
-    if (err) return console.error(err);
-    res.json(profiles);
-  });
-});
+// router.put('/', function (req, res) {
+//   Freelancer.findOneAndUpdate({
+//     _id: req.query.id
+//   }, {
+//     $set: {
+//       verification: "pending"
+//     }
+//   }).exec(function (err, profiles) {
+//     if (err) return console.error(err);
+//     res.json(profiles);
+//   });
+// });
+
+
 
 // router.post('/:freelancerid/review', function(req, res, next) {
 //   var toAdd = new Review(req.body);
@@ -84,13 +93,11 @@ router.put('/', function (req, res) {
 // }
 
 
-function addLinks(freelancer){
-  freelancer.links = [
-    {
-      "rel" : "self",
-      "href" : config.url + "/freelancer/" + freelancer._id
-    }
-  ];
+function addLinks(freelancer) {
+  freelancer.links = [{
+    "rel": "self",
+    "href": config.url + "/freelancer/" + freelancer._id
+  }];
 }
 
 module.exports = router;

@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/file-upload/file-upload.html">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <dom-module id="ja-claim">
   <template>
@@ -10,6 +11,7 @@
       }
 
       #container {
+        padding: 20px;
         position: fixed;
         height: calc(100% - 110px);
         width: 80%!important;
@@ -28,22 +30,27 @@
       }
     </style>
 
-    
+
 
     <section id="container">
       {{id}}
       <div id="name">
         {{result.firstName}} {{result.lastName}}
       </div>
-      <paper-button id="btn-upload" raised>Upload</paper-button>
+      <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
+      <form id="upload-form" action="" , method="post" , enctype="multipart/form-data">
+        <input type="file" , name="file"></form>
+      <!--<file-upload raised="false" target="/claim/" multi="false" fileDataName="input_file" method="POST" accept="*">Choose File</file-upload><br>-->
       <paper-button id="btn-send" raised>Send</paper-button>
 
+
     </section>
-    <iron-ajax auto id="request-profile" url="http://localhost:3005/claim/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_handleResponse">
+    <iron-ajax auto id="request-profile" url="http://localhost:3005/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
+      on-response="_handleResponse">
     </iron-ajax>
 
-    <iron-ajax id="set-pending" url="http://localhost:3005/claim/" params="{{req}}" method="PUT" handle-as="json">
-    </iron-ajax>
+    <!--<iron-ajax id="set-pending" url="http://localhost:3005/claim/" params="{{req}}" method="PUT" handle-as="json">
+    </iron-ajax>-->
 
   </template>
   <script>
@@ -51,7 +58,8 @@
       is: 'ja-claim',
 
       listeners: {
-        'btn-send.tap': 'setPending',
+        // 'btn-send.tap': 'setPending',
+        'btn-send.tap': 'uploadFile',
       },
 
       properties: {
@@ -61,7 +69,7 @@
           notify: true,
           observer: '_resultChanged'
         },
-        id : {
+        id: {
           type: String,
           reflectToAttribute: true,
         }
@@ -80,15 +88,23 @@
 
       ready: function () {
         console.log('agawg');
-        this.$['request-profile'].generateRequest();
+        // this.$['request-profile'].generateRequest();
       },
 
       setPending: function () {
         this.req = {
-          'id' : this.result._id ,
+          'id': this.result._id,
         };
 
         this.$['set-pending'].generateRequest();
+      },
+
+      uploadFile: function () {
+        var form = document.getElementById('upload-form');
+        var formData = new FormData(form);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '', true);
+        xhr.send(formData);
       }
 
     });
