@@ -32,24 +32,24 @@ describe('Backend review tests', function(){
       // done();
     });
 
-    // it('should give back a 400 status if the review is posted to a freelancer profile that does not exists', function(done) {
-    //   request(app)
-    //   .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/review')
-    //   .set('Accept', 'application/json')
-    //   .send({
-    //     "_id"                 : ObjectId("2625fc2bd82b84d23d8c7bd6"),
-    //     "date"                : date,
-    //     "comment"             : "nice job",
-    //     "rating"              : 5,
-    //     "userName"            : "goodguy27"})
-    //     .expect(400)
-    //     .end(function(err, res){
-    //       res = JSON.parse(res.text);
-    //       console.log(err);
-    //       should.not.exist(err, 'No error should occur');
-    //     });
-    //     done();
-    //   });
+    it('should give back a 400 status if the review is posted to a freelancer profile that does not exists', function(done) {
+      request(app)
+      .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/review')
+      .set('Accept', 'application/json')
+      .send({
+        "_id"                 : ObjectId("2625fc2bd82b84d23d8c7bd6"),
+        "date"                : date,
+        "comment"             : "nice job",
+        "rating"              : 5,
+        "userName"            : "goodguy27"})
+        .expect(400)
+        .end(function(err, res){
+          res = JSON.parse(res.text);
+          console.log(err);
+          should.not.exist(err, 'No error should occur');
+        });
+        done();
+      });
   });
 
 });
