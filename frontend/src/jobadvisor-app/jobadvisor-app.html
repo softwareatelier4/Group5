@@ -20,9 +20,16 @@
 
       #username {
         color: white;
+        text-align: right;
       }
       #loginBtn, #logoutBtn {
         background-color: white;
+        margin: 10px;
+        /*margin-bottom: 5px;*/
+      }
+      #login {
+        float: right;
+        text-align: right;
       }
     </style>
 
@@ -32,13 +39,14 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
-    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
-
-
-    <div id="username">
-      Logged in as [[user.userName]]
+    <div id="login">
+      <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
+      <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
+      <div id="username">
+        Logged in as [[user.userName]]
+      </div>
     </div>
+
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
     </div>
