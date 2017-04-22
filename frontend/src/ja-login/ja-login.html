@@ -25,7 +25,8 @@
       }
 
       form {
-        padding: 50px;
+        padding: 100px;
+        padding-top: 0px;
         display: block;
       }
       .title {
@@ -42,6 +43,11 @@
       .error {
         color: crimson;
         height: 20px;
+      }
+
+      .signup-login {
+        width: 100%;
+        margin-top: 40px;
       }
     </style>
 
@@ -64,16 +70,19 @@
                on-response="_onSignupResponse"></iron-ajax>
 
     <div id="container">
-      <div class=".title">
-        <h2>Login page</h2>
-      </div>
       <div class="forms">
+        <div class=".title">
+          <h2>Login as an existing user</h2>
+        </div>
         <form is="iron-form" class="form" id="login-form">
           <p id="login-error" class="error">{{loginError}}</p>
           <paper-input pattern="^[a-zA-Z0-9]+" required id="login-username" label="username" error-message="Insert a valid username"></paper-input>
           <paper-input required id="login-password" pattern="^[a-zA-Z0-9]+" auto-validate label="password" type="password" error-message="Insert a valid password"></paper-input>
-          <paper-button id="login-button" raised>login</paper-button>
+          <paper-button class="signup-login" id="login-button" raised>login</paper-button>
         </form>
+        <div class=".title">
+          <h2>Create a new user</h2>
+        </div>
         <form is="iron-form" id="signup-form">
           <p id="signup-error" class="error">{{signupError}}</p>
           <paper-input id="signup-email" label="your email address" required auto-validate pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$' error-message="Insert a valid email"></paper-input>
@@ -85,7 +94,7 @@
           error-message="Insert a valid username"></paper-input>
           <paper-input id="signup-password" required label="password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
           <paper-input id="signup-password-check"required label="repeat password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
-          <paper-button id="signup-button" raised>signup</paper-button>
+          <paper-button class="signup-login" id="signup-button" raised>signup</paper-button>
         </form>
       </div>
     </div>
@@ -135,6 +144,7 @@
         let resp = evt.detail.response;
         if (resp.statusCode === 400) {
           console.log("User doesn't exist or password is wrong");
+          this.loginError = "User doesn't exist or password is wrong";
         } else if (resp.statusCode === 200){
           // console.log(resp);
           this.set('user', resp.user);
@@ -176,6 +186,7 @@
         let resp = evt.detail.response;
         if (resp.statusCode === 400) {
           console.log("User already exists");
+          this.signupError = "User already exists";
         } else {
           // console.log(resp);
           this.set('user', resp);
