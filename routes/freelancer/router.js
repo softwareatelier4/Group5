@@ -35,9 +35,8 @@ router.post('/:freelancerid/review', function(req, res, next) {
   toAdd.save(function(err) {
     if (err) return next (err);
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"reviews": toAdd}},
-    {safe: true, upsert: true, new : true},
+    {safe: true, upsert: true, new : false},
     function(err, freelancer) {
-      console.log(freelancer);
       if (err) return next (err);
       if (!freelancer) {
         res.status(400)
