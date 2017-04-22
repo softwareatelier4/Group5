@@ -9,12 +9,36 @@ var users = {
   name : 'User',
   data : [
     {
-      "firstName"    : "",
-      "lastName"     : "",
-      "userName"     : "Bob",
-      "password"     : "Bob",
-      "email"        : "ciaoisnadis",
-      "comm_rating"  : 9
+      "userName"  : "camo",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "camo",
+      "email"     : "camo@me.ch",
+      "userType"  : "Admin"
+    },
+    {
+      "userName"  : "ema",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "ema",
+      "email"     : "ema@me.ch",
+      "userType"  : "Normal"
+    },
+    {
+      "userName"  : "fischer",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "fischer",
+      "email"     : "fischer@me.ch",
+      "userType"  : "Freelancer"
+    },
+    {
+      "userName"  : "sani",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "sani",
+      "email"     : "sani@me.ch",
+      "userType"  : "Normal"
     },
   ]
 }
