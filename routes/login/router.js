@@ -54,36 +54,14 @@ router.post('/signup', function(req, res, next){
       });
     }else{
       req.session.user = newUser;
-      newUser.save(onModelSave(res, 201, true));
+      newUser.save(function(err){
+        if(err) return next(err);
+        res.status(201);
+        res.json(newUser);
+      });
+
     }
   })
 });
-
-function onModelSave(res, status, sendItAsResponse){
-  var statusCode = status || 204;
-  var sendItAsResponse = sendItAsResponse || false;
-  return function(err, saved){
-    if (err) {
-      if (err.name === 'ValidationError'
-      || err.name === 'TypeError' ) {
-        res.status(400)
-        return res.json({
-          statusCode: 400,
-          message: "Bad Request"
-        });
-      }else{
-        return next (err);
-      }
-    }
-    if( sendItAsResponse){
-      var obj = saved.toObject();
-      delete obj.password;
-      delete obj.__v;
-      return res.status(statusCode).json(obj);
-    }else{
-      return res.status(statusCode).end();
-    }
-  }
-}
 
 module.exports = router;
