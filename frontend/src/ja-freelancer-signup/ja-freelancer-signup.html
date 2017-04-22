@@ -1,43 +1,98 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/file-upload/file-upload.html">
+
+
 <dom-module id="ja-freelancer-signup">
 
   <template>
     <style>
 
+    #container {
+      padding-top: 100px;
+    }
+
+    #upload {
+        --file-upload-upload-border: {
+          padding: 0;
+        }
+      }
+
     </style>
 
     <section id="container">
 
-      <div id="firstname">
-        <div>Firstname :</div><paper-input label="Firstname"></paper-input>
+      <div id="_firstname">
+        <paper-input label="Firstname" id="fname" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Firstname required (only letters)!"></paper-input>
       </div>
 
-      <div id="lastname">
-        <div>Lastname :</div><paper-input label="Lastname"></paper-input>
+      <div id="_lastname">
+        <paper-input label="Lastname" id="lastname" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Lastname required (only letters)!"></paper-input>
       </div>
 
-      <div id="email">
-        <div>eMail :</div><paper-input label="eMail"></paper-input>
+      <div id="_email">
+        <paper-input label="email" id="femail" auto-validate required error-message="Email required!" pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'></paper-input>
       </div>
 
-      <div id="address">
-        <div>address :</div><paper-input label="address"></paper-input>
+      <div id="_address">
+        <paper-input label="address" id="addr" auto-validate  required error-message="Address required!"></paper-input>
       </div>
 
-      <div id="profession">
-        <div>profession :</div><paper-input label="profession"></paper-input>
+      <div id="_profession">
+        <paper-input label="profession" id="prof" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Profession required (only letters)!"></paper-input>
       </div>
 
-      <div id="phonenumber">
-        <div>Phone number :</div><paper-input label="Phone number"></paper-input>
+      <div id="_description">
+        <paper-input label="Description" id="desc"></paper-input>
       </div>
 
-      <paper-button>
+      <div id="_category">
+        Category <br />
+        <paper-radio-group id="selector" selected="Other">
+        <!-- <paper-input label="Category" id="cat"></paper-input> -->
+        <paper-radio-button id="Radio" name="Radio"> Radio  </paper-radio-button>
+        <paper-radio-button id="TecnicalServices" name="Tecnical Services">Tecnical Services</paper-radio-button>
+        <paper-radio-button id="ITServices" name="IT Services">IT Services</paper-radio-button>
+        <paper-radio-button id="Design" name="Design">Design</paper-radio-button>
+        <paper-radio-button id="Management" name="Management">Management</paper-radio-button>
+        <paper-radio-button id="Retail" name="Retail">Retail</paper-radio-button>
+        <paper-radio-button id="HumanResources" name="Human Resources">Human Resources</paper-radio-button>
+        <paper-radio-button id="Marketing" name="Marketing">Marketing</paper-radio-button>
+        <paper-radio-button id="Consulting" name="Consulting">Consulting</paper-radio-button>
+        <paper-radio-button id="Advertising" name="Advertising">Advertising</paper-radio-button>
+        <paper-radio-button id="Logistics" name="Logistics">Logistics</paper-radio-button>
+        <paper-radio-button id="RealEstate" name="Real Estate">Real Estate</paper-radio-button>
+        <paper-radio-button id="SocialWork" name="Social Work">Social Work</paper-radio-button>
+        <paper-radio-button id="Healthcare" name="Healthcare">Healthcare</paper-radio-button>
+        <paper-radio-button id="Other" name="Other">Other</paper-radio-button>
+      </paper-radio-group>
+      </div>
+      <a id="rout" href="/freelancer/"></a>
+
+      <div id="_phonenumber">
+        <paper-input label="Phone number" id="fphone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
+      </div>
+
+      <div id="_price">
+        <paper-input label="Price per hour" auto-validate pattern="^[0-9]+" id="fprice" error-message="Numbers only!"></paper-input>
+      </div>
+
+      <div id="_img" >
+       <p> Choose Profile Picture : </p>
+       <file-upload raised id="upload"> UPLOAD
+       </file-upload>
+     </div>
+
+      <paper-button id="fsubmit" raised on-click="_clicked">
         Submit
       </paper-button>
 
+
+
+      <iron-ajax id="ajax" url="/freelancer/" method="POST" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
 
 
     </section>
@@ -48,6 +103,119 @@
 
     Polymer({
       is: "ja-freelancer-signup",
+
+      _finished: function(el){
+        if(this.$.upload.files[0] !== undefined){
+          this.$.upload.target += "/freelancer/img/" + el.detail.response;
+          this.$.upload.method="POST";
+          this.$.upload.accept="image/*";
+          this.$.upload.errorText="error! please retry";
+          this.$.upload.manualUpload = true;
+          this.$.upload.uploadFile(this.$.upload.files[0]);
+        }
+
+        this._clearall();
+        this.$.rout.href += el.detail.response;
+        this.$.rout.click();
+      },
+
+      _clearall: function(){
+        this.$.fname.removeAttribute("required");
+        this.$.fname.value = "";
+        this.$.fname.validate();
+        this.$.fname.setAttribute("required", true);
+        this.$.lastname.removeAttribute("required");
+        this.$.lastname.value = "";
+        this.$.lastname.validate();
+        this.$.lastname.setAttribute("required", true);
+        this.$.addr.removeAttribute("required");
+        this.$.addr.value = "";
+        this.$.addr.validate();
+        this.$.addr.setAttribute("required", true);
+        this.$.prof.removeAttribute("required");
+        this.$.prof.value = "";
+        this.$.prof.validate();
+        this.$.prof.setAttribute("required", true);
+        this.$.femail.removeAttribute("required");
+        this.$.femail.value = "";
+        this.$.femail.validate();
+        this.$.femail.setAttribute("required", true);
+        this.$.fphone.removeAttribute("required");
+        this.$.fphone.value = "";
+        this.$.fphone.validate();
+        this.$.fphone.setAttribute("required", true);
+        this.$.desc.removeAttribute("required");
+        this.$.desc.value = "";
+        this.$.desc.validate();
+        this.$.desc.setAttribute("required", true);
+        this.$.selector.selected = "Other";
+        this.$.fprice.removeAttribute("required");
+        this.$.fprice.value = "";
+        this.$.fprice.validate();
+        this.$.fprice.setAttribute("required", true);
+        this.$.rout.href =" /freelancer/";
+        this.$.upload.clear();
+      },
+
+      _clicked: function(){
+        var proceed = true;
+
+        if(this.$.fname.value == ""){
+          proceed = false;
+          this.$.fname.focus();
+        }
+
+        if (this.$.lastname.value == "") {
+          proceed = false;
+          this.$.lastname.focus();
+        }
+
+        if (this.$.addr.value=="") {
+          proceed = false;
+          this.$.addr.focus();
+        }
+
+        if (this.$.prof.value=="") {
+          proceed = false;
+          this.$.prof.focus();
+        }
+
+        if (this.$.femail.value == "") {
+          proceed = false;
+          this.$.femail.focus();
+        }
+
+        if (this.$.fphone.value == "") {
+          proceed = false;
+          this.$.fphone.focus();
+        }
+
+        if(proceed){
+          const ajaxel = this.$.ajax;
+          const obj = {
+              firstName : this.$.fname.value,
+              lastName  : this.$.lastname.value,
+              address  : this.$.addr.value,
+              description : this.$.desc.value,
+              profession : this.$.prof.value,
+              category : this.$.selector.selected,
+              email  : this.$.femail.value,
+              phone_number : this.$.fphone.value,
+              price  : this.$.fprice.value,
+              reviews : [],
+          };
+          if(this.$.upload.files[0] !== undefined){
+            ajaxel.url+= "1";
+          }else{
+            ajaxel.url+= "0";
+          }
+          ajaxel.body = obj;
+          ajaxel.generateRequest();
+        }else{
+          this.$.fname.focus();
+        }
+
+      },
 
     })
 

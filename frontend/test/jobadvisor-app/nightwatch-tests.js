@@ -9,8 +9,10 @@ module.exports = {
       .waitForElementVisible('#field-search', 1000)
       .waitForElementVisible('#location-search', 1000)
       .waitForElementVisible('#dropdown-toggle', 1000)
-      .waitForElementVisible('#div-filters', 1000);
+      .waitForElementVisible('#div-filters', 1000)
+      .waitForElementVisible('#signup-button', 1000);
   },
+
 
   'Test input, get results and click on a profile [FULL TEST]' : function (client) {
     client
@@ -290,6 +292,129 @@ module.exports = {
       .assert.containsText("#fl-5625fc2bd66b84d23d8c7bf1 .card-content a span", "Samuele Bischof")
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bd8', 1000)
       .setValue('#fl-5625fc2bd82b84d23d8c7bd8 paper-textarea', 'test string')
+      .end();
+  },
+
+  'Freelancer creation :Test signup' : function (client) {
+    client
+      .url('http://localhost:3005')
+      .waitForElementVisible('body', 1000)
+      .waitForElementVisible('jobadvisor-app', 10000)
+      .waitForElementVisible('ja-results-list', 1000)
+      .waitForElementVisible('#field-search', 1000)
+      .waitForElementVisible('#location-search', 1000)
+      .waitForElementVisible('#dropdown-toggle', 1000)
+      .waitForElementVisible('#div-filters', 1000)
+      .waitForElementVisible('#signup-button', 1000)
+      .assert.containsText('#signup-button', 'CREATE FREELANCER')
+      .click('#signup-button')
+      .pause(1000)
+      .waitForElementVisible('ja-freelancer-signup', 1000)
+      // .waitForElementVisible('#container', 1000)
+      .waitForElementVisible('#_firstname', 1000)
+      .waitForElementVisible('#fname', 1000)
+      .waitForElementVisible('#_lastname', 1000)
+      .waitForElementVisible('#lastname', 1000)
+      .waitForElementVisible('#_address', 1000)
+      .waitForElementVisible('#addr', 1000)
+      .waitForElementVisible('#_email', 1000)
+      .waitForElementVisible('#femail', 1000)
+      .waitForElementVisible('#_profession', 1000)
+      .waitForElementVisible('#prof', 1000)
+      .waitForElementVisible('#_description', 1000)
+      .waitForElementVisible('#desc', 1000)
+      .waitForElementVisible('#_category', 1000)
+      // .waitForElementVisible('#name', 1000)
+      // .waitForElementVisible('#_img', 1000)
+      // .waitForElementVisible('#name', 1000)
+      .waitForElementVisible('#_phonenumber', 1000)
+      .waitForElementVisible('#fphone', 1000)
+      .waitForElementVisible('#_price', 1000)
+      .waitForElementVisible('#fprice', 1000)
+      .waitForElementVisible('#selector', 1000)
+      .waitForElementVisible('#fsubmit', 1000)
+      .setValue('#fname input', 'Gianma')
+      .setValue('#lastname input', 'Palaz')
+      .setValue('#addr input', 'Via Playboy 3')
+      .setValue('#femail input', 'real.gianma@instagram.com')
+      .setValue('#prof input', 'Actor')
+      .setValue('#desc input', 'Hello')
+      .setValue('#fphone input', '000-9000-000')
+      .setValue('#fprice input', '300000')
+      .click('#fsubmit')
+      // TO CHANGE
+      .assert.urlContains('http://localhost:3005/')
+      .end();
+    },
+
+    'Freelancer creation : no fields inserted' : function (client) {
+      client
+      .url('http://localhost:3005/signup')
+      .waitForElementVisible('ja-freelancer-signup', 1000)
+      // .waitForElementVisible('#container', 1000)
+      .waitForElementVisible('#_firstname', 1000)
+      .waitForElementVisible('#fname', 1000)
+      .waitForElementVisible('#_lastname', 1000)
+      .waitForElementVisible('#lastname', 1000)
+      .waitForElementVisible('#_address', 1000)
+      .waitForElementVisible('#addr', 1000)
+      .waitForElementVisible('#_email', 1000)
+      .waitForElementVisible('#femail', 1000)
+      .waitForElementVisible('#_profession', 1000)
+      .waitForElementVisible('#prof', 1000)
+      .waitForElementVisible('#_description', 1000)
+      .waitForElementVisible('#desc', 1000)
+      .waitForElementVisible('#_category', 1000)
+      .assert.containsText('#_category > paper-radio-group [aria-selected=true] #radioLabel',
+                               'Other')
+
+      .waitForElementVisible('#Design', 1000)
+      .click('#Design')
+      .assert.attributeContains('#Design', 'aria-selected', 'true')
+
+      .waitForElementVisible('#TecnicalServices', 1000)
+      .click('#TecnicalServices')
+      .assert.attributeContains('#TecnicalServices', 'aria-selected', 'true')
+
+      .waitForElementVisible('#Radio', 1000)
+      .click('#Radio')
+      .assert.attributeContains('#Radio', 'aria-selected', 'true')
+
+      .waitForElementVisible('#ITServices', 1000)
+      .click('#ITServices')
+      .assert.attributeContains('#ITServices', 'aria-selected', 'true')
+
+
+
+
+      .waitForElementVisible('#_img', 1000)
+      .waitForElementVisible('#upload', 1000)
+      // .waitForElementVisible('#UploadBorder', 1000)
+
+      .click('#button') //THIS STILL WORKS
+      //.setValue('input[type="file"]', require('path').resolve('/home/My-PC/Desktop/img.png'))
+      // .waitForElementVisible('#name', 1000)
+
+      .waitForElementVisible('#_phonenumber', 1000)
+      .waitForElementVisible('#fphone', 1000)
+      .waitForElementVisible('#_price', 1000)
+      .waitForElementVisible('#fprice', 1000)
+      .waitForElementVisible('#selector', 1000)
+      .waitForElementVisible('#fsubmit', 1000)
+      .click('#fsubmit')
+      .assert.containsText('#fname > paper-input-container .is-invalid  > paper-input-error',
+                               'Firstname required (only letters)!')
+      .assert.containsText('#lastname > paper-input-container .is-invalid  > paper-input-error',
+                              'Lastname required (only letters)!')
+      .assert.containsText('#femail > paper-input-container .is-invalid  > paper-input-error',
+                              'Email required!')
+      .assert.containsText('#addr > paper-input-container .is-invalid  > paper-input-error',
+                               'Address required!')
+      .assert.containsText('#prof > paper-input-container .is-invalid  > paper-input-error',
+                              'Profession required (only letters)!')
+      .assert.containsText('#fphone > paper-input-container .is-invalid  > paper-input-error',
+                              'Phone required (numbers only)!')
+
       .end();
   },
 };

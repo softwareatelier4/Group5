@@ -62,8 +62,13 @@
                   && (item.distance_value/1000 >= this.filters.minDistance)
                   && (item.distance_value/1000 <= this.filters.maxDistance);
         if (!item.distance_value) distance = true;
+
         var rating = (item.rating >= this.filters.minRating)
                   && (item.rating <= this.filters.maxRating);
+        if (!item.rating) {
+          item.rating = "-";
+          if (this.filters.minRating == 0) rating = true;
+        }
 
         var price = (item.price >= this.filters.minPrice)
                   && (item.price <= this.filters.maxPrice);

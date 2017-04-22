@@ -3,6 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const middleware =  require('../middleware');
+const formidable = require('formidable');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
@@ -11,7 +13,7 @@ const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
 
-router.all('/', middleware.supportedMethods('GET'));
+router.all('/', middleware.supportedMethods('GET, POST'));
 
 router.get('/:freelancerid', function(req, res, next) {
   Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function(err, freelancer){
@@ -42,6 +44,18 @@ router.post('/:freelancerid/review', function(req, res, next) {
       });
     }});
     return;
+  });
+
+router.post('/:n', function(req, res, next) {
+  let n = req.params.n;
+  var toAdd = new Freelancer(req.body);
+  if(n == 1){
+    toAdd.image = "/src/images/" + toAdd._id + ".png";
+  }else{
+    toAdd.image = "/src/images/blank-user.jpg";
+  }
+  toAdd.save();
+  res.json(toAdd._id);
   });
 
 

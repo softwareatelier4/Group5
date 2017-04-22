@@ -1,3 +1,5 @@
+'use strict';
+
 var config = require('./config');
 var express = require('express');
 var path = require('path');
@@ -60,6 +62,33 @@ app.post('/claim/:id', function (req, res) {
       if (err) return console.error(err);
       res.json(profiles);
     });
+  });
+
+});
+
+
+app.post('/freelancer/img/:id', function(req, res) {
+  console.log(__dirname);
+  let imgname = req.params.id;
+  console.log(imgname);
+  let form = new formidable.IncomingForm(
+    {
+      uploadDir: __dirname + '/frontend/src/images',
+      keepExtensions: true
+    }
+  );
+
+  form.parse(req, function(err, fields, files) {
+    // let fileName = files.file.name;
+    // let filelen = fileName.length;
+    // let str = ""
+    // while(filelen > 0 && fileName.charAt(filelen -1) != '.'){
+    //   str = fileName.charAt(filelen -1) + str;
+    //   filelen--;
+    // }
+    fs.rename(files.file.path, __dirname + '/frontend/src/images/' + imgname + ".png");
+    res.json({name : imgname});
+    res.end();
   });
 
 });
