@@ -18,7 +18,7 @@
         display: block;
       }
 
-      .username {
+      #username {
         color: white;
       }
       #loginBtn, #logoutBtn {
@@ -36,8 +36,8 @@
     <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
 
 
-    <div class="username">
-      Logged in as [[user.userName]] [[user.userType]]
+    <div id="username">
+      Logged in as [[user.userName]]
     </div>
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
