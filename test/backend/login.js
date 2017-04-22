@@ -54,19 +54,51 @@ describe('Backend login and signup', function(){
       .end(function(err, res){
         res = JSON.parse(res.text);
 
-					should.not.exist(err, 'No error should occur');
+        should.not.exist(err, 'No error should occur');
       });
       done();
     });
+  });
 
-    it('should give back a 404 status if the freelancer profile does not exists', function(done) {
+  describe('POST /signup', function(){
+
+    before(seed);
+    after(utils.dropDb);
+    it('should return 400 status because the user already exists', function(done) {
 
       request(app)
-      .get('/freelancer/' + ObjectId().toString())
+      .post('/login/signup')
+      .send(users[0])
       .set('Accept', 'application/json')
-      .expect(404, done);
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(400, done)
+
+    });
+
+    it('should return 200 status as the user does not exists', function(done) {
+
+      request(app)
+      .post('/login/signup')
+      .send({
+        "userName"  : "gianni",
+        "firstName" : "",
+        "lastName"  : "",
+        "password"  : "gianni",
+        "email"     : "gianni@me.ch",
+        "userType"  : "Normal"
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(200)
+      .end(function(err, res){
+        res = JSON.parse(res.text);
+
+        should.exist(err, 'No error should occur');
+      });
+      done();
     });
   });
+
 });
 
 
