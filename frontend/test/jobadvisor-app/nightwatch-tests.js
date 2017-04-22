@@ -269,7 +269,7 @@ module.exports = {
       .waitForElementVisible('#dropdown-toggle', 1000)
       .waitForElementVisible('#div-filters', 1000)
       .waitForElementVisible('#signup-button', 1000)
-      .assert.containsText('#signup-button', 'SIGNUP')
+      .assert.containsText('#signup-button', 'CREATE FREELANCER')
       .click('#signup-button')
       .pause(1000)
       .waitForElementVisible('ja-freelancer-signup', 1000)
@@ -330,8 +330,34 @@ module.exports = {
       .waitForElementVisible('#_category', 1000)
       .assert.containsText('#_category > paper-radio-group [aria-selected=true] #radioLabel',
                                'Other')
-      // .waitForElementVisible('#_img', 1000)
+
+      .waitForElementVisible('#Design', 1000)
+      .click('#Design')
+      .assert.attributeContains('#Design', 'aria-selected', 'true')
+
+      .waitForElementVisible('#TecnicalServices', 1000)
+      .click('#TecnicalServices')
+      .assert.attributeContains('#TecnicalServices', 'aria-selected', 'true')
+
+      .waitForElementVisible('#Radio', 1000)
+      .click('#Radio')
+      .assert.attributeContains('#Radio', 'aria-selected', 'true')
+
+      .waitForElementVisible('#ITServices', 1000)
+      .click('#ITServices')
+      .assert.attributeContains('#ITServices', 'aria-selected', 'true')
+
+
+
+
+      .waitForElementVisible('#_img', 1000)
+      .waitForElementVisible('#upload', 1000)
+      .waitForElementVisible('#UploadBorder', 1000)
+
+      .click('#button') //THIS STILL WORKS
+      //.setValue('input[type="file"]', require('path').resolve('/home/My-PC/Desktop/img.png'))
       // .waitForElementVisible('#name', 1000)
+
       .waitForElementVisible('#_phonenumber', 1000)
       .waitForElementVisible('#fphone', 1000)
       .waitForElementVisible('#_price', 1000)
