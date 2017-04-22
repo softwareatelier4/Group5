@@ -34,7 +34,7 @@
       </div>
 
       <div id="_email">
-        <paper-input label="email" id="femail" auto-validate required error-message="Email required!"></paper-input>
+        <paper-input label="email" id="femail" auto-validate required error-message="Email required!" pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'></paper-input>
       </div>
 
       <div id="_address">
@@ -77,7 +77,7 @@
       </div>
 
       <div id="_price">
-        <paper-input label="Price" auto-validate pattern="^[0-9]+" id="fprice" error-message="Numbers only!"></paper-input>
+        <paper-input label="Price per hour" auto-validate pattern="^[0-9]+" id="fprice" error-message="Numbers only!"></paper-input>
       </div>
 
       <div id="_img" >
