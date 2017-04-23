@@ -20,7 +20,7 @@ module.exports = {
       .waitForElementVisible('#signup-username', 1000)
       .waitForElementVisible('#signup-password', 1000)
       .waitForElementVisible('#signup-password-check', 1000)
-      .waitForElementVisible('#signup-button', 1000)
+      .waitForElementVisible('#user-signup-button', 1000)
       // .end();
   },
 
@@ -152,7 +152,7 @@ module.exports = {
       .waitForElementVisible('#location-search', 1000)
       .waitForElementVisible('#dropdown-toggle', 1000)
       .waitForElementVisible('#div-filters', 1000)
-      .waitForElementVisible('#signup-button', 1000);
+      // .waitForElementVisible('#signup-button', 1000);
   },
 
 
