@@ -55,7 +55,10 @@
     <!-- <div id="login"> -->
 
     <!-- </div> -->
-    <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
+    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
+    </template>
+
     <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
     <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
     <div id="username">
@@ -84,7 +87,9 @@
           <ja-login user={{user}}></ja-login>
         </div>
         <div title="signup">
-          <ja-freelancer-signup> </ja-freelancer-signup>
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
+          </template>
         </div>
       </iron-pages>
     </div>
@@ -156,6 +161,11 @@
       observers: [
         '_routePageChanged(routeData.view)',
       ],
+
+      _userIsRegistered: function(user) {
+        if (user && user.userType !== "guest") return true;
+        else return false;
+      },
 
       _formatLoginStatus: function(user) {
         let result = "";
