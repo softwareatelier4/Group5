@@ -111,6 +111,10 @@
       #ratenum {
         width: 100%!important;
       }
+
+      #error-message {
+        color: red;
+      }
     </style>
 
     <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
@@ -181,6 +185,7 @@
       </section>
       <section id="reviews" style="width: 100%;">
         <div id="user-rating" style="display:flex;" >
+          <p id="error-message">{{error}}</p>
           <div id="commentarea" style="width:80%">
             <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
@@ -375,16 +380,22 @@
 
       _givereview: function () {
         if(this.$.ratenum.value !== "-"){
-          const ajaxel = this.$.ajax2;
-          const d = new Date();
-          const obj = {
-            comment: this.$.comm.value,
-            rating: this.$.ratenum.value,
-            date: d,
-            userName: this.user.userName
-          };
-          ajaxel.body = obj;
-          ajaxel.generateRequest();
+          if (this.user && this.user.userType !== "guest") {
+            this.error = ""
+            const ajaxel = this.$.ajax2;
+            const d = new Date();
+            const obj = {
+              comment: this.$.comm.value,
+              rating: this.$.ratenum.value,
+              date: d,
+              userName: this.user.userName
+            };
+            ajaxel.body = obj;
+            ajaxel.generateRequest();
+          } else {
+            console.log("not logged in");
+            this.error = "Please login before writing a review."
+          }
         }
       },
 
