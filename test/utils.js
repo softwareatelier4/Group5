@@ -184,6 +184,10 @@ module.exports.matchFreelancerIdInText = function matchFreelancerIdInText(text, 
   text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "id should match");
 }
 
+module.exports.matchFreelancerPendingInText = function matchFreelancerPendingInText(text, freelancer){
+  text.indexOf(freelancer.verification.toString()).should.be.greaterThan(-1, "id should match");
+}
+
 module.exports.matchFreelancerReview = function matchFreelancerReview(text, review){
   console.log(text);
   console.log(review);
