@@ -1,0 +1,224 @@
+
+<link rel="import" href="../../bower_components/gold-email-input/gold-email-input.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<dom-module id="ja-login">
+  <template>
+    <style>
+      #container {
+        position: fixed;
+        height: calc(100% - 110px);
+        width: 80%!important;
+        top: 100px;
+        bottom: 0px;
+        /*display: flex;*/
+        overflow: scroll;
+        /*flex-wrap: wrap;*/
+        width: 100%;
+        color: dimgray;
+        background: white;
+        border-radius: 3px;
+        padding-bottom: 10px;
+      }
+
+      paper-input {
+        display: block;
+      }
+
+      form {
+        padding: 100px;
+        padding-top: 0px;
+        display: block;
+      }
+      .title {
+        text-align: center;
+        display: block;
+        width: 0 auto;
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 20px;
+      }
+
+      .error {
+        color: crimson;
+        height: 20px;
+      }
+
+      .signup-login {
+        width: 100%;
+        margin-top: 40px;
+      }
+    </style>
+
+    <iron-ajax id="login-request"
+               url="/login"
+               method="POST"
+               handle-as="json"
+               with-credentials="true"
+               body={{loginBody}}
+               content-type="application/json"
+               on-response="_onLoginResponse"
+               on-error="_onLoginError"
+               ></iron-ajax>
+
+    <iron-ajax id="signup-request"
+               url="/login/signup"
+               method="POST"
+               with-credentials="true"
+               handle-as="json"
+               body={{signupBody}}
+               content-type="application/json"
+               on-response="_onSignupResponse"
+               on-error="_onSignupError"
+
+               ></iron-ajax>
+
+    <div id="container">
+      <div class="forms">
+        <div class=".title">
+          <h2>Login as an existing user</h2>
+        </div>
+        <form is="iron-form" class="form" id="login-form">
+          <p id="login-error" class="error">{{loginError}}</p>
+          <paper-input pattern="^[a-zA-Z0-9]+" required id="login-username" label="username" error-message="Insert a valid username"></paper-input>
+          <paper-input required id="login-password" pattern="^[a-zA-Z0-9]+" auto-validate label="password" type="password" error-message="Insert a valid password"></paper-input>
+          <paper-button class="signup-login" id="login-button" raised>login</paper-button>
+        </form>
+        <div class=".title">
+          <h2>Create a new user</h2>
+        </div>
+        <form is="iron-form" id="signup-form">
+          <p id="signup-error" class="error">{{signupError}}</p>
+          <paper-input id="signup-email" label="your email address" required auto-validate pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$' error-message="Insert a valid email"></paper-input>
+          <paper-input  id="signup-username"
+          required
+          label="username"
+          pattern="^[a-zA-Z0-9]+"
+          auto-validate
+          error-message="Insert a valid username"></paper-input>
+          <paper-input id="signup-password" required label="password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
+          <paper-input id="signup-password-check"required label="repeat password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
+          <paper-button class="signup-login" id="user-signup-button" raised>signup</paper-button>
+        </form>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    // element registration
+    Polymer({
+      is: "ja-login",
+
+      listeners : {
+        'login-button.tap' : '_onLoginTap',
+        'user-signup-button.tap' : '_onSignupTap'
+      },
+
+      properties: {
+        user: {
+          type: Object,
+          value: {
+            userName: "guest",
+            userType: "guest"
+          },
+          reflectToAttribute: true,
+          notify: true,
+        }
+      },
+
+      _onLoginTap: function(evt) {
+        console.log("Pressed login button");
+        let valid = false;
+        let username = this.$['login-username'].value || "";
+        let password = this.$['login-password'].value || "";
+        valid = this.$['login-username'].validate();
+        valid = valid && this.$['login-password'].validate();
+        if (valid) {
+          this.loginBody = {
+            userName: username,
+            password: password,
+          };
+          this.loginError = "";
+          this.$['login-request'].generateRequest();
+        }
+      },
+
+      _onLoginResponse: function(evt) {
+        let resp = evt.detail.response;
+        if (resp.statusCode === 400) {
+          console.log("User doesn't exist or password is wrong");
+          this.loginError = "User doesn't exist or password is wrong";
+        } else if (resp.statusCode === 200){
+          // console.log(resp);
+          this.set('user', resp.user);
+          localStorage.setItem('user', JSON.stringify(resp.user));
+          location.href = '/';
+          // console.log(this.user);
+        }
+      },
+
+      _onSignupTap: function(evt) {
+        console.log("Pressed signup button");
+        let valid = false;
+        let email = this.$['signup-email'].value || "";
+        let username = this.$['signup-username'].value || "";
+        let password = this.$['signup-password'].value || "";
+        let passwordCheck = this.$['signup-password-check'].value || "";
+        valid = this.$['signup-email'].validate();
+        valid = valid && this.$['signup-username'].validate();
+        valid = valid && this.$['signup-password'].validate();
+        valid = valid && this.$['signup-password-check'].validate();
+        if (email.length === 0 || username.length === 0 || password.length === 0 || passwordCheck.length === 0) {
+          this.signupError = "Empty field(s)";
+        } else if (password !== passwordCheck) {
+          this.signupError = "Passwords do not match.";
+        } else {
+          if (valid){
+            this.signupBody = {
+              email: email,
+              userName: username,
+              password: password,
+            };
+            this.signupError = "";
+            this.$['signup-request'].generateRequest();
+          }
+        }
+      },
+
+      _onSignupError: function(evt) {
+        console.log(evt);
+        let resp = evt.detail.request.xhr;
+        if (resp.status == 400) {
+          console.log("User already exists");
+          this.signupError = "User already exists";
+        }
+      },
+      _onLoginError: function(evt) {
+        let resp = evt.detail.request.xhr;
+        console.log(evt);
+        if (resp.status == 400) {
+          console.log("User doesn't exist or password is wrong");
+          this.loginError = "User doesn't exist or password is wrong";
+        }
+      },
+
+      _onSignupResponse: function(evt) {
+        let resp = evt.detail.response;
+        console.log(evt);
+        if (resp.statusCode == 400) {
+          console.log("User already exists");
+          this.signupError = "User already exists";
+        } else {
+          // console.log(resp);
+          this.set('user', resp);
+          localStorage.setItem('user', JSON.stringify(resp));
+          console.log(this.user);
+          location.href = '/';
+        }
+      },
+
+    });
+  </script>
+</dom-module>
