@@ -9,12 +9,36 @@ var users = {
   name : 'User',
   data : [
     {
-      "firstName"    : "",
-      "lastName"     : "",
-      "userName"     : "Bob",
-      "password"     : "Bob",
-      "email"        : "ciaoisnadis",
-      "comm_rating"  : 9
+      "userName"  : "camo",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "camo",
+      "email"     : "camo@me.ch",
+      "userType"  : "Admin"
+    },
+    {
+      "userName"  : "ema",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "ema",
+      "email"     : "ema@me.ch",
+      "userType"  : "Normal"
+    },
+    {
+      "userName"  : "fischer",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "fischer",
+      "email"     : "fischer@me.ch",
+      "userType"  : "Freelancer"
+    },
+    {
+      "userName"  : "sani",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "sani",
+      "email"     : "sani@me.ch",
+      "userType"  : "Normal"
     },
   ]
 }
@@ -26,43 +50,50 @@ var reviews = {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd6"),
       "date"                : date,
       "comment"             : "nice job",
-      "rating"              : 5
+      "rating"              : 5,
+      "userName"            : "goodguy27"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd7"),
       "date"                : date,
       "comment"             : "very kind",
-      "rating"              : 4
+      "rating"              : 4,
+      "userName"            : "goodguy27"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd8"),
       "date"                : date,
       "comment"             : "awful work",
-      "rating"              : 1
+      "rating"              : 1,
+      "userName"            : "tizio42"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd9"),
       "date"                : date,
       "comment"             : "nice and helpful",
-      "rating"              : 5
+      "rating"              : 5,
+      "userName"            : "tizio42"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be1"),
       "date"                : date,
       "comment"             : "not really good",
-      "rating"              : 2
+      "rating"              : 2,
+      "userName"            : "tizio42"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be2"),
       "date"                : date,
       "comment"             : "cheap salary",
-      "rating"              : 3
+      "rating"              : 3,
+      "userName"            : "tizio42"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be3"),
       "date"                : date,
       "comment"             : "perfect job",
-      "rating"              : 5
+      "rating"              : 5,
+      "userName"            : "asdrubaldo23"
     },
   ]
 }

@@ -10,7 +10,7 @@ var request = require('supertest');
 var utils = require('../utils');
 var freelancers;
 
-describe('Backend get profile by id', function(){
+describe('Backend freelancers tests', function(){
 
   describe('GET /freelancer/:freelancerid', function(){
     before(seed);
