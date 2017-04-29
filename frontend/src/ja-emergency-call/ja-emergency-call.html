@@ -1,0 +1,99 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-review-element/ja-review-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+
+
+<dom-module id="ja-emergency-call">
+
+  <template>
+    <style>
+
+    #container {
+      padding-top: 100px;
+    }
+
+    #upload {
+        --file-upload-upload-border: {
+          padding: 0;
+        }
+      }
+
+    </style>
+
+    <section id="container">
+
+      <div id="_emergency-description">
+        <paper-input label="State your emergency" id="emergency-description" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Firstname required (only letters)!"></paper-input>
+      </div>
+
+      <div id="_profession">
+        <paper-input label="profession" id="prof" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Profession required (only letters)!"></paper-input>
+      </div>
+
+      <div id="_category">
+        Category <br />
+        <paper-radio-group id="selector" selected="Other">
+        <!-- <paper-input label="Category" id="cat"></paper-input> -->
+        <paper-radio-button id="Radio" name="Radio"> Radio  </paper-radio-button>
+        <paper-radio-button id="TecnicalServices" name="Tecnical Services">Tecnical Services</paper-radio-button>
+        <paper-radio-button id="ITServices" name="IT Services">IT Services</paper-radio-button>
+        <paper-radio-button id="Design" name="Design">Design</paper-radio-button>
+        <paper-radio-button id="Management" name="Management">Management</paper-radio-button>
+        <paper-radio-button id="Retail" name="Retail">Retail</paper-radio-button>
+        <paper-radio-button id="HumanResources" name="Human Resources">Human Resources</paper-radio-button>
+        <paper-radio-button id="Marketing" name="Marketing">Marketing</paper-radio-button>
+        <paper-radio-button id="Consulting" name="Consulting">Consulting</paper-radio-button>
+        <paper-radio-button id="Advertising" name="Advertising">Advertising</paper-radio-button>
+        <paper-radio-button id="Logistics" name="Logistics">Logistics</paper-radio-button>
+        <paper-radio-button id="RealEstate" name="Real Estate">Real Estate</paper-radio-button>
+        <paper-radio-button id="SocialWork" name="Social Work">Social Work</paper-radio-button>
+        <paper-radio-button id="Healthcare" name="Healthcare">Healthcare</paper-radio-button>
+        <paper-radio-button id="Other" name="Other">Other</paper-radio-button>
+      </paper-radio-group>
+      </div>
+      <a id="rout" href="/freelancer/"></a>
+
+
+      <div id="_time">
+        <paper-input label="Specify a time limit" auto-validate pattern="^[0-9]+" id="ftime" error-message="Numbers only!"></paper-input>
+      </div>
+
+
+      <paper-button id="fsubmit" raised on-click="_clicked">
+        Submit
+      </paper-button>
+
+
+      <!--
+      <iron-ajax id="ajax" url="/freelancer/" method="POST" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
+      -->
+
+    </section>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      is: "ja-emergency-call",
+
+      _finished: function(el){
+        if(this.$.upload.files[0] !== undefined){
+          this.$.upload.target += "/freelancer/img/" + el.detail.response;
+          this.$.upload.method="POST";
+          this.$.upload.accept="image/*";
+          this.$.upload.errorText="error! please retry";
+          this.$.upload.manualUpload = true;
+          this.$.upload.uploadFile(this.$.upload.files[0]);
+        }
+        this._clearall();
+        this.$.rout.href += el.detail.response;
+        this.$.rout.click();
+      },
+   })
+
+  </script>
+
+</dom-module>
