@@ -10,6 +10,7 @@
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
 <link rel="import" href="../ja-login/ja-login.html">
 <link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
+<link rel="import" href="../ja-emergency-call/ja-emergency-call.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -44,6 +45,13 @@
         background-color: var(--paper-yellow-500);
         color: blue;
       }
+
+      #emergency-button{
+        float:right;
+        background-color: var(--paper-yellow-500);
+        color: blue;
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -57,6 +65,10 @@
     <!-- </div> -->
     <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
       <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
+    </template>
+
+    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+      <a href="/emergency"><paper-button id="emergency-button">EMERGENCY CALL</paper-button></a>
     </template>
 
     <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
@@ -91,6 +103,12 @@
             <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
           </template>
         </div>
+        <div title="emergency">
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-emergency-call></ja-emergency-call>
+          </template>
+        </div>
+
       </iron-pages>
     </div>
 
