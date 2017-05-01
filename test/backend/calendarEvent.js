@@ -22,7 +22,7 @@ describe('Backend events tests', function(){
     it('should post a new event to the freelancer profile', function(done) {
       request(app)
       .post('/freelancer/' + freelancers[0]._id.toString() + '/event')
-      .send(events[0].data)
+      .send(events[0])
       .expect(200, done);
       // done();
     });
@@ -31,7 +31,7 @@ describe('Backend events tests', function(){
       request(app)
       .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/event')
       .set('Accept', 'application/json')
-      .send(events[0].data)
+      .send(events[0])
         .expect(400)
         .end(function(err, res){
           res = JSON.parse(res.text);
