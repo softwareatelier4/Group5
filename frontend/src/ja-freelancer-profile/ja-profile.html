@@ -350,7 +350,8 @@
         };
         this.$['distance-request'].generateRequest();
 
-        if (this.verification == 'none' && this.user.pending == 'none') {
+// TODO: fix conditions
+        if (this.verification == 'none' && (this.user.pending == 'none' || this.user.pending == undefined)) {
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id + ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
           this.$['container-claim'].innerHTML = '';

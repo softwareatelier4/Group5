@@ -11,6 +11,8 @@ var app = express();
 var methodOverride = require('method-override')
 const formidable = require('formidable');
 const fs = require('fs');
+const util = require('util');
+var zip = new require('node-zip')();
 
 
 // Connection to MongoDB
@@ -36,22 +38,59 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 app.post('/claim/:id', function (req, res) {
 
   var dir = './frontend/src/claim-documents/';
+  var idDir = './frontend/src/claim-documents/' + req.params.id;
 
-  if (!fs.existsSync(dir)) {
+    if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 
-  let filename = req.params.id;
-  let form = new formidable.IncomingForm({
-    uploadDir: __dirname + '/frontend/src/claim-documents',
-    keepExtensions: true
-  });
+     if (!fs.existsSync(idDir)) {
+    fs.mkdirSync(idDir);
+  }
+
+    var form = new formidable.IncomingForm(),
+    files = [],
+    fields = [];
+    form.on('field', function(field, value) {
+        fields.push([field, value]);
+    })
+    form.on('file', function(field, file) {
+        console.log(file.name);
+
+        fs.rename(file.path, __dirname + '/frontend/src/claim-documents/'+ req.params.id + '/' + file.name);
+
+        files.push([field, file]);
+    })
+    form.on('end', function() {
+        console.log('done');
+        zip.file(__dirname + '/frontend/src/claim-documents/'+ req.params.id, req.params.id);
+    var data = zip.generate({base64:false,compression:'DEFLATE'});
+fs.writeFileSync(__dirname + '/frontend/src/claim-documents/'+ req.params.id + '.zip', data, 'binary');
+    });
+    form.parse(req);
+
+
+
+  
+
+
+
+  // let filename = req.params.id;
+  // let form = new formidable.IncomingForm({
+  //   uploadDir: __dirname + '/frontend/src/claim-documents',
+  //   keepExtensions: true
+  // });
+
 
   form.parse(req, function (err, fields, files) {
-    const name = files.file.name;
-    const parts = name.split('.');
-    const ext = parts[parts.length - 1];
-    fs.rename(files.file.path, __dirname + '/frontend/src/claim-documents/' + filename + "." + ext);
+    // const name = files.file.name;
+    // const parts = name.split('.');
+    // const ext = parts[parts.length - 1];
+    // for (var file in files.file){
+    //   console.log('#### ' + file.name);
+    // }
+    
+    // fs.rename(files.file.path, __dirname + '/frontend/src/claim-documents/' + filename + "." + ext);
     // res.json({name : filename});
     // res.end();
 
@@ -68,7 +107,7 @@ app.post('/claim/:id', function (req, res) {
     }, {
       $set: {
         verification: "pending",
-        claimFilePath: '/src/claim-documents/' + filename + "." + ext,
+        claimFilePath: '/src/claim-documents/' + req.params.id,
         claimComment: fields.comment,
         claimEmail: fields.email,
       }
