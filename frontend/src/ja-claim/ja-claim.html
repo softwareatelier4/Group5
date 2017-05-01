@@ -44,7 +44,7 @@
       <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
 
       <form id="upload-form" method="post" enctype="multipart/form-data">
-        <input id="load-file" on-change="checkFile" type="file" name="file" class="inputfile">
+        <input id="load-file" multiple="true" on-change="checkFile" type="file" name="file" class="inputfile">
         <input id="claim-comment" type="text" name="comment">
         <input id="claim-email" type="text" name="email" style="display: none;">
         <input id="user-id" type="text" name="userid" style="display: none;">
@@ -128,6 +128,7 @@
         xhr.open('POST', '', true);
         xhr.send(formData);
         this.user.pending = "pending";
+        window.location = "http://localhost:3005/";
       },
 
       checkFile: function () {
