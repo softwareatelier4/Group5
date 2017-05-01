@@ -8,12 +8,10 @@
 <link rel="import" href="../ja-search-element/ja-search-element.html">
 <link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
-<<<<<<< HEAD
 <link rel="import" href="../ja-claim/ja-claim.html">
 <link rel="import" href="../ja-admin/ja-admin.html">
-=======
+<link rel="import" href="../ja-login/ja-login.html">
 <link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
->>>>>>> 95d1ae04a52f920102fbd85583d03cecc0d390e1
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -23,6 +21,26 @@
        :host {
         display: block;
       }
+
+      #username {
+        color: white;
+        text-align: right;
+      }
+
+      #loginBtn, #logoutBtn {
+        background-color: white;
+      }
+
+      #loginBtn, #logoutBtn, #username {
+        /*margin: 10px;*/
+        float: right;
+        /*margin-bottom: 5px;*/
+      }
+      #login {
+        float: right;
+        text-align: right;
+      }
+
       #signup-button{
         float:right;
         background-color: var(--paper-yellow-500);
@@ -36,9 +54,20 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
+    <!-- <div id="login"> -->
+
+    <!-- </div> -->
+    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
+    </template>
+
+    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
+    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
+    <div id="username">
+      [[_formatLoginStatus(user)]]
+    </div>
     <div id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
-      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
     </div>
 
     <iron-ajax id="reverse-geo-request" url="https://maps.googleapis.com/maps/api/geocode/json" params='{{req_reversegeo}}' handle-as="json"
@@ -54,7 +83,10 @@
           <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
         </div>
         <div title="freelancer">
-          <ja-profile id={{subrouteData.id}} user-location={{userLocation}}></ja-profile>
+          <ja-profile id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
+        </div>
+        <div title="login">
+          <ja-login user={{user}}></ja-login>
         </div>
         <div title="claim">
           <ja-claim id={{subrouteData.id}}></ja-claim>
@@ -63,7 +95,9 @@
           <ja-admin id={{subrouteData.id}}></ja-admin>
         </div>
         <div title="signup">
-          <ja-freelancer-signup></ja-freelancer-signup>
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
+          </template>
         </div>
       </iron-pages>
     </div>
@@ -73,6 +107,11 @@
   <script>
     Polymer({
       is: 'jobadvisor-app',
+
+      listeners: {
+        'loginBtn.tap': '_onLoginTap',
+        'logoutBtn.tap': '_onLogoutTap'
+      },
 
       properties: {
         prop1: {
@@ -121,14 +160,37 @@
           type: Object,
           observer: '_filtersChanged',
         },
+        user: {
+          type: Object,
+          observer: "_userChanged"
+        }
       },
 
       observers: [
         '_routePageChanged(routeData.view)',
       ],
 
+      _userIsRegistered: function(user) {
+        if (user && user.userType !== "guest") return true;
+        else return false;
+      },
+
+      _formatLoginStatus: function(user) {
+        let result = "";
+        if (!user || user.userName == "guest") result = "Not logged-in";
+        else result = "Logged in as " + user.userName;
+        return result;
+      },
+
       _resultsChanged: function (results) {
         this.results = results;
+      },
+      _userChanged: function (user) {
+        console.log(user);
+        if (this.user && this.user.userType != "guest") {
+          this.$['logoutBtn'].hidden = false;
+          this.$['loginBtn'].hidden = true;
+        }
       },
       _filtersChanged: function (filters) {
         // console.log("changing filters", filters)
@@ -144,6 +206,25 @@
 
       _routePageChanged: function (page) {
         this.view = page;
+      },
+
+      _onLoginTap: function(evt) {
+      },
+
+      _onLogoutTap: function(evt) {
+        console.log("Logging out");
+        this.set('user', {
+          userName: "guest",
+          userType: "guest"
+        });
+        localStorage.removeItem('user');
+        this.$['logoutBtn'].hidden = true;
+        this.$['loginBtn'].hidden = false;
+        location.href = '/';
+      },
+
+      _onLogoutResponse: function(response) {
+        // TODO
       },
 
       _getUserLocation: function () {
@@ -163,6 +244,11 @@
 
       ready: function () {
         this._getUserLocation();
+        if (localStorage.getItem('user')) {
+          this.set('user', JSON.parse(localStorage.getItem('user')));
+          this.$['logoutBtn'].hidden = false;
+        }
+        console.log("USER", this.user);
       },
 
       _handleResponse: function (response) {
