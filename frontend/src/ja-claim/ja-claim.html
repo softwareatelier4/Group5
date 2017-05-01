@@ -33,7 +33,6 @@
         /*display: none;*/
         margin-top: 10px;
       }
-      
     </style>
 
 
@@ -44,13 +43,16 @@
       </div>
       <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
 
-      <!--<form id="upload-form" method="post" enctype="multipart/form-data">
-        <input id="load-file" on-change="checkFile" type="file" name="file" class="inputfile"></form>-->
+      <form id="upload-form" method="post" enctype="multipart/form-data">
+        <input id="load-file" on-change="checkFile" type="file" name="file" class="inputfile">
+        <input id="claim-comment" type="text" name="comment">
+        <input id="claim-email" type="text" name="email" style="display: none;">
+      </form>
 
-        <file-upload raised="true" method="post" id="upload-form" accept="image/*" paper-button-title="demo title">Choose File and Send</file-upload>
+      <!--<file-upload raised="true" method="post" id="upload-form" accept="image/*" paper-button-title="demo title">Choose File and Send</file-upload>-->
 
       <!--<file-upload raised="false" target="/claim/" multi="false" fileDataName="input_file" method="POST" accept="*">Choose File</file-upload><br>-->
-      <!--<paper-button id="btn-send" raised>Send Request</paper-button>-->
+      <paper-button id="btn-send" raised>Send Request</paper-button>
 
 
     </section>
@@ -66,7 +68,7 @@
 
       listeners: {
         // 'load-file.tap': 'checkFile',
-        // 'btn-send.tap': 'uploadFile',
+        'btn-send.tap': 'uploadFile',
       },
 
       properties: {
@@ -79,7 +81,17 @@
         id: {
           type: String,
           reflectToAttribute: true,
-        }
+        },
+        // user: {
+        //   type: Object,
+        //   value: {
+        //     userName: "guest",
+        //     userType: "guest",
+        //     userMail: "",
+        //   },
+        //   reflectToAttribute: true,
+        //   notify: true,
+        // }
       },
 
       _handleResponse: function (response) {
@@ -95,32 +107,34 @@
 
       ready: function () {
         // this.$['request-profile'].generateRequest();
-        // this.checkFile();
+        this.checkFile();
       },
 
-      setPending: function () {
-        this.req = {
-          'id': this.result._id,
-        };
+      // setPending: function () {
+      //   this.req = {
+      //     'id': this.result._id,
+      //   };
 
-        this.$['set-pending'].generateRequest();
+      //   this.$['set-pending'].generateRequest();
+      // },
+
+      uploadFile: function () {
+        // this.$['claim-email'].value = this.user.mail;
+        var form = document.getElementById('upload-form');
+        form.email.value = this.user.email;
+        var formData = new FormData(form);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '', true);
+        xhr.send(formData);
       },
 
-      // uploadFile: function () {
-      //   var form = document.getElementById('upload-form');
-      //   var formData = new FormData(form);
-      //   var xhr = new XMLHttpRequest();
-      //   xhr.open('POST', '', true);
-      //   xhr.send(formData);
-      // },
-
-      // checkFile: function () {
-      //   if (this.$['upload-form'].file.value) {
-      //     this.$['btn-send'].removeAttribute('disabled');
-      //   } else {
-      //     this.$['btn-send'].setAttribute('disabled', '');
-      //   }
-      // },
+      checkFile: function () {
+        if (this.$['upload-form'].file.value) {
+          this.$['btn-send'].removeAttribute('disabled');
+        } else {
+          this.$['btn-send'].setAttribute('disabled', '');
+        }
+      },
 
     });
   </script>

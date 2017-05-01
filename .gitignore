@@ -13,3 +13,4 @@ phantomjsdriver.log
 selenium-debug.log
 frontend/src/claim-documents
 *.orig
+*.log*

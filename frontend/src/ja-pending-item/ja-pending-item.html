@@ -31,6 +31,7 @@
         <div class="img">
           <img src="{{result.image}}" alt="">
         </div>
+        <p>{{result.claimComment}}</p>
         <paper-textarea id="comment" label="Comment" value=""></paper-textarea>
       </div>
       <div class="card-actions">
@@ -70,14 +71,14 @@
 
       accept: function (e) {
         this.req = {
-          'address': this.result.email,
+          'address': this.result.claimEmail,
           // 'address': 'samuele.bischof@sunrise.ch',
           'subject': 'Job Advisor - Accepted',
           'content': '<i>Hello ' + this.result.firstName + ' ' + this.result.lastName + ', your profile has been verified !</i> <br> <br>' + this.$['comment'].value,
         };
 
         this.$['send-mail'].generateRequest();
-        console.log('accept mail sent to ' + this.result.email);
+        console.log('accept mail sent to ' + this.result.claimEmail);
 
         this.req = {
           'id' : this.result._id ,
@@ -94,14 +95,14 @@
 
       deny: function (e) {
         this.req = {
-          'address': this.result.email,
+          'address': this.result.claimEmail,
           // 'address': 'samuele.bischof@sunrise.ch',
           'subject': 'Job Advisor - Denied',
           'content': '<i>Hello ' + this.result.firstName + ' ' + this.result.lastName + ', your profile has been denied !</i> <br> <br>' + this.$['comment'].value,
         };
 
         this.$['send-mail'].generateRequest();
-        console.log('deny mail sent to ' + this.result.email);
+        console.log('deny mail sent to ' + this.result.claimEmail);
 
         this.req = {
           'id' : this.result._id ,
