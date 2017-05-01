@@ -60,6 +60,8 @@ app.post('/claim/:id', function (req, res) {
       $set: {
         verification: "pending",
         claimFilePath: '/src/claim-documents/' + filename + "." + ext,
+        claimComment: fields.comment,
+        claimEmail: fields.email,
       }
     }).exec(function (err, profiles) {
       if (err) return console.error(err);

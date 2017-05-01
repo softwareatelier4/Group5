@@ -44,6 +44,8 @@ const FreelancerSchema = new mongoose.Schema(
     reviews       : { type: [ReviewSchema], default:[]},
     verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
     claimFilePath : { type: String},
+    claimComment  : { type: String},
+    claimEmail    : { type: String},
   }
 );
 
