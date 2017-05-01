@@ -22,7 +22,7 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
-const EventSchema = require('./Event');
+const CalendarEventSchema = require('./CalendarEvent');
 
 const FreelancerSchema = new mongoose.Schema(
   {
@@ -38,7 +38,7 @@ const FreelancerSchema = new mongoose.Schema(
     price         : { type: Number },
     image         : { type: String, default: '/src/images/blank-user.jpg'},
     reviews       : { type: [ReviewSchema], default:[]},
-    events        : { type: [EventSchema], default:[]}
+    events        : { type: [CalendarEventSchema], default:[]}
   }
 );
 

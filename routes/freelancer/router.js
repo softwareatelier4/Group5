@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
 const Review = mongoose.model('Review');
+const CalendarEvent = mongoose.model('CalendarEvent');
 const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
@@ -52,7 +53,8 @@ router.post('/:freelancerid/review', function(req, res, next) {
 });
 
 router.post('/:freelancerid/event', function(req, res, next) {
-  var toAdd = new Event(req.body);
+  var toAdd = new CalendarEvent(req.body);
+  console.log(toAdd);
   toAdd.save(function(err) {
     if (err) return next (err);
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
