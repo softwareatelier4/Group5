@@ -23,6 +23,7 @@ require('./models');
 
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
+const User = mongoose.model('User');
 
 //configure app
 app.use(logger('dev'));
@@ -54,6 +55,14 @@ app.post('/claim/:id', function (req, res) {
     // res.json({name : filename});
     // res.end();
 
+    User.findOneAndUpdate({
+      _id: fields.userid
+    }, {
+      $set: {
+        pending: "pending",
+      }
+    }).exec(function (err, profiles) {});
+
     Freelancer.findOneAndUpdate({
       _id: req.params.id
     }, {
@@ -67,23 +76,22 @@ app.post('/claim/:id', function (req, res) {
       if (err) return console.error(err);
       res.json(profiles);
     });
+
   });
 
 });
 
 
-app.post('/freelancer/img/:id', function(req, res) {
+app.post('/freelancer/img/:id', function (req, res) {
   console.log(__dirname);
   let imgname = req.params.id;
   console.log(imgname);
-  let form = new formidable.IncomingForm(
-    {
-      uploadDir: __dirname + '/frontend/src/images',
-      keepExtensions: true
-    }
-  );
+  let form = new formidable.IncomingForm({
+    uploadDir: __dirname + '/frontend/src/images',
+    keepExtensions: true
+  });
 
-  form.parse(req, function(err, fields, files) {
+  form.parse(req, function (err, fields, files) {
     // let fileName = files.file.name;
     // let filelen = fileName.length;
     // let str = ""
@@ -92,7 +100,9 @@ app.post('/freelancer/img/:id', function(req, res) {
     //   filelen--;
     // }
     fs.rename(files.file.path, __dirname + '/frontend/src/images/' + imgname + ".png");
-    res.json({name : imgname});
+    res.json({
+      name: imgname
+    });
     res.end();
   });
 

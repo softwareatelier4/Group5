@@ -47,6 +47,7 @@
         <input id="load-file" on-change="checkFile" type="file" name="file" class="inputfile">
         <input id="claim-comment" type="text" name="comment">
         <input id="claim-email" type="text" name="email" style="display: none;">
+        <input id="user-id" type="text" name="userid" style="display: none;">
       </form>
 
       <!--<file-upload raised="true" method="post" id="upload-form" accept="image/*" paper-button-title="demo title">Choose File and Send</file-upload>-->
@@ -119,13 +120,14 @@
       // },
 
       uploadFile: function () {
-        // this.$['claim-email'].value = this.user.mail;
         var form = document.getElementById('upload-form');
         form.email.value = this.user.email;
+        form.userid.value = this.user._id;
         var formData = new FormData(form);
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '', true);
         xhr.send(formData);
+        this.user.pending = "pending";
       },
 
       checkFile: function () {
