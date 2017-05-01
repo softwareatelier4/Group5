@@ -12,3 +12,4 @@ selenium-server-standalone-2.48.2.jar
 phantomjsdriver.log
 selenium-debug.log
 frontend/src/claim-documents
+*.orig
