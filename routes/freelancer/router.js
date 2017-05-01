@@ -54,7 +54,6 @@ router.post('/:freelancerid/review', function(req, res, next) {
 
 router.post('/:freelancerid/event', function(req, res, next) {
   var toAdd = new CalendarEvent(req.body);
-  console.log(toAdd);
   toAdd.save(function(err) {
     if (err) return next (err);
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
