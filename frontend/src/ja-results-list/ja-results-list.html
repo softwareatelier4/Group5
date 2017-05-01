@@ -61,13 +61,23 @@
         var distance = item.distance_value
                   && (item.distance_value/1000 >= this.filters.minDistance)
                   && (item.distance_value/1000 <= this.filters.maxDistance);
-        if (!item.distance_value) distance = true;
+        if (!item.distance_value) {
+          distance = true;
+        }
 
         var rating = (item.rating >= this.filters.minRating)
                   && (item.rating <= this.filters.maxRating);
+
+        console.log(item.rating);
+        if (this.filters.minRating == 0) {
+          rating = true;
+        }
+
         if (!item.rating) {
           item.rating = "-";
-          if (this.filters.minRating == 0) rating = true;
+          if (this.filters.minRating == 0) {
+            rating = true;
+          }
         }
 
         var price = (item.price >= this.filters.minPrice)
@@ -76,7 +86,7 @@
         var time = (item.time_value/3600 >= this.filters.minTime)
                   && (item.time_value/3600 <= this.filters.maxTime);
         if (!item.time_value) time = true;
-        // console.log(distance && rating && price);
+        console.log(item.firstName, distance, rating, price, time, this.filters.minRating);
         // if (distance) return
         return distance && rating && price && time;
       },

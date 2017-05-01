@@ -32,6 +32,24 @@ describe('Backend search tests', function(){
       });
     });
 
+    it('should list all freelancers profiles if no criteria is given', function(done) {
+
+      request(app)
+      .get('/search/?general=&category=')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(200, done)
+    });
+
+    it('should list all freelancers profiles matching the search criteria category', function(done) {
+
+      request(app)
+      .get('/search/?general=&category=Other')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(200, done)
+    });
+
     it('should list all freelancers profiles matching the search criteria in any field and the category researched', function(done) {
 
       request(app)

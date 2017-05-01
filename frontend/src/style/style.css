@@ -1,10 +1,10 @@
 body {
-    background-color: #081827;  
+    background-color: #081827;
     font-family: 'Roboto', Serif;
     font-weight: lighter;
     overflow: hidden;
     background-image: url("../images/background.jpg");
-    background-attachment: fixed; 
+    background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
