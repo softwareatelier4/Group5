@@ -75,30 +75,23 @@ describe('CalendarEvent Model', function(done){
       utils.errorIfNullUndefinedOrEmpty(calendarEvent, 'start', done );
     });
 
-    it('should pass if description is empty,null or undefined ', function(done){
+    it('should fail if description is empty,null or undefined ', function(done){
       var calendarEvent = new CalendarEvent();
       calendarEvent.start = new Date(2017, 1, 1, 10);
       calendarEvent.end = new Date(2017, 1, 1, 12);;
       calendarEvent.location = "Lugano";
       calendarEvent.description = "";
-      calendarEvent.save(function(err, saved){
-        should.not.exist(err, 'No error should occur');
-        saved.should.eql(calendarEvent);
-        done();
-      });
+      utils.errorIfNullUndefinedOrEmpty(calendarEvent, 'description', done );
     });
 
-    it('should not pass if location is empty, ', function(done){
+    it('should fail if location is empty, ', function(done){
       var calendarEvent = new CalendarEvent();
       calendarEvent.start = new Date(2017, 1, 1, 10);
       calendarEvent.end = new Date(2017, 1, 1, 12);;
       calendarEvent.location = "";
       calendarEvent.description = 'Reparation';
-      calendarEvent.save(function(err, saved){
-        should.not.exist(err, 'No error should occur');
-        saved.should.eql(calendarEvent);
-        done();
-      });
+      utils.errorIfNullUndefinedOrEmpty(calendarEvent, 'location', done );
+
     });
 
   });
