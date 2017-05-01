@@ -51,6 +51,27 @@ router.post('/:freelancerid/review', function(req, res, next) {
   });
 });
 
+router.post('/:freelancerid/event', function(req, res, next) {
+  var toAdd = new Event(req.body);
+  toAdd.save(function(err) {
+    if (err) return next (err);
+    Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
+    {safe: true, upsert: true, new : false},
+    function(err, freelancer) {
+      if (err) return next (err);
+      if (!freelancer) {
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      } else {
+        return res.json(toAdd);
+      }
+    })
+  });
+});
+
 router.post('/:n', function(req, res, next) {
   let n = req.params.n;
   var toAdd = new Freelancer(req.body);

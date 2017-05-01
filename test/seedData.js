@@ -5,6 +5,35 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var date = new Date();
 
+var events = {
+  name : 'Event',
+  data : [
+    {
+      "location"    : "Lugano",
+      "description" : "Riparazione tubatura sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "location"    : "Bellinzona",
+      "description" : "Riparazione tetto sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "location"    : "Locarno",
+      "description" : "Riparazione doccia sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "location"    : "Milano",
+      "description" : "Riparazione finestra sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    }
+  ]
+}
 var users = {
   name : 'User',
   data : [
@@ -192,6 +221,7 @@ var freelancers = {
 var seedData = [];
 seedData.push(freelancers);
 seedData.push(users);
-seedData.push(reviews)
+seedData.push(reviews);
+seedData.push(events);
 
 module.exports = seedData;
