@@ -29,7 +29,7 @@ describe('Backend events tests', function(){
 
     it('should give back a 400 status if the events is posted to a freelancer profile that does not exists', function(done) {
       request(app)
-      .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/events')
+      .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/event')
       .set('Accept', 'application/json')
       .send(events[0].data)
         .expect(400)
