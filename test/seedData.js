@@ -6,7 +6,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var date = new Date();
 
 var events = {
-  name : 'Event',
+  name : 'CalendarEvent',
   data : [
     {
       "location"    : "Lugano",
