@@ -30,64 +30,21 @@ const ReviewSchema = require('./Review');
 */
 const FreelancerSchema = new mongoose.Schema(
   {
-    firstName     : { type: String, required: true },
-    lastName      : { type: String, required: true },
-    address       : { type: String, required: true },
-    description   : { type: String},
-    profession    : { type: String, required: true},
-    category      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare', 'Other'], default:'Other' },
-    rating        : { type: Number },
-    email         : { type: String, required : true},
-    phone_number  : { type: String, required : true},
-    price         : { type: Number },
-    image         : { type: String, default: '/src/images/blank-user.jpg'},
-    reviews       : { type: [ReviewSchema], default:[]},
+    firstName              : { type: String, required: true },
+    lastName               : { type: String, required: true },
+    address                : { type: String, required: true },
+    description            : { type: String},
+    profession             : { type: String, required: true},
+    category               : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare', 'Other'], default:'Other' },
+    rating                 : { type: Number },
+    email                  : { type: String, required : true},
+    phone_number           : { type: String, required : true},
+    price                  : { type: Number },
+    image                  : { type: String, default: '/src/images/blank-user.jpg'},
+    reviews                : { type: [ReviewSchema], default:[]},
+    emergencyAvailable     : { type: Boolean, required : true},
   }
 );
 
-// FreelancerSchema.pre('save', function (next) {
-//   //default for firstName is userName
-//   if( this.firstName === undefined
-//     || this.firstName === null
-//     || this.firstName.toString().trim() === ''){
-//     this.firstName = this.userName;
-//   }
-//
-//   //default for lastName is userName
-//   if( this.lastName === undefined
-//     || this.lastName === null
-//     || this.lastName.toString().trim() === ''){
-//     this.lastName = this.userName;
-//   }
-//   return next();
-// });
-
-// FreelancerSchema.pre('save', function(next) {
-//   const user = this;
-//
-//   // return if the password was not modified.
-//   if (!user.isModified('password')) { return next(); }
-//
-//   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-//       if (err) { return next(err); }
-//
-//       bcrypt.hash(user.password, salt, function(err, hash) {
-//           if (err) { return next(err); }
-//
-//           user.password = hash;
-//           next();
-//       });
-//   });
-// });
-
-
-// FreelancerSchema.methods.isValidPassword = function isValidPassword(candidate, callback) {
-//   bcrypt.compare(candidate, this.password, function onPwdCompare(err, isMatch) {
-//     if (err) {
-//       return callback(err);
-//     }
-//     callback(null, isMatch);
-//   });
-// };
 //register model
 mongoose.model('Freelancer', FreelancerSchema);

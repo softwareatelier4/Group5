@@ -3,7 +3,8 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
-
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
 <dom-module id="ja-emergency-call">
 
@@ -22,17 +23,17 @@
 
     </style>
 
-    <section id="container">
+    <section id="emergencycontainer">
 
-      <div id="_emergency-description">
+      <div id="_emergencydescription">
         <paper-input label="State your emergency" id="emergency-description" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Firstname required (only letters)!"></paper-input>
       </div>
 
-      <div id="_profession">
+      <div id="_emergencyprofession">
         <paper-input label="profession" id="prof" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Profession required (only letters)!"></paper-input>
       </div>
 
-      <div id="_category">
+      <div id="_emergencycategory">
         Category <br />
         <paper-radio-group id="selector" selected="Other">
         <!-- <paper-input label="Category" id="cat"></paper-input> -->
@@ -56,12 +57,20 @@
       <a id="rout" href="/freelancer/"></a>
 
 
-      <div id="_time">
-        <paper-input label="Specify a time limit" auto-validate pattern="^[0-9]+" id="ftime" error-message="Numbers only!"></paper-input>
+      <div id="time">
+        <paper-dropdown-menu label="Time limit">
+          <paper-listbox class="dropdown-content" selected="1">
+            <paper-item>5</paper-item>
+            <paper-item>10</paper-item>
+            <paper-item>30</paper-item>
+            <paper-item>60</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+        <!-- <paper-input label="Specify a time limit" auto-validate pattern="^[0-9]+" id="ftime" error-message="Numbers only!"></paper-input> -->
       </div>
 
 
-      <paper-button id="fsubmit" raised on-click="_clicked">
+      <paper-button id="emergencysubmit" raised on-click="_clicked">
         Submit
       </paper-button>
 

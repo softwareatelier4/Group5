@@ -102,16 +102,17 @@ var freelancers = {
   name : 'Freelancer',
   data : [
     {
-      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd5"),
-      "firstName"     : "Mario",
-      "lastName"      : "Rossi",
-      "address"       : "Via San Gottardo 12, 6900 Lugano",
-      "rating"        : 3,
-      "email"         : "mario.rossi@gmail.com",
-      "phone_number"  : "+41 4442323223",
-      "price"         : 100,
-      "profession"    : "Painter",
-      "reviews"       : [reviews.data[2]],
+      "_id"                 : ObjectId("5625fc2bd82b84d23d8c7bd5"),
+      "firstName"           : "Mario",
+      "lastName"            : "Rossi",
+      "address"             : "Via San Gottardo 12, 6900 Lugano",
+      "rating"              : 3,
+      "email"               : "mario.rossi@gmail.com",
+      "phone_number"        : "+41 4442323223",
+      "price"               : 100,
+      "profession"          : "Painter",
+      "reviews"             : [reviews.data[2]],
+      "emergencyAvailable"  : true,
 
     },
     {
@@ -127,7 +128,8 @@ var freelancers = {
       "email"         : "alexander.scrummaster@hotmail.ru",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 50,
-      "reviews"       : [reviews.data[4]]
+      "reviews"       : [reviews.data[4]],
+      "emergencyAvailable"  : false,
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -141,7 +143,8 @@ var freelancers = {
       "email"         : "giovanni.rezzonico@gmail.com",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 20,
-      "reviews"       : [reviews.data[3], reviews.data[5]]
+      "reviews"       : [reviews.data[3], reviews.data[5]],
+      "emergencyAvailable"  : false,
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd8"),
@@ -156,6 +159,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 60,
       "reviews"       : [reviews.data[5]],
+      "emergencyAvailable"  : false,
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd9"),
@@ -169,6 +173,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
+      "emergencyAvailable"  : false,
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bf1"),
@@ -184,6 +189,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
+      "emergencyAvailable"  : false,
     },
 
   ]
