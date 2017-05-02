@@ -6,6 +6,8 @@
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ&libraries=places"></script>
+
 <dom-module id="ja-emergency-call">
 
   <template>
@@ -34,7 +36,7 @@
       </div>
 
       <div id="_location">
-        <!-- <paper-input id="locationField" required ... location here ></paper-input> -->
+        <paper-input id="locationField" required label="location" always-float-label value=[[userLocation]] ></paper-input>
       </div>
 
       <div id="_emergencycategory">
@@ -89,6 +91,20 @@
       is: "ja-emergency-call",
 
 
+      ready: function() {
+        setTimeout(function(){
+
+        var inputEl = document.getElementById("locationField").childNodes[1].childNodes[6].childNodes[2].childNodes[2];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+        autocomplete.addListener('place_changed', function () {
+          var address = autocomplete.getPlace().formatted_address || "";
+          this.$['locationField'].query = address;
+        }.bind(this));
+
+      }, 1000);
+      },
+
+
       _timerStarted: function(el){
         console.log("done");
         // the function is returned when the server has received
@@ -108,7 +124,7 @@
           this.$.emergencyProfessionButton.validate();
           this.$.emergencyProfessionButton.setAttribute("required", true);
           this.$.catselector.selected = "Other";
-          this.$.timeselector.selected = "1";
+          this.$.timeselector.selected = "10";
           // this.$.locationField.removeAttribute("required");
           // this.$.locationField.value = "";
           // this.$.locationField.validate();
