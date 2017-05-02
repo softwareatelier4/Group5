@@ -88,7 +88,8 @@ app.use('*', function(req,res, next){
   next();
 })
 app.use('/freelancer', routers.freelancer);
-app.use('/login', routers.login)
+app.use('/login', routers.login);
+app.use('/emergency', routers.emergency);
 
 
 
