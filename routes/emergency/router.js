@@ -33,6 +33,25 @@ router.post('/', function(req, res, next) {
     if (err) return console.error(err);
 
     // TODO: user req location to check against profiles
+    var googleMapsClient = require('@google/maps').createClient({
+      key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
+    });
+
+    var distanceQuery = {
+      origins : "Lugano, Switzerland",
+      destinations : "Sorrento, Italy"
+    }
+
+    googleMapsClient.distanceMatrix(distanceQuery, function(err, res) {
+      if (err) return console.error(err);
+
+      console.log(res.json.rows[0].elements[0].distance.text);
+      // for(var i in res.json.rows){
+      //   console.log(i);
+      //   console.log();
+      // }
+
+    })
 
     //TODO: - save notification
     var newNotification = {};
