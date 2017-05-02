@@ -32,36 +32,44 @@ router.post('/', function(req, res, next) {
   Freelancer.find(newJson).exec(function(err, profiles) {
     if (err) return console.error(err);
 
-    // TODO: user req location to check against profiles
-    var googleMapsClient = require('@google/maps').createClient({
-      key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
-    });
+    if (profiles === undefined || profiles.length == 0) {
+      console.log("No matching profiles were found");
+      //TODO: do something here
+    } else {
+      var dest = [];
+      profiles.forEach(function(profile) {
+        dest.push(profile.address);
+      });
+      var dest_joined = dest.join('|')
 
-    var distanceQuery = {
-      origins : "Lugano, Switzerland",
-      destinations : "Sorrento, Italy"
+      // TODO: user req location to check against profiles
+      var googleMapsClient = require('@google/maps').createClient({
+        key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
+      });
+
+
+      var distanceQuery = {
+        origins : req.body.location,
+        destinations : dest_joined,
+      }
+
+      googleMapsClient.distanceMatrix(distanceQuery, function(err, res) {
+        if (err) return console.error(err);
+        console.log(res.json.rows[0].elements[0].distance.text);
+
+      });
+
+      //TODO: - save notification
+      var newNotification = {
+        description: req.body.description,
+        profession: req.body.profession,
+        category: req.body.category,
+        location: req.body.location,
+        userCalling: new User(req.session.user)
+      };
+
+      //TODO: - send notification mail
     }
-
-    googleMapsClient.distanceMatrix(distanceQuery, function(err, res) {
-      if (err) return console.error(err);
-
-      console.log(res.json.rows[0].elements[0].distance.text);
-      // for(var i in res.json.rows){
-      //   console.log(i);
-      //   console.log();
-      // }
-
-    })
-
-    //TODO: - save notification
-    var newNotification = {};
-    newNotification['description'] = req.body.description;
-    newNotification['profession'] = req.body.profession;
-    newNotification['category'] = req.body.category;
-
-    newNotification['userCalling'] = new User(req.session.user);
-
-    //TODO: - send notification mail
   });
 
 

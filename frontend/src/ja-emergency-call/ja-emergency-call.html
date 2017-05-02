@@ -147,10 +147,10 @@
           this.$.emergencyProfessionButton.focus();
         }
 
-        // if (this.$.locationField.value == "") {
-        //   proceed = false;
-        //   this.$.locationField.focus();
-        // }
+        if (this.$.locationField.value == "") {
+          proceed = false;
+          this.$.locationField.focus();
+        }
 
         if(proceed){
           const ajaxel = this.$.emergencyajax;
@@ -158,7 +158,7 @@
           const obj = {
               description : this.$.emergencyDescriptionButton.value,
               profession  : this.$.emergencyProfessionButton.value,
-              // location    : this.$.locationField.value,
+              location    : this.$.locationField.value,
               category    : this.$.catselector.selected,
               time       : this.$.timeselector.selected,
           };
