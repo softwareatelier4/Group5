@@ -91,9 +91,11 @@
         <div title="claim">
           <ja-claim id={{subrouteData.id}} user={{user}}></ja-claim>
         </div>
+        <template is="dom-if" if="{{_userIsAdmin(user)}}" restamp="true">
         <div title="admin">
           <ja-admin id={{subrouteData.id}}></ja-admin>
         </div>
+        </template>
         <div title="signup">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
             <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
@@ -173,6 +175,13 @@
       _userIsRegistered: function(user) {
         if (user && user.userType !== "guest") return true;
         else return false;
+      },
+
+      _userIsAdmin: function(user) {
+        if (user.userType == "Admin"){
+          return true;
+        }
+        return false;
       },
 
       _formatLoginStatus: function(user) {

@@ -14,3 +14,4 @@ selenium-debug.log
 frontend/src/claim-documents
 *.orig
 *.log*
+*.zip
