@@ -146,6 +146,10 @@
           Category : {{category}}
         </div>
 
+        <div id="emavailable">
+          Available for emergency : {{emergencyAvailable}}
+        </div>
+
       </section>
 
       <section id="right">
@@ -281,6 +285,10 @@
           notify: true,
           // reflectToAttribute: true,
         },
+
+        emergencyAvailable: {
+          type : String
+        }
       },
 
       ready: function () {
@@ -336,6 +344,12 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
+        if(res.emergencyAvailable){
+          this.emergencyAvailable = "Yes";
+        }else{
+          this.emergencyAvailable = "No";
+        }
+
 
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {

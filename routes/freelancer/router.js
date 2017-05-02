@@ -59,6 +59,7 @@ router.post('/:n', function(req, res, next) {
   } else {
     toAdd.image = "/src/images/blank-user.jpg";
   }
+  // console.log(toAdd.emergencyAvailable);
   toAdd.save();
   res.json(toAdd._id);
 });
