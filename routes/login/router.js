@@ -25,6 +25,7 @@ router.post('/', function(req, res, next) {
             userName: user.userName,
             userType: user.userType,
             userMail: user.email,
+            userId: user._id,
           }
         })
       }else{

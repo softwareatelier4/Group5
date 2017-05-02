@@ -83,16 +83,9 @@
           type: String,
           reflectToAttribute: true,
         },
-        // user: {
-        //   type: Object,
-        //   value: {
-        //     userName: "guest",
-        //     userType: "guest",
-        //     userMail: "",
-        //   },
-        //   reflectToAttribute: true,
-        //   notify: true,
-        // }
+        user: {
+          type: Object,
+        }
       },
 
       _handleResponse: function (response) {
@@ -120,9 +113,12 @@
       // },
 
       uploadFile: function () {
+        console.log(this.user.userId);
+        console.log(this.user.userMail);
+
         var form = document.getElementById('upload-form');
-        form.email.value = this.user.email;
-        form.userid.value = this.user._id;
+        form.email.value = this.user.userMail;
+        form.userid.value = this.user.userId;
         var formData = new FormData(form);
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '', true);

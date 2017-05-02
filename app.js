@@ -67,12 +67,7 @@ app.post('/claim/:id', function (req, res) {
     var data = zip.generate({base64:false,compression:'DEFLATE'});
 fs.writeFileSync(__dirname + '/frontend/src/claim-documents/'+ req.params.id + '.zip', data, 'binary');
     });
-    form.parse(req);
-
-
-
-  
-
+    // form.parse(req);
 
 
   // let filename = req.params.id;
@@ -83,6 +78,8 @@ fs.writeFileSync(__dirname + '/frontend/src/claim-documents/'+ req.params.id + '
 
 
   form.parse(req, function (err, fields, files) {
+
+      console.log('######2######' + util.inspect(fields));
     // const name = files.file.name;
     // const parts = name.split('.');
     // const ext = parts[parts.length - 1];
@@ -110,6 +107,7 @@ fs.writeFileSync(__dirname + '/frontend/src/claim-documents/'+ req.params.id + '
         claimFilePath: '/src/claim-documents/' + req.params.id,
         claimComment: fields.comment,
         claimEmail: fields.email,
+        claimingUserId: fields.userid,
       }
     }).exec(function (err, profiles) {
       if (err) return console.error(err);
