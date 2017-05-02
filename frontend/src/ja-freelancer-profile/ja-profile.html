@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
+<link rel="import" href="../ja-event-element/ja-event-element.html">
 <dom-module id="ja-profile">
 
   <template>
@@ -183,6 +184,14 @@
       <section id="description">
         Description : {{_checkdescisprovided(description)}}
       </section>
+
+      <section id="profile-calendar">
+        <template is="dom-repeat" items="{{events}}" as="result">
+          <ja-event-element data={{result}}></ja-event-element>
+        </template>
+      </section>
+
+
       <section id="reviews" style="width: 100%;">
         <div id="user-rating" style="display:flex;" >
           <p id="error-message">{{error}}</p>
@@ -218,6 +227,9 @@
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
     <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
+    </iron-ajax>
+
+    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json" on-response="_handleAddEventResponse">
     </iron-ajax>
 
   </template>
@@ -337,6 +349,8 @@
         this.category = res.category;
         this.reviews = res.reviews;
 
+        this.events = res.events;
+
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {
           origins: this.location || this.userLocation,
@@ -413,6 +427,11 @@
         this.$.review.removeAttribute("raised");
         this.$.review.disabled=true;
         this.unshift('reviews', obj);
+      },
+
+
+      _handleAddEventResponse: function(evt) {
+        // TODO
       },
 
 
