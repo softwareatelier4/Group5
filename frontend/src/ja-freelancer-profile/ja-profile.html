@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
 <link rel="import" href="../ja-event-element/ja-event-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <dom-module id="ja-profile">
 
   <template>
@@ -84,7 +85,7 @@
         border-color: lightgray;
       }
 
-      #reviews {
+      #reviews, #profile-calendar {
         padding-left: 20px;
         padding-right: 20px;
       }
@@ -116,13 +117,29 @@
       #error-message {
         color: red;
       }
+
+      .event-date-container {
+        display: flex;
+      }
+
+      .event-start-end {
+        width: 100%;
+      }
+
+      .event-start-end > paper-input {
+        display: inline-block;
+        width: 49%;
+      }
+
+      /*paper-textarea {
+        width: 100%;
+        height: 150px;
+      }*/
     </style>
 
     <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
       handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
-
-    <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
 
     <section id="container">
 
@@ -186,6 +203,21 @@
       </section>
 
       <section id="profile-calendar">
+        <h3>Events</h3>
+        <div id="event-input-form">
+          <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Create a new event</paper-button>
+          <paper-input label="Description"></paper-input>
+          <div class="event-date-container">
+            <div class="event-start-end">
+              <paper-input label="Start date" type="date"></paper-input>
+              <paper-input label="Start hour" type="time"></paper-input>
+            </div>
+            <div class="event-start-end">
+              <paper-input label="End date" type="date"></paper-input>
+              <paper-input label="End hour" type="time"></paper-input>
+            </div>
+          </div>
+        </div>
         <template is="dom-repeat" items="{{events}}" as="result">
           <ja-event-element data={{result}}></ja-event-element>
         </template>
@@ -196,7 +228,6 @@
         <div id="user-rating" style="display:flex;" >
           <p id="error-message">{{error}}</p>
           <div id="commentarea" style="width:80%">
-            <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
           </div>
           <div id="ratearea">
@@ -216,13 +247,9 @@
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
-          <!-- <br/> -->
         </template>
       </section>
 
-      <!-- <section id="review"> -->
-
-      <!-- </section> -->
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
@@ -293,6 +320,10 @@
           notify: true,
           // reflectToAttribute: true,
         },
+      },
+
+      _onSubmitEventTap: function(evt) {
+        // TODO:
       },
 
       ready: function () {
@@ -385,7 +416,6 @@
           if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
             const text = response.detail.response.rows[0].elements[0].distance.text;
             const value = response.detail.response.rows[0].elements[0].distance.value;
-            // console.log(text);
             this.set('distance', text);
             // this.set('result.distance_value', value);
           }

@@ -141,7 +141,7 @@ var freelancers = {
       "price"         : 100,
       "profession"    : "Painter",
       "reviews"       : [reviews.data[2]],
-
+      "events"        : [events.data[1], events.data[2]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -156,7 +156,8 @@ var freelancers = {
       "email"         : "alexander.scrummaster@hotmail.ru",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 50,
-      "reviews"       : [reviews.data[4]]
+      "reviews"       : [reviews.data[4]],
+      "events"        : [events.data[0], events.data[3]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
