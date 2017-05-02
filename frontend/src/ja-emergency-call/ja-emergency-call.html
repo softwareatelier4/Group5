@@ -6,7 +6,6 @@
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ&libraries=places"></script>
 
 <dom-module id="ja-emergency-call">
 
@@ -36,7 +35,7 @@
       </div>
 
       <div id="_location">
-        <paper-input id="locationField" required label="location" always-float-label value=[[userLocation]] ></paper-input>
+        <paper-input id="locationField" required auto-validate   label="Insert your location"  value={{_write(userLocation)}} ></paper-input>
       </div>
 
       <div id="_emergencycategory">
@@ -93,17 +92,22 @@
 
       ready: function() {
         setTimeout(function(){
-
-        var inputEl = document.getElementById("locationField").childNodes[1].childNodes[6].childNodes[2].childNodes[2];
-        var autocomplete = new google.maps.places.Autocomplete(inputEl);
-        autocomplete.addListener('place_changed', function () {
-          var address = autocomplete.getPlace().formatted_address || "";
-          this.$['locationField'].query = address;
-        }.bind(this));
-
-      }, 1000);
+          var inputEl = document.getElementById("locationField").childNodes[1].childNodes[6].childNodes[2].childNodes[2];
+          var autocomplete = new google.maps.places.Autocomplete(inputEl);
+            autocomplete.addListener('place_changed', function () {
+              var address = autocomplete.getPlace().formatted_address || "";
+                this.$['locationField'].query = address;
+            }.bind(this));
+        }.bind(this), 1000);
       },
 
+      _write: function(el){
+        if(this.$.locationField.value === ""){
+          return el;
+        }else{
+          return this.$.locationField.value;
+        }
+      },
 
       _timerStarted: function(el){
         console.log("done");

@@ -6,8 +6,8 @@
   "scripts": {
     "start": "DEBUG='jobadvisor-server' nodemon ./bin/www",
     "start-jenkins": "DEBUG='jobadvisor-server' ./bin/www",
-    "install":"bower install",
-    "install-selenium":"./bin/installSeleniumAndChromeWebDriver",
+    "install": "bower install",
+    "install-selenium": "./bin/installSeleniumAndChromeWebDriver",
     "install-jenkins": "chmod -R u+x ./bin/ && ./bin/installSeleniumAndChromeWebDriverJenkins",
     "test-all": "npm run test-mocha && npm run test-nightwatch",
     "test-mocha": "node seed.js && JUNIT_REPORT_PATH=./jenkins-test-results.xml istanbul cover --report cobertura _mocha -- --timeout 3000 -R spec ./test/* --colors --reporter mocha-jenkins-reporter",
@@ -23,6 +23,7 @@
   "author": "Francesco Sani, Thomas Del Prete, Alexander Fischer, Samuele Bischof, Lorenzo Spoleti, Davide Bucher, Camillo Malnati, Emanuele Giuseppe Esposito",
   "license": "MIT",
   "dependencies": {
+    "@google/maps": "^0.3.1",
     "bcrypt": "^1.0.2",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.0",
