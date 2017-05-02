@@ -12,6 +12,31 @@ const fieldsFilter = { '__v': 0 };
 
 router.all('/', middleware.supportedMethods('POST'));
 
+// router.get('/:id', function(req, res, next) {
+//   User.findOne({_id: req.params.id}, function(err, user){
+//     if(user){
+//         res.status(200);
+//         return res.json({
+//           statusCode: 200,
+//           message: "OK",
+//           user: {
+//             userName: user.userName,
+//             userType: user.userType,
+//             userMail: user.email,
+//             userId: user._id,
+//             userPending: user.pending,
+//           }
+//         })
+//     }else{
+//       res.status(400);
+//       return res.json({
+//         statusCode: 400,
+//         message: "Bad Request"
+//       });
+//     }
+//   })
+// })
+
 router.post('/', function(req, res, next) {
   User.findOne({userName: req.body.userName}, function(err, user){
     if(user){
@@ -26,6 +51,7 @@ router.post('/', function(req, res, next) {
             userType: user.userType,
             userMail: user.email,
             userId: user._id,
+            userPending: user.pending,
           }
         })
       }else{

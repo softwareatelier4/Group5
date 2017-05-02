@@ -279,6 +279,10 @@
           type: String,
         },
 
+        user: {
+          type: Object,
+        },
+
         userLocation: {
           type: String,
           value: "",
@@ -350,8 +354,9 @@
         };
         this.$['distance-request'].generateRequest();
 
-// TODO: fix conditions
-        if (this.verification == 'none' && (this.user.pending == 'none' || this.user.pending == undefined)) {
+// TODO: need to find a way to update user
+console.log('#######' + this.user.userPending);
+        if (this.verification == 'none' && (this.user.userPending == 'none')) {
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id + ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
           this.$['container-claim'].innerHTML = '';

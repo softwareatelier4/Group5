@@ -124,6 +124,7 @@
         xhr.open('POST', '', true);
         xhr.send(formData);
         this.user.pending = "pending";
+        this.user.userPending = "pending";
         window.location = "http://localhost:3005/";
       },
 
