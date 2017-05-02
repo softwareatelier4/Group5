@@ -29,10 +29,18 @@ router.get('/', function (req, res, next) {
 });
 
 router.put('/', function (req, res) {
-  Freelancer.findOneAndUpdate({_id: req.query.id}, {$set:{verification: req.query.type}}).exec(function (err, profiles) {
+  if(req.query.type == 'verified'){
+    Freelancer.findOneAndUpdate({_id: req.query.id}, {$set:{verification: req.query.type, userId: req.query.claimingUserId}}).exec(function (err, profiles) {
     if (err) return console.error(err);
     res.json(profiles);
   });
+  }else{
+    Freelancer.findOneAndUpdate({_id: req.query.id}, {$set:{verification: req.query.type}}).exec(function (err, profiles) {
+    if (err) return console.error(err);
+    res.json(profiles);
+  });
+  }
+  
 });
 
 router.post('/', function (req, res) {

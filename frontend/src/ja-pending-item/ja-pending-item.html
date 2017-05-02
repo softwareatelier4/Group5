@@ -83,6 +83,7 @@
         this.req = {
           'id' : this.result._id ,
           'type' : 'verified' ,
+          'claimingUserId' : this.result.claimingUserId ,
         };
 
          this.$['user-verdict'].generateRequest();
