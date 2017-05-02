@@ -12,7 +12,7 @@ var methodOverride = require('method-override')
 const formidable = require('formidable');
 const fs = require('fs');
 const util = require('util');
-var zip = new require('node-zip')();
+var zipFolder = require('zip-folder');
 
 
 // Connection to MongoDB
@@ -40,34 +40,38 @@ app.post('/claim/:id', function (req, res) {
   var dir = './frontend/src/claim-documents/';
   var idDir = './frontend/src/claim-documents/' + req.params.id;
 
-    if (!fs.existsSync(dir)) {
+  if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 
-     if (!fs.existsSync(idDir)) {
+  if (!fs.existsSync(idDir)) {
     fs.mkdirSync(idDir);
   }
 
-    var form = new formidable.IncomingForm(),
+  var form = new formidable.IncomingForm(),
     files = [],
     fields = [];
-    form.on('field', function(field, value) {
-        fields.push([field, value]);
-    })
-    form.on('file', function(field, file) {
-        console.log(file.name);
+  form.on('field', function (field, value) {
+    fields.push([field, value]);
+  })
+  form.on('file', function (field, file) {
+    console.log(file.name);
 
-        fs.rename(file.path, __dirname + '/frontend/src/claim-documents/'+ req.params.id + '/' + file.name);
+    fs.rename(file.path, __dirname + '/frontend/src/claim-documents/' + req.params.id + '/' + file.name);
 
-        files.push([field, file]);
-    })
-    form.on('end', function() {
-        console.log('done');
-        zip.file(__dirname + '/frontend/src/claim-documents/'+ req.params.id, req.params.id);
-    var data = zip.generate({base64:false,compression:'DEFLATE'});
-fs.writeFileSync(__dirname + '/frontend/src/claim-documents/'+ req.params.id + '.zip', data, 'binary');
+    files.push([field, file]);
+  })
+  form.on('end', function () {
+    console.log('done');
+    zipFolder(__dirname + '/frontend/src/claim-documents/' + req.params.id, __dirname + '/frontend/src/claim-documents/' + req.params.id + '.zip', function (err) {
+      if (err) {
+        console.log('oh no!', err);
+      } else {
+        console.log('EXCELLENT');
+      }
     });
-    // form.parse(req);
+  });
+  // form.parse(req);
 
 
   // let filename = req.params.id;
@@ -79,14 +83,14 @@ fs.writeFileSync(__dirname + '/frontend/src/claim-documents/'+ req.params.id + '
 
   form.parse(req, function (err, fields, files) {
 
-      console.log('######2######' + util.inspect(fields));
+    console.log('######2######' + util.inspect(fields));
     // const name = files.file.name;
     // const parts = name.split('.');
     // const ext = parts[parts.length - 1];
     // for (var file in files.file){
     //   console.log('#### ' + file.name);
     // }
-    
+
     // fs.rename(files.file.path, __dirname + '/frontend/src/claim-documents/' + filename + "." + ext);
     // res.json({name : filename});
     // res.end();
