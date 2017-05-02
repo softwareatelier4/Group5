@@ -11,7 +11,7 @@
   <template>
     <style>
 
-    #container {
+    #emergencycontainer {
       padding-top: 100px;
     }
 
@@ -26,17 +26,20 @@
     <section id="emergencycontainer">
 
       <div id="_emergencydescription">
-        <paper-input label="State your emergency" id="emergency-description" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Firstname required (only letters)!"></paper-input>
+        <paper-input label="State your emergency" id="emergencyDescriptionButton" auto-validate pattern="^[a-zA-Z0-9, '.&-]+" required error-message="Write about your problem!"></paper-input>
       </div>
 
       <div id="_emergencyprofession">
-        <paper-input label="profession" id="prof" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Profession required (only letters)!"></paper-input>
+        <paper-input label="Profession" id="emergencyProfessionButton" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Profession required (only letters)!"></paper-input>
+      </div>
+
+      <div id="_location">
+        <!-- <paper-input id="locationField" required ... location here ></paper-input> -->
       </div>
 
       <div id="_emergencycategory">
         Category <br />
-        <paper-radio-group id="selector" selected="Other">
-        <!-- <paper-input label="Category" id="cat"></paper-input> -->
+        <paper-radio-group id="catselector" selected="Other">
         <paper-radio-button id="Radio" name="Radio"> Radio  </paper-radio-button>
         <paper-radio-button id="TecnicalServices" name="Tecnical Services">Tecnical Services</paper-radio-button>
         <paper-radio-button id="ITServices" name="IT Services">IT Services</paper-radio-button>
@@ -59,25 +62,22 @@
 
       <div id="time">
         <paper-dropdown-menu label="Time limit">
-          <paper-listbox class="dropdown-content" selected="1">
-            <paper-item>5</paper-item>
-            <paper-item>10</paper-item>
-            <paper-item>30</paper-item>
-            <paper-item>60</paper-item>
+          <paper-listbox class="dropdown-content" id="timeselector" attr-for-selected="name" selected="5">
+            <paper-item name="5">5</paper-item>
+            <paper-item name="10">10</paper-item>
+            <paper-item name="30">30</paper-item>
+            <paper-item name="60">60</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
         <!-- <paper-input label="Specify a time limit" auto-validate pattern="^[0-9]+" id="ftime" error-message="Numbers only!"></paper-input> -->
       </div>
 
 
-      <paper-button id="emergencysubmit" raised on-click="_clicked">
+      <paper-button id="emergencysubmit" raised on-click="emergency_clicked">
         Submit
       </paper-button>
 
-
-      <!--
-      <iron-ajax id="ajax" url="/freelancer/" method="POST" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
-      -->
+      <iron-ajax id="emergencyajax" url="/emergency/" method="POST" handle-as="json" content-type="application/json" on-response="_timerStarted"></iron-ajax>
 
     </section>
 
@@ -88,18 +88,64 @@
     Polymer({
       is: "ja-emergency-call",
 
-      _finished: function(el){
-        if(this.$.upload.files[0] !== undefined){
-          this.$.upload.target += "/freelancer/img/" + el.detail.response;
-          this.$.upload.method="POST";
-          this.$.upload.accept="image/*";
-          this.$.upload.errorText="error! please retry";
-          this.$.upload.manualUpload = true;
-          this.$.upload.uploadFile(this.$.upload.files[0]);
+
+      _timerStarted: function(el){
+        console.log("done");
+        // the function is returned when the server has received
+        // the request with the data (submit has been clicked)
+        // Now you can access the response data if you want
+        // with el.detail.response
+        // PROBLEMI DI SHUGHI E THOMAS
+        this._clearall(); // Non cancellare!
+      },
+        _clearall: function(){
+          this.$.emergencyDescriptionButton.removeAttribute("required");
+          this.$.emergencyDescriptionButton.value = "";
+          this.$.emergencyDescriptionButton.validate();
+          this.$.emergencyDescriptionButton.setAttribute("required", true);
+          this.$.emergencyProfessionButton.removeAttribute("required");
+          this.$.emergencyProfessionButton.value = "";
+          this.$.emergencyProfessionButton.validate();
+          this.$.emergencyProfessionButton.setAttribute("required", true);
+          this.$.catselector.selected = "Other";
+          this.$.timeselector.selected = "1";
+          // this.$.locationField.removeAttribute("required");
+          // this.$.locationField.value = "";
+          // this.$.locationField.validate();
+          // this.$.locationField.setAttribute("required", true);
+      },
+
+      emergency_clicked : function(){
+        var proceed = true;
+
+        if(this.$.emergencyDescriptionButton.value == ""){
+          proceed = false;
+          this.$.emergencyDescriptionButton.focus();
         }
-        this._clearall();
-        this.$.rout.href += el.detail.response;
-        this.$.rout.click();
+        if (this.$.emergencyProfessionButton.value == "") {
+          proceed = false;
+          this.$.emergencyProfessionButton.focus();
+        }
+
+        // if (this.$.locationField.value == "") {
+        //   proceed = false;
+        //   this.$.locationField.focus();
+        // }
+
+        if(proceed){
+          const ajaxel = this.$.emergencyajax;
+          var d = new Date();
+          const obj = {
+              description : this.$.emergencyDescriptionButton.value,
+              profession  : this.$.emergencyProfessionButton.value,
+              // location    : this.$.locationField.value,
+              category    : this.$.catselector.selected,
+              time       : this.$.timeselector.selected,
+          };
+          ajaxel.body = obj;
+          ajaxel.generateRequest();
+        }
+
       },
    })
 

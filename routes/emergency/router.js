@@ -13,17 +13,18 @@ const fieldsFilter = { '__v': 0 };
 router.all('/', middleware.supportedMethods('POST'));
 
 router.post('/', function(req, res, next) {
+  // console.log("AAAAAAAAAAAAA request got");
   res.status(200);
 
-  var newJson = {};
-  newJson["profession"] = new RegExp(req.query.profession, 'i');
-  newJson["category"] = new RegExp(req.query.category, 'i');
-  newJson["emergencyAvailable"] = true;
-
-  Freelancer.find(newJson).exec(function(err, profiles) {
-    if (err) return console.error(err);
-    res.json(profiles);
-  });
+  // var newJson = {};
+  // newJson["profession"] = new RegExp(req.query.profession, 'i');
+  // newJson["category"] = new RegExp(req.query.category, 'i');
+  // newJson["emergencyAvailable"] = true;
+  //
+  // Freelancer.find(newJson).exec(function(err, profiles) {
+  //   if (err) return console.error(err);
+  //   res.json(profiles);
+  // });
 
   //TODO: - save notification
   //TODO: - send notification mail
