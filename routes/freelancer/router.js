@@ -34,7 +34,13 @@ router.get('/:freelancerid', function(req, res, next) {
 router.post('/:freelancerid/review', function(req, res, next) {
   var toAdd = new Review(req.body);
   toAdd.save(function(err) {
-    if (err) return next (err);
+    if (err) {
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"reviews": toAdd}},
     {safe: true, upsert: true, new : false},
     function(err, freelancer) {
@@ -55,7 +61,13 @@ router.post('/:freelancerid/review', function(req, res, next) {
 router.post('/:freelancerid/event', function(req, res, next) {
   var toAdd = new CalendarEvent(req.body);
   toAdd.save(function(err) {
-    if (err) return next (err);
+    if (err) {
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
     {safe: true, upsert: true, new : false},
     function(err, freelancer) {
