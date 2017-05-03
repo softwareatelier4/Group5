@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
 const Review = mongoose.model('Review');
+const CalendarEvent = mongoose.model('CalendarEvent');
 const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
@@ -33,7 +34,13 @@ router.get('/:freelancerid', function(req, res, next) {
 router.post('/:freelancerid/review', function(req, res, next) {
   var toAdd = new Review(req.body);
   toAdd.save(function(err) {
-    if (err) return next (err);
+    if (err) {
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"reviews": toAdd}},
     {safe: true, upsert: true, new : false},
     function(err, freelancer) {
@@ -46,6 +53,33 @@ router.post('/:freelancerid/review', function(req, res, next) {
         });
       } else {
         return res.json(toAdd._id);
+      }
+    })
+  });
+});
+
+router.post('/:freelancerid/event', function(req, res, next) {
+  var toAdd = new CalendarEvent(req.body);
+  toAdd.save(function(err) {
+    if (err) {
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }
+    Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
+    {safe: true, upsert: true, new : false},
+    function(err, freelancer) {
+      if (err) return next (err);
+      if (!freelancer) {
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      } else {
+        return res.json(toAdd);
       }
     })
   });

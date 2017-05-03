@@ -22,12 +22,8 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
+const CalendarEventSchema = require('./CalendarEvent');
 
-
-/** @constructor
-* @augments AbstractSoundCollectionSchemaInstance
-* @param {Object} definition
-*/
 const FreelancerSchema = new mongoose.Schema(
   {
     firstName              : { type: String, required: true },
@@ -43,6 +39,9 @@ const FreelancerSchema = new mongoose.Schema(
     image                  : { type: String, default: '/src/images/blank-user.jpg'},
     reviews                : { type: [ReviewSchema], default:[]},
     emergencyAvailable     : { type: Boolean, required : true},
+    events                 : { type: [CalendarEventSchema], default:[]},
+    verification           : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    claimFilePath          : { type: String},
   }
 );
 

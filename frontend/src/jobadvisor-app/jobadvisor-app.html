@@ -8,6 +8,8 @@
 <link rel="import" href="../ja-search-element/ja-search-element.html">
 <link rel="import" href="../ja-distance-calc/ja-distance-calc.html">
 <link rel="import" href="../ja-freelancer-profile/ja-profile.html">
+<link rel="import" href="../ja-claim/ja-claim.html">
+<link rel="import" href="../ja-admin/ja-admin.html">
 <link rel="import" href="../ja-login/ja-login.html">
 <link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
 <link rel="import" href="../ja-emergency-call/ja-emergency-call.html">
@@ -94,6 +96,12 @@
         </div>
         <div title="freelancer">
           <ja-profile id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
+        </div>
+        <div title="claim">
+          <ja-claim id={{subrouteData.id}}></ja-claim>
+        </div>
+        <div title="admin">
+          <ja-admin id={{subrouteData.id}}></ja-admin>
         </div>
         <div title="login">
           <ja-login user={{user}}></ja-login>

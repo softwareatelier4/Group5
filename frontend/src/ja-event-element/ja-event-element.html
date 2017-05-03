@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<dom-module id="ja-event-element">
+
+  <template>
+    <style>
+
+      paper-card {
+        width: 100%;
+        padding: 20px;
+        margin: 10px 0 10px 0;
+      }
+
+    </style>
+    <paper-card>
+      <div id="event-start-date">
+        Start {{data.start}}
+      </div>
+      <div id="event-end-date">
+        End {{data.end}}
+      </div>
+      <div id="event-description">
+        Description: {{data.description}}
+      </div>
+      <div id="event-location">
+        Location: {{data.location}}
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-event-element",
+
+      properties: {
+        data: {
+          type: Object,
+        }
+      },
+
+    });
+  </script>
+
+</dom-module>

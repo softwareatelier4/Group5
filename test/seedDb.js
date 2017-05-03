@@ -15,7 +15,7 @@ var cbCnt = 0;
 var seedData = require('./seedData')
 
 /**
-* Recursive function that goes through 
+* Recursive function that goes through
 * seedData populating each item of it
 */
 var seedModel = function(idx, done){
@@ -23,6 +23,7 @@ var seedModel = function(idx, done){
     return done(null, seedData);
   }
 
+  // console.log(models);
   var modelName = seedData[idx].name;
   models[modelName].create(seedData[idx].data, function(err){
     if (err) done (err);
