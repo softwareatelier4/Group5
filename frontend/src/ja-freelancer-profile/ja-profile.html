@@ -164,6 +164,10 @@
           {{lastname}} {{firstname}}
         </div>
 
+        <div id="container-verification"></div>
+
+        <div id="container-claim"></div>
+
         <div id="profession">
           {{profession}}
         </div>
@@ -369,6 +373,10 @@
           notify: true,
           // reflectToAttribute: true,
         },
+
+        verification: {
+          type: String,
+        },
       },
 
       _onSubmitEventTap: function(evt) {
@@ -455,6 +463,7 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
+        this.verification = res.verification;
 
         this.events = res.events;
 
@@ -465,10 +474,18 @@
           key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
         };
         this.$['distance-request'].generateRequest();
+
+        if (this.verification == 'none') {
+          this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id + ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
+        } else {
+          this.$['container-claim'].innerHTML = '';
+          this.$['container-verification'].innerHTML = this.verification;
+
+        }
       },
 
-      _giverating: function(el){
-        if(this.$.ratenum.value !== "-"){
+      _giverating: function (el) {
+        if (this.$.ratenum.value !== "-") {
           // this.$.review.attributes[1] = "enabled";
           this.$.review.disabled = false;
           this.$.review.setAttribute("raised", "");
