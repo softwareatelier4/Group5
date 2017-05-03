@@ -22,6 +22,9 @@
       <div id="date">
         Date : {{_changedate(date)}}
       </div>
+      <div id="userName">
+        Username : {{user}}
+      </div>
     </paper-card>
 
 
@@ -32,6 +35,9 @@
       is: "ja-review-element",
       properties: {
         comment: {
+          type: String
+        },
+        user: {
           type: String
         },
         rating: {

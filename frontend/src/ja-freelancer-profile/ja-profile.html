@@ -111,6 +111,10 @@
       #ratenum {
         width: 100%!important;
       }
+
+      #error-message {
+        color: red;
+      }
     </style>
 
     <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
@@ -184,7 +188,8 @@
         Description : {{_checkdescisprovided(description)}}
       </section>
       <section id="reviews" style="width: 100%;">
-        <div id="user-rating" style="display:flex;">
+        <div id="user-rating" style="display:flex;" >
+          <p id="error-message">{{error}}</p>
           <div id="commentarea" style="width:80%">
             <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
@@ -205,7 +210,7 @@
         </div>
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}}></ja-review-element>
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
           <!-- <br/> -->
         </template>
       </section>
@@ -341,8 +346,6 @@
         this.reviews = res.reviews;
         this.verification = res.verification;
 
-
-
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {
           origins: this.location || this.userLocation,
@@ -363,7 +366,7 @@
       _giverating: function (el) {
         if (this.$.ratenum.value !== "-") {
           // this.$.review.attributes[1] = "enabled";
-          this.$.review.removeAttribute("disabled");
+          this.$.review.disabled = false;
           this.$.review.setAttribute("raised", "");
           // console.log(this.$.review.attributes);
         }
@@ -393,30 +396,39 @@
       },
 
       _givereview: function () {
-        if (this.$.ratenum.value !== "-") {
-          const ajaxel = this.$.ajax2;
-          const d = new Date();
-          const obj = {
-            comment: this.$.comm.value,
-            rating: this.$.ratenum.value,
-            date: d
-          };
-          ajaxel.body = obj;
-          ajaxel.generateRequest();
+        if(this.$.ratenum.value !== "-"){
+          if (this.user && this.user.userType !== "guest") {
+            this.error = ""
+            const ajaxel = this.$.ajax2;
+            const d = new Date();
+            const obj = {
+              comment: this.$.comm.value,
+              rating: this.$.ratenum.value,
+              date: d,
+              userName: this.user.userName
+            };
+            ajaxel.body = obj;
+            ajaxel.generateRequest();
+          } else {
+            console.log("not logged in");
+            this.error = "Please login before writing a review."
+          }
         }
       },
 
       _done: function (el) {
+        console.log("Finished", el);
         const d = new Date();
         const obj = {
           comment: this.$.comm.value,
           rating: this.$.ratenum.value,
-          date: d
+          date: d,
+          userName: this.user.userName
         };
         this.$.comm.value = " ";
         this.$.ratenum.value = "-";
         this.$.review.removeAttribute("raised");
-        this.$.review.setAttribute("disabled", "");
+        this.$.review.disabled=true;
         this.unshift('reviews', obj);
       },
 

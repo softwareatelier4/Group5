@@ -5,10 +5,13 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var cookieSession = require('cookie-session')
 var app = express();
 var methodOverride = require('method-override')
 const formidable = require('formidable');
 const fs = require('fs');
+
 
 // Connection to MongoDB
 var mongoose = require('mongoose');
@@ -103,8 +106,16 @@ app.use(methodOverride(
   }
 ));
 
-// Initialize routers
+//cookies
+app.use(cookieSession({
+  name: 'session',
+  keys: ['supersecret'],
 
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
+
+// Initialize routers
 var routers = require('./routes/routers');
 app.use('/', routers.root);
 
@@ -124,6 +135,9 @@ app.use('*', function (req, res, next) {
 app.use('/admin', routers.admin);
 app.use('/claim', routers.claim);
 app.use('/freelancer', routers.freelancer);
+app.use('/login', routers.login)
+
+
 
 
 module.exports = app;
