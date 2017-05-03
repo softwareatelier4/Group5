@@ -1,0 +1,127 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/file-upload/file-upload.html">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<dom-module id="ja-claim">
+  <template>
+    <style>
+       :host {
+        display: block;
+        color: black;
+      }
+
+      #container {
+        padding: 20px;
+        position: fixed;
+        height: calc(100% - 110px);
+        width: 80%!important;
+        top: 100px;
+        bottom: 0px;
+        overflow: scroll;
+        width: 100%;
+        color: dimgray;
+        background: white;
+        border-radius: 3px;
+        padding-bottom: 10px;
+      }
+
+      #container::-webkit-scrollbar {
+        display: none;
+      }
+
+      file-upload {
+        /*display: none;*/
+        margin-top: 10px;
+      }
+      
+    </style>
+
+
+
+    <section id="container">
+      <div id="name">
+        {{result.firstName}} {{result.lastName}}
+      </div>
+      <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
+
+      <!--<form id="upload-form" method="post" enctype="multipart/form-data">
+        <input id="load-file" on-change="checkFile" type="file" name="file" class="inputfile"></form>-->
+
+        <file-upload raised="true" method="post" id="upload-form" accept="image/*" paper-button-title="demo title">Choose File and Send</file-upload>
+
+      <!--<file-upload raised="false" target="/claim/" multi="false" fileDataName="input_file" method="POST" accept="*">Choose File</file-upload><br>-->
+      <!--<paper-button id="btn-send" raised>Send Request</paper-button>-->
+
+
+    </section>
+    <iron-ajax auto id="request-profile" url="http://localhost:3005/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
+      on-response="_handleResponse">
+    </iron-ajax>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'ja-claim',
+
+      listeners: {
+        // 'load-file.tap': 'checkFile',
+        // 'btn-send.tap': 'uploadFile',
+      },
+
+      properties: {
+        result: {
+          type: Array,
+          value: [],
+          notify: true,
+          observer: '_resultChanged'
+        },
+        id: {
+          type: String,
+          reflectToAttribute: true,
+        }
+      },
+
+      _handleResponse: function (response) {
+        if (response) {
+          this.result = response.detail.response;
+          console.log(response.detail.response);
+        }
+      },
+
+      _resultChanged: function (result) {
+        this.result = result;
+      },
+
+      ready: function () {
+        // this.$['request-profile'].generateRequest();
+        // this.checkFile();
+      },
+
+      setPending: function () {
+        this.req = {
+          'id': this.result._id,
+        };
+
+        this.$['set-pending'].generateRequest();
+      },
+
+      // uploadFile: function () {
+      //   var form = document.getElementById('upload-form');
+      //   var formData = new FormData(form);
+      //   var xhr = new XMLHttpRequest();
+      //   xhr.open('POST', '', true);
+      //   xhr.send(formData);
+      // },
+
+      // checkFile: function () {
+      //   if (this.$['upload-form'].file.value) {
+      //     this.$['btn-send'].removeAttribute('disabled');
+      //   } else {
+      //     this.$['btn-send'].setAttribute('disabled', '');
+      //   }
+      // },
+
+    });
+  </script>
+</dom-module>
