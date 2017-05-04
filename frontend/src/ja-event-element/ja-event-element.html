@@ -13,6 +13,10 @@
         margin: 10px 0 10px 0;
       }
 
+      #event-remove {
+        --paper-fab-background: var(--paper-red-600);
+      }
+
     </style>
 
     <iron-ajax id="event-remove-request" url="/freelancer/{{fid}}/event/{{event_id}}" method="DELETE" handle-as="json" on-response="_handleRemoveEventResponse">
@@ -47,6 +51,11 @@
       properties: {
         data: {
           type: Object,
+        },
+        events: {
+          type: Object,
+          notify: true,
+          reflectToAttribute: true,
         }
       },
 
@@ -57,9 +66,14 @@
       },
 
       _handleRemoveEventResponse: function(evt) {
-        console.log(evt.detail.response);
+        const id = evt.detail.response._id;
+        const found = this.events.find(function(el) {
+          return el._id === id;
+        });
+        const index = this.events.indexOf(found);
+        this.splice('events', index);
+        console.log(id, found);
       },
     });
   </script>
-
 </dom-module>
