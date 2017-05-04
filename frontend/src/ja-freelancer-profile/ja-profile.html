@@ -220,7 +220,7 @@
       <paper-button id="open-events-btn" raised>Show availability</paper-button>
 
 
-      <paper-dialog id="profile-calendar">
+      <paper-dialog id="profile-calendar" no-cancel-on-outside-click no-cancel-on-esc-click>
         <h2>Add your availability for emergencies</h2>
         <div id="event-input-form">
           <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Add</paper-button>
@@ -241,7 +241,7 @@
         <p>Default date is today, default time is now and 1 hour later.</p>
         <paper-dialog-scrollable>
           <template is="dom-repeat" items="{{events}}" as="result">
-            <ja-event-element data={{result}}></ja-event-element>
+            <ja-event-element fid={{id}} data={{result}}></ja-event-element>
           </template>
         </paper-dialog-scrollable>
       </paper-dialog>

@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+
 <dom-module id="ja-event-element">
 
   <template>
@@ -12,7 +14,12 @@
       }
 
     </style>
+
+    <iron-ajax id="event-remove-request" url="/freelancer/{{fid}}/event/{{event_id}}" method="DELETE" handle-as="json" content-type="application/json" on-response="_handleRemoveEventResponse">
+    </iron-ajax>
+
     <paper-card>
+      <paper-fab id="event-remove" icon="delete"></paper-fab>
       <div id="event-start-date">
         Start {{data.start}}
       </div>
@@ -33,10 +40,24 @@
     Polymer({
       is: "ja-event-element",
 
+      listeners : {
+        'event-remove.tap' : '_onRemoveTap',
+      },
+
       properties: {
         data: {
           type: Object,
         }
+      },
+
+      _onRemoveTap: function(evt) {
+        let req = this.$['event-remove-request'];
+        this.event_id = this.data._id;
+        req.generateRequest();
+      },
+
+      _handleRemoveEventResponse: function(evt) {
+        console.log(evt.detail.response);
       },
     });
   </script>
