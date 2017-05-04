@@ -41,10 +41,10 @@
       </div>
     </paper-card>
 
-    <iron-ajax id="send-mail" url="http://localhost:3005/admin/" params="{{req}}" method="POST" handle-as="json">
+    <iron-ajax id="send-mail" url="/admin/" params="{{req}}" method="POST" handle-as="json">
     </iron-ajax>
 
-    <iron-ajax id="user-verdict" url="http://localhost:3005/admin/" params="{{req}}" method="PUT" handle-as="json">
+    <iron-ajax id="user-verdict" url="/admin/" params="{{req}}" method="PUT" handle-as="json">
     </iron-ajax>
 
   </template>

@@ -57,7 +57,7 @@
 
 
     </section>
-    <iron-ajax auto id="request-profile" url="http://localhost:3005/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
+    <iron-ajax auto id="request-profile" url="/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
       on-response="_handleResponse">
     </iron-ajax>
 
@@ -125,7 +125,7 @@
         xhr.send(formData);
         this.user.pending = "pending";
         this.user.userPending = "pending";
-        window.location = "http://localhost:3005/";
+        window.location = "/";
       },
 
       checkFile: function () {
