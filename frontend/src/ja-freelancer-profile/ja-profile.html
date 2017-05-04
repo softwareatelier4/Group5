@@ -217,16 +217,16 @@
         Description : {{_checkdescisprovided(description)}}
       </section>
 
-      <paper-button id="open-events-btn" raised>Show events</paper-button>
+      <paper-button id="open-events-btn" raised>Show availability</paper-button>
 
 
       <paper-dialog id="profile-calendar">
-        <h2>Set your calendar</h2>
+        <h2>Add your availability for emergencies</h2>
         <div id="event-input-form">
-          <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Create a new event</paper-button>
+          <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Add</paper-button>
           <paper-button dialog-dismiss>Cancel</paper-button>
-          <paper-input id="calendar-input-description" label="Description"></paper-input>
-          <paper-input id="calendar-input-location" label="Location"></paper-input>
+          <paper-input id="calendar-input-description" label="Description" pattern=".+" auto-validate required error-message="Insert a valid description"></paper-input>
+          <paper-input id="calendar-input-location" label="Location" required pattern="^[a-zA-Z0-9]+" auto-validate error-message="Insert a valid location"></paper-input>
           <div class="event-date-container">
             <div class="event-start-end">
               <paper-input id="calendar-input-start-date" label="Start date" type="date"></paper-input>
@@ -238,6 +238,7 @@
             </div>
           </div>
         </div>
+        <p>Default date is today, default time is now and 1 hour later.</p>
         <paper-dialog-scrollable>
           <template is="dom-repeat" items="{{events}}" as="result">
             <ja-event-element data={{result}}></ja-event-element>
@@ -365,6 +366,7 @@
           type: Array,
           reflectToAttribute: true,
           notify: true,
+          value: [],
         },
 
         userLocation: {
@@ -377,33 +379,59 @@
         verification: {
           type: String,
         },
+
+        currentDate: {
+          type: String,
+          reflectToAttribute: true,
+          value: function() {
+            let date = new Date();
+            console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
+            return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
+          },
+        }
+      },
+
+      _computeDateString: function(date) {
+        return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
       },
 
       _onSubmitEventTap: function(evt) {
         let description = this.$['calendar-input-description'].value;
         let location = this.$['calendar-input-location'].value;
+        let validLocation = this.$['calendar-input-location'].validate();
+        // let validDescription = description.length > 0;
+        let validDescription = this.$['calendar-input-description'].validate();
 
-        let startDate = this.$['calendar-input-start-date'].value;
-        let startTime = this.$['calendar-input-start-hour'].value;
-        let endDate = this.$['calendar-input-end-date'].value;
-        let endTime = this.$['calendar-input-end-hour'].value;
+        let dateNow = this._computeDateString(new Date());
+        let timeNow = new Date().toLocaleTimeString().substring(0,5);
+        let time = new Date();
+        time.setHours(time.getHours() + 1)
+        let timeEndDefault = time.toLocaleTimeString().substring(0,5);
 
-        let start = new Date(startDate+", "+startTime);
-        let end = new Date(endDate+", "+endTime);
+        let startDate = this.$['calendar-input-start-date'].value || dateNow;
+        console.log(startDate);
+        let startTime = this.$['calendar-input-start-hour'].value || timeNow;
+        let endDate = this.$['calendar-input-end-date'].value || dateNow;
+        let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
 
-        let newEvent = {
-          description: description,
-          location: location,
-          start: start.toString(),
-          end: end.toString()
-        };
+        let start = new Date(startDate + ", " + startTime);
+        let end = new Date(endDate + ", " + endTime);
 
-        this.push('events', newEvent);
+        if (validLocation && validDescription) {
+          let newEvent = {
+            description: description,
+            location: location,
+            start: start.toString(),
+            end: end.toString()
+          };
 
-        let add_request = this.$['event-add-request'];
-        add_request.body = newEvent;
-        add_request.generateRequest();
-        console.log(this.events);
+          this.push('events', newEvent);
+
+          let add_request = this.$['event-add-request'];
+          add_request.body = newEvent;
+          add_request.generateRequest();
+          console.log(this.events);
+        }
       },
 
       _onOpenEventsTap: function(evt) {
