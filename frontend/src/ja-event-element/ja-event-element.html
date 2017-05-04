@@ -15,6 +15,9 @@
 
       #event-remove {
         --paper-fab-background: var(--paper-red-600);
+        position: absolute;
+        top: -15px;
+        right: -15px;
       }
 
     </style>
@@ -23,7 +26,7 @@
     </iron-ajax>
 
     <paper-card>
-      <paper-fab id="event-remove" icon="delete"></paper-fab>
+      <paper-fab mini id="event-remove" icon="close"></paper-fab>
       <div id="event-start-date">
         Start {{data.start}}
       </div>
