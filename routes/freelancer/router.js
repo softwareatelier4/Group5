@@ -116,7 +116,7 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
         message: "Bad Request"
       });
     } else{
-      CalendarEvent.remove({"_id" : Objectid(req.params.eventid),
+      CalendarEvent.remove({"_id" : req.params.eventid},
       function(err, CalendarEvent) {
         if (err) {
           res.status(400)
@@ -131,10 +131,9 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
             message: "OK"
           });
         }
-      }
-    })
-  }
-})
+      })
+    }
+  })
 });
 
 router.post('/:n', function(req, res, next) {
