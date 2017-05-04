@@ -16,6 +16,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const NotificationSchema = require('./Notification')
 
 
 const userSchema = new mongoose.Schema(
@@ -25,7 +26,8 @@ const userSchema = new mongoose.Schema(
     lastName  : { type: String },
     password  : { type: String, required: true },
     email     : { type: String, required: true },
-    userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'}
+    userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'},
+    notifications : { type: [NotificationSchema], default: [] }
   }
 );
 
