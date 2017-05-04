@@ -102,51 +102,60 @@ router.post('/:freelancerid/event', function(req, res, next) {
 });
 
 router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
-  Freelancer.findById(req.params.freelancerid, function(err, freelancer){
-    if(err){
-      res.status(400)
-      return res.json({
-        statusCode: 400,
-        message: "Bad Request"
-      });
-    }else if (!freelancer) {
-      res.status(400)
-      return res.json({
-        statusCode: 400,
-        message: "Bad Request"
-      });
-    } else{
-      CalendarEvent.remove({"_id" : req.params.eventid},
-      function(err, CalendarEvent) {
-        if (err) {
+  CalendarEvent.findById(req.params.eventid, function(err, toDel){
+    if(toDel){
+      Freelancer.findByIdAndUpdate(req.params.freelancerid, { $pull: { events : toDel } }, function(err, freelancer){
+        if(err){
           res.status(400)
           return res.json({
             statusCode: 400,
             message: "Bad Request"
           });
-        } else {
+        }else if (!freelancer) {
+          res.status(400)
           return res.json({
-            _id : req.params.eventid,
-            statusCode: 200,
-            message: "OK"
+            statusCode: 400,
+            message: "Bad Request"
           });
-        }
-      })
-    }
-  })
-});
+        } else{
+          CalendarEvent.remove(toDel,
+            function(err) {
+              if (err) {
+                res.status(400)
+                return res.json({
+                  statusCode: 400,
+                  message: "Bad Request"
+                });
+              } else {
+                return res.json({
+                  _id : req.params.eventid,
+                  statusCode: 200,
+                  message: "OK"
+                });
+              }
+            })
+          }
+        })
+      }else{
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      }});
+    });
 
-router.post('/:n', function(req, res, next) {
-  let n = req.params.n;
-  var toAdd = new Freelancer(req.body);
-  if (n == 1){
-    toAdd.image = "/src/images/" + toAdd._id + ".png";
-  } else {
-    toAdd.image = "/src/images/blank-user.jpg";
-  }
-  toAdd.save();
-  res.json(toAdd._id);
-});
+    router.post('/:n', function(req, res, next) {
+      let n = req.params.n;
+      var toAdd = new Freelancer(req.body);
+      if (n == 1){
+        toAdd.image = "/src/images/" + toAdd._id + ".png";
+      } else {
+        toAdd.image = "/src/images/blank-user.jpg";
+      }
+      toAdd.save();
+      res.json(toAdd._id);
+    });
 
 
-module.exports = router;
+    module.exports = router;
