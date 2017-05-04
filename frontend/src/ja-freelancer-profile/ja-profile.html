@@ -241,7 +241,7 @@
         <p>Default date is today, default time is now and 1 hour later.</p>
         <paper-dialog-scrollable>
           <template is="dom-repeat" items="{{events}}" as="result">
-            <ja-event-element fid={{id}} data={{result}}></ja-event-element>
+            <ja-event-element fid={{id}} events={{events}} data={{result}}></ja-event-element>
           </template>
         </paper-dialog-scrollable>
       </paper-dialog>
