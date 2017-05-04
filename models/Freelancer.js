@@ -23,6 +23,7 @@ const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
 const CalendarEventSchema = require('./CalendarEvent');
+const NotificationSchema = require('./Notification');
 
 const FreelancerSchema = new mongoose.Schema(
   {
@@ -42,6 +43,7 @@ const FreelancerSchema = new mongoose.Schema(
     events                 : { type: [CalendarEventSchema], default:[]},
     verification           : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
     claimFilePath          : { type: String},
+    notifications          : { type: [NotificationSchema], default: [] }
   }
 );
 
