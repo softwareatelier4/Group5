@@ -9,6 +9,7 @@ var events = {
   name : 'CalendarEvent',
   data : [
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd6"),
       "location"    : "Lugano",
       "description" : "Riparazione tubatura sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),

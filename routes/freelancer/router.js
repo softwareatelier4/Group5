@@ -14,11 +14,17 @@ const config = require('../../config');
 
 const fieldsFilter = { '__v': 0 };
 
-router.all('/', middleware.supportedMethods('GET, POST'));
+router.all('/', middleware.supportedMethods('GET, POST, DELETE'));
 
 router.get('/:freelancerid', function(req, res, next) {
   Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function(err, freelancer){
-    if (err) return next (err);
+    if (err) {
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }
     if (!freelancer) {
       res.status(404);
       res.json({
@@ -44,8 +50,13 @@ router.post('/:freelancerid/review', function(req, res, next) {
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"reviews": toAdd}},
     {safe: true, upsert: true, new : false},
     function(err, freelancer) {
-      if (err) return next (err);
-      if (!freelancer) {
+      if (err) {
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      }else if (!freelancer) {
         res.status(400)
         return res.json({
           statusCode: 400,
@@ -71,8 +82,13 @@ router.post('/:freelancerid/event', function(req, res, next) {
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
     {safe: true, upsert: true, new : false},
     function(err, freelancer) {
-      if (err) return next (err);
-      if (!freelancer) {
+      if (err) {
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      } else if (!freelancer) {
         res.status(400)
         return res.json({
           statusCode: 400,
@@ -83,6 +99,42 @@ router.post('/:freelancerid/event', function(req, res, next) {
       }
     })
   });
+});
+
+router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
+  Freelancer.findById(req.params.freelancerid, function(err, freelancer){
+    if(err){
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    }else if (!freelancer) {
+      res.status(400)
+      return res.json({
+        statusCode: 400,
+        message: "Bad Request"
+      });
+    } else{
+      CalendarEvent.remove({"_id" : Objectid(req.params.eventid),
+      function(err, CalendarEvent) {
+        if (err) {
+          res.status(400)
+          return res.json({
+            statusCode: 400,
+            message: "Bad Request"
+          });
+        } else {
+          return res.json({
+            _id : req.params.eventid,
+            statusCode: 200,
+            message: "OK"
+          });
+        }
+      }
+    })
+  }
+})
 });
 
 router.post('/:n', function(req, res, next) {
