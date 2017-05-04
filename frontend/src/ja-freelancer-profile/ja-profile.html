@@ -226,7 +226,7 @@
           <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Add</paper-button>
           <paper-button dialog-dismiss>Cancel</paper-button>
           <paper-input id="calendar-input-description" label="Description" pattern=".+" auto-validate required error-message="Insert a valid description"></paper-input>
-          <paper-input id="calendar-input-location" label="Location" required pattern="^[a-zA-Z0-9]+" auto-validate error-message="Insert a valid location"></paper-input>
+          <paper-input id="calendar-input-location" label="Location" required pattern=".+" auto-validate error-message="Insert a valid location"></paper-input>
           <div class="event-date-container">
             <div class="event-start-end">
               <paper-input id="calendar-input-start-date" label="Start date" type="date"></paper-input>
@@ -245,28 +245,6 @@
           </template>
         </paper-dialog-scrollable>
       </paper-dialog>
-
-      <!-- <section id="profile-calendar">
-        <h3>Events</h3>
-        <div id="event-input-form">
-          <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Create a new event</paper-button>
-          <paper-input label="Description"></paper-input>
-          <div class="event-date-container">
-            <div class="event-start-end">
-              <paper-input label="Start date" type="date"></paper-input>
-              <paper-input label="Start hour" type="time"></paper-input>
-            </div>
-            <div class="event-start-end">
-              <paper-input label="End date" type="date"></paper-input>
-              <paper-input label="End hour" type="time"></paper-input>
-            </div>
-          </div>
-        </div>
-        <template is="dom-repeat" items="{{events}}" as="result">
-          <ja-event-element data={{result}}></ja-event-element>
-        </template>
-      </section> -->
-
 
       <section id="reviews" style="width: 100%;">
         <div id="user-rating" style="display:flex;" >
@@ -306,9 +284,6 @@
   </template>
 
   <script>
-    // (function () {
-    //   'use strict';
-
     Polymer({
       is: "ja-profile",
 
@@ -425,12 +400,9 @@
             end: end.toString()
           };
 
-          this.push('events', newEvent);
-
           let add_request = this.$['event-add-request'];
           add_request.body = newEvent;
           add_request.generateRequest();
-          console.log(this.events);
         }
       },
 
@@ -442,8 +414,15 @@
         if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
-
         }
+
+        var inputEl = this.$['calendar-input-location'].childNodes[1].childNodes[3].childNodes[2].childNodes[2];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+
+        autocomplete.addListener('place_changed', function () {
+          var address = autocomplete.getPlace().formatted_address || "";
+          this.$['calendar-input-location'].value = address;
+        }.bind(this));
       },
 
       _idchanged: function (id) {
@@ -576,19 +555,14 @@
         this.$.comm.value = " ";
         this.$.ratenum.value = "-";
         this.$.review.removeAttribute("raised");
-        this.$.review.disabled=true;
+        this.$.review.disabled = true;
         this.unshift('reviews', obj);
       },
 
-
       _handleAddEventResponse: function(evt) {
-        // TODO
+        const item = evt.detail.response;
+        this.push('events', item);
       },
-
-
     });
-
-    // })();
   </script>
-
 </dom-module>
