@@ -116,6 +116,8 @@ Add automatic location in "create freelancer page" and in "show events" in freel
 
       _timerStarted: function(el){
         console.log("done");
+
+        window.location.href = window.location.origin+"/notification";
         //console.log(el.detail.response);
         // the function is returned when the server has received
         // the request with the data (submit has been clicked)
@@ -144,7 +146,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           this.$.emergencyProfessionButton.validate();
           this.$.emergencyProfessionButton.setAttribute("required", true);
           this.$.catselector.selected = "Other";
-          this.$.timeselector.selected = "10";
+          this.$.timeselector.selected = "5";
           // this.$.locationField.removeAttribute("required");
           // this.$.locationField.value = "";
           // this.$.locationField.validate();
@@ -186,7 +188,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           ajaxel.body = obj;
           ajaxel.generateRequest();
 
-           window.location.href = window.location.origin+"/notification";
+
         }
 
       },

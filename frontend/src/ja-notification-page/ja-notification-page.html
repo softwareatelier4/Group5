@@ -51,6 +51,17 @@
 
       _onResponse: function(evt) {
         console.log(evt.detail.response);
+
+        if(this.user.userType == 'Freelancer'){
+          console.log("freelancer");
+          //handleFreelancerData()
+        }
+        // if(this.user.userType == "Normal"){
+        //   console.log("normal");
+        //   //handleNormalData()
+        // }
+
+
       },
 
       _onFreelancerResponse: function(evt) {
