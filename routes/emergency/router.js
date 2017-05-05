@@ -45,7 +45,7 @@ router.get('/:id/:subject', function(req, res, next){
 });
 
 
-// freelancer respond to request
+//  respond to request
 router.put('/:id/:subject/:answer',function(req, res, next){
   Notification.findById(req.params.id, function(err, notification) {
     if (err) return console.error(err);
@@ -55,12 +55,13 @@ router.put('/:id/:subject/:answer',function(req, res, next){
           Notification.findByIdAndUpdate(req.params.id, {status : "Accepted"}, function(err,done){
             if(done){
               console.log("accepted!");
-              res.status(200);
-              res.json({
-                message: "accepted",
-              });
+              res.sendStatus(204);
+              // res.json({
+              //   message: "accepted",
+              // });
             }else{
               console.log("error");
+              res.sendStatus(400);
             }
           })
           //end
@@ -71,10 +72,10 @@ router.put('/:id/:subject/:answer',function(req, res, next){
               if (err) return console.error(err);
             });
             console.log("Freelancer Refused");
-            res.status(200);
-            res.json({
-              message: "refused",
-            });
+            res.sendStatus(200);
+
+            //delete profile
+
         }
       }else{// user
         if(req.params.answer === "yes"){ // if user say yes, contact next freelancer
@@ -87,16 +88,13 @@ router.put('/:id/:subject/:answer',function(req, res, next){
               var freelancerToBeContacted = updatednotif.availableFreelancers[number];
               sendmail(freelancerToBeContacted);
 
-              res.status(200);
-              res.json({
-                message: "accepted",
-              });
+              res.sensStatus(204);
+              // res.json({
+              //   message: "accepted",
+              // });
             } else {
               console.log("No other freelancer are available")
-              res.status(200);
-              res.json({
-                message: "no more",
-              });
+              res.sensStatus(204);
             }
           });
         }else{ // if no, delete notification from db
@@ -104,12 +102,10 @@ router.put('/:id/:subject/:answer',function(req, res, next){
             if (err) return console.error(err);
             if(removed){
               console.log("removed");
-              res.status(200);
-              res.json({
-                message: "removed",
-              });
+              res.sendStatus(204);
             }else{
               console.log("error");
+              res.sendStatus(400);
             }
           });
         }
@@ -138,12 +134,7 @@ router.post('/', function(req, res, next) {
     // profiles is array of objects {}
     if (profiles === undefined || profiles.length == 0) {
       console.log("No matching profiles were found");
-      console.log("sending freelancer not found");
-
-      res.status(200).json({
-        message : "freelancer not found"
-      })
-      console.log("sent freelancer not found");
+      res.sendStatus(201);
     } else {
       console.log("found " + profiles.length + " freelancers!");
 
@@ -223,6 +214,8 @@ router.post('/', function(req, res, next) {
         });
         console.log("Notification object : \n" + newNotification);
         console.log("Object ended \n");
+        var foundFreelancer = false;
+        var foundUser = false;
 
         newNotification.save(function(err) {
           // add notification to freelancer
@@ -232,7 +225,7 @@ router.post('/', function(req, res, next) {
             // if (err) return next (err);
             if (!freelancer) {
               console.log("freelancer not found");
-              res.sendStatus(400);
+              foundFreelancer = true;
             } else {
               console.log("freelancer found");
             }
@@ -247,45 +240,42 @@ router.post('/', function(req, res, next) {
             if (!user) {
               console.log(user);
               console.log("user not found");
-              res.sendStatus(400);
+              foundFreelancer = true;
             } else {
               console.log("user found");
 
             }
           })
 
-          var timeout = setTimeout(function(){
-            Notification.findById(newNotification._id, function(err, notification){
-              if(notification && notification.status !== "Accepted" ){
-                if(Date.now() > new Date(notification.dateCreated.getTime() + time * 60000)) {
-                 // send to user that the freelancer has refused
-                //  res.json({
-                //    message : "no answer",
-                //    timeset : time,
-                //  });
+          if(foundFreelancer || foundUser){
+            res.sendStatus(400);
+          }else{
+            var timeout = setTimeout(function(){
+              Notification.findById(newNotification._id, function(err, notification){
+                if(notification && notification.status !== "Accepted" ){
+                  if(Date.now() > new Date(notification.dateCreated.getTime() + time * 60000)) {
+                   // send to user that the freelancer has refused
+                  //  res.json({
+                  //    message : "no answer",
+                  //    timeset : time,
+                  //  });
 
-                 Notification.findByIdAndUpdate(newNotification._id,  {"status": "Refused"},{safe: true, upsert: true, new : false},
-                 function(err, notif) {
-                   if (!notif) {
-                     console.log("notif not found");
-                   } else {
-                     console.log("notif updated");
-                   }
-                 });
+                   Notification.findByIdAndUpdate(newNotification._id,  {"status": "Refused"},{safe: true, upsert: true, new : false},
+                   function(err, notif) {
+                     if (!notif) {
+                       console.log("notif not found");
+                     } else {
+                       console.log("notif updated");
+                     }
+                   });
 
+                  }
                 }
-              }
-            })
-          }, time * 60000);
+              })
+            }, time * 60000);
 
-          res.sendStatus(201);
-          // .json({
-          //   statusCode : 200,
-          //   message : "contacted",
-          //   first : profiles[0]
-          //   // all : profiles,
-          // });
-
+            res.sendStatus(201);
+          }
         });
       });
 

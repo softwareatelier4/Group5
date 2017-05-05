@@ -148,7 +148,8 @@ var freelancers = {
       "profession"          : "Painter",
       "reviews"             : [reviews.data[2]],
       "emergencyAvailable"  : true,
-      "events"              : [events.data[1], events.data[2], events.data[4]]
+      "events"              : [events.data[1], events.data[2], events.data[4]],
+      "verification"        : "verified"
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),

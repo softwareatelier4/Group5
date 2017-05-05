@@ -116,8 +116,8 @@ Add automatic location in "create freelancer page" and in "show events" in freel
 
       _timerStarted: function(el){
         console.log("done");
-
-        window.location.href = window.location.origin+"/notification";
+        console.log(this.user);
+        window.location.href = window.location.origin+"/notification/"+ this.user + "/user";
         //console.log(el.detail.response);
         // the function is returned when the server has received
         // the request with the data (submit has been clicked)
