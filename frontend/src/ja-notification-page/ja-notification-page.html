@@ -19,6 +19,7 @@
         <section id="freelancers-list">
 
           <iron-ajax id="notificationlist" url="/emergency/{{user._id}}" method="POST" handle-as="json" on-response="_onResponse"></iron-ajax>
+          <iron-ajax id="freelancernotificationlist" url="/emergency/{{user.freelancerId}}" method="POST" handle-as="json" on-response="_onFreelancerResponse"></iron-ajax>
 
 
         </section>
@@ -42,9 +43,17 @@
       ready: function() {
         const ajaxel = this.$.notificationlist;
         ajaxel.generateRequest();
+        if(this.user.userType == 'Freelancer'){
+          ajaxel = this.$.freelancernotificationlist;
+          ajaxel.generateRequest();
+        }
       },
 
       _onResponse: function(evt) {
+        console.log(evt.detail.response);
+      },
+
+      _onFreelancerResponse: function(evt) {
         console.log(evt.detail.response);
       },
 
