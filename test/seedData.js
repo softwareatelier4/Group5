@@ -16,18 +16,21 @@ var events = {
       "end"         : new Date(2017, 1, 1, 12, 30)
     },
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd7"),
       "location"    : "Bellinzona",
       "description" : "Riparazione tetto sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
     },
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd8"),
       "location"    : "Locarno",
       "description" : "Riparazione doccia sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
     },
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd9"),
       "location"    : "Milano",
       "description" : "Riparazione finestra sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),

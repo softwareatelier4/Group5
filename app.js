@@ -123,6 +123,7 @@ app.use('/search', routers.search);
 
 app.use('*', function (req, res, next) {
   if (req.accepts('html')) {
+    // console.log(req);
     const options = {
       root: __dirname + '/frontend/',
     };

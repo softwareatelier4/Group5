@@ -42,7 +42,7 @@ router.post('/:freelancerid/review', function(req, res, next) {
       if (err) {
         return res.status(400).json(serverErrors.badRequest);
       }else if (!freelancer) {
-        return res.status(400).json(serverErrors.badRequest);
+        return res.status(404).json(serverErrors.notFound);
       } else {
         return res.json(toAdd._id);
       }
@@ -57,12 +57,12 @@ router.post('/:freelancerid/event', function(req, res, next) {
       return res.status(400).json(serverErrors.badRequest);
     }
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
-    {safe: true, upsert: true, new : false},
+    {safe: true, upsert: false, new : false},
     function(err, freelancer) {
       if (err) {
         return res.status(400).json(serverErrors.badRequest);
-      } else if (!freelancer) {
-        return res.status(404).json(serverErrors.notFound);
+      } else if(!freelancer){
+        return res.status(404).json(serverErrors.notFound)
       } else {
         return res.json(toAdd);
       }
