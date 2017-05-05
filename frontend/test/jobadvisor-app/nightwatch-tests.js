@@ -69,7 +69,7 @@ module.exports = {
       .assert.containsText('#signup-username paper-input-error', 'Insert a valid username')
       .end();
   },
-
+  //
   'Test signup with empty fields' : function (client) {
     client
       .url('http://localhost:3005/')
@@ -140,7 +140,7 @@ module.exports = {
       .waitForElementVisible('#loginBtn', 1000)
       .end();
   },
-
+  //
   'Test main elements visibility' : function (client) {
     client
       .url('http://localhost:3005')
