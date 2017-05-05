@@ -31,6 +31,12 @@ var events = {
       "description" : "Riparazione finestra sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "location"    : "Lugano",
+      "description" : "Riparazione finestra sig.ra Bianchi",
+      "start"       : date,
+      "end"         : new Date(date.getTime() + 50 * 60000)
     }
   ]
 }
@@ -136,13 +142,13 @@ var freelancers = {
       "lastName"            : "Rossi",
       "address"             : "Via San Gottardo 12, 6900 Lugano",
       "rating"              : 3,
-      "email"               : "alexander.fischer@usi.ch",
+      "email"               : "alexander.fischer0@usi.ch",
       "phone_number"        : "+41 4442323223",
       "price"               : 100,
       "profession"          : "Painter",
       "reviews"             : [reviews.data[2]],
       "emergencyAvailable"  : true,
-      "events"              : [events.data[1], events.data[2]]
+      "events"              : [events.data[1], events.data[2], events.data[4]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
