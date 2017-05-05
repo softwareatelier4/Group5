@@ -48,24 +48,22 @@ describe('Backend get all profiles with verification : pending', function () {
 
 describe('Backend update verification of a freelancer', function () {
 
-    describe('PUT /admin/', function () {
+    describe('PUT /admin', function () {
         before(seed);
         after(utils.dropDb);
 
         it('should cheange the verificataion of a freelancer, his id and what it should be set to are given in the request', function (done) {
-
+            
             request(app)
-                .put('/admin/')
-                .send({'id' : '5625fc2bd66b84d23d8c7bf1' ,'type' : 'verified' ,'claimingUserId' : '12345' ,})
+                .put('/admin/?id=5625fc2bd66b84d23d8c7bf1&type=verified&claimingUserId=undefined')
+                // .send({'id' : '5625fc2bd66b84d23d8c7bf1' ,'type' : 'verified' ,'claimingUserId' : '12345'})
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/, 'it should respond with json')
                 .expect(200)
                 .end(function (err, res) {
-                    let response = JSON.parse(res.text);
-                    // console.log(response);
                     // TODO: response does not arrive
-                    // let freelancer = JSON.parse(res.text);
-                    // utils.matchFreelancerVerificationInText("verified", freelancer);
+                    let freelancer = JSON.parse(res.text);
+                    utils.matchFreelancerVerificationInText("verified", freelancer);
                     done();
                 });
         });
