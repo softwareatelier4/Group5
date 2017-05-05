@@ -188,6 +188,10 @@ module.exports.matchFreelancerVerificationInText = function matchFreelancerVerif
   text.indexOf(freelancer.verification.toString()).should.be.greaterThan(-1, "id should match");
 }
 
+module.exports.matchUserNameInText = function matchUserNameInText(text, user){
+  text.indexOf(user.userName.toString()).should.be.greaterThan(-1, "name should match");
+}
+
 module.exports.matchFreelancerReview = function matchFreelancerReview(text, review){
   console.log(text);
   console.log(review);

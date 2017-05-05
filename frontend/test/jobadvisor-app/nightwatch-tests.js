@@ -434,7 +434,20 @@ module.exports = {
 
   'Test claim profile from inside profile page': function (client) {
     client
-    .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd9')
+    .url('http://localhost:3005/')
+      .click('#loginBtn')
+      .pause(500)
+      .assert.urlEquals('http://localhost:3005/login')
+      .setValue('#login-username input', 'camo')
+      .setValue('#login-password input', 'camo')
+      .click('#login-button')
+      .pause(500)
+      .assert.urlEquals('http://localhost:3005/')
+      .pause(5000)
+      .assert.urlEquals('http://localhost:3005/')
+      .waitForElementVisible('#logoutBtn', 1000)
+      .waitForElementNotVisible('#loginBtn', 1000)
+      .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd9')
       .waitForElementVisible('#name', 1000)
       .waitForElementVisible('#btn-claim', 1000)
       .assert.containsText("#name", "GIOVINAZZI EMANUELE")
@@ -449,6 +462,17 @@ module.exports = {
 
   'Test admin page': function (client) {
     client
+    .url('http://localhost:3005/')
+      .click('#loginBtn')
+      .pause(500)
+      .assert.urlEquals('http://localhost:3005/login')
+      .setValue('#login-username input', 'camo')
+      .setValue('#login-password input', 'camo')
+      .click('#login-button')
+      .pause(500)
+      .assert.urlEquals('http://localhost:3005/')
+      .pause(5000)
+      .assert.urlEquals('http://localhost:3005/')
       .url('http://localhost:3005/admin')
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bd6', 1000)
       .assert.containsText("#fl-5625fc2bd82b84d23d8c7bd6 .card-content a span", "Alexander Fischer")

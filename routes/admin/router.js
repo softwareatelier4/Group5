@@ -32,7 +32,7 @@ router.get('/', function (req, res, next) {
 router.put('/', function (req, res) {
   if(req.query.type == 'verified'){  
     //accept
-  Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type, userId: req.query.claimingUserId}}, { new: true }, function(err, profile) {
+  Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type, userId: req.query.claimingUserId}}, { new: true }).exec(function(err, profile) {
       if (err) return console.error(err);
       res.json(profile);
     });
