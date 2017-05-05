@@ -11,5 +11,7 @@ selenium-server-standalone-2.48.2.jar
 .vscode
 phantomjsdriver.log
 selenium-debug.log
+frontend/src/claim-documents
 *.orig
-frontend/src/images
+*.log*
+*.zip

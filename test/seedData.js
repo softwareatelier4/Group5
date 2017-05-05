@@ -38,6 +38,7 @@ var users = {
   name : 'User',
   data : [
     {
+      "_id"       : ObjectId("2625fc2bd89b84023d8c7bd6"),
       "userName"  : "camo",
       "firstName" : "",
       "lastName"  : "",
@@ -141,7 +142,9 @@ var freelancers = {
       "price"         : 100,
       "profession"    : "Painter",
       "reviews"       : [reviews.data[2]],
-      "events"        : [events.data[1], events.data[2]]
+      "events"        : [events.data[1], events.data[2]],
+      "verification"  : "none",
+
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -202,6 +205,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
+      "verification"  : "none",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bf1"),
@@ -217,6 +221,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
+      "verification"  : "none",
     },
 
     {
