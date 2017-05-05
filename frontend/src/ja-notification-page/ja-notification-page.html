@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="ja-notification-page">
+
+  <template>
+    <style>
+    #notification-container {
+      padding-top: 120px;
+    }
+    </style>
+
+    <section id="notification-container">
+
+      <div> NOTIFICATIONS : </div>
+
+        <section id="freelancers-list">
+
+
+        </section>
+
+    </section>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-notification-page",
+
+      ready: function() {
+
+        //POST /emergency/freelancerID
+
+        
+
+        // var bubu = this.$['freelancers-list'];
+        // var test1 = document.createElement("DIV");
+        // test1.innerHTML  = "AYYPAPI";
+        // bubu.appendChild(test1);
+
+      },
+
+    });
+  </script>
+
+</dom-module>
