@@ -48,6 +48,34 @@ describe('Backend events tests', function(){
       });
   });
 
+  describe('DELETE /:freelancerid/event/:eventid', function(){
+
+    before(seed);
+    after(utils.dropDb);
+
+    it('should delete an event from to the freelancer profile', function(done) {
+      request(app)
+      .delete('/freelancer/' + freelancers[0]._id.toString() + '/event/' + events[1]._id.toString())
+      .set('Accept', 'application/json')
+      .expect(200, done);
+    });
+
+    it('should give 404 if the freelancer profile does not exists', function(done) {
+      request(app)
+      .delete('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/event/' + events[1]._id.toString())
+      .set('Accept', 'application/json')
+      .expect(404, done);
+    });
+
+    it('should give 404 if the event does not exists', function(done) {
+      request(app)
+      .delete('/freelancer/' + freelancers[0]._id.toString() + '/event/' + "2625fc2bd82b84d23d8c7bd6")
+      .set('Accept', 'application/json')
+      .expect(404, done);
+    });
+
+  });
+
 });
 
 
