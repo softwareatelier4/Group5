@@ -85,6 +85,7 @@
         },
         user: {
           type: Object,
+          reflectToAttribute: true,
         }
       },
 
@@ -123,8 +124,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '', true);
         xhr.send(formData);
-        this.user.pending = "pending";
-        this.user.userPending = "pending";
+        this.set("userPending","pending");
         window.location = "/";
       },
 
