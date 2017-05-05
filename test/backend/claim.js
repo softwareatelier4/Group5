@@ -39,6 +39,39 @@ describe('Backend get profile by id', function(){
   });
 });
 
+//////////////////////////////////////////////////////////////////////////////
+
+describe('Backend claim', function(){
+
+  describe('POST /claim/:freelancerid', function(){
+    before(seed);
+    after(utils.dropDb);
+
+    it('should upload files and set a comment', function(done) {
+
+      request(app)
+      .post('/claim/' + freelancers[0]._id.toString())
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(200)
+      .end(function(err, res){
+        let freelancer = JSON.parse(res.text);
+        // console.log(freelancer);
+        utils.matchFreelancerVerificationInText("pending", freelancer);
+      });
+      done();
+    });
+
+    it('should give back a 404 status if the freelancer profile does not exists', function(done) {
+
+      request(app)
+      .get('/claim/' + ObjectId().toString())
+      .set('Accept', 'application/json')
+      .expect(404, done);
+    });
+  });
+});
+
 
 function seed(done){
   //seed the db

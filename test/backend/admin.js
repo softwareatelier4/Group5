@@ -24,6 +24,7 @@ describe('Backend get all profiles with verification : pending', function () {
                 .expect('Content-Type', /json/, 'it should respond with json')
                 .expect(200)
                 .end(function (err, res) {
+                    // console.log(res.text);
                     let pendingFreelancers = JSON.parse(res.text);
                     pendingFreelancers.forEach(function (freelancer) {
                         //   console.log(freelancer);
@@ -60,8 +61,9 @@ describe('Backend update verification of a freelancer', function () {
                 .expect('Content-Type', /json/, 'it should respond with json')
                 .expect(200)
                 .end(function (err, res) {
-                    // res = JSON.parse(res.text);
-                    console.log(res);
+                    let response = JSON.parse(res.text);
+                    // console.log(response);
+                    // TODO: response does not arrive
                     // let freelancer = JSON.parse(res.text);
                     // utils.matchFreelancerVerificationInText("verified", freelancer);
                     done();

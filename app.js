@@ -113,9 +113,9 @@ app.post('/claim/:id', function (req, res) {
         claimEmail: fields.email,
         claimingUserId: fields.userid,
       }
-    }).exec(function (err, profiles) {
+    }, {new : true}).exec(function (err, profile) {
       if (err) return console.error(err);
-      res.json(profiles);
+      res.json(profile);
     });
 
   });
