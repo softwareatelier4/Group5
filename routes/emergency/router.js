@@ -129,6 +129,7 @@ router.post('/', function(req, res, next) {
     profession: new RegExp(req.body.profession, 'i'),
     category: new RegExp(req.body.category, 'i'),
     emergencyAvailable: true,
+    verification: 'verified'
   };
 
   //notification does not exist yet, search all freelancers
