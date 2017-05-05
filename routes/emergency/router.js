@@ -17,7 +17,7 @@ function sendmail(freelancer){
   var jobAdvisorLink = 'http://localhost:3005';
 
   //send mail to the first freelancer
-  var mailContent = 'Hello ' + freelancer.firstName + ' ' + freelancer.lastName + ', you received an emergency call! <br> Click the following link to reply: <br> <a href="' + jobAdvisorLink + '/notification/' + freelancer._id +'"> ' + jobAdvisorLink + '/notification/' + freelancer._id +' </a>  ';
+  var mailContent = 'Hello ' + freelancer.firstName + ' ' + freelancer.lastName + ', you received an emergency call! <br> Click the following link to reply: <br> <a href="' + jobAdvisorLink + '/emergency/' + freelancer._id +'/freelancer"> ' + jobAdvisorLink + '/emergency/' + freelancer._id +'/freelancer </a>  ';
   // console.log("sent mail to " + freelancer.email);
   mail.sendMailTo(freelancer.email, mailContent, 'Jobadvisor: You Got A New Notification');
 }
@@ -137,36 +137,43 @@ router.post('/', function(req, res, next) {
     // profiles is array of objects {}
     if (profiles === undefined || profiles.length == 0) {
       console.log("No matching profiles were found");
+      console.log("sending freelancer not found");
+
       res.status(200).json({
         message : "freelancer not found"
       })
+      console.log("sent freelancer not found");
     } else {
       console.log("found " + profiles.length + " freelancers!");
 
       var dest = [];
-
+      var todelete = [];
+      var result = []
       //check freelancer is available
       profiles.forEach(function(profile) {
         var rightone = false;
+        console.log(profile.firstName + " " + profile.lastName + " has " + profile.events.length + " events");
         for(let j = 0; j < profile.events.length; j++){
+          console.log(j + " event");
           var d = Date.now();
           if(profile.events[j].start <= d && d <= profile.events[j].end){
             rightone = true;
-            if(profile.events[j].location !== undefined && profile.events[j].location !== '' && profile.events[j].location !== NULL){
+            if(profile.events[j].location !== undefined && profile.events[j].location !== '' && profile.events[j].location !== null){
               dest.push(profile.events[j].location);
             }else{
               dest.push(profile.address);
             }
-
             break;
           }
         }
 
-        if(rightone === false){
-          profiles.splice(profiles.indexOf(profile), 1);
+        if(rightone === true){
+          result.push(profile);
         }
 
       });
+
+      profiles = result;
 
       //add addressses of freelancer in dest
       profiles.forEach(function(profile) {
@@ -174,6 +181,7 @@ router.post('/', function(req, res, next) {
       })
 
       var dest_joined = dest.join('|')
+      console.log("restricted to " + profiles.length + " freelancers!");
 
       var googleMapsClient = require('@google/maps').createClient({
         key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
@@ -187,22 +195,18 @@ router.post('/', function(req, res, next) {
 
       if (distanceQuery.destinations !== '') {
         //search the distance using google maps
-        googleMapsClient.distanceMatrix(distanceQuery, function(err, res) {
+        googleMapsClient.distanceMatrix(distanceQuery, function(err, response) {
         if (err) return console.error(err);
         for(var i = 0; i < profiles.length; i++){
 
           profiles[i] = profiles[i].toObject();
-          profiles[i].distance = res.json.rows[0].elements[i].distance.value;
+          profiles[i].distance = response.json.rows[0].elements[i].distance.value;
         }
 
         //sort profiles by distance
         profiles.sort(function(a,b){
           return a.distance > b.distance;
         })
-
-        // for(var i = 0; i < profiles.length; i++){
-        //   console.log(profiles[i]);
-        // }
 
         sendmail(profiles[0]);
 
@@ -216,7 +220,8 @@ router.post('/', function(req, res, next) {
           freelancerNotified: 0,
           availableFreelancers: profiles
         });
-        console.log(newNotification);
+        console.log("Notification object : \n" + newNotification);
+        console.log("Object ended \n");
 
         newNotification.save(function(err) {
           // add notification to freelancer
@@ -226,20 +231,25 @@ router.post('/', function(req, res, next) {
             // if (err) return next (err);
             if (!freelancer) {
               console.log("freelancer not found");
+              res.sendStatus(400);
             } else {
               console.log("freelancer found");
             }
           })
 
+          console.log(req.session.user._id);
           //add notification to user
           User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification}},
           {safe: true, upsert: true, new : false},
           function(err, user) {
             // if (err) return next (err);
             if (!user) {
+              console.log(user);
               console.log("user not found");
+              res.sendStatus(400);
             } else {
               console.log("user found");
+
             }
           })
 
@@ -248,10 +258,10 @@ router.post('/', function(req, res, next) {
               if(notification && notification.status !== "Accepted" ){
                 if(Date.now() > new Date(notification.dateCreated.getTime() + time * 60000)) {
                  // send to user that the freelancer has refused
-                 res.json({
-                   message : "no answer",
-                   timeset : time,
-                 });
+                //  res.json({
+                //    message : "no answer",
+                //    timeset : time,
+                //  });
 
                  Notification.findByIdAndUpdate(newNotification._id,  {"status": "Refused"},{safe: true, upsert: true, new : false},
                  function(err, notif) {
@@ -267,21 +277,28 @@ router.post('/', function(req, res, next) {
             })
           }, time * 60000);
 
-          res.json({
-            message : "contacted",
-            first : profiles[0]
-            // all : profiles,
-          })
+          res.sendStatus(201);
+          // .json({
+          //   statusCode : 200,
+          //   message : "contacted",
+          //   first : profiles[0]
+          //   // all : profiles,
+          // });
+
         });
       });
+
     } else {
       console.log("No free profiles were found");
       res.status(200).json({
         message : "freelancer not free"
-      })
+      });
+      console.log("sent freelancer not free");
       }
     }
   });
+
+
 });
 
 module.exports = router;
