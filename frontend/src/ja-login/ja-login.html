@@ -198,7 +198,7 @@
       _onLoginError: function(evt) {
         let resp = evt.detail.request.xhr;
         console.log(evt);
-        if (resp.status == 400) {
+        if (resp.status == 400 || resp.status == 404) {
           console.log("User doesn't exist or password is wrong");
           this.loginError = "User doesn't exist or password is wrong";
         }
