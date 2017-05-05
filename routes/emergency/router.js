@@ -11,7 +11,7 @@ const Notification = mongoose.model('Notification');
 const config = require('../../config');
 const mail = require('../../mail/mail');
 const fieldsFilter = { '__v': 0 };
-router.all('/', middleware.supportedMethods('POST, PUT, GET'));
+router.all('/', middleware.supportedMethods('POST, PUT'));
 
 function sendmail(freelancer){
   var jobAdvisorLink = 'http://localhost:3005';
@@ -21,28 +21,6 @@ function sendmail(freelancer){
   // console.log("sent mail to " + freelancer.email);
   mail.sendMailTo(freelancer.email, mailContent, 'Jobadvisor: You Got A New Notification');
 }
-
-router.get('/:id/:subject', function(req, res, next){
-  if(req.params.subject === "user"){
-    User.findbyId(req.params.id, function(err, user){
-      if(user){
-        res.status(200).json(user.notifications);
-      }else{
-        console.log("not found");
-        res.sendStatus(400);
-      }
-    });
-  }else{ // freelancer
-    Freelancer.findbyId(req.params.id, function(err, freelancer){
-      if(freelancer){
-        res.status(200).json(freelancer.notifications);
-      }else{
-        console.log("not found");
-        res.sendStatus(400);
-      }
-    });
-  }
-});
 
 
 //  respond to request
@@ -70,6 +48,10 @@ router.put('/:id/:subject/:answer',function(req, res, next){
 
             Notification.findByIdAndUpdate(req.params.id, updateToBeMade, function(err, updatednotif) {
               if (err) return console.error(err);
+              var oldFreelancerId = updatednotif.availableFreelancers[updatednotif.freelancerNotified];
+              Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif } }).exec( function(err, profile) {
+                if (err) return console.error(err);
+              });
             });
             console.log("Freelancer Refused");
             res.sendStatus(200);
@@ -87,8 +69,11 @@ router.put('/:id/:subject/:answer',function(req, res, next){
               //no check for finding since here notification has been already found.
               var freelancerToBeContacted = updatednotif.availableFreelancers[number];
               sendmail(freelancerToBeContacted);
+              Freelancer.findByIdAndUpdate(freelancerToBeContacted._id, { $push: { notifications: updatednotif } }).exec( function(err, profile) {
+                if (err) return console.error(err);
+              });
 
-              res.sensStatus(204);
+              res.sendStatus(204);
               // res.json({
               //   message: "accepted",
               // });
