@@ -124,7 +124,7 @@
         </div>
         <div title="emergency">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-            <ja-emergency-call user-location=[[userLocation]]></ja-emergency-call>
+            <ja-emergency-call user={{user}} user-location=[[userLocation]]></ja-emergency-call>
           </template>
         </div>
         <div title="notification">
