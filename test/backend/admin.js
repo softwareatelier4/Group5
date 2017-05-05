@@ -27,7 +27,7 @@ describe('Backend get all profiles with verification : pending', function () {
                     let pendingFreelancers = JSON.parse(res.text);
                     pendingFreelancers.forEach(function (freelancer) {
                         //   console.log(freelancer);
-                        utils.matchFreelancerPendingInText("pending", freelancer);
+                        utils.matchFreelancerVerificationInText("pending", freelancer);
                     });
                     done();
                 });
@@ -51,17 +51,22 @@ describe('Backend update verification of a freelancer', function () {
         before(seed);
         after(utils.dropDb);
 
-        // it('should cheange the verificataion of a freelancer, his id and what it should be set to are given in the request', function (done) {
+        it('should cheange the verificataion of a freelancer, his id and what it should be set to are given in the request', function (done) {
 
-        //     request(app)
-        //         .put('/admin/')
-        //         .set('Accept', 'application/json')
-        //         .expect('Content-Type', /json/, 'it should respond with json')
-        //         .expect(200)
-        //         .end(function (err, res) {
-        //             done();
-        //         });
-        // });
+            request(app)
+                .put('/admin/')
+                .send({'id' : '5625fc2bd66b84d23d8c7bf1' ,'type' : 'verified' ,'claimingUserId' : '12345' ,})
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/, 'it should respond with json')
+                .expect(200)
+                .end(function (err, res) {
+                    // res = JSON.parse(res.text);
+                    console.log(res);
+                    // let freelancer = JSON.parse(res.text);
+                    // utils.matchFreelancerVerificationInText("verified", freelancer);
+                    done();
+                });
+        });
 
         // I don't know how to do the 404 because it is 404 only if there are non pending in the database but they are there.
 

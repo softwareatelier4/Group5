@@ -184,7 +184,7 @@ module.exports.matchFreelancerIdInText = function matchFreelancerIdInText(text, 
   text.indexOf(freelancer._id.toString()).should.be.greaterThan(-1, "id should match");
 }
 
-module.exports.matchFreelancerPendingInText = function matchFreelancerPendingInText(text, freelancer){
+module.exports.matchFreelancerVerificationInText = function matchFreelancerVerificationInText(text, freelancer){
   text.indexOf(freelancer.verification.toString()).should.be.greaterThan(-1, "id should match");
 }
 
