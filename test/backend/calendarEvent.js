@@ -22,23 +22,29 @@ describe('Backend events tests', function(){
     it('should post a new event to the freelancer profile', function(done) {
       request(app)
       .post('/freelancer/' + freelancers[0]._id.toString() + '/event')
-      .send(events[0])
+      .set('Accept', 'application/json')
+      .send({
+        start : new Date(),
+        end   : new Date(),
+        location   : "asd",
+        description   : "asd",
+
+      })
       .expect(200, done);
-      // done();
     });
 
-    it('should give back a 400 status if the events is posted to a freelancer profile that does not exists', function(done) {
+    it('should give back a 404 status if the event is posted to a freelancer profile that does not exists', function(done) {
       request(app)
       .post('/freelancer/' + '2625fc2bd82b84d23d8c7bd6' + '/event')
       .set('Accept', 'application/json')
-      .send(events[0])
-        .expect(400)
-        .end(function(err, res){
-          res = JSON.parse(res.text);
-          console.log(err);
-          should.not.exist(err, 'No error should occur');
-        });
-        done();
+      .send({
+        start : new Date(),
+        end   : new Date(),
+        location   : "asd",
+        description   : "asd",
+
+      })
+        .expect(404, done)
       });
   });
 

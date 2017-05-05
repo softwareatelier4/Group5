@@ -7,4 +7,8 @@ module.exports.serverError = {
     statusCode  : 404,
     message     : "Not Found"
   },
+  unauthorized:{
+    statusCode  : 401,
+    message     : "Unauthorized"
+  }
 }

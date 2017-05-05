@@ -16,7 +16,7 @@ describe('Backend login and signup', function(){
     before(seed);
     after(utils.dropDb);
 
-    it('should return 400 status because the user does not exists', function(done) {
+    it('should return 404 status because the user does not exists', function(done) {
 
       request(app)
       .post('/login')
@@ -26,11 +26,11 @@ describe('Backend login and signup', function(){
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(400, done)
+      .expect(404, done)
 
     });
 
-    it('should return 400 status because the password is not correct', function(done) {
+    it('should return 401 status because the password is not correct', function(done) {
 
       request(app)
       .post('/login')
@@ -40,7 +40,7 @@ describe('Backend login and signup', function(){
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(400, done)
+      .expect(401, done)
     });
 
     it('should return 200 status as the credentials matches', function(done) {
@@ -68,11 +68,9 @@ describe('Backend login and signup', function(){
 
       request(app)
       .post('/login/signup')
-      .send(users[0])
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/, 'it should respond with json')
+      .send(users[1])
       .expect(400, done)
-
     });
 
     it('should return 200 status as the user does not exists', function(done) {

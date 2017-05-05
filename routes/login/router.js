@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const User = mongoose.model('User');
 const config = require('../../config');
+const serverErrors = require('../serverErrors')
 
 const fieldsFilter = { '__v': 0 };
 
@@ -17,8 +18,7 @@ router.post('/', function(req, res, next) {
     if(user){
       if(req.body.password == user.password){
         req.session.user = user;
-        res.status(200);
-        return res.json({
+        return res.status(200).json({
           statusCode: 200,
           message: "OK",
           user: {
@@ -27,18 +27,10 @@ router.post('/', function(req, res, next) {
           }
         })
       }else{
-        res.status(400);
-        return res.json({
-          statusCode: 400,
-          message: "Bad Request"
-        });
+        return res.status(401).json(serverErrors.unauthorized);
       }
     }else{
-      res.status(400);
-      return res.json({
-        statusCode: 400,
-        message: "Bad Request"
-      });
+      return res.status(404).json(serverErrors.notFound);
     }
   })
 })
@@ -47,17 +39,12 @@ router.post('/signup', function(req, res, next){
   const newUser = new User(req.body);
   User.findOne({userName: newUser.userName}, function(err, user){
     if(user){
-      res.status(400);
-      return res.json({
-        statusCode: 400,
-        message: "Bad Request"
-      });
+      return res.status(400).json(serverErrors.badRequest);
     }else{
       req.session.user = newUser;
       newUser.save(function(err){
         if(err) return next(err);
-        res.status(201);
-        res.json(newUser);
+        res.status(201).json(newUser);
       });
 
     }
