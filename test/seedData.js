@@ -145,7 +145,7 @@ var freelancers = {
       "price"         : 100,
       "profession"    : "Painter",
       "reviews"       : [reviews.data[2]],
-      "events"        : [events.data[1], events.data[2]]
+      "events"        : []
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
