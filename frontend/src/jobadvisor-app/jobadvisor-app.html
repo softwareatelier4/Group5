@@ -13,6 +13,7 @@
 <link rel="import" href="../ja-login/ja-login.html">
 <link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
 <link rel="import" href="../ja-emergency-call/ja-emergency-call.html">
+<link rel="import" href="../ja-notification-page/ja-notification-page.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -54,6 +55,12 @@
         color: blue;
       }
 
+      #notification-button{
+        float:right;
+        background-color: var(--paper-yellow-500);
+        color: blue;
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -71,6 +78,10 @@
 
     <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
       <a href="/emergency"><paper-button id="emergency-button">EMERGENCY CALL</paper-button></a>
+    </template>
+
+    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+      <a href="/notification"><paper-button id="notification-button">NOTIFICATIONS</paper-button></a>
     </template>
 
     <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
@@ -114,6 +125,11 @@
         <div title="emergency">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
             <ja-emergency-call user-location=[[userLocation]]></ja-emergency-call>
+          </template>
+        </div>
+        <div title="notification">
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-notification-page></ja-notification-page>
           </template>
         </div>
 
