@@ -145,6 +145,37 @@
       paper-dialog-scrollable {
         margin-top: 20px;
         padding-top: 20px;
+        height: 50%;
+      }
+
+      .event-btns {
+        display: flex;
+      }
+
+      .event-date-container {
+        margin-bottom: 30px;
+      }
+
+      #event-submit-cancel {
+        background-color: var(--paper-red-700);
+        color: white;
+        width: 50%;
+      }
+
+      #event-submit-btn {
+        background-color: var(--paper-green-700);
+        color: white;
+        width: 50%;
+      }
+
+      ja-event-element:first-child {
+        margin-top: 50px;
+      }
+
+      #open-events-btn {
+        margin: 20px;
+        background-color: var(--paper-blue-800);
+        color: white;
       }
 
       /*paper-textarea {
@@ -222,14 +253,12 @@
         Description : {{_checkdescisprovided(description)}}
       </section>
 
-      <paper-button id="open-events-btn" raised>Show availability</paper-button>
+      <paper-button id="open-events-btn" raised>Edit availability</paper-button>
 
 
       <paper-dialog id="profile-calendar" no-cancel-on-outside-click no-cancel-on-esc-click>
         <h2>Add your availability for emergencies</h2>
         <div id="event-input-form">
-          <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Add</paper-button>
-          <paper-button dialog-dismiss>Cancel</paper-button>
           <paper-input id="calendar-input-description" label="Description" pattern=".+" auto-validate required error-message="Insert a valid description"></paper-input>
           <paper-input id="calendar-input-location" label="Location" required pattern=".+" auto-validate error-message="Insert a valid location"></paper-input>
           <div class="event-date-container">
@@ -241,6 +270,10 @@
               <paper-input id="calendar-input-end-date" label="End date" type="date"></paper-input>
               <paper-input id="calendar-input-end-hour" label="End hour" type="time"></paper-input>
             </div>
+          </div>
+          <div class="event-btns">
+            <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Add</paper-button>
+            <paper-button raised id="event-submit-cancel" dialog-dismiss>Cancel</paper-button>
           </div>
         </div>
         <p>Default date is today, default time is now and 1 hour later.</p>
@@ -487,6 +520,7 @@
         this.verification = res.verification;
 
         this.events = res.events;
+        console.log(res.events);
 
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {
