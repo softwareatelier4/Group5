@@ -14,7 +14,7 @@
 
     <section id="notification-container">
 
-      <div> NOTIFICATIONS : {{user._id}}</div>
+      <div> NOTIFICATIONS : </div>
 
         <section id="freelancers-list">
 
@@ -40,23 +40,11 @@
       },
 
       ready: function() {
-
-        //POST /emergency/freelancerID
-
-        // var bubu = this.$['freelancers-list'];
-        // var test1 = document.createElement("DIV");
-        // test1.innerHTML  = "AYYPAPI";
-        // bubu.appendChild(test1);
-
         const ajaxel = this.$.notificationlist;
         ajaxel.generateRequest();
-
-
-
       },
 
       _onResponse: function(evt) {
-        //HANDLE NOTIFICATIONS;
         console.log(evt.detail.response);
       },
 
