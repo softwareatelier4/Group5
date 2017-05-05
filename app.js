@@ -137,6 +137,7 @@ app.use('/claim', routers.claim);
 app.use('/freelancer', routers.freelancer);
 app.use('/login', routers.login);
 app.use('/emergency', routers.emergency);
+app.use('/notification', routers.notification);
 
 
 

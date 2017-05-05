@@ -18,8 +18,8 @@
 
         <section id="freelancers-list">
 
-          <iron-ajax id="notificationlist" url="/emergency/{{user._id}}" method="POST" handle-as="json" on-response="_onResponse"></iron-ajax>
-          <iron-ajax id="freelancernotificationlist" url="/emergency/{{user.freelancerId}}" method="POST" handle-as="json" on-response="_onFreelancerResponse"></iron-ajax>
+          <iron-ajax id="notificationlist" url="/notification/{{user._id}}/user" method="GET" handle-as="json" on-response="_onResponse"></iron-ajax>
+          <iron-ajax id="freelancernotificationlist" url="/notification/{{user.freelancerId}}/freelancer" method="GET" handle-as="json" on-response="_onFreelancerResponse"></iron-ajax>
 
 
         </section>
