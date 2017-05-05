@@ -413,6 +413,15 @@
 
       _onOpenEventsTap: function(evt) {
         this.$['profile-calendar'].open();
+        let currDate = new Date();
+        let startHour = currDate.toLocaleTimeString().substring(0,5);
+        let afterDate = new Date();
+        afterDate.setHours(afterDate.getHours() + 1)
+        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0,5);
+        this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0,5);
+        // console.log(this._computeDateString(new Date()));
+        // this.$['calendar-input-start-date'].value = "01/01/1991";
+        // this.$['calendar-input-end-date'].value = this._computeDateString(new Date());
       },
 
       ready: function () {
