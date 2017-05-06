@@ -40,6 +40,8 @@ var events = {
     }
   ]
 }
+
+
 var users = {
   name : 'User',
   data : [
@@ -66,7 +68,8 @@ var users = {
       "password"  : "fischer",
       "email"     : "fischer@me.ch",
       "userType"  : "Freelancer",
-      "freelancerId" : "5625fc2bd82b84d23d8c7bd6"
+      "freelancerId" : "5625fc2bd82b84d23d8c7bd6",
+      //"notifications" : [notifications.data[1]]
     },
     {
       "userName"  : "sani",
@@ -169,6 +172,7 @@ var freelancers = {
       "reviews"       : [reviews.data[4]],
       "events"        : [events.data[0], events.data[3]],
       "verification"  : "pending",
+      //"notifications" : [notifications.data[1]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -286,10 +290,51 @@ var freelancers = {
   ]
 }
 
+var notifications = {
+  name : "Notification",
+  data : [
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7ad6"),
+      "description"         : "huehuehue",
+      "profession"          : "Painter",
+      "category"            : "Other",
+      "userCalling"         : users.data[3],
+      "freelancerNotified"  : 0,
+      "availableFreelancers": [freelancers.data[1]]
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7dd6"),
+      "description"         : "huehuehue1",
+      "profession"          : "IT guy",
+      "category"            : "Other",
+      "userCalling"         : users.data[2],
+      "freelancerNotified"  : 0,
+      "availableFreelancers": [freelancers.data[3]]
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7cd6"),
+      "description"         : "huehuehue2",
+      "profession"          : "Painter",
+      "category"            : "Other",
+      "userCalling"         : users.data[1],
+      "freelancerNotified"  : 0,
+      "availableFreelancers": [freelancers.data[2]],
+      "status"              : "Refused"
+    },
+  ]
+}
+
+
+
+users.data[2].notifications = [notifications.data[0], notifications.data[2]];
+//freelancers.data[1].notifications = [notifications.data[1]];
+
+
 var seedData = [];
 seedData.push(freelancers);
 seedData.push(users);
 seedData.push(reviews);
 seedData.push(events);
+seedData.push(notifications);
 
 module.exports = seedData;
