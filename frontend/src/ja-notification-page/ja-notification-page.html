@@ -41,30 +41,20 @@
       },
 
       ready: function() {
+        console.log(this.user);
         const ajaxel = this.$.notificationlist;
         ajaxel.generateRequest();
         if(this.user.userType == 'Freelancer'){
-          ajaxel = this.$.freelancernotificationlist;
-          ajaxel.generateRequest();
+          const ajaxel2 = this.$.freelancernotificationlist;
+          ajaxel2.generateRequest();
         }
       },
 
-      _onResponse: function(evt) {
+      _onResponse: function(evt) { //user
         console.log(evt.detail.response);
-
-        if(this.user.userType == 'Freelancer'){
-          console.log("freelancer");
-          //handleFreelancerData()
-        }
-        // if(this.user.userType == "Normal"){
-        //   console.log("normal");
-        //   //handleNormalData()
-        // }
-
-
       },
 
-      _onFreelancerResponse: function(evt) {
+      _onFreelancerResponse: function(evt) { //freelancer
         console.log(evt.detail.response);
       },
 
