@@ -114,7 +114,7 @@ describe('Backend login and signup', function () {
         .expect('Content-Type', /json/, 'it should respond with json')
         .expect(200)
         .end(function (err, res) {
-                    let response = JSON.parse(res.text);
+                    let response = res.body;
                     utils.matchUserNameInText("camo", response.user);
                     done();
                 });
@@ -137,7 +137,7 @@ describe('Backend login and signup', function () {
         .expect('Content-Type', /json/, 'it should respond with json')
         .expect(200)
         .end(function (err, res) {
-          res = JSON.parse(res.text);
+          res = res.body
 
           should.exist(err, 'No error should occur');
         });
