@@ -530,8 +530,9 @@
         // this.userId = res._id;
 
         console.log(this.user);
+        console.log("asd", this.userId, res.claimingUserId);
 
-        if (this.userId && this.userId === this.user._id) {
+        if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
         }
         console.log(res);
