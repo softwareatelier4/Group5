@@ -1,0 +1,124 @@
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="ja-freelancerNotification-item">
+
+  <template>
+    <style>
+      /* CSS rules for your element */
+      :host {
+        display: block;
+        margin: 20px 0;
+      }
+
+      paper-card {
+        padding:50px;
+        width: 100%;
+      }
+
+      #right{
+        float:right;
+        padding-right:100px;
+      }
+
+      #left{
+        float:left;
+        padding-left:100px;
+      }
+
+      #notification-status{
+        padding-top:20px;
+      }
+
+      .notification-profession {
+        font-size: 24px;
+        text-decoration: none;
+      }
+
+    </style>
+
+    <paper-card>
+      <div id="left">
+        <div id="notification-profession">
+        <span>{{notification.profession}}</span>
+      </div>
+      <div id="notification-description">
+        <span>{{notification.description}}</span>
+      </div>
+      <div id="notification-status">
+        <span>{{notification.status}}</span>
+      </div>
+      <div>
+        <span>
+          <div>Accept?:</div>
+
+          <paper-button id="buttonYes" raised on-click="_sendYes">
+            Yes
+          </paper-button>
+          <paper-button id="buttonNo" raised on-click="_sendNo">
+            No
+          </paper-button>
+
+         </span>
+      </div>
+
+      </div>
+      <div id="right">
+        <div>
+          <span id="not-name">
+            <!-- {{notification.availableFreelancers.0.firstName}} -->
+          </span>
+        </div>
+        <div>
+          <span id="not-userName">
+            <!-- {{notification.availableFreelancers.0.category}} -->
+          </span>
+        </div>
+        <div>
+          <span id="not-email">
+            <!-- {{notification.availableFreelancers.0.email}} -->
+          </span>
+        </div>
+      </div>
+    </paper-card>
+
+    <iron-ajax id="buttonYes" url="/notification/{{notification._id}}/freelancer/yes" method="PUT"></iron-ajax>
+    <iron-ajax id="buttonNo" url="/notification/{{notification._id}}/freelancer/no" method="PUT"></iron-ajax>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-freelancerNotification-item",
+
+      properties: {
+        notification: {
+          type: Object,
+        },
+      },
+
+      ready: function() {
+        console.log(this.notification);
+
+        this.$['not-email'].innerHTML = this.notification.userCalling.email;
+        this.$['not-userName'].innerHTML = this.notification.userCalling.userName;
+        this.$['not-name'].innerHTML = this.notification.userCalling.firstName + " " +this.notification.userCalling.lastName;
+
+      },
+
+      _sendYes : function(){
+        console.log("Yes");
+        const ajaxel = this.$.buttonYes;
+        ajaxel.generateRequest();
+      },
+
+      _sendNo : function(){
+        console.log("No");
+        const ajaxel = this.$.buttonNo;
+        ajaxel.generateRequest();
+      },
+
+    });
+  </script>
+
+</dom-module>
