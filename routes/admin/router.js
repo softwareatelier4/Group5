@@ -12,6 +12,7 @@ const Freelancer = mongoose.model('Freelancer');
 const User = mongoose.model('User');
 const config = require('../../config');
 const util = require('util');
+const serverErrors = require('../serverErrors')
 
 
 
@@ -31,7 +32,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.put('/', function (req, res) {
-  if(req.query.type == 'verified'){  
+  if(req.query.type == 'verified'){
     //accept
   Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type, userId: req.query.claimingUserId}}, { new: true }).exec(function(err, profile) {
       if (err) return console.error(err);
@@ -54,16 +55,13 @@ router.put('/', function (req, res) {
       if (err) return console.error(err);
       if (!profile) {
         res.status(400)
-        return res.json({
-          statusCode: 400,
-          message: "Bad Request"
-        });
+        return res.status(400).json(serverErrors.badRequest);
       } else {
         return res.json(profile);
       }
     });
   }
-  
+
 });
 
 router.post('/', function (req, res) {

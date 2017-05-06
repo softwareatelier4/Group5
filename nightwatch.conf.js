@@ -1,5 +1,5 @@
 module.exports = {
-  "src_folders" : ["./frontend/test/jobadvisor-app"],
+  "src_folders" : ["./frontend/test/jobadvisor-app/"],
   "output_folder" : "./frontend/test/nightwatch-reports",
   "custom_commands_path" : "",
   "custom_assertions_path" : "",

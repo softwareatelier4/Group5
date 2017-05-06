@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
 const config = require('../../config');
+const serverErrors = require('../serverErrors')
 
 const fieldsFilter = {
   '__v': 0
@@ -19,12 +20,7 @@ router.get('/:freelancerid', function (req, res, next) {
     if (err) return next(err);
     if (!freelancer) {
       res.status(404);
-      console.log("NOT FOUND");
-      res.json({
-        statusCode: 404,
-        message: "Not Found"
-      });
-      return;
+      return res.status(404).json(serverErrors.notFound);
     }
     res.json(freelancer);
   });

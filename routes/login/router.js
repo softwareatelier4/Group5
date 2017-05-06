@@ -11,7 +11,7 @@ const serverErrors = require('../serverErrors')
 
 const fieldsFilter = { '__v': 0 };
 
-router.all('/', middleware.supportedMethods('POST'));
+router.all('/', middleware.supportedMethods('GET, POST'));
 
 router.get('/:id', function(req, res, next) {
   User.findOne({_id: req.params.id}, function(err, user){
@@ -29,11 +29,8 @@ router.get('/:id', function(req, res, next) {
           }
         })
     }else{
-      res.status(400);
-      return res.json({
-        statusCode: 400,
-        message: "Bad Request"
-      });
+      res.status(404);
+      return res.status(404).json(serverErrors.notFound);
     }
   })
 })
