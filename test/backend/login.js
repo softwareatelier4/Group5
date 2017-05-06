@@ -52,7 +52,7 @@ describe('Backend login and signup', function () {
         .expect('Content-Type', /json/, 'it should respond with json')
         .expect(200)
         .end(function (err, res) {
-          res = JSON.parse(res.text);
+          res = res.body;
 
           should.not.exist(err, 'No error should occur');
         });
@@ -89,7 +89,7 @@ describe('Backend login and signup', function () {
         .expect('Content-Type', /json/, 'it should respond with json')
         .expect(200)
         .end(function (err, res) {
-          res = JSON.parse(res.text);
+          res = res.body;
 
           should.exist(err, 'No error should occur');
         });
