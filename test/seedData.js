@@ -65,7 +65,8 @@ var users = {
       "lastName"  : "",
       "password"  : "fischer",
       "email"     : "fischer@me.ch",
-      "userType"  : "Freelancer"
+      "userType"  : "Freelancer",
+      "freelancerId" : "5625fc2bd82b84d23d8c7bd6"
     },
     {
       "userName"  : "sani",
