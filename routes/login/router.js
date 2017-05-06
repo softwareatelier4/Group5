@@ -25,7 +25,7 @@ router.post('/', function(req, res, next) {
             userName: user.userName,
             userType: user.userType,
             _id: user._id,
-            _freelancerId: user.freelancerId,
+            freelancerId: user.freelancerId,
           }
         })
       }else{
