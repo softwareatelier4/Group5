@@ -295,8 +295,8 @@ var notifications = {
   data : [
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7ad6"),
-      "description"         : "huehuehue",
-      "profession"          : "Painter",
+      "description"         : "I want a plumber because all the sexy videos start with one",
+      "profession"          : "Plumber",
       "category"            : "Other",
       "userCalling"         : users.data[3],
       "freelancerNotified"  : 0,
@@ -304,7 +304,7 @@ var notifications = {
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7dd6"),
-      "description"         : "huehuehue1",
+      "description"         : "I think my cat has a virus",
       "profession"          : "IT guy",
       "category"            : "Other",
       "userCalling"         : users.data[2],
@@ -313,7 +313,7 @@ var notifications = {
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7cd6"),
-      "description"         : "huehuehue2",
+      "description"         : "I need a painter for my toilet",
       "profession"          : "Painter",
       "category"            : "Other",
       "userCalling"         : users.data[1],
