@@ -81,7 +81,7 @@
     </template>
 
     <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/notification"><paper-button id="notification-button">NOTIFICATIONS</paper-button></a>
+      <a href="/notification/{{user._id}}"><paper-button id="notification-button">NOTIFICATIONS</paper-button></a>
     </template>
 
     <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
