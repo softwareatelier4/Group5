@@ -82,8 +82,8 @@
       </div>
     </paper-card>
 
-    <iron-ajax id="buttonYes" url="/notification/{{notification._id}}/freelancer/yes" method="PUT"></iron-ajax>
-    <iron-ajax id="buttonNo" url="/notification/{{notification._id}}/freelancer/no" method="PUT"></iron-ajax>
+    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/freelancer/yes" method="PUT" handle-as="json" on-response="_yesres"></iron-ajax> <!-- RESPONSE???? -->
+    <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/freelancer/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax> <!-- RESPONSE???? -->
 
   </template>
 
@@ -116,6 +116,14 @@
         console.log("No");
         const ajaxel = this.$.buttonNo;
         ajaxel.generateRequest();
+      },
+      _yesres : function(){
+        console.log("freelancer yes");
+        // scrivi che l ha accettata e basta
+      },
+      _nores : function(){
+        console.log("freelancer no");
+        //mi pare avevo scritto di cancellare la tab, rivedi il foglio 
       },
 
     });
