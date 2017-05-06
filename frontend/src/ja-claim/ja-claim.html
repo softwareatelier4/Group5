@@ -41,6 +41,8 @@
       <div id="name">
         {{result.firstName}} {{result.lastName}}
       </div>
+
+      {{user.email}} {{user._id}}
       <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
 
       <form id="upload-form" method="post" enctype="multipart/form-data">
@@ -90,6 +92,9 @@
       },
 
       _handleResponse: function (response) {
+        console.log("SENDING");
+        console.log(this.user.email);
+        console.log(this.user._id);
         if (response) {
           this.result = response.detail.response;
           console.log(response.detail.response);
@@ -101,6 +106,7 @@
       },
 
       ready: function () {
+
         // this.$['request-profile'].generateRequest();
         this.checkFile();
       },
@@ -114,12 +120,13 @@
       // },
 
       uploadFile: function () {
-        console.log(this.user.userId);
-        console.log(this.user.userMail);
+        console.log("SENDING");
+        console.log(this.user.email);
+        console.log(this.user._id);
 
         var form = document.getElementById('upload-form');
-        form.email.value = this.user.userMail;
-        form.userid.value = this.user.userId;
+        form.email.value = this.user.email;
+        form.userid.value = this.user._id;
         var formData = new FormData(form);
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '', true);

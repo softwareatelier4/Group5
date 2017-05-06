@@ -253,7 +253,7 @@
         Description : {{_checkdescisprovided(description)}}
       </section>
 
-      <paper-button id="open-events-btn" raised>Edit availability</paper-button>
+      <paper-button id="open-events-btn" hidden raised>Edit availability</paper-button>
 
 
       <paper-dialog id="profile-calendar" no-cancel-on-outside-click no-cancel-on-esc-click>
@@ -319,7 +319,7 @@
     <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json" on-response="_handleAddEventResponse">
     </iron-ajax>
 
-    <iron-ajax id="refresh-user" url="/login/{{user.userId}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
+    <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
     </iron-ajax>
 
   </template>
@@ -526,9 +526,26 @@
         this.category = res.category;
         this.reviews = res.reviews;
         this.verification = res.verification;
+        this.userId = res.claimingUserId;
+        // this.userId = res._id;
+
+        console.log(this.user);
+
+        if (this.userId && this.userId === this.user._id) {
+          this.$['open-events-btn'].hidden = false;
+        }
+        console.log(res);
 
         this.events = res.events;
         console.log(res.events);
+
+        if (this.verification == 'none' && (this.user.pending == 'none')) {
+          console.log("hesajdsjasjkldllo");
+          this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
+            ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
+        } else {
+          this.$['container-claim'].innerHTML = '';
+        }
 
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {
@@ -566,10 +583,9 @@
 
       _refreshUser: function (e) {
         this.user = e.detail.response.user;
-
-console.log('######$$$');
         console.log(e.detail.response.user);
-        if (this.verification == 'none' && (this.user.userPending == 'none')) {
+        if (this.verification == 'none' && (this.user.pending == 'none')) {
+          console.log("hellosdfsad");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {

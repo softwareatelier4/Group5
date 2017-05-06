@@ -23,9 +23,9 @@ router.get('/:id', function(req, res, next) {
           user: {
             userName: user.userName,
             userType: user.userType,
-            userMail: user.email,
-            userId: user._id,
-            userPending: user.pending,
+            email: user.email,
+            _id: user._id,
+            pending: user.pending,
           }
         })
     }else{
@@ -46,9 +46,9 @@ router.post('/', function(req, res, next) {
           user: {
             userName: user.userName,
             userType: user.userType,
-            userMail: user.email,
-            userId: user._id,
-            userPending: user.pending,
+            email: user.email,
+            _id: user._id,
+            pending: user.pending,
           }
         })
       }else{
