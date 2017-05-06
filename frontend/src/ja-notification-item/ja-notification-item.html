@@ -89,8 +89,8 @@
       </div>
     </paper-card>
 
-    <iron-ajax id="buttonYes" url="/notification/{{notification._id}}/yes" method="PUT"></iron-ajax>
-    <iron-ajax id="buttonNo" url="/notification/{{user._id}}/no" method="PUT"></iron-ajax>
+    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/user/yes" method="PUT"  handle-as="json" on-response="_yesres"></iron-ajax><!-- RESPONSE???? -->
+    <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/user/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax> <!-- RESPONSE???? -->
 
   </template>
 
@@ -108,8 +108,7 @@
       },
 
       ready: function() {
-        //console.log(this.notification.availableFreelancers[this.frnumber]);
-
+        // CONTROLLA SE this.frnumber < this.notification.availableFreelancers.length, fai questo, altrimenti scrivi che non ci sono altri da contattare
         this.$['not-email'].innerHTML=this.notification.availableFreelancers[this.frnumber].email;
         this.$['not-category'].innerHTML=this.notification.availableFreelancers[this.frnumber].category;
         this.$['not-address'].innerHTML=this.notification.availableFreelancers[this.frnumber].address;
@@ -127,15 +126,21 @@
       },
 
       _sendYes : function(){
-        //console.log("Yes");
         const ajaxel = this.$.buttonYes;
         ajaxel.generateRequest();
       },
 
       _sendNo : function(){
-        //console.log("No");
         const ajaxel = this.$.buttonNo;
         ajaxel.generateRequest();
+      },
+      _yesres : function(){
+        console.log("user yes");
+        // reload the page.
+      },
+      _nores : function(){
+        console.log("user no");
+        // mi pare che ti avevo scritto di cancellare la tab, controlla il foglio
       },
 
     });

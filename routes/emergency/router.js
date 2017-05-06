@@ -28,36 +28,26 @@ router.put('/:id/:subject/:answer',function(req, res, next){
   Notification.findById(req.params.id, function(err, notification) {
     if (err) return console.error(err);
     if(notification){
-      if(req.params.subject = "freelancer"){
+      if(req.params.subject === "freelancer"){
         if(req.params.answer === "yes"){
           Notification.findByIdAndUpdate(req.params.id, {status : "Accepted"}, function(err,done){
             if(done){
               console.log("accepted!");
               res.sendStatus(204);
-              // res.json({
-              //   message: "accepted",
-              // });
-            }else{
-              console.log("error");
-              res.sendStatus(400);
             }
           })
           //end
         }else{ // if freelancer say no, change the status in refused. User will decide what to do
           var updateToBeMade = { status : "Refused" };
-
-            Notification.findByIdAndUpdate(req.params.id, updateToBeMade, function(err, updatednotif) {
+          Notification.findByIdAndUpdate(req.params.id, updateToBeMade, function(err, updatednotif) {
+            if (err) return console.error(err);
+            var oldFreelancerId = updatednotif.availableFreelancers[updatednotif.freelancerNotified];
+            Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif } }).exec( function(err, profile) {
               if (err) return console.error(err);
-              var oldFreelancerId = updatednotif.availableFreelancers[updatednotif.freelancerNotified];
-              Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif } }).exec( function(err, profile) {
-                if (err) return console.error(err);
-              });
             });
-            console.log("Freelancer Refused");
-            res.sendStatus(200);
-
-            //delete profile
-
+          });
+          console.log("Freelancer Refused");
+          res.sendStatus(204);
         }
       }else{// user
         if(req.params.answer === "yes"){ // if user say yes, contact next freelancer
@@ -72,14 +62,10 @@ router.put('/:id/:subject/:answer',function(req, res, next){
               Freelancer.findByIdAndUpdate(freelancerToBeContacted._id, { $push: { notifications: updatednotif } }).exec( function(err, profile) {
                 if (err) return console.error(err);
               });
-
               res.sendStatus(204);
-              // res.json({
-              //   message: "accepted",
-              // });
             } else {
               console.log("No other freelancer are available")
-              res.sensStatus(204);
+              res.sendStatus(204);
             }
           });
         }else{ // if no, delete notification from db

@@ -25,6 +25,8 @@ router.get('/:id/:subject', function(req, res, next){
   }else{ // freelancer
     Freelancer.findById(req.params.id, function(err, freelancer){
       if(freelancer){
+        // console.log("freelancer found");
+        // console.log(freelancer.notifications);
         res.status(200).json(freelancer.notifications);
       }else{
         console.log("not found");
