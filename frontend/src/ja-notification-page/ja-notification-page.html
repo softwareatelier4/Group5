@@ -1,6 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-notification-item/ja-notification-item.html">
+<link rel="import" href="../ja-freelancerNotification-item/ja-freelancerNotification-item.html">
+
 
 
 <dom-module id="ja-notification-page">
@@ -16,13 +19,18 @@
 
       <div> NOTIFICATIONS : </div>
 
-        <section id="freelancers-list">
+      <template id="notificationList" is="dom-repeat" items="{{notifications}}" as="notification">
+        <ja-notification-item  notification="{{notification}}" frnumber="{{notification.freelancerNotified}}" user={{user}}>
+        </ja-notification-item>
+      </template>
+
+      <template id="freelancerNotificationList" is="dom-repeat" items="{{freelancerNotifications}}" as="freelancerNotification">
+        <ja-freelancerNotification-item  notification="{{freelancerNotification}}" user={{user}}>
+        </ja-freelancerNotification-item>
+      </template>
 
           <iron-ajax id="notificationlist" url="/notification/{{user._id}}/user" method="GET" handle-as="json" on-response="_onResponse"></iron-ajax>
           <iron-ajax id="freelancernotificationlist" url="/notification/{{user.freelancerId}}/freelancer" method="GET" handle-as="json" on-response="_onFreelancerResponse"></iron-ajax>
-
-
-        </section>
 
     </section>
 
@@ -37,11 +45,18 @@
       properties: {
         user : {
           type: Object,
+        },
+        notifications: {
+          type : Object,
+        },
+        freelancerNotifications:{
+          type : Object,
         }
       },
 
+
       ready: function() {
-        console.log(this.user);
+        //console.log(this.user);
         const ajaxel = this.$.notificationlist;
         ajaxel.generateRequest();
         if(this.user.userType == 'Freelancer'){
@@ -52,10 +67,15 @@
 
       _onResponse: function(evt) { //user
         console.log(evt.detail.response);
+        this.notifications = evt.detail.response;
       },
+
 
       _onFreelancerResponse: function(evt) { //freelancer
         console.log(evt.detail.response);
+        //this.notifications.concat(evt.detail.response);
+        this.freelancerNotifications = evt.detail.response;
+        console.log(this.freelancerNotifications);
       },
 
     });
