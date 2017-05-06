@@ -63,7 +63,7 @@ module.exports = {
     .waitForElementVisible('#open-events-btn', 500)
     .click('#open-events-btn')
     .waitForElementVisible('#profile-calendar', 500)
-    .waitForElementVisible('#calendar-input-description', 500)
+    .waitForElementVisible('#calendar-input-description', 2000)
     .setValue('#calendar-input-description input', "Available")
     .waitForElementVisible('#calendar-input-location', 500)
     .setValue('#calendar-input-location input', "Lugano")
