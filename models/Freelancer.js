@@ -41,6 +41,10 @@ const FreelancerSchema = new mongoose.Schema(
     events        : { type: [CalendarEventSchema], default:[]},
     verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
     claimFilePath : { type: String},
+    claimComment  : { type: String},
+    claimEmail    : { type: String},
+    claimingUserId: { type: String}, // the id of the user who issued the claim request, it may be denied
+    userId        : { type: String}, // the id of the user who succesfully claimed the profilea
   }
 );
 

@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema(
     lastName  : { type: String },
     password  : { type: String, required: true },
     email     : { type: String, required: true },
-    userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'}
+    userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'},
+    pending  : { type: String, enum:['pending','none'], default: 'none'},
   }
 );
 

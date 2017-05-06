@@ -22,27 +22,87 @@
         display: block;
       }
 
+      #page-title {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        width: 300px;
+      }
+
+      #results-title {
+        color: white;
+      }
+
+      #title-container {
+        position: absolute;
+        top: 35px;
+        left: 10%;
+        width: 80%;
+        height: 150px;
+      }
+
+      #inner-container {
+        position: absolute;
+        overflow: scroll;
+        top: 100px;
+        bottom: 0;
+        height: calc(100% - 100px);
+        width: 80%;
+        left: 10%;
+      }
+
+      #inner-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      #background-results {
+        z-index: -1;
+        position: absolute;
+        top: 200px;
+        background: rgb(249, 250, 251);
+        height: calc(100% - 165px);
+        width: 100%;
+        left: 0;
+      }
+
+      ja-results-list h3 {
+        font-weight: normal;
+        color: dimgray;
+      }
+
+      .unselectable {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
       #username {
         color: white;
         text-align: right;
       }
 
-      #loginBtn, #logoutBtn {
+      #loginBtn,
+      #logoutBtn {
         background-color: white;
       }
 
-      #loginBtn, #logoutBtn, #username {
+      #loginBtn,
+      #logoutBtn,
+      #username {
         /*margin: 10px;*/
         float: right;
         /*margin-bottom: 5px;*/
       }
+
       #login {
         float: right;
         text-align: right;
       }
 
-      #signup-button{
-        float:right;
+      #signup-button {
+        float: right;
         background-color: var(--paper-yellow-500);
         color: blue;
       }
@@ -58,10 +118,14 @@
 
     <!-- </div> -->
     <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
+      <a href="/signup">
+        <paper-button id="signup-button">CREATE FREELANCER</paper-button>
+      </a>
     </template>
 
-    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
+    <a href="/login">
+      <paper-button id="loginBtn" raised>Login/signup</paper-button>
+    </a>
     <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
     <div id="username">
       [[_formatLoginStatus(user)]]
@@ -85,15 +149,17 @@
         <div title="freelancer">
           <ja-profile id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
         </div>
-        <div title="claim">
-          <ja-claim id={{subrouteData.id}}></ja-claim>
-        </div>
-        <div title="admin">
-          <ja-admin id={{subrouteData.id}}></ja-admin>
-        </div>
         <div title="login">
           <ja-login user={{user}}></ja-login>
         </div>
+        <div title="claim">
+          <ja-claim id={{subrouteData.id}} user={{user}}></ja-claim>
+        </div>
+        <template is="dom-if" if="{{_userIsAdmin(user)}}" restamp="true">
+          <div title="admin">
+            <ja-admin id={{subrouteData.id}}></ja-admin>
+          </div>
+        </template>
         <div title="signup">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
             <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
@@ -170,12 +236,19 @@
         '_routePageChanged(routeData.view)',
       ],
 
-      _userIsRegistered: function(user) {
+      _userIsRegistered: function (user) {
         if (user && user.userType !== "guest") return true;
         else return false;
       },
 
-      _formatLoginStatus: function(user) {
+      _userIsAdmin: function (user) {
+        if (user.userType == "Admin") {
+          return true;
+        }
+        return false;
+      },
+
+      _formatLoginStatus: function (user) {
         let result = "";
         if (!user || user.userName == "guest") result = "Not logged-in";
         else result = "Logged in as " + user.userName;
@@ -208,10 +281,9 @@
         this.view = page;
       },
 
-      _onLoginTap: function(evt) {
-      },
+      _onLoginTap: function (evt) {},
 
-      _onLogoutTap: function(evt) {
+      _onLogoutTap: function (evt) {
         console.log("Logging out");
         this.set('user', {
           userName: "guest",
@@ -223,7 +295,7 @@
         location.href = '/';
       },
 
-      _onLogoutResponse: function(response) {
+      _onLogoutResponse: function (response) {
         // TODO
       },
 
