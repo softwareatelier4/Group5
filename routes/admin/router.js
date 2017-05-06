@@ -9,7 +9,9 @@ const mail = require('../../mail/mail');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
+const User = mongoose.model('User');
 const config = require('../../config');
+const util = require('util');
 
 
 
@@ -29,10 +31,39 @@ router.get('/', function (req, res, next) {
 });
 
 router.put('/', function (req, res) {
-  Freelancer.findOneAndUpdate({_id: req.query.id}, {$set:{verification: req.query.type}}).exec(function (err, profiles) {
-    if (err) return console.error(err);
-    res.json(profiles);
-  });
+  if(req.query.type == 'verified'){  
+    //accept
+  Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type, userId: req.query.claimingUserId}}, { new: true }).exec(function(err, profile) {
+      if (err) return console.error(err);
+      res.json(profile);
+    });
+
+  }else{
+    //deny
+    User.findOneAndUpdate({
+      _id: req.query.claimingUserId
+    }, {
+      $set: {
+        pending: "none",
+      }
+    }).exec(function (err, profiles) {
+      if (err) console.error(err);
+    });
+
+    Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type}}, { new: true }, function(err, profile) {
+      if (err) return console.error(err);
+      if (!profile) {
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      } else {
+        return res.json(profile);
+      }
+    });
+  }
+  
 });
 
 router.post('/', function (req, res) {
