@@ -98,7 +98,7 @@ module.exports = {
 
   'Test login with previously created account' : function (client) {
     client
-      .click('#menu-open')
+      // .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
@@ -114,7 +114,6 @@ module.exports = {
                            'LOGOUT MYUSERNAME')
       .click('#logoutBtn')
       .pause(500)
-      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/')
   },
 
@@ -126,20 +125,18 @@ module.exports = {
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername134')
       .setValue('#login-password input', '1234')
-      .click('#menu-open')
       .click('#login-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login') // no redirect
       .assert.containsText('#login-error', "User doesn't exist or password is wrong")
       .waitForElementNotVisible('#logoutBtn', 1000)
-      .click('#menu-open')
       .waitForElementVisible('#loginBtn', 1000)
       // .end();
   },
 
   'Test login with wrong password' : function (client) {
     client
-      .click('#menu-open')
+      // .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
