@@ -29,6 +29,15 @@ describe('Backend notification router tests', function(){
       done();
     });
 
+    it('should list the freelancer notifications matching the id', function(done) {
+
+      request(app)
+      .get('/notification/' + freelancers[1]._id.toString() +"/freelancer")
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(200, done);
+    });
+
     it('should give back a 400 status if the freelancer profile does not exists', function(done) {
 
       request(app)
@@ -48,7 +57,17 @@ describe('Backend notification router tests', function(){
     it('should list the user notifications matching the id', function(done) {
 
       request(app)
-      .get('/notification/' + users[2]._id.toString() +"/freelancer")
+      .get('/notification/' + users[2]._id.toString() +"/user")
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, 'it should respond with json')
+      .expect(200)
+      done();
+    });
+
+    it('should list the user notifications matching the id', function(done) {
+
+      request(app)
+      .get('/notification/' + users[3]._id.toString() +"/user")
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
       .expect(200)
@@ -74,36 +93,44 @@ describe('Backend notification router tests', function(){
 
 
 
-  describe('PUT /emergency/:notificatonId/:subject/:yesOrNo', function(){
+  describe('PUT /emergency/:id/:subject/:answer', function(){
+    before(seed);
+    after(utils.dropDb);
+
     it('should accept the user yes to contact next freelancer', function(done) {
 
       request(app)
-      .put('/emergency/' + notifications[0]._id.toString() +"/user/yes")
+      .put('/emergency/' + notifications[0]._id +"/user/yes")
+      .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .expect(204, done);
-      done();
     });
 
     it('should accept the user yes to contact next freelancer but no more freelancers', function(done) {
 
       request(app)
       .put('/emergency/' + notifications[0]._id.toString() +"/user/yes")
-      .expect(200, done); //modify in router 204 to 200
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect(204, done); //modify in router 204 to 200
     });
 
     it('should accept the user no to contact next freelancer', function(done) {
 
       request(app)
       .put('/emergency/' + notifications[0]._id.toString() +"/user/no")
-      .expect(200, done); //modify in router 204 to 200
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect(204, done); //modify in router 204 to 200
     });
 
-    it('should return 400 if the user say no to contact next freelancer but notification id is wrong', function(done) {
+    it('should return 200 if the user say no to contact next freelancer but notification id is wrong', function(done) {
 
       request(app)
-      .put('/emergency/' + ObjectId().toString() +"/user/yes")
+      .put('/emergency/' + ObjectId().toString() +"/user/no")
+      .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
-      .expect(404, done);//modify in router 400 to 404
+      .expect(200, done);//modify in router 400 to 404
       done();
     });
 
@@ -113,6 +140,7 @@ describe('Backend notification router tests', function(){
 
       request(app)
       .put('/emergency/' + notifications[0]._id.toString() +"/freelancer/no")
+      .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .expect(204, done);
       done();
@@ -121,83 +149,24 @@ describe('Backend notification router tests', function(){
     it('should accept the freelancer yes to emergency call', function(done) {
       request(app)
       .put('/emergency/' + notifications[0]._id.toString() +"/freelancer/yes")
+      .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .expect(204, done);
       done();
     });
-  });
 
-  it('Dont save incorrect format to database', function(done) {
-    //Attempt to save with wrong info. An error should trigger
-    var nn = new Notification()
-    nn.save(function(err, saved) {
-      if(err) { return done(); }
-      throw new Error('Should generate error!');
-    });
-  });
-
-
-
-});
-
-describe('Backend emergency tests', function(){
-
-  describe('GET /notification/:id/:subject', function(){
-    before(seed);
-    after(utils.dropDb);
-
-    it('should list the freelancer notifications matching the id', function(done) {
+    it('should do nothing if notification does not exists', function(done) {
 
       request(app)
-      .get('/notification/' + freelancers[0]._id.toString() +"/freelancer")
+      .put('/emergency/' + ObjectId().toString() +"/user/yes")
+      .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(200, done);
+      .expect(200, done); //modify in router 204 to 200
       done();
     });
-
-    it('should give back a 400 status if the freelancer profile does not exists', function(done) {
-
-      request(app)
-      .get('/notification/' + ObjectId().toString() + "/freelancer")
-      .set('Accept', 'application/json')
-      .expect(400, done);
-    });
-
-    it('should give back a 400 status if the url contains user', function(done) {
-
-      request(app)
-      .get('/notification/' + freelancers[0]._id.toString() + "/user")
-      .set('Accept', 'application/json')
-      .expect(400, done);
-    });
-
-    it('should list the user notifications matching the id', function(done) {
-
-      request(app)
-      .get('/notification/' + users[2]._id.toString() +"/freelancer")
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(200)
-      done();
-    });
-
-    it('should give back a 400 status if the user profile does not exists', function(done) {
-
-      request(app)
-      .get('/notification/' + ObjectId().toString() + "/user")
-      .set('Accept', 'application/json')
-      .expect(400, done);
-    });
-
-    it('should give back a 400 status if the url contains freelancer', function(done) {
-
-      request(app)
-      .get('/notification/' + users[2]._id.toString() + "/freelancer")
-      .set('Accept', 'application/json')
-      .expect(400, done);
-    });
   });
+
+
 });
 
 
@@ -206,10 +175,6 @@ describe('Backend emergency router tests', function(){
   describe('POST /emergency', function(){
     before(seed);
     after(utils.dropDb);
-
-    it('should send an email when the sendmail() method is called', function(done) {
-      done();
-    })
 
     it('should return nothing if no profiles are found', function(done) {
       var freelancerQuery = {
