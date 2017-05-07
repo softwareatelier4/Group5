@@ -50,19 +50,22 @@
         <span>{{notification.status}}</span>
       </div>
 
-      <template id="yesno" is="dom-if" if="{{_notificationRefused(notification.status)}}" >
-        <span>
+      <div id="show">
+        <template id="yesno" is="dom-if" if="{{_notificationRefused(notification.status)}}" >
+          <span>
 
-          <div>Call another?:</div>
-          <paper-button id="buttonYes" raised on-click="_sendYes">
-            Yes
-          </paper-button>
-          <paper-button id="buttonNo" raised on-click="_sendNo">
-            No
-          </paper-button>
+            <div>Call another?:</div>
+            <paper-button id="buttonYes" raised on-click="_sendYes">
+              Yes
+            </paper-button>
+            <paper-button id="buttonNo" raised on-click="_sendNo">
+              No
+            </paper-button>
 
-         </span>
-      </template>
+           </span>
+        </template>
+      </div>
+
 
       </div>
       <div id="right">
@@ -108,15 +111,25 @@
       },
 
       ready: function() {
-        // CONTROLLA SE this.frnumber < this.notification.availableFreelancers.length, fai questo, altrimenti scrivi che non ci sono altri da contattare
-        this.$['not-email'].innerHTML=this.notification.availableFreelancers[this.frnumber].email;
-        this.$['not-category'].innerHTML=this.notification.availableFreelancers[this.frnumber].category;
-        this.$['not-address'].innerHTML=this.notification.availableFreelancers[this.frnumber].address;
+        var i = 0;
+        this.notification.availableFreelancers.forEach(function(el){
+          if(el != null){
+            i ++;
+          }
+        })
+        if(this.frnumber < i){
+          this.$['not-email'].innerHTML=this.notification.availableFreelancers[this.frnumber].email;
+          this.$['not-category'].innerHTML=this.notification.availableFreelancers[this.frnumber].category;
+          this.$['not-address'].innerHTML=this.notification.availableFreelancers[this.frnumber].address;
 
-        this.$['not-name'].innerHTML=this.notification.availableFreelancers[this.frnumber].firstName + " " +this.notification.availableFreelancers[this.frnumber].lastName;
+          this.$['not-name'].innerHTML=this.notification.availableFreelancers[this.frnumber].firstName + " " +this.notification.availableFreelancers[this.frnumber].lastName;
 
-        if(this.notification.status == null || this.notification.status == undefined){
-            this.$['notification-status'].innerHTML="Pending";
+          if(this.notification.status == null || this.notification.status == undefined){
+              this.$['notification-status'].innerHTML="Pending";
+          }
+        }else{
+          this.$['not-email'].innerHTML = "No more to contact";
+          this.$.show.style.display = "none";
         }
 
       },
@@ -135,8 +148,9 @@
         ajaxel.generateRequest();
       },
 
-      _yesres : function(){
+      _yesres : function(el){
         console.log("user yes");
+        // console.log(el.detail.response);
         window.location.reload();
       },
 
