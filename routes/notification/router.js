@@ -14,23 +14,28 @@ router.all('/', middleware.supportedMethods(' GET'));
 
 router.get('/:id/:subject', function(req, res, next){
   if(req.params.subject === "user"){
+    //retunrn an array of notification with each notification a freelancer
     User.findById(req.params.id, function(err, user){
       if(user){
         user = user.toObject();
         var totalitem = user.notifications.length;
         var processed = 0;
-        user.notifications.forEach(function(el){
-          console.log(el);
-          // el = el.toObject();
-          Freelancer.findById(el.availableFreelancers[el.freelancerNotified], function(err, freelancer){
-            processed++;
-            el.availableFreelancers[el.freelancerNotified] = freelancer;
-            if(processed === totalitem){
-              res.status(200).json(user.notifications);
-            }
-          });
-        })
+        var result = [];
+        user.notifications.forEach(function(notificationid){
+          console.log("id " + notificationid);
+          Notification.findById(notificationid, function(err, notif){
+            console.log("notif" + notif);
+            Freelancer.findById(notif.availableFreelancers[notif.freelancerNotified], function(err, freelancer){
 
+              processed++;
+              notif.availableFreelancers[notif.freelancerNotified] = freelancer;
+              result.push(notif);
+              if(processed === totalitem){
+                res.status(200).json(result);
+              }
+            });
+          })
+        })
       }else{
         console.log("not found");
         res.sendStatus(400);
@@ -39,23 +44,22 @@ router.get('/:id/:subject', function(req, res, next){
   }else{ // freelancer
     Freelancer.findById(req.params.id, function(err, freelancer){
       if(freelancer){
-
         freelancer = freelancer.toObject();
         var totalitem = freelancer.notifications.length;
         var processed = 0;
-        freelancer.notifications.forEach(function(el){
-          // el = el.toObject();
-          User.findById(el.userCalling, function(err, user){
-            processed++;
-            el.userCalling = user;
-            if(processed === totalitem){
-              res.status(200).json(freelancer.notifications);
-            }
+        var result = [];
+        freelancer.notifications.forEach(function(notificationid){
+          Notification.findById(notificationid, function(err, notif){
+            User.findById(notif.userCalling, function(err, user){
+              processed++;
+              notif.userCalling = user;
+              result.push(notif);
+              if(processed === totalitem){
+                res.status(200).json(result);
+              }
+            });
           });
         })
-        // console.log("AAAAAAAAA freelancer found");
-        // console.log(freelancer.notifications);
-        // res.status(200).json(freelancer.notifications);
       }else{
         console.log("not found");
         res.sendStatus(400);

@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     email     : { type: String, required: true },
     userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'},
     freelancerId : { type: String },
-    notifications : { type: [NotificationSchema], default: [] }
+    notifications : { type: [ObjectId], ref: "Notification", default: [] }
   }
 );
 

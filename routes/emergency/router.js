@@ -34,7 +34,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
             if(done){
               console.log("accepted!");
               console.log(done);
-              done.save();
+              // done.save();
               res.sendStatus(204);
             }
           })
@@ -44,7 +44,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
           Notification.findByIdAndUpdate(req.params.id, updateToBeMade, function(err, updatednotif) {
             if (err) return console.error(err);
             var oldFreelancerId = updatednotif.availableFreelancers[updatednotif.freelancerNotified];
-            Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif } }).exec( function(err, profile) {
+            Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif._id } }).exec( function(err, profile) {
               if (err) return console.error(err);
             });
           });
@@ -60,11 +60,11 @@ router.put('/:id/:subject/:answer',function(req, res, next){
             if (number < updatednotif.availableFreelancers.length) {
               //no check for finding since here notification has been already found.
               var freelancerToBeContacted = updatednotif.availableFreelancers[number];
-              sendmail(freelancerToBeContacted);
-              Freelancer.findByIdAndUpdate(freelancerToBeContacted._id, { $push: { notifications: updatednotif } }).exec( function(err, profile) {
+              Freelancer.findByIdAndUpdate(freelancerToBeContacted, { $push: { notifications: updatednotif._id } }).exec( function(err, profile) {
                 if (err) return console.error(err);
+                sendmail(profile);
+                res.sendStatus(204);
               });
-              res.sendStatus(204);
             } else {
               console.log("No other freelancer are available")
               res.sendStatus(204);
@@ -188,7 +188,7 @@ router.post('/', function(req, res, next) {
           profession: req.body.profession,
           category: req.body.category,
           location: req.body.location,
-          userCalling: req.session.user,
+          userCalling: req.session.user._id,
           freelancerNotified: 0,
           status : "Pending",
           availableFreelancers: idarray
@@ -198,7 +198,7 @@ router.post('/', function(req, res, next) {
 
         newNotification.save(function(err) {
           // add notification to freelancer
-          Freelancer.findByIdAndUpdate(profiles[0]._id, {$push: {"notifications": newNotification}},
+          Freelancer.findByIdAndUpdate(profiles[0]._id, {$push: {"notifications": newNotification._id}},
           {safe: true, upsert: true, new : false},
           function(err, freelancer) {
             // if (err) return next (err);
@@ -210,7 +210,7 @@ router.post('/', function(req, res, next) {
 
               console.log(req.session.user._id);
               //add notification to user
-              User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification}},
+              User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification._id}},
               {safe: true, upsert: true, new : false},
               function(err, user) {
                 // if (err) return next (err);
