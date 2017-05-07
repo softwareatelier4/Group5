@@ -409,7 +409,7 @@
           reflectToAttribute: true,
           value: function () {
             let date = new Date();
-            console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
+            // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
           },
         }
@@ -433,13 +433,14 @@
         let timeEndDefault = time.toLocaleTimeString().substring(0, 5);
 
         let startDate = this.$['calendar-input-start-date'].value || dateNow;
-        console.log(startDate);
+        // console.log(startDate);
         let startTime = this.$['calendar-input-start-hour'].value || timeNow;
         let endDate = this.$['calendar-input-end-date'].value || dateNow;
         let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
 
         let start = new Date(startDate + ", " + startTime);
         let end = new Date(endDate + ", " + endTime);
+        // console.log(dateNow, dateNow);
 
         if (validLocation && validDescription) {
           let newEvent = {
