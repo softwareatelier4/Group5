@@ -5,6 +5,40 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var date = new Date();
 
+var notifications = {
+  name : "Notification",
+  data : [
+    {
+      "_id"                 : ObjectId("590f2bcfda0f255fd9fb5654"),
+      "description"         : "I want a plumber because all the sexy videos start with one",
+      "profession"          : "Plumber",
+      "category"            : "Other",
+      "userCalling"         : "5625fc2bd82b84d23d8c9bd0",
+      "freelancerNotified"  : 0,
+      "availableFreelancers": ["5625fc2bd82b84d23d8c7bd6"]
+    },
+    // {
+    //   // "_id"                 : ObjectId("5625fc2bd66b84d23d8c7bf2"),
+    //   "description"         : "I think my cat has a virus",
+    //   "profession"          : "IT guy",
+    //   "category"            : "Other",
+    //   "userCalling"         : "5625fc2bd82b84d23d8c9bd0",
+    //   "freelancerNotified"  : 0,
+    //   "availableFreelancers": [freelancers.data[3]._id]
+    // },
+    // {
+    //   // "_id"                 : ObjectId("5625fc2bd66b84d23d8c7bf2"),
+    //   "description"         : "I need a painter for my toilet",
+    //   "profession"          : "Painter",
+    //   "category"            : "Other",
+    //   "userCalling"         : "5625fc2bd82b84d23d8c9bd0",
+    //   "freelancerNotified"  : 0,
+    //   "availableFreelancers": [freelancers.data[2]._id],
+    //   "status"              : "Refused"
+    // },
+  ]
+}
+
 var events = {
   name : 'CalendarEvent',
   data : [
@@ -62,6 +96,7 @@ var users = {
       "userType"  : "Normal"
     },
     {
+      "_id"       : ObjectId("5625fc2bd82b84d23d8c9bd0"),
       "userName"  : "fischer",
       "firstName" : "",
       "lastName"  : "",
@@ -69,7 +104,7 @@ var users = {
       "email"     : "fischer@me.ch",
       "userType"  : "Freelancer",
       "freelancerId" : "5625fc2bd82b84d23d8c7bd6",
-      //"notifications" : [notifications.data[1]]
+      "notifications" : [notifications.data[0]]
     },
     {
       "userName"  : "sani",
@@ -136,7 +171,6 @@ var reviews = {
     },
   ]
 }
-// console.log(reviews.data[2]);
 var freelancers = {
   name : 'Freelancer',
   data : [
@@ -162,7 +196,6 @@ var freelancers = {
       "address"       : "Via Morobbi 13, 6592 Sant'Antonino",
       "description"   : "I'm the best scrum Master in Lugano.",
       "profession"    : "Software Engineer",
-      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
       "category"      : "IT Services",
       "rating"        : 5,
       "email"         : "alexander.scrummaster@hotmail.ru",
@@ -172,7 +205,7 @@ var freelancers = {
       "reviews"       : [reviews.data[4]],
       "events"        : [events.data[0], events.data[3]],
       "verification"  : "pending",
-      //"notifications" : [notifications.data[1]]
+      "notifications" : [notifications.data[0]]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -259,7 +292,6 @@ var freelancers = {
       "address"       : "Piazza Duomo, 22100 Como",
       "description"   : "I'm your man",
       "profession"    : "Web developer",
-      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
       "category"      : "IT Services",
       "rating"        : 5,
       "email"         : "real.giamma@usi.ch",
@@ -276,7 +308,6 @@ var freelancers = {
       "address"       : "Via Dogana, 41, 6854 Stabio",
       "description"   : "I'll find your bugs",
       "profession"    : "Beta tester",
-      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
       "category"      : "IT Services",
       "rating"        : 5,
       "email"         : "samuele.bischof@sunrise.ch",
@@ -289,45 +320,6 @@ var freelancers = {
 
   ]
 }
-
-var notifications = {
-  name : "Notification",
-  data : [
-    {
-      "_id"                 : ObjectId("5625fc2bd66b84d23d8c7b45"),
-      "description"         : "I want a plumber because all the sexy videos start with one",
-      "profession"          : "Plumber",
-      "category"            : "Other",
-      "userCalling"         : users.data[3],
-      "freelancerNotified"  : 0,
-      "availableFreelancers": [freelancers.data[1]]
-    },
-    {
-      "_id"                 : ObjectId("5625fc2bd66b84d23d8c7b67"),
-      "description"         : "I think my cat has a virus",
-      "profession"          : "IT guy",
-      "category"            : "Other",
-      "userCalling"         : users.data[2],
-      "freelancerNotified"  : 0,
-      "availableFreelancers": [freelancers.data[3]]
-    },
-    {
-      "_id"                 : ObjectId("5625fc2bd66b84d23d8c7b54"),
-      "description"         : "I need a painter for my toilet",
-      "profession"          : "Painter",
-      "category"            : "Other",
-      "userCalling"         : users.data[1],
-      "freelancerNotified"  : 0,
-      "availableFreelancers": [freelancers.data[2]],
-      "status"              : "Refused"
-    },
-  ]
-}
-
-
-
-//users.data[2].notifications = [notifications.data[0], notifications.data[2]];
-freelancers.data[1].notifications = [notifications.data[1]];
 
 
 var seedData = [];
