@@ -15,7 +15,7 @@ var notifications = {
       "category"            : "Other",
       "userCalling"         :  ObjectId("5625fc2bd82b84d23d8c9bd0"),
       "freelancerNotified"  : 0,
-      "availableFreelancers": [ObjectId("5625fc2bd82b84d23d8c7bd6")],
+      "availableFreelancers": [ObjectId("5625fc2bd82b84d23d8c7bd6"), ObjectId("5625fc2bd82b84d23d8c7bd0")],
       "status"              : "Pending",
     },
     // {
@@ -106,6 +106,16 @@ var users = {
       "userType"  : "Freelancer",
       "freelancerId" : "5625fc2bd82b84d23d8c7bd6",
       "notifications" : [notifications.data[0]]
+    },
+    {
+      "_id"       : ObjectId("5625fc2bd82b84d23d8c9b70"),
+      "userName"  : "esposem",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "em",
+      "email"     : "em@me.ch",
+      "userType"  : "Freelancer",
+      "freelancerId" : "5625fc2bd82b84d23d8c7bd0",
     },
     {
       "userName"  : "sani",
@@ -227,7 +237,7 @@ var freelancers = {
     },
 
     {
-      // "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd0"),
       "firstName"     : "Marco",
       "lastName"      : "Rezzonico",
       "address"       : "Viale stazione, Bellinzona",
@@ -235,11 +245,13 @@ var freelancers = {
       "profession"    : "Painter",
       "category"      : "Other",
       "rating"        : 4,
-      "email"         : "esposem@usi.ch",
+      "email"         : "esposem2@usi.ch",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 202,
       "reviews"       : [],
       "emergencyAvailable"  : true,
+      "verification"  : "verified",
+      // "notifications" : [ObjectId(notifications.data[0]._id)]
     },
 
     {

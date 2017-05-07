@@ -53,10 +53,15 @@ router.put('/:id/:subject/:answer',function(req, res, next){
         }
       }else{// user
         if(req.params.answer === "yes"){ // if user say yes, contact next freelancer
+          console.log("this number freelancer" + notification.freelancerNotified);
+          notification = notification.toObject();
           var number = notification.freelancerNotified + 1
+          console.log(number);
           var updateToBeMade = { freelancerNotified: number, dateCreated : Date.now(), status : "Pending" };
-          Notification.findByIdAndUpdate(req.params.id, updateToBeMade, function(err, updatednotif) {
+          Notification.findByIdAndUpdate(notification._id, updateToBeMade, function(err, updatednotif) {
             if (err) return console.error(err);
+            console.log(updatednotif);
+            console.log("next number freelancer" + updatednotif.freelancerNotified);
             if (number < updatednotif.availableFreelancers.length) {
               //no check for finding since here notification has been already found.
               var freelancerToBeContacted = updatednotif.availableFreelancers[number];
@@ -67,7 +72,9 @@ router.put('/:id/:subject/:answer',function(req, res, next){
               });
             } else {
               console.log("No other freelancer are available")
-              res.sendStatus(204);
+              Notification.findByIdAndUpdate(req.params.id, {status : "Refused"}, function(err, updatednotif) {
+                res.status(204).json("no more free");
+              });
             }
           });
         }else{ // if no, delete notification from db
@@ -75,7 +82,13 @@ router.put('/:id/:subject/:answer',function(req, res, next){
             if (err) return console.error(err);
             if(removed){
               console.log("removed");
-              res.sendStatus(204);
+              // res.sendStatus(204);
+
+              User.findByIdAndUpdate(removed.userCalling, { $pull: {notifications : removed._id}}, function(err, ok){
+                if(ok){
+                  res.sendStatus(204);
+                }
+              })
             }else{
               console.log("error");
               res.sendStatus(400);
