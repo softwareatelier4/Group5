@@ -331,6 +331,24 @@ var freelancers = {
       "verification"  : "pending",
       "emergencyAvailable"  : false,
     },
+    {
+      "_id"           : ObjectId("5625fc2cd82b84d23d8c7bd6"),
+      "firstName"     : "Alexander",
+      "lastName"      : "Fischer",
+      "address"       : "Via Morobbi 13, 6592 Sant'Antonino",
+      "description"   : "I'm the best scrum Master in Lugano.",
+      "profession"    : "Software Engineer",
+      "category"      : "IT Services",
+      "rating"        : 5,
+      "email"         : "alexander.scrummaster@hotmail.ru",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 50,
+      "emergencyAvailable"  : true,
+      "reviews"       : [reviews.data[4]],
+      "events"        : [events.data[0], events.data[3]],
+      "verification"  : "verified",
+      "notifications" : [ObjectId(notifications.data[0]._id)]
+    },
 
   ]
 }
