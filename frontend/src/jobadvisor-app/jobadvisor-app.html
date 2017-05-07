@@ -220,7 +220,7 @@
         this.results = results;
       },
       _userChanged: function (user) {
-        console.log(user);
+        // console.log(user);
         if (this.user && this.user.userType != "guest") {
           this.$['logoutBtn'].hidden = false;
           this.$['loginBtn'].hidden = true;
@@ -246,7 +246,7 @@
       },
 
       _onLogoutTap: function(evt) {
-        console.log("Logging out");
+        // console.log("Logging out");
         this.set('user', {
           userName: "guest",
           userType: "guest"
@@ -282,7 +282,7 @@
           this.set('user', JSON.parse(localStorage.getItem('user')));
           this.$['logoutBtn'].hidden = false;
         }
-        console.log("USER", this.user);
+        // console.log("USER", this.user);
       },
 
       _handleResponse: function (response) {
@@ -290,7 +290,7 @@
         if (response) {
           this.userLocation = resp.results[0].formatted_address;
           this.location = resp.results[0].formatted_address;
-          console.log("Reverse geo response", resp.results[0].formatted_address);
+          // console.log("Reverse geo response", resp.results[0].formatted_address);
           window.localStorage['userLocation'] = resp.results[0].formatted_address;
         }
 

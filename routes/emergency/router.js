@@ -33,6 +33,8 @@ router.put('/:id/:subject/:answer',function(req, res, next){
           Notification.findByIdAndUpdate(req.params.id, {status : "Accepted"}, function(err,done){
             if(done){
               console.log("accepted!");
+              console.log(done);
+              done.save();
               res.sendStatus(204);
             }
           })
@@ -105,7 +107,8 @@ router.post('/', function(req, res, next) {
     // profiles is array of objects {}
     if (profiles === undefined || profiles.length == 0) {
       console.log("No matching profiles were found");
-      res.sendStatus(201);
+      res.status(201).json("no match");
+      console.log("sent no match");
     } else {
       console.log("found " + profiles.length + " freelancers!");
 
@@ -173,6 +176,12 @@ router.post('/', function(req, res, next) {
 
         sendmail(profiles[0]);
 
+        var idarray = [];
+        profiles.forEach(function(el){
+          idarray.push(el._id);
+        })
+        // console.log("size same? " + (idarray.length === profiles.length));
+
         //create new notification
         var newNotification = new Notification({
           description: req.body.description,
@@ -181,12 +190,11 @@ router.post('/', function(req, res, next) {
           location: req.body.location,
           userCalling: req.session.user,
           freelancerNotified: 0,
-          availableFreelancers: profiles
+          status : "Pending",
+          availableFreelancers: idarray
         });
         console.log("Notification object : \n" + newNotification);
         console.log("Object ended \n");
-        var foundFreelancer = false;
-        var foundUser = false;
 
         newNotification.save(function(err) {
           // add notification to freelancer
@@ -196,66 +204,54 @@ router.post('/', function(req, res, next) {
             // if (err) return next (err);
             if (!freelancer) {
               console.log("freelancer not found");
-              foundFreelancer = true;
+              res.sendStatus(400);
             } else {
               console.log("freelancer found");
-            }
-          })
 
-          console.log(req.session.user._id);
-          //add notification to user
-          User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification}},
-          {safe: true, upsert: true, new : false},
-          function(err, user) {
-            // if (err) return next (err);
-            if (!user) {
-              console.log(user);
-              console.log("user not found");
-              foundFreelancer = true;
-            } else {
-              console.log("user found");
+              console.log(req.session.user._id);
+              //add notification to user
+              User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification}},
+              {safe: true, upsert: true, new : false},
+              function(err, user) {
+                // if (err) return next (err);
+                if (!user) {
+                  console.log("user not found");
+                  res.sendStatus(400);
+                } else {
+                  console.log("user found");
 
-            }
-          })
+                  var timeout = setTimeout(function(){
+                    Notification.findById(newNotification._id, function(err, notification){
+                      if(notification && notification.status !== "Accepted" ){
+                        if(Date.now() > new Date(notification.dateCreated.getTime() + time * 60000)) {
+                          Notification.findByIdAndUpdate(newNotification._id,  {"status": "Refused"},{safe: true, upsert: true, new : false},
+                          function(err, notif) {
+                            if (!notif) {
+                              console.log("notif not found");
+                            } else {
+                              console.log("notif updated");
+                            }
+                          });
+                        }
+                      }
+                    })
+                  }, time * 60000);
 
-          if(foundFreelancer || foundUser){
-            res.sendStatus(400);
-          }else{
-            var timeout = setTimeout(function(){
-              Notification.findById(newNotification._id, function(err, notification){
-                if(notification && notification.status !== "Accepted" ){
-                  if(Date.now() > new Date(notification.dateCreated.getTime() + time * 60000)) {
-                   // send to user that the freelancer has refused
-                  //  res.json({
-                  //    message : "no answer",
-                  //    timeset : time,
-                  //  });
+                  res.sendStatus(201);
 
-                   Notification.findByIdAndUpdate(newNotification._id,  {"status": "Refused"},{safe: true, upsert: true, new : false},
-                   function(err, notif) {
-                     if (!notif) {
-                       console.log("notif not found");
-                     } else {
-                       console.log("notif updated");
-                     }
-                   });
-
-                  }
                 }
               })
-            }, time * 60000);
-
-            res.sendStatus(201);
-          }
+            }
+          })
         });
       });
 
     } else {
-      console.log("No free profiles were found");
+      // console.log("No free profiles were found");
       res.status(200).json({
         message : "freelancer not free"
       });
-      console.log("sent freelancer not free");
+      // console.log("sent freelancer not free");
       }
     }
   });

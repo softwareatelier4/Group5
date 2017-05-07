@@ -15,8 +15,8 @@ const NotificationSchema = new mongoose.Schema(
     dateCreated         : { type: Date, default: Date.now() },
     userCalling         : { type: UserSchema, required: true },
     freelancerNotified  : { type: Number, required: true },
-    availableFreelancers : { type: [FreelancerSchema], required: true },
-    status              : { type: String, enum: ['Pending', 'Refused', 'Accepted'], default: 'Pending' },
+    availableFreelancers : { type: [String], required: true },
+    status              : { type: String, enum: ['Pending', 'Refused', 'Accepted'], default: 'Pending', required: true },
   }
 );
 
