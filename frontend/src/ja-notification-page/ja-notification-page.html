@@ -20,12 +20,12 @@
       <div> NOTIFICATIONS : </div>
 
       <template id="notificationList" is="dom-repeat" items="{{notifications}}" as="notification">
-        <ja-notification-item  notification="{{notification}}" frnumber="{{notification.freelancerNotified}}" user={{user}}>
+        <ja-notification-item  notifications={{notifications}} notification="{{notification}}" frnumber="{{notification.freelancerNotified}}" user={{user}}>
         </ja-notification-item>
       </template>
 
       <template id="freelancerNotificationList" is="dom-repeat" items="{{freelancerNotifications}}" as="freelancerNotification">
-        <ja-freelancerNotification-item  notification="{{freelancerNotification}}" user={{user}}>
+        <ja-freelancerNotification-item  notifications={{freelancerNotifications}} notification="{{freelancerNotification}}" user={{user}}>
         </ja-freelancerNotification-item>
       </template>
 

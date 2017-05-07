@@ -37,7 +37,7 @@
 
     </style>
 
-    <paper-card>
+    <paper-card id={{notification._id}} class='papercard'>
       <div id="left">
         <div id="notification-profession">
         <span>{{notification.profession}}</span>
@@ -117,15 +117,22 @@
         const ajaxel = this.$.buttonNo;
         ajaxel.generateRequest();
       },
+
       _yesres : function(){
         console.log("freelancer yes");
         x = document.getElementById("accepted");
-        x.innerHTML = "<p>Request accepted.</p>"
-        // scrivi che l ha accettata e basta
+        x.innerHTML = "<p>Request accepted.</p>";
+        //to be fixed, works for showing on Monday though.
       },
+
       _nores : function(){
         console.log("freelancer no");
-        //mi pare avevo scritto di cancellare la tab, rivedi il foglio
+        const x = this.notification._id;
+        const found = this.notifications.find(function(el){
+          return el._id === x;
+        });
+        const index = this.notifications.indexOf(found);
+        this.splice("notifications", index, 1);
       },
 
     });
