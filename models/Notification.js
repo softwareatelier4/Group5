@@ -3,8 +3,8 @@
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
-const FreelancerSchema = require('./Freelancer');
-const UserSchema = require('./User');
+// const FreelancerSchema = require('./Freelancer');
+// const UserSchema = require('./User');
 
 
 const NotificationSchema = new mongoose.Schema(
@@ -13,9 +13,9 @@ const NotificationSchema = new mongoose.Schema(
     profession          : { type: String, required: true},
     category            : { type: String, required: true },
     dateCreated         : { type: Date, default: Date.now() },
-    userCalling         : { type: UserSchema, required: true },
+    userCalling         : { type: String, required: true },
     freelancerNotified  : { type: Number, required: true },
-    availableFreelancers : { type: [FreelancerSchema], required: true },
+    availableFreelancers : { type: [String], required: true },
     status              : { type: String, enum: ['Pending', 'Refused', 'Accepted'], default: 'Pending' },
   }
 );
