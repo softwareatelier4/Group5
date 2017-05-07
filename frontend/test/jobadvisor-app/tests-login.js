@@ -57,8 +57,8 @@ module.exports = {
       .setValue('#signup-password-check input', '1234')
       .click('#user-signup-button')
       .pause(500)
-      .click('#menu-close')
-      .pause(1000)
+      // .click('#menu-close')
+      // .pause(1000)
       .assert.containsText('#signup-error', 'User already exists')
   },
 
