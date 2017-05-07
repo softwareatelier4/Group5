@@ -38,7 +38,7 @@
 
 
     </style>
-    <paper-card>
+    <paper-card id={{notification._id}} class='papercard'>
       <div id="left">
         <div id="notification-profession">
         <span>{{notification.profession}}</span>
@@ -134,14 +134,20 @@
         const ajaxel = this.$.buttonNo;
         ajaxel.generateRequest();
       },
+
       _yesres : function(){
         console.log("user yes");
         window.location.reload();
       },
+
       _nores : function(){
         console.log("user no");
-        // mi pare che ti avevo scritto di cancellare la tab, controlla il foglio
-
+        const x = this.notification._id;
+        const found = this.notifications.find(function(el){
+          return el._id === x;
+        });
+        const index = this.notifications.indexOf(found);
+        this.splice("notifications", index, 1);
       },
 
     });
