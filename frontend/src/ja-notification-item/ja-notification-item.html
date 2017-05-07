@@ -89,8 +89,8 @@
       </div>
     </paper-card>
 
-    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/user/yes" method="PUT"  handle-as="json" on-response="_yesres"></iron-ajax><!-- RESPONSE???? -->
-    <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/user/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax> <!-- RESPONSE???? -->
+    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/user/yes" method="PUT"  handle-as="json" on-response="_yesres"></iron-ajax>
+    <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/user/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax>
 
   </template>
 
@@ -141,7 +141,7 @@
       _nores : function(){
         console.log("user no");
         // mi pare che ti avevo scritto di cancellare la tab, controlla il foglio
-        
+
       },
 
     });

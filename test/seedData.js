@@ -326,8 +326,8 @@ var notifications = {
 
 
 
-users.data[2].notifications = [notifications.data[0], notifications.data[2]];
-//freelancers.data[1].notifications = [notifications.data[1]];
+//users.data[2].notifications = [notifications.data[0], notifications.data[2]];
+freelancers.data[1].notifications = [notifications.data[1]];
 
 
 var seedData = [];
