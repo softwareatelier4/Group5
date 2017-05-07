@@ -17,13 +17,17 @@ module.exports = {
 
   'Test input, get results and click on a profile [FULL TEST]' : function (client) {
     client
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
+      .click('#menu-open')
       .click('#login-button')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/')
       .setValue('#field-search input', 'Gianma')
       .setValue('#dropdown-toggle', 'IT Services')
@@ -239,20 +243,24 @@ module.exports = {
   'Test review insertion' : function (client) {
     client
       .url('http://localhost:3005/')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
+      .click('#menu-open')
       .click('#login-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
       .pause(5000)
       .assert.urlEquals('http://localhost:3005/')
+      .click('#menu-open')
       .waitForElementVisible('#logoutBtn', 1000)
       .waitForElementNotVisible('#loginBtn', 1000)
-      .assert.containsText('#username',
-                           'myUsername')
+      .assert.containsText('#logoutBtn',
+                           'LOGOUT MYUSERNAME')
       .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd5')
       .waitForElementVisible('#reviews', 1000)
       .waitForElementVisible('#commentarea', 1000)
@@ -285,15 +293,19 @@ module.exports = {
   'Freelancer creation :Test signup' : function (client) {
     client
       .url('http://localhost:3005/')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
+      .click('#menu-open')
       .click('#login-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
       .url('http://localhost:3005')
+      .click('#menu-open')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
       .waitForElementVisible('ja-results-list', 1000)
@@ -346,8 +358,10 @@ module.exports = {
     'Freelancer creation : no fields inserted' : function (client) {
       client
       .url('http://localhost:3005/')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
