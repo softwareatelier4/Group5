@@ -48,19 +48,21 @@
       <div id="notification-status">
         <span>{{notification.status}}</span>
       </div>
-      <div id = "accepted">
-        <span>
-          <div>Accept?:</div>
+      <template is="dom-if" if="{{_statusispending(notification.status)}}" restamp="true">
+        <div id = "accepted">
+          <span>
+            <div>Accept?:</div>
 
-          <paper-button id="buttonYes" raised on-click="_sendYes">
-            Yes
-          </paper-button>
-          <paper-button id="buttonNo" raised on-click="_sendNo">
-            No
-          </paper-button>
+            <paper-button id="buttonYes" raised on-click="_sendYes">
+              Yes
+            </paper-button>
+            <paper-button id="buttonNo" raised on-click="_sendNo">
+              No
+            </paper-button>
 
-         </span>
-      </div>
+           </span>
+        </div>
+      </template>
 
       </div>
       <div id="right">
@@ -134,6 +136,10 @@
         const index = this.notifications.indexOf(found);
         this.splice("notifications", index, 1);
       },
+
+      _statusispending : function(stat){
+        return stat === "Pending"
+      }
 
     });
   </script>

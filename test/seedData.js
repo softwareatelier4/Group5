@@ -13,9 +13,9 @@ var notifications = {
       "description"         : "I want a plumber because all the sexy videos start with one",
       "profession"          : "Plumber",
       "category"            : "Other",
-      "userCalling"         : "5625fc2bd82b84d23d8c9bd0",
+      "userCalling"         :  ObjectId("5625fc2bd82b84d23d8c9bd0"),
       "freelancerNotified"  : 0,
-      "availableFreelancers": ["5625fc2bd82b84d23d8c7bd6"],
+      "availableFreelancers": [ObjectId("5625fc2bd82b84d23d8c7bd6")],
       "status"              : "Pending",
     },
     // {
@@ -97,6 +97,7 @@ var users = {
       "userType"  : "Normal"
     },
     {
+      "_id"       : ObjectId("5625fc2bd82b84d23d8c9bd0"),
       "userName"  : "fischer",
       "firstName" : "",
       "lastName"  : "",
@@ -206,7 +207,7 @@ var freelancers = {
       "reviews"       : [reviews.data[4]],
       "events"        : [events.data[0], events.data[3]],
       "verification"  : "pending",
-      "notifications" : [notifications.data[0]]
+      "notifications" : [ObjectId(notifications.data[0]._id)]
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -322,39 +323,6 @@ var freelancers = {
   ]
 }
 
-var notifications = {
-  name : "Notification",
-  data : [
-    {
-      "_id"                 : ObjectId("5625fc2bd66b84d23d8c7b45"),
-      "description"         : "I want a plumber because all the sexy videos start with one",
-      "profession"          : "Plumber",
-      "category"            : "Other",
-      "userCalling"         : users.data[3],
-      "freelancerNotified"  : 0,
-      "availableFreelancers": [freelancers.data[1]]
-    },
-    {
-      "_id"                 : ObjectId("5625fc2bd66b84d23d8c7b67"),
-      "description"         : "I think my cat has a virus",
-      "profession"          : "IT guy",
-      "category"            : "Other",
-      "userCalling"         : users.data[2],
-      "freelancerNotified"  : 0,
-      "availableFreelancers": [freelancers.data[3]]
-    },
-    {
-      "_id"                 : ObjectId("5625fc2bd66b84d23d8c7b54"),
-      "description"         : "I need a painter for my toilet",
-      "profession"          : "Painter",
-      "category"            : "Other",
-      "userCalling"         : users.data[1],
-      "freelancerNotified"  : 0,
-      "availableFreelancers": [freelancers.data[2]],
-      "status"              : "Refused"
-    },
-  ]
-}
 
 var seedData = [];
 seedData.push(freelancers);
