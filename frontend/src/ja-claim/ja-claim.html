@@ -29,6 +29,11 @@
         display: none;
       }
 
+      #btn-send{
+        margin-top: 10px;
+        margin-left: 0px;
+      }
+
       file-upload {
         /*display: none;*/
         margin-top: 10px;
@@ -42,12 +47,13 @@
         {{result.firstName}} {{result.lastName}}
       </div>
 
-      {{user.email}} {{user._id}}
+      <!--{{user.email}} {{user._id}}-->
       <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
 
-      <form id="upload-form" method="post" enctype="multipart/form-data">
-        <input id="load-file" multiple="true" on-change="checkFile" type="file" name="file" class="inputfile">
-        <input id="claim-comment" type="text" name="comment">
+      <form id="upload-form" method="post" enctype="multipart/form-data" >
+        <input id="load-file" multiple="true" on-change="checkFile" type="file" name="file" class="inputfile" style="width:100%; padding-top: 10px; padding-bottom: 10px;">
+        <!--<input id="claim-comment" type="text" name="comment">-->
+        <textarea id="claim-comment" name="comment" placeholder="Enter text here ..." style="width:100%; min-height: 100px;"></textarea>
         <input id="claim-email" type="text" name="email" style="display: none;">
         <input id="user-id" type="text" name="userid" style="display: none;">
       </form>
