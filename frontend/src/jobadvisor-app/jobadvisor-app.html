@@ -80,31 +80,42 @@
 
       #username {
         color: white;
-        text-align: right;
       }
 
-      #loginBtn,
-      #logoutBtn {
-        background-color: white;
-      }
-
+      #user,
       #loginBtn,
       #logoutBtn,
-      #username {
-        /*margin: 10px;*/
-        float: right;
-        /*margin-bottom: 5px;*/
-      }
-
-      #login {
-        float: right;
-        text-align: right;
+      #signup-button {
+        background-color: white;
+        position: relative;
+        width: calc(100% - 10px);
+        margin: 5px;
       }
 
       #signup-button {
-        float: right;
         background-color: var(--paper-yellow-500);
-        color: blue;
+      }
+
+      #menu-open {
+        color: white;
+        cursor: pointer;
+      }
+
+      #menu-close {
+        color: white;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      #menu-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 99;
+        width: 300px;
+        height: 100%;
+        background-color: #222;
+        padding: 10px;
       }
     </style>
 
@@ -117,20 +128,29 @@
     <!-- <div id="login"> -->
 
     <!-- </div> -->
-    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/signup">
-        <paper-button id="signup-button">CREATE FREELANCER</paper-button>
-      </a>
-    </template>
 
-    <a href="/login">
-      <paper-button id="loginBtn" raised>Login/signup</paper-button>
+    <a id="menu-open" class="unselectable">
+      <iron-icon icon="icons:menu"></iron-icon>
     </a>
-    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
-    <div id="username">
-      [[_formatLoginStatus(user)]]
+    <div id="menu-container" class="unselectable" hidden>
+      <div id="menu-close" class="unselectable">
+        <iron-icon icon="icons:close"></iron-icon>
+      </div>
+      <a href="/login">
+        <paper-button id="loginBtn" raised>Login/signup</paper-button>
+      </a>
+      <paper-button id="logoutBtn" hidden raised>Logout {{user.userName}}</paper-button>
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/signup">
+          <paper-button id="signup-button">CREATE FREELANCER</paper-button>
+        </a>
+      </template>
+      <div id="username" hidden>
+        [[_formatLoginStatus(user)]]
+      </div>
     </div>
-    <div id="title-container">
+
+    <div class="unselectable" id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
     </div>
 
@@ -176,7 +196,9 @@
 
       listeners: {
         'loginBtn.tap': '_onLoginTap',
-        'logoutBtn.tap': '_onLogoutTap'
+        'logoutBtn.tap': '_onLogoutTap',
+        'menu-open.tap': '_openMenu',
+        'menu-close.tap': '_closeMenu',
       },
 
       properties: {
@@ -332,6 +354,14 @@
           window.localStorage['userLocation'] = resp.results[0].formatted_address;
         }
 
+      },
+
+      _openMenu: function () {
+        this.$['menu-container'].hidden = false;
+      },
+
+      _closeMenu: function () {
+        this.$['menu-container'].hidden = true;
       },
 
     });

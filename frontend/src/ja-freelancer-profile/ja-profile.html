@@ -36,6 +36,7 @@
         display: inline-block;
         padding: 20px;
         font-weight: normal;
+        min-width: 250px;
       }
 
       #right {
@@ -43,6 +44,7 @@
         display: inline-block;
         padding: 20px;
         font-weight: normal;
+        min-width: 250px;
       }
 
       #price {
@@ -87,7 +89,8 @@
         border-color: lightgray;
       }
 
-      #reviews, #profile-calendar {
+      #reviews,
+      #profile-calendar {
         padding-left: 20px;
         padding-right: 20px;
       }
@@ -128,7 +131,7 @@
         width: 100%;
       }
 
-      .event-start-end > paper-input {
+      .event-start-end>paper-input {
         display: inline-block;
         width: 49%;
       }
@@ -177,7 +180,6 @@
         background-color: var(--paper-blue-800);
         color: white;
       }
-
       /*paper-textarea {
         width: 100%;
         height: 150px;
@@ -316,7 +318,8 @@
     <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
     </iron-ajax>
 
-    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json" on-response="_handleAddEventResponse">
+    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json"
+      on-response="_handleAddEventResponse">
     </iron-ajax>
 
     <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
@@ -329,7 +332,7 @@
       is: "ja-profile",
 
       listeners: {
-        'open-events-btn.tap':'_onOpenEventsTap'
+        'open-events-btn.tap': '_onOpenEventsTap'
       },
 
       properties: {
@@ -404,7 +407,7 @@
         currentDate: {
           type: String,
           reflectToAttribute: true,
-          value: function() {
+          value: function () {
             let date = new Date();
             console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
@@ -412,11 +415,11 @@
         }
       },
 
-      _computeDateString: function(date) {
+      _computeDateString: function (date) {
         return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
       },
 
-      _onSubmitEventTap: function(evt) {
+      _onSubmitEventTap: function (evt) {
         let description = this.$['calendar-input-description'].value;
         let location = this.$['calendar-input-location'].value;
         let validLocation = this.$['calendar-input-location'].validate();
@@ -424,10 +427,10 @@
         let validDescription = this.$['calendar-input-description'].validate();
 
         let dateNow = this._computeDateString(new Date());
-        let timeNow = new Date().toLocaleTimeString().substring(0,5);
+        let timeNow = new Date().toLocaleTimeString().substring(0, 5);
         let time = new Date();
         time.setHours(time.getHours() + 1)
-        let timeEndDefault = time.toLocaleTimeString().substring(0,5);
+        let timeEndDefault = time.toLocaleTimeString().substring(0, 5);
 
         let startDate = this.$['calendar-input-start-date'].value || dateNow;
         console.log(startDate);
@@ -452,14 +455,14 @@
         }
       },
 
-      _onOpenEventsTap: function(evt) {
+      _onOpenEventsTap: function (evt) {
         this.$['profile-calendar'].open();
         let currDate = new Date();
-        let startHour = currDate.toLocaleTimeString().substring(0,5);
+        let startHour = currDate.toLocaleTimeString().substring(0, 5);
         let afterDate = new Date();
         afterDate.setHours(afterDate.getHours() + 1)
-        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0,5);
-        this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0,5);
+        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0, 5);
+        this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0, 5);
         // console.log(this._computeDateString(new Date()));
         // this.$['calendar-input-start-date'].value = "01/01/1991";
         // this.$['calendar-input-end-date'].value = this._computeDateString(new Date());
@@ -644,7 +647,7 @@
         this.unshift('reviews', obj);
       },
 
-      _handleAddEventResponse: function(evt) {
+      _handleAddEventResponse: function (evt) {
         const item = evt.detail.response;
         this.push('events', item);
       },
