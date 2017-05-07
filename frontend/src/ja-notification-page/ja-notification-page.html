@@ -19,10 +19,14 @@
 
       <div> NOTIFICATIONS : </div>
 
+      <div> AS USER : </div>
+
       <template id="notificationList" is="dom-repeat" items="{{notifications}}" as="notification">
         <ja-notification-item  notifications={{notifications}} notification="{{notification}}" frnumber="{{notification.freelancerNotified}}" user={{user}}>
         </ja-notification-item>
       </template>
+
+      <div> AS FREELANCER : </div>
 
       <template id="freelancerNotificationList" is="dom-repeat" items="{{freelancerNotifications}}" as="freelancerNotification">
         <ja-freelancerNotification-item  notifications={{freelancerNotifications}} notification="{{freelancerNotification}}" user={{user}}>
@@ -67,13 +71,15 @@
       },
 
       _onResponse: function(evt) { //user
-        //console.log(evt.detail.response);
+        console.log(evt.detail.response);
         this.notifications = evt.detail.response;
       },
 
 
       _onFreelancerResponse: function(evt) { //freelancer
-        console.log(evt.detail.response);
+        // console.log("freelancer notifications : ");
+        // console.log(evt.detail.response);
+        // console.log("-------------------");
         //this.notifications.concat(evt.detail.response);
         this.freelancerNotifications = evt.detail.response;
         //console.log(this.freelancerNotifications);
