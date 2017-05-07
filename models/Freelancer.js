@@ -18,8 +18,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
 const CalendarEventSchema = require('./CalendarEvent');
