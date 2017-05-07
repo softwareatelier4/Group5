@@ -48,7 +48,7 @@
       <div id="notification-status">
         <span>{{notification.status}}</span>
       </div>
-      <div>
+      <div id = "accepted">
         <span>
           <div>Accept?:</div>
 
@@ -119,7 +119,8 @@
       },
       _yesres : function(){
         console.log("freelancer yes");
-        alert("the request has been accepted")
+        x = document.getElementById("accepted");
+        x.innerHTML = "<p>Request accepted.</p>"
         // scrivi che l ha accettata e basta
       },
       _nores : function(){
