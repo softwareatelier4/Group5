@@ -1,0 +1,38 @@
+<dom-module id="ja-pending-list">
+    <template>
+        <style>
+            #pendingList {
+                position: absolute;
+                overflow: scroll;
+                height: 80%;
+                bottom: 0;
+            }
+        </style>
+
+        <template id="pendingList" is="dom-repeat" items="{{results}}" as="result">
+            <ja-pending-item id="fl-{{result._id}}" result="{{result}}">
+            </ja-pending-item>
+        </template>
+
+    </template>
+
+    <script>
+        // element registration
+        Polymer({
+            is: "ja-pending-list",
+
+            properties: {
+                results: {
+                    type: Array,
+                    observer: '_resultsChanged',
+                    notify: true,
+                    value: []
+                },
+            },
+            _resultsChanged: function (results) {
+                this.results = results;
+            },
+
+        });
+    </script>
+</dom-module>

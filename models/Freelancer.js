@@ -22,12 +22,8 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
+const CalendarEventSchema = require('./CalendarEvent');
 
-
-/** @constructor
-* @augments AbstractSoundCollectionSchemaInstance
-* @param {Object} definition
-*/
 const FreelancerSchema = new mongoose.Schema(
   {
     firstName     : { type: String, required: true },
@@ -42,52 +38,15 @@ const FreelancerSchema = new mongoose.Schema(
     price         : { type: Number },
     image         : { type: String, default: '/src/images/blank-user.jpg'},
     reviews       : { type: [ReviewSchema], default:[]},
+    events        : { type: [CalendarEventSchema], default:[]},
+    verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    claimFilePath : { type: String},
+    claimComment  : { type: String},
+    claimEmail    : { type: String},
+    claimingUserId: { type: String}, // the id of the user who issued the claim request, it may be denied
+    userId        : { type: String}, // the id of the user who succesfully claimed the profilea
   }
 );
 
-// FreelancerSchema.pre('save', function (next) {
-//   //default for firstName is userName
-//   if( this.firstName === undefined
-//     || this.firstName === null
-//     || this.firstName.toString().trim() === ''){
-//     this.firstName = this.userName;
-//   }
-//
-//   //default for lastName is userName
-//   if( this.lastName === undefined
-//     || this.lastName === null
-//     || this.lastName.toString().trim() === ''){
-//     this.lastName = this.userName;
-//   }
-//   return next();
-// });
-
-// FreelancerSchema.pre('save', function(next) {
-//   const user = this;
-//
-//   // return if the password was not modified.
-//   if (!user.isModified('password')) { return next(); }
-//
-//   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-//       if (err) { return next(err); }
-//
-//       bcrypt.hash(user.password, salt, function(err, hash) {
-//           if (err) { return next(err); }
-//
-//           user.password = hash;
-//           next();
-//       });
-//   });
-// });
-
-
-// FreelancerSchema.methods.isValidPassword = function isValidPassword(candidate, callback) {
-//   bcrypt.compare(candidate, this.password, function onPwdCompare(err, isMatch) {
-//     if (err) {
-//       return callback(err);
-//     }
-//     callback(null, isMatch);
-//   });
-// };
 //register model
 mongoose.model('Freelancer', FreelancerSchema);
