@@ -28,6 +28,7 @@
 
       #notification-status{
         padding-top:20px;
+        padding-bottom: 10px;
       }
 
       .notification-profession {
@@ -40,13 +41,13 @@
     <paper-card id={{notification._id}} class='papercard'>
       <div id="left">
         <div id="notification-profession">
-        <span>{{notification.profession}}</span>
+        <span> Profession Requested: {{notification.profession}}</span>
       </div>
       <div id="notification-description">
-        <span>{{notification.description}}</span>
+        <span> Description : {{notification.description}}</span>
       </div>
       <div id="notification-status">
-        <span>{{notification.status}}</span>
+        <span> Status : {{notification.status}}</span>
       </div>
       <template is="dom-if" if="{{_statusispending(notification.status)}}" restamp="true">
         <div id = "accepted">
@@ -66,19 +67,25 @@
 
       </div>
       <div id="right">
+        USER ASKING:
         <div>
           <span id="not-name">
-            <!-- {{notification.availableFreelancers.0.firstName}} -->
           </span>
         </div>
         <div>
           <span id="not-userName">
-            <!-- {{notification.availableFreelancers.0.category}} -->
           </span>
         </div>
         <div>
           <span id="not-email">
-            <!-- {{notification.availableFreelancers.0.email}} -->
+          </span>
+        </div>
+        <div>
+          <span id="not-location">
+          </span>
+        </div>
+        <div>
+          <span id="not-phone">
           </span>
         </div>
       </div>
@@ -101,11 +108,11 @@
 
       ready: function() {
         // console.log(this.notification);
-
         this.$['not-email'].innerHTML = this.notification.userCalling.email;
         this.$['not-userName'].innerHTML = this.notification.userCalling.userName;
         this.$['not-name'].innerHTML = this.notification.userCalling.firstName + " " +this.notification.userCalling.lastName;
-
+        this.$['not-location'].innerHTML = this.notification.location;
+        this.$['not-phone'].innerHTML = this.notification.phone;
       },
 
       _sendYes : function(){
@@ -124,7 +131,7 @@
         console.log("freelancer yes");
         x = document.getElementById("accepted");
         x.innerHTML = "<p>Request accepted.</p>";
-        //to be fixed, works for showing on Monday though.
+        this.$["notification-status"].style.display = "none";
       },
 
       _nores : function(){

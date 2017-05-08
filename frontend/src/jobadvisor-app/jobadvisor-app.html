@@ -69,9 +69,6 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-    <!-- <div id="login"> -->
-
-    <!-- </div> -->
     <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
       <a href="/signup"><paper-button id="signup-button">CREATE FREELANCER</paper-button></a>
     </template>
