@@ -1,0 +1,82 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-pending-list/ja-pending-list.html">
+<link rel="import" href="../ja-pending-item/ja-pending-item.html">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<dom-module id="ja-admin">
+  <template>
+    <style>
+       :host {
+        display: block;
+        color: black;
+      }
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{subroute}}">
+    </app-route>
+    <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
+    </app-route>
+
+    <ja-pending-list results={{results}}></ja-pending-list>
+
+    <iron-ajax  id="request-pending"
+                url="/admin/"
+                params="{{req}}"
+                method="GET"
+                handle-as="json"
+                on-response="_handleResponse">
+    </iron-ajax>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'ja-admin',
+
+      properties: {
+        results: {
+          type: Array,
+          value: function () {
+            return [];
+          },
+          observer: '_resultsChanged',
+        },
+        route: {
+          type: Object,
+        },
+        view: {
+          type: String,
+          reflectToAttribute: true,
+        },
+        subroute: {
+          type: String,
+          reflectToAttribute: true,
+        },
+      },
+
+      _routePageChanged: function (page) {
+        this.view = page;
+      },
+
+      getPending: function (e) {
+        this.$['request-pending'].generateRequest();
+      },
+
+      _resultsChanged: function (results) {
+        this.results = results;
+      },
+
+       _handleResponse: function (response) {
+        if (response) {
+          this.results = response.detail.response;
+          console.log(this.results);
+        }
+      },
+
+      ready: function () {
+        this.getPending();
+      },
+
+    });
+  </script>
+</dom-module>

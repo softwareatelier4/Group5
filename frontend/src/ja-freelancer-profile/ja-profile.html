@@ -1,5 +1,9 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
+<link rel="import" href="../ja-event-element/ja-event-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <dom-module id="ja-profile">
 
   <template>
@@ -83,7 +87,7 @@
         border-color: lightgray;
       }
 
-      #reviews {
+      #reviews, #profile-calendar {
         padding-left: 20px;
         padding-right: 20px;
       }
@@ -115,13 +119,74 @@
       #error-message {
         color: red;
       }
+
+      .event-date-container {
+        display: flex;
+      }
+
+      .event-start-end {
+        width: 100%;
+      }
+
+      .event-start-end > paper-input {
+        display: inline-block;
+        width: 49%;
+      }
+
+      #popup-event-list {
+        overflow: scroll;
+      }
+
+      #profile-calendar {
+        width: 70%;
+        max-width: 640px;
+      }
+
+      paper-dialog-scrollable {
+        margin-top: 20px;
+        padding-top: 20px;
+        height: 50%;
+      }
+
+      .event-btns {
+        display: flex;
+      }
+
+      .event-date-container {
+        margin-bottom: 30px;
+      }
+
+      #event-submit-cancel {
+        background-color: var(--paper-red-700);
+        color: white;
+        width: 50%;
+      }
+
+      #event-submit-btn {
+        background-color: var(--paper-green-700);
+        color: white;
+        width: 50%;
+      }
+
+      ja-event-element:first-child {
+        margin-top: 50px;
+      }
+
+      #open-events-btn {
+        margin: 20px;
+        background-color: var(--paper-blue-800);
+        color: white;
+      }
+
+      /*paper-textarea {
+        width: 100%;
+        height: 150px;
+      }*/
     </style>
 
     <iron-ajax id="distance-request" url="https://maps.googleapis.com/maps/api/distancematrix/json" params='{{req_distance}}'
       handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
-
-    <!-- <ja-distance-calc result={{result}} location={{location}} user-location={{userLocation}}></ja-distance-calc> -->
 
     <section id="container">
 
@@ -134,6 +199,10 @@
         <div id="name">
           {{lastname}} {{firstname}}
         </div>
+
+        <div id="container-verification"></div>
+
+        <div id="container-claim"></div>
 
         <div id="profession">
           {{profession}}
@@ -183,11 +252,42 @@
       <section id="description">
         Description : {{_checkdescisprovided(description)}}
       </section>
+
+      <paper-button id="open-events-btn" hidden raised>Edit availability</paper-button>
+
+
+      <paper-dialog id="profile-calendar" no-cancel-on-outside-click no-cancel-on-esc-click>
+        <h2>Add your availability for emergencies</h2>
+        <div id="event-input-form">
+          <paper-input id="calendar-input-description" label="Description" pattern=".+" auto-validate required error-message="Insert a valid description"></paper-input>
+          <paper-input id="calendar-input-location" label="Location" required pattern=".+" auto-validate error-message="Insert a valid location"></paper-input>
+          <div class="event-date-container">
+            <div class="event-start-end">
+              <paper-input id="calendar-input-start-date" label="Start date" type="date"></paper-input>
+              <paper-input id="calendar-input-start-hour" label="Start hour" type="time"></paper-input>
+            </div>
+            <div class="event-start-end">
+              <paper-input id="calendar-input-end-date" label="End date" type="date"></paper-input>
+              <paper-input id="calendar-input-end-hour" label="End hour" type="time"></paper-input>
+            </div>
+          </div>
+          <div class="event-btns">
+            <paper-button raised id="event-submit-btn" on-click="_onSubmitEventTap">Add</paper-button>
+            <paper-button raised id="event-submit-cancel" dialog-dismiss>Cancel</paper-button>
+          </div>
+        </div>
+        <p>Default date is today, default time is now and 1 hour later.</p>
+        <paper-dialog-scrollable>
+          <template is="dom-repeat" items="{{events}}" as="result">
+            <ja-event-element fid={{id}} events={{events}} data={{result}}></ja-event-element>
+          </template>
+        </paper-dialog-scrollable>
+      </paper-dialog>
+
       <section id="reviews" style="width: 100%;">
-        <div id="user-rating" style="display:flex;" >
+        <div id="user-rating" style="display:flex;">
           <p id="error-message">{{error}}</p>
           <div id="commentarea" style="width:80%">
-            <!-- COMMENT <br/> -->
             <textarea rows="5" style="width:100%" id="comm"> </textarea>
           </div>
           <div id="ratearea">
@@ -207,27 +307,30 @@
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
-          <!-- <br/> -->
         </template>
       </section>
 
-      <!-- <section id="review"> -->
-
-      <!-- </section> -->
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
     <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
     </iron-ajax>
 
+    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json" on-response="_handleAddEventResponse">
+    </iron-ajax>
+
+    <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
+    </iron-ajax>
+
   </template>
 
   <script>
-    // (function () {
-    //   'use strict';
-
     Polymer({
       is: "ja-profile",
+
+      listeners: {
+        'open-events-btn.tap':'_onOpenEventsTap'
+      },
 
       properties: {
         id: {
@@ -275,20 +378,101 @@
           type: String,
         },
 
+        events: {
+          type: Array,
+          reflectToAttribute: true,
+          notify: true,
+          value: [],
+        },
+
+        user: {
+          type: Object,
+          reflectToAttribute: true,
+        },
+
         userLocation: {
           type: String,
           value: "",
           notify: true,
           // reflectToAttribute: true,
         },
+
+        verification: {
+          type: String,
+        },
+
+        currentDate: {
+          type: String,
+          reflectToAttribute: true,
+          value: function() {
+            let date = new Date();
+            // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
+            return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
+          },
+        }
+      },
+
+      _computeDateString: function(date) {
+        return [date.getDate(), date.getMonth()+1, date.getFullYear()].join('.');
+      },
+
+      _onSubmitEventTap: function(evt) {
+        let description = this.$['calendar-input-description'].value;
+        let location = this.$['calendar-input-location'].value;
+        let validLocation = this.$['calendar-input-location'].validate();
+        let validDescription = this.$['calendar-input-description'].validate();
+
+        let dateNow = this._computeDateString(new Date());
+        let timeNow = new Date().toLocaleTimeString().substring(0,5);
+        let time = new Date();
+        time.setHours(time.getHours() + 1)
+        let timeEndDefault = time.toLocaleTimeString().substring(0,5);
+
+        let startDate = this.$['calendar-input-start-date'].value || dateNow;
+        let startTime = this.$['calendar-input-start-hour'].value || timeNow;
+        let endDate = this.$['calendar-input-end-date'].value || dateNow;
+        let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
+
+        let start = new Date(startDate + ", " + startTime);
+        let end = new Date(endDate + ", " + endTime);
+
+        if (validLocation && validDescription) {
+          let newEvent = {
+            description: description,
+            location: location,
+            start: start.toString(),
+            end: end.toString()
+          };
+
+          let add_request = this.$['event-add-request'];
+          add_request.body = newEvent;
+          add_request.generateRequest();
+        }
+      },
+
+      _onOpenEventsTap: function(evt) {
+        this.$['profile-calendar'].open();
+        let currDate = new Date();
+        let startHour = currDate.toLocaleTimeString().substring(0,5);
+        let afterDate = new Date();
+        afterDate.setHours(afterDate.getHours() + 1)
+        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0,5);
+        this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0,5);
       },
 
       ready: function () {
         if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
-
         }
+
+        var inputEl = this.$['calendar-input-location'].childNodes[1].childNodes[3].childNodes[2].childNodes[2];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+
+        autocomplete.addListener('place_changed', function () {
+          var address = autocomplete.getPlace().formatted_address || "";
+          this.$['calendar-input-location'].value = address;
+        }.bind(this));
       },
 
       _idchanged: function (id) {
@@ -299,22 +483,22 @@
         }
       },
 
-      _checkdescisprovided: function(el){
-        if(el === undefined || el == "" || el === " " || el === null){
+      _checkdescisprovided: function (el) {
+        if (el === undefined || el == "" || el === " " || el === null) {
           return "No description provided"
         }
         return el;
       },
 
-      _checkratisprovided: function(el){
-        if(el === undefined || el == "" || el === " " || el === null){
+      _checkratisprovided: function (el) {
+        if (el === undefined || el == "" || el === " " || el === null) {
           return "No rating provided"
         }
         return el + "/*****";
       },
 
-      _checkprisprovided : function(el){
-        if(el === undefined || el == "" || el === " " || el === null){
+      _checkprisprovided: function (el) {
+        if (el === undefined || el == "" || el === " " || el === null) {
           return "No price provided"
         }
         return el + " CHF";
@@ -336,6 +520,23 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
+        this.verification = res.verification;
+        this.userId = res.claimingUserId;
+        // this.userId = res._id;
+
+        if (this.userId && this.userId === this.user._id && this.verification === "verified") {
+          this.$['open-events-btn'].hidden = false;
+        }
+
+        this.events = res.events;
+
+        if (this.verification == 'none' && (this.user.pending == 'none')) {
+          console.log("hesajdsjasjkldllo");
+          this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
+            ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
+        } else {
+          this.$['container-claim'].innerHTML = '';
+        }
 
         this.userLocation = this.userLocation || "Lugano, Switzerland";
         this.req_distance = {
@@ -344,10 +545,15 @@
           key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
         };
         this.$['distance-request'].generateRequest();
+
+        this.$['refresh-user'].generateRequest();
+
+        this.$['container-verification'].innerHTML = this.verification;
+
       },
 
-      _giverating: function(el){
-        if(this.$.ratenum.value !== "-"){
+      _giverating: function (el) {
+        if (this.$.ratenum.value !== "-") {
           // this.$.review.attributes[1] = "enabled";
           this.$.review.disabled = false;
           this.$.review.setAttribute("raised", "");
@@ -364,6 +570,18 @@
         return res;
       },
 
+      _refreshUser: function (e) {
+        this.user = e.detail.response.user;
+        console.log(e.detail.response.user);
+        if (this.verification == 'none' && (this.user.pending == 'none')) {
+          console.log("hellosdfsad");
+          this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
+            ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
+        } else {
+          this.$['container-claim'].innerHTML = '';
+        }
+      },
+
       _handleResponseDistance: function (response) {
         const rows = response.detail.response.rows[0];
         if (rows) {
@@ -371,7 +589,6 @@
           if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
             const text = response.detail.response.rows[0].elements[0].distance.text;
             const value = response.detail.response.rows[0].elements[0].distance.value;
-            // console.log(text);
             this.set('distance', text);
             // this.set('result.distance_value', value);
           }
@@ -379,7 +596,7 @@
       },
 
       _givereview: function () {
-        if(this.$.ratenum.value !== "-"){
+        if (this.$.ratenum.value !== "-") {
           if (this.user && this.user.userType !== "guest") {
             this.error = ""
             const ajaxel = this.$.ajax2;
@@ -393,14 +610,12 @@
             ajaxel.body = obj;
             ajaxel.generateRequest();
           } else {
-            console.log("not logged in");
             this.error = "Please login before writing a review."
           }
         }
       },
 
       _done: function (el) {
-        console.log("Finished", el);
         const d = new Date();
         const obj = {
           comment: this.$.comm.value,
@@ -411,14 +626,14 @@
         this.$.comm.value = " ";
         this.$.ratenum.value = "-";
         this.$.review.removeAttribute("raised");
-        this.$.review.disabled=true;
+        this.$.review.disabled = true;
         this.unshift('reviews', obj);
       },
 
-
+      _handleAddEventResponse: function(evt) {
+        const item = evt.detail.response;
+        this.push('events', item);
+      },
     });
-
-    // })();
   </script>
-
 </dom-module>

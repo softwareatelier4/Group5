@@ -5,10 +5,44 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var date = new Date();
 
+var events = {
+  name : 'CalendarEvent',
+  data : [
+    {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd6"),
+      "location"    : "Lugano",
+      "description" : "Riparazione tubatura sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd7"),
+      "location"    : "Bellinzona",
+      "description" : "Riparazione tetto sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd8"),
+      "location"    : "Locarno",
+      "description" : "Riparazione doccia sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd9"),
+      "location"    : "Milano",
+      "description" : "Riparazione finestra sig.ra Bianchi",
+      "start"       : new Date(2017, 1, 1, 10, 30),
+      "end"         : new Date(2017, 1, 1, 12, 30)
+    }
+  ]
+}
 var users = {
   name : 'User',
   data : [
     {
+      "_id"       : ObjectId("2625fc2bd89b84023d8c7bd6"),
       "userName"  : "camo",
       "firstName" : "",
       "lastName"  : "",
@@ -112,7 +146,8 @@ var freelancers = {
       "price"         : 100,
       "profession"    : "Painter",
       "reviews"       : [reviews.data[2]],
-
+      "events"        : [],
+      "verification"  : "none",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -127,7 +162,10 @@ var freelancers = {
       "email"         : "alexander.scrummaster@hotmail.ru",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 50,
-      "reviews"       : [reviews.data[4]]
+      "reviews"       : [reviews.data[4]],
+      "events"        : [events.data[0], events.data[3]],
+      "verification"  : "pending",
+      "claimingUserId": "2625fc2bd89b84023d8c7bd6",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -141,7 +179,8 @@ var freelancers = {
       "email"         : "giovanni.rezzonico@gmail.com",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 20,
-      "reviews"       : [reviews.data[3], reviews.data[5]]
+      "reviews"       : [reviews.data[3], reviews.data[5]],
+      "verification"  : "pending",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd8"),
@@ -156,6 +195,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 60,
       "reviews"       : [reviews.data[5]],
+      "verification"  : "pending",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd9"),
@@ -169,6 +209,8 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
+      "verification"  : "none",
+      "claimingUserId": "2625fc2bd89b84023d8c7bd6",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bf1"),
@@ -184,6 +226,24 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
+      "verification"  : "none",
+    },
+
+    {
+      "_id"           : ObjectId("5625fc2bd66b84d23d8c7bf1"),
+      "firstName"     : "Samuele",
+      "lastName"      : "Bischof",
+      "address"       : "Via Dogana, 41, 6854 Stabio",
+      "description"   : "I'll find your bugs",
+      "profession"    : "Beta tester",
+      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
+      "category"      : "IT Services",
+      "rating"        : 5,
+      "email"         : "samuele.bischof@sunrise.ch",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 40,
+      "reviews"       : [reviews.data[5]],
+      "verification"  : "pending",
     },
 
   ]
@@ -192,6 +252,7 @@ var freelancers = {
 var seedData = [];
 seedData.push(freelancers);
 seedData.push(users);
-seedData.push(reviews)
+seedData.push(reviews);
+seedData.push(events);
 
 module.exports = seedData;
