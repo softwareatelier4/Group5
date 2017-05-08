@@ -24,7 +24,7 @@ router.get('/:id/:subject', function(req, res, next){
         user.notifications.forEach(function(notificationid){
           console.log("id " + notificationid);
           Notification.findById(notificationid, function(err, notif){
-            console.log("notif" + notif);
+            // console.log("notif" + notif);
             if(notif.availableFreelancers.length > 0){
               Freelancer.findById(notif.availableFreelancers[notif.freelancerNotified], function(err, freelancer){
                 processed++;

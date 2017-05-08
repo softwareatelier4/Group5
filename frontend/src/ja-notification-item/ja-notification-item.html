@@ -41,13 +41,19 @@
     <paper-card id={{notification._id}} class='papercard'>
       <div id="left">
         <div id="notification-profession">
-        <span>{{notification.profession}}</span>
+        <span> Profession Requested : {{notification.profession}}</span>
       </div>
       <div id="notification-description">
-        <span>{{notification.description}}</span>
+        <span> Description : {{notification.description}}</span>
+      </div>
+      <div id="notification-phone">
+        <span> Phone number : {{notification.phone}}</span>
+      </div>
+      <div id="notification-location">
+        <span> Location : {{notification.location}}</span>
       </div>
       <div id="notification-status">
-        <span>{{notification.status}}</span>
+        <span> Status : {{notification.status}}</span>
       </div>
 
       <div id="show">
@@ -69,6 +75,7 @@
 
       </div>
       <div id="right">
+        FREELANCER CONTACTED:
         <div>
           <span id="not-name">
             <!-- {{notification.availableFreelancers.0.firstName}} -->
@@ -88,7 +95,9 @@
           <span id="not-email">
             <!-- {{notification.availableFreelancers.0.email}} -->
           </span>
+
         </div>
+
       </div>
     </paper-card>
 

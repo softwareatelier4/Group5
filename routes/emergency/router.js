@@ -26,7 +26,7 @@ function sendmail(freelancer){
 //  respond to request
 router.put('/:id/:subject/:answer',function(req, res, next){
   Notification.findById(req.params.id, function(err, notification) {
-    if (err) return console.error(err);
+    // if (err) return console.error(err);
     if(notification){
       if(req.params.subject === "freelancer"){
         if(req.params.answer === "yes"){
@@ -42,7 +42,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
         }else{ // if freelancer say no, change the status in refused. User will decide what to do
           var updateToBeMade = { status : "Refused" };
           Notification.findByIdAndUpdate(req.params.id, updateToBeMade, function(err, updatednotif) {
-            if (err) return console.error(err);
+            // if (err) return console.error(err);
             var oldFreelancerId = updatednotif.availableFreelancers[updatednotif.freelancerNotified];
             Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif._id } }).exec( function(err, profile) {
               if (err) return console.error(err);
@@ -59,7 +59,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
           console.log(number);
           var updateToBeMade = { freelancerNotified: number, dateCreated : Date.now(), status : "Pending" };
           Notification.findByIdAndUpdate(notification._id, updateToBeMade, function(err, updatednotif) {
-            if (err) return console.error(err);
+            // if (err) return console.error(err);
             console.log(updatednotif);
             console.log("next number freelancer" + updatednotif.freelancerNotified);
             if (number < updatednotif.availableFreelancers.length) {
@@ -79,7 +79,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
           });
         }else{ // if no, delete notification from db
           Notification.findByIdAndRemove(req.params.id, function(err, removed) {
-            if (err) return console.error(err);
+            // if (err) return console.error(err);
             if(removed){
               console.log("removed");
               // res.sendStatus(204);
@@ -116,7 +116,7 @@ router.post('/', function(req, res, next) {
 
   //notification does not exist yet, search all freelancers
   Freelancer.find(freelancerQuery).exec(function(err, profiles) {
-    if (err) return console.error(err);
+    // if (err) return console.error(err);
     // profiles is array of objects {}
     if (profiles === undefined || profiles.length == 0) {
       console.log("No matching profiles were found");
@@ -175,7 +175,7 @@ router.post('/', function(req, res, next) {
       if (distanceQuery.destinations !== '') {
         //search the distance using google maps
         googleMapsClient.distanceMatrix(distanceQuery, function(err, response) {
-        if (err) return console.error(err);
+        // if (err) return console.error(err);
         for(var i = 0; i < profiles.length; i++){
 
           profiles[i] = profiles[i].toObject();
@@ -201,6 +201,7 @@ router.post('/', function(req, res, next) {
           profession: req.body.profession,
           category: req.body.category,
           location: req.body.location,
+          phone: req.body.phone,
           userCalling: req.session.user._id,
           freelancerNotified: 0,
           status : "Pending",

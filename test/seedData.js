@@ -10,13 +10,15 @@ var notifications = {
   data : [
     {
       "_id"                 : ObjectId("590f2bcfda0f255fd9fb5654"),
-      "description"         : "I want a plumber because all the sexy videos start with one",
+      "description"         : "I want a plumber because my sink is broken",
       "profession"          : "Plumber",
       "category"            : "Other",
+      "location"            : "Via Monte Bre 16, Lugano",
       "userCalling"         :  ObjectId("5625fc2bd82b84d23d8c9bd0"),
       "freelancerNotified"  : 0,
       "availableFreelancers": [ObjectId("5625fc2bd82b84d23d8c7bd6"), ObjectId("5625fc2bd82b84d23d8c7bd0")],
       "status"              : "Pending",
+      "phone"               : "000000000"
     },
     // {
     //   // "_id"                 : ObjectId("5625fc2bd66b84d23d8c7bf2"),
