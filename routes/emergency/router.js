@@ -121,7 +121,7 @@ router.post('/', function(req, res, next) {
     if (profiles === undefined || profiles.length == 0) {
       console.log("No matching profiles were found");
       res.status(201).json("no match");
-      console.log("sent no match");
+      // console.log("sent no match");
     } else {
       console.log("found " + profiles.length + " freelancers!");
 
@@ -131,9 +131,9 @@ router.post('/', function(req, res, next) {
       //check freelancer is available
       profiles.forEach(function(profile) {
         var rightone = false;
-        console.log(profile.firstName + " " + profile.lastName + " has " + profile.events.length + " events");
+        // console.log(profile.firstName + " " + profile.lastName + " has " + profile.events.length + " events");
         for(let j = 0; j < profile.events.length; j++){
-          console.log(j + " event");
+          // console.log(j + " event");
           var d = Date.now();
           if(profile.events[j].start <= d && d <= profile.events[j].end){
             rightone = true;
@@ -160,7 +160,7 @@ router.post('/', function(req, res, next) {
       })
 
       var dest_joined = dest.join('|')
-      console.log("restricted to " + profiles.length + " freelancers!");
+      // console.log("restricted to " + profiles.length + " freelancers!");
 
       var googleMapsClient = require('@google/maps').createClient({
         key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
@@ -194,7 +194,7 @@ router.post('/', function(req, res, next) {
           idarray.push(el._id);
         })
         // console.log("size same? " + (idarray.length === profiles.length));
-
+        // console.log(req.body.userId);
         //create new notification
         var newNotification = new Notification({
           description: req.body.description,
@@ -202,13 +202,13 @@ router.post('/', function(req, res, next) {
           category: req.body.category,
           location: req.body.location,
           phone: req.body.phone,
-          userCalling: req.session.user._id,
+          userCalling: req.body.userId,
           freelancerNotified: 0,
           status : "Pending",
           availableFreelancers: idarray
         });
-        console.log("Notification object : \n" + newNotification);
-        console.log("Object ended \n");
+        // console.log("Notification object : \n" + newNotification);
+        // console.log("Object ended \n");
 
         newNotification.save(function(err) {
           // add notification to freelancer
@@ -222,7 +222,7 @@ router.post('/', function(req, res, next) {
             } else {
               console.log("freelancer found");
 
-              console.log(req.session.user._id);
+              console.log(req.body.userId);
               //add notification to user
               User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification._id}},
               {safe: true, upsert: true, new : false},

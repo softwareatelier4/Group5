@@ -185,7 +185,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           proceed = false;
           this.$.fphone.focus();
         }
-
+        console.log(this.user._id);
         if(proceed){
           const ajaxel = this.$.emergencyajax;
           var d = new Date();
@@ -196,6 +196,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
               category    : this.$.catselector.selected,
               time        : this.$.timeselector.selected,
               phone       : this.$.fphone.value,
+              userId      : this.user._id,
           };
           ajaxel.body = obj;
           ajaxel.generateRequest();

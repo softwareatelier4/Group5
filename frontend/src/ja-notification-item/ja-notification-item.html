@@ -158,13 +158,13 @@
       },
 
       _yesres : function(el){
-        console.log("user yes");
+        // console.log("user yes");
         // console.log(el.detail.response);
         window.location.reload();
       },
 
       _nores : function(){
-        console.log("user no");
+        // console.log("user no");
         const x = this.notification._id;
         const found = this.notifications.find(function(el){
           return el._id === x;

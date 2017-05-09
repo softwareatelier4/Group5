@@ -64,14 +64,14 @@
         const ajaxel = this.$.notificationlist;
         ajaxel.generateRequest();
         if(this.user.userType == 'Freelancer'){
-          console.log("user has a freelancer");
+          // console.log("user has a freelancer");
           const ajaxel2 = this.$.freelancernotificationlist;
           ajaxel2.generateRequest();
         }
       },
 
       _onResponse: function(evt) { //user
-        console.log(evt.detail.response);
+        // console.log(evt.detail.response);
         this.notifications = evt.detail.response;
       },
 

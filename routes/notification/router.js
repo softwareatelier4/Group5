@@ -22,7 +22,7 @@ router.get('/:id/:subject', function(req, res, next){
         var processed = 0;
         var result = [];
         user.notifications.forEach(function(notificationid){
-          console.log("id " + notificationid);
+          // console.log("id " + notificationid);
           Notification.findById(notificationid, function(err, notif){
             // console.log("notif" + notif);
             if(notif.availableFreelancers.length > 0){
