@@ -46,24 +46,28 @@ var events = {
   name : 'CalendarEvent',
   data : [
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd6"),
       "location"    : "Lugano",
       "description" : "Riparazione tubatura sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
     },
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd7"),
       "location"    : "Bellinzona",
       "description" : "Riparazione tetto sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
     },
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd8"),
       "location"    : "Locarno",
       "description" : "Riparazione doccia sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
     },
     {
+      "_id"         : ObjectId("4625fc2bd82b84d23d8c7bd9"),
       "location"    : "Milano",
       "description" : "Riparazione finestra sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
@@ -83,6 +87,7 @@ var users = {
   name : 'User',
   data : [
     {
+      "_id"       : ObjectId("2625fc2bd89b84023d8c7bd6"),
       "userName"  : "camo",
       "firstName" : "",
       "lastName"  : "",
@@ -201,7 +206,7 @@ var freelancers = {
       "reviews"             : [reviews.data[2]],
       "emergencyAvailable"  : true,
       "events"              : [events.data[1], events.data[2], events.data[4]],
-      "verification"        : "verified"
+      "verification"        : "none",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -219,7 +224,9 @@ var freelancers = {
       "reviews"       : [reviews.data[4]],
       "events"        : [events.data[0], events.data[3]],
       "verification"  : "pending",
-      "notifications" : [ObjectId(notifications.data[0]._id)]
+      "notifications" : [ObjectId(notifications.data[0]._id)],
+      "claimingUserId": "2625fc2bd89b84023d8c7bd6",
+
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -300,6 +307,8 @@ var freelancers = {
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
       "emergencyAvailable"  : false,
+      "verification"  : "none",
+      "claimingUserId": "2625fc2bd89b84023d8c7bd6",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bf1"),
@@ -315,6 +324,7 @@ var freelancers = {
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
       "emergencyAvailable"  : false,
+      "verification"  : "none",
     },
 
     {
@@ -350,6 +360,22 @@ var freelancers = {
       "events"        : [events.data[0], events.data[3]],
       "verification"  : "verified",
       "notifications" : [ObjectId(notifications.data[0]._id)]
+    },
+
+    {
+      "_id"                 : ObjectId("5625fc9bd82b84d23d8c7bd5"),
+      "firstName"           : "Mario",
+      "lastName"            : "Rossi",
+      "address"             : "Via San Gottardo 12, 6900 Lugano",
+      "rating"              : 3,
+      "email"               : "alexander.fischer0@usi.ch",
+      "phone_number"        : "+41 4442323223",
+      "price"               : 100,
+      "profession"          : "Painter",
+      "reviews"             : [reviews.data[2]],
+      "emergencyAvailable"  : true,
+      "events"              : [events.data[1], events.data[2], events.data[4]],
+      "verification"        : "verified",
     },
 
   ]

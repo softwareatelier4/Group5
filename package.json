@@ -38,7 +38,8 @@
     "morgan": "^1.6.1",
     "nodemailer": "^2.7.0",
     "polymer-cli": "^0.17.0",
-    "supertest": "^1.1.0"
+    "supertest": "^1.1.0",
+    "zip-folder": "^1.0.0"
   },
   "devDependencies": {
     "nightwatch": "^0.8.6",

@@ -53,15 +53,15 @@ router.put('/:id/:subject/:answer',function(req, res, next){
         }
       }else{// user
         if(req.params.answer === "yes"){ // if user say yes, contact next freelancer
-          console.log("this number freelancer" + notification.freelancerNotified);
+          // console.log("this number freelancer" + notification.freelancerNotified);
           notification = notification.toObject();
           var number = notification.freelancerNotified + 1
-          console.log(number);
+          // console.log(number);
           var updateToBeMade = { freelancerNotified: number, dateCreated : Date.now(), status : "Pending" };
           Notification.findByIdAndUpdate(notification._id, updateToBeMade, function(err, updatednotif) {
             // if (err) return console.error(err);
-            console.log(updatednotif);
-            console.log("next number freelancer" + updatednotif.freelancerNotified);
+            // console.log(updatednotif);
+            // console.log("next number freelancer" + updatednotif.freelancerNotified);
             if (number < updatednotif.availableFreelancers.length) {
               //no check for finding since here notification has been already found.
               var freelancerToBeContacted = updatednotif.availableFreelancers[number];

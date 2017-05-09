@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema(
     email     : { type: String, required: true },
     userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'},
     freelancerId : { type: String },
-    notifications : { type: [ObjectId], ref: "Notification", default: [] } // request done
+    notifications : { type: [ObjectId], ref: "Notification", default: [] }, // request done
+    pending  : { type: String, enum:['pending','none'], default: 'none'},
   }
 );
 

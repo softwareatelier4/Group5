@@ -8,7 +8,7 @@ const rootUrl = require("../../config").url;
 
 
 //supported methods
-router.all('/', middleware.supportedMethods('GET, OPTIONS'));
+router.all('/', middleware.supportedMethods('GET'));
 
 //list users
 router.get('/', function(req, res, next) {
