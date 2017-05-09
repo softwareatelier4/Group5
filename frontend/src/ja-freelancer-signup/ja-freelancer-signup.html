@@ -114,6 +114,17 @@
     Polymer({
       is: "ja-freelancer-signup",
 
+
+      ready: function () {
+        var inputEl = this.$['addr'].childNodes[1].childNodes[3].childNodes[2].childNodes[2];
+        var autocomplete = new google.maps.places.Autocomplete(inputEl);
+
+        autocomplete.addListener('place_changed', function () {
+          var address = autocomplete.getPlace().formatted_address || "";
+          this.$['addr'].value = address;
+        }.bind(this));
+      },
+
       _finished: function(el){
         if(this.$.upload.files[0] !== undefined){
           this.$.upload.target += "/freelancer/img/" + el.detail.response;

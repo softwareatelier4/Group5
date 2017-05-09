@@ -11,6 +11,8 @@ var app = express();
 var methodOverride = require('method-override')
 const formidable = require('formidable');
 const fs = require('fs');
+const util = require('util');
+var zipFolder = require('zip-folder');
 
 
 // Connection to MongoDB
@@ -23,6 +25,7 @@ require('./models');
 
 const ObjectId = mongoose.Types.ObjectId;
 const Freelancer = mongoose.model('Freelancer');
+const User = mongoose.model('User');
 
 //configure app
 app.use(logger('dev'));
@@ -35,53 +38,101 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 app.post('/claim/:id', function (req, res) {
 
   var dir = './frontend/src/claim-documents/';
+  var idDir = './frontend/src/claim-documents/' + req.params.id;
 
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 
-  let filename = req.params.id;
-  let form = new formidable.IncomingForm({
-    uploadDir: __dirname + '/frontend/src/claim-documents',
-    keepExtensions: true
+  if (!fs.existsSync(idDir)) {
+    fs.mkdirSync(idDir);
+  }
+
+  var form = new formidable.IncomingForm(),
+    files = [],
+    fields = [];
+  form.on('field', function (field, value) {
+    fields.push([field, value]);
+  })
+  form.on('file', function (field, file) {
+    console.log(file.name);
+
+    fs.rename(file.path, __dirname + '/frontend/src/claim-documents/' + req.params.id + '/' + file.name);
+
+    files.push([field, file]);
+  })
+  form.on('end', function () {
+    console.log('done');
+    zipFolder(__dirname + '/frontend/src/claim-documents/' + req.params.id, __dirname + '/frontend/src/claim-documents/' + req.params.id + '.zip', function (err) {
+      if (err) {
+        console.log('oh no!', err);
+      } else {
+        console.log('EXCELLENT');
+      }
+    });
   });
+  // form.parse(req);
+
+
+  // let filename = req.params.id;
+  // let form = new formidable.IncomingForm({
+  //   uploadDir: __dirname + '/frontend/src/claim-documents',
+  //   keepExtensions: true
+  // });
+
 
   form.parse(req, function (err, fields, files) {
-    const name = files.file.name;
-    const parts = name.split('.');
-    const ext = parts[parts.length - 1];
-    fs.rename(files.file.path, __dirname + '/frontend/src/claim-documents/' + filename + "." + ext);
+
+    console.log('######2######' + util.inspect(fields));
+    // const name = files.file.name;
+    // const parts = name.split('.');
+    // const ext = parts[parts.length - 1];
+    // for (var file in files.file){
+    //   console.log('#### ' + file.name);
+    // }
+
+    // fs.rename(files.file.path, __dirname + '/frontend/src/claim-documents/' + filename + "." + ext);
     // res.json({name : filename});
     // res.end();
+
+    User.findOneAndUpdate({
+      _id: fields.userid
+    }, {
+      $set: {
+        pending: "pending",
+      }
+    }).exec(function (err, profiles) {});
 
     Freelancer.findOneAndUpdate({
       _id: req.params.id
     }, {
       $set: {
         verification: "pending",
-        claimFilePath: '/src/claim-documents/' + filename + "." + ext,
+        claimFilePath: '/src/claim-documents/' + req.params.id,
+        claimComment: fields.comment,
+        claimEmail: fields.email,
+        claimingUserId: fields.userid,
       }
-    }).exec(function (err, profiles) {
+    }, {new : true}).exec(function (err, profile) {
       if (err) return console.error(err);
-      res.json(profiles);
+      res.json(profile);
     });
+
   });
 
 });
 
 
-app.post('/freelancer/img/:id', function(req, res) {
+app.post('/freelancer/img/:id', function (req, res) {
   console.log(__dirname);
   let imgname = req.params.id;
   console.log(imgname);
-  let form = new formidable.IncomingForm(
-    {
-      uploadDir: __dirname + '/frontend/src/images',
-      keepExtensions: true
-    }
-  );
+  let form = new formidable.IncomingForm({
+    uploadDir: __dirname + '/frontend/src/images',
+    keepExtensions: true
+  });
 
-  form.parse(req, function(err, fields, files) {
+  form.parse(req, function (err, fields, files) {
     // let fileName = files.file.name;
     // let filelen = fileName.length;
     // let str = ""
@@ -90,7 +141,9 @@ app.post('/freelancer/img/:id', function(req, res) {
     //   filelen--;
     // }
     fs.rename(files.file.path, __dirname + '/frontend/src/images/' + imgname + ".png");
-    res.json({name : imgname});
+    res.json({
+      name: imgname
+    });
     res.end();
   });
 
@@ -123,6 +176,7 @@ app.use('/search', routers.search);
 
 app.use('*', function (req, res, next) {
   if (req.accepts('html')) {
+    // console.log(req);
     const options = {
       root: __dirname + '/frontend/',
     };

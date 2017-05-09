@@ -1,5 +1,9 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+
 <dom-module id="ja-event-element">
 
   <template>
@@ -7,23 +11,51 @@
 
       paper-card {
         width: 100%;
-        padding: 20px;
-        margin: 10px 0 10px 0;
+        padding: 10px;
+        margin: 15px 0 10px 0;
+        border-radius: 2px;
+        background-color: var(--paper-grey-50);
+      }
+
+      #event-remove {
+        --paper-fab-background: var(--paper-red-600);
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        width: 30px;
+        height: 30px;
+      }
+
+      #event-date {
+        text-align: right;
+        color: var(--paper-grey-700);
+      }
+
+      #event-location {
+        text-align: right;
+        color: var(--paper-green-800);
+      }
+
+      #event-description {
+        padding: 10px;
       }
 
     </style>
+
+    <iron-ajax id="event-remove-request" url="/freelancer/{{fid}}/event/{{event_id}}" method="DELETE" handle-as="json" on-response="_handleRemoveEventResponse">
+    </iron-ajax>
+
     <paper-card>
-      <div id="event-start-date">
-        Start {{data.start}}
-      </div>
-      <div id="event-end-date">
-        End {{data.end}}
-      </div>
+      <paper-fab mini id="event-remove" icon="close"></paper-fab>
       <div id="event-description">
-        Description: {{data.description}}
+        {{data.description}}
       </div>
       <div id="event-location">
-        Location: {{data.location}}
+        {{data.location}}
+        <iron-icon icon="maps:place"></iron-icon>
+      </div>
+      <div id="event-date">
+        {{_formatDateInterval(data.start, data.end)}}
       </div>
     </paper-card>
 
@@ -33,13 +65,44 @@
     Polymer({
       is: "ja-event-element",
 
+      listeners : {
+        'event-remove.tap' : '_onRemoveTap',
+      },
+
       properties: {
         data: {
           type: Object,
+        },
+        events: {
+          type: Object,
+          notify: true,
+          reflectToAttribute: true,
         }
       },
 
+      _formatDateInterval: function(start, end) {
+        console.log(start);
+        console.log(end);
+        let dateStart = new Date(start);
+        let dateEnd = new Date(end);
+        return dateStart.toUTCString() + " - " + dateEnd.toUTCString();
+      },
+
+      _onRemoveTap: function(evt) {
+        let req = this.$['event-remove-request'];
+        this.event_id = this.data._id;
+        req.generateRequest();
+      },
+
+      _handleRemoveEventResponse: function(evt) {
+        const id = evt.detail.response._id;
+        const found = this.events.find(function(el) {
+          return el._id === id;
+        });
+        const index = this.events.indexOf(found);
+        this.splice('events', index, 1);
+        console.log(id, found);
+      },
     });
   </script>
-
 </dom-module>

@@ -22,7 +22,7 @@ describe('Backend notification router tests', function(){
     it('should list the freelancer notifications matching the id', function(done) {
 
       request(app)
-      .get('/notification/' + freelancers[0]._id.toString() +"/freelancer")
+      .get('/notification/' + freelancers[10]._id.toString() +"/freelancer")
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
       .expect(200, done);
@@ -49,7 +49,7 @@ describe('Backend notification router tests', function(){
     it('should give back a 400 status if the url contains user', function(done) {
 
       request(app)
-      .get('/notification/' + freelancers[0]._id.toString() + "/user")
+      .get('/notification/' + freelancers[10]._id.toString() + "/user")
       .set('Accept', 'application/json')
       .expect(400, done);
     });
