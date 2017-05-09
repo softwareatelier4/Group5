@@ -220,7 +220,7 @@ module.exports = {
                            '+41 4442323223')
       .waitForElementVisible('#email', 1000)
       .assert.containsText('#email',
-                           'mario.rossi@usi.ch')
+                           'alexander.fischer0@usi.ch')
       .waitForElementVisible('#price', 1000)
       .assert.containsText('#price',
                            '100')
@@ -380,10 +380,6 @@ module.exports = {
       .waitForElementVisible('#TecnicalServices', 1000)
       .click('#TecnicalServices')
       .assert.attributeContains('#TecnicalServices', 'aria-selected', 'true')
-
-      .waitForElementVisible('#Radio', 1000)
-      .click('#Radio')
-      .assert.attributeContains('#Radio', 'aria-selected', 'true')
 
       .waitForElementVisible('#ITServices', 1000)
       .click('#ITServices')
