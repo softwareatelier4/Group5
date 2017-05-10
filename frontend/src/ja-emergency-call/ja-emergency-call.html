@@ -45,8 +45,8 @@ Add automatic location in "create freelancer page" and in "show events" in freel
         <paper-input id="locationField" required auto-validate   label="Insert your location"  value={{_write(userLocation)}} ></paper-input>
       </div>
 
-      <div id="_phonenumber">
-        <paper-input label="Phone number" id="fphone" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
+      <div id="_phonenumber1">
+        <paper-input id="fphone1" label="Phone number" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
       </div>
 
       <div id="_emergencycategory">
@@ -153,10 +153,10 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           this.$.locationField.value = "";
           this.$.locationField.validate();
           this.$.locationField.setAttribute("required", true);
-          this.$.fphone.removeAttribute("required");
-          this.$.fphone.value = "";
-          this.$.fphone.validate();
-          this.$.fphone.setAttribute("required", true);
+          this.$.fphone1.removeAttribute("required");
+          this.$.fphone1.value = "";
+          this.$.fphone1.validate();
+          this.$.fphone1.setAttribute("required", true);
       },
 
       emergency_clicked : function(){
@@ -181,9 +181,9 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           this.$.locationField.focus();
         }
 
-        if (this.$.fphone.value == "") {
+        if (this.$.fphone1.value == "") {
           proceed = false;
-          this.$.fphone.focus();
+          this.$.fphone1.focus();
         }
         console.log(this.user._id);
         if(proceed){
@@ -195,7 +195,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
               location    : this.$.locationField.value,
               category    : this.$.catselector.selected,
               time        : this.$.timeselector.selected,
-              phone       : this.$.fphone.value,
+              phone       : this.$.fphone1.value,
               userId      : this.user._id,
           };
           ajaxel.body = obj;
