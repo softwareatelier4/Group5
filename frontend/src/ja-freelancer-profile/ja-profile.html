@@ -415,32 +415,29 @@
         }
       },
 
-      _computeDateString: function (date) {
-        return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
+      _computeDateString: function(date) {
+        return [date.getDate(), date.getMonth()+1, date.getFullYear()].join('.');
       },
 
-      _onSubmitEventTap: function (evt) {
+      _onSubmitEventTap: function(evt) {
         let description = this.$['calendar-input-description'].value;
         let location = this.$['calendar-input-location'].value;
         let validLocation = this.$['calendar-input-location'].validate();
-        // let validDescription = description.length > 0;
         let validDescription = this.$['calendar-input-description'].validate();
 
         let dateNow = this._computeDateString(new Date());
-        let timeNow = new Date().toLocaleTimeString().substring(0, 5);
+        let timeNow = new Date().toLocaleTimeString().substring(0,5);
         let time = new Date();
         time.setHours(time.getHours() + 1)
-        let timeEndDefault = time.toLocaleTimeString().substring(0, 5);
+        let timeEndDefault = time.toLocaleTimeString().substring(0,5);
 
         let startDate = this.$['calendar-input-start-date'].value || dateNow;
-        // console.log(startDate);
         let startTime = this.$['calendar-input-start-hour'].value || timeNow;
         let endDate = this.$['calendar-input-end-date'].value || dateNow;
         let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
 
         let start = new Date(startDate + ", " + startTime);
         let end = new Date(endDate + ", " + endTime);
-        // console.log(dateNow, dateNow);
 
         if (validLocation && validDescription) {
           let newEvent = {
@@ -456,17 +453,14 @@
         }
       },
 
-      _onOpenEventsTap: function (evt) {
+      _onOpenEventsTap: function(evt) {
         this.$['profile-calendar'].open();
         let currDate = new Date();
-        let startHour = currDate.toLocaleTimeString().substring(0, 5);
+        let startHour = currDate.toLocaleTimeString().substring(0,5);
         let afterDate = new Date();
         afterDate.setHours(afterDate.getHours() + 1)
-        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0, 5);
-        this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0, 5);
-        // console.log(this._computeDateString(new Date()));
-        // this.$['calendar-input-start-date'].value = "01/01/1991";
-        // this.$['calendar-input-end-date'].value = this._computeDateString(new Date());
+        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0,5);
+        this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0,5);
       },
 
       ready: function () {
@@ -533,16 +527,11 @@
         this.userId = res.claimingUserId;
         // this.userId = res._id;
 
-        console.log(this.user);
-        console.log("asd", this.userId, res.claimingUserId);
-
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
         }
-        console.log(res);
 
         this.events = res.events;
-        console.log(res.events);
 
         if (this.verification == 'none' && (this.user.pending == 'none')) {
           console.log("hesajdsjasjkldllo");
@@ -561,8 +550,6 @@
         this.$['distance-request'].generateRequest();
 
         this.$['refresh-user'].generateRequest();
-
-        // TODO: need to find a way to update user
 
         this.$['container-verification'].innerHTML = this.verification;
 
@@ -626,14 +613,12 @@
             ajaxel.body = obj;
             ajaxel.generateRequest();
           } else {
-            console.log("not logged in");
             this.error = "Please login before writing a review."
           }
         }
       },
 
       _done: function (el) {
-        console.log("Finished", el);
         const d = new Date();
         const obj = {
           comment: this.$.comm.value,
