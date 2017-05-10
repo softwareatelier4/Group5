@@ -32,8 +32,8 @@ router.put('/:id/:subject/:answer',function(req, res, next){
         if(req.params.answer === "yes"){
           Notification.findByIdAndUpdate(req.params.id, {status : "Accepted"}, function(err,done){
             if(done){
-              console.log("accepted!");
-              console.log(done);
+              // console.log("accepted!");
+              // console.log(done);
               // done.save();
               res.sendStatus(204);
             }
@@ -45,10 +45,10 @@ router.put('/:id/:subject/:answer',function(req, res, next){
             // if (err) return console.error(err);
             var oldFreelancerId = updatednotif.availableFreelancers[updatednotif.freelancerNotified];
             Freelancer.findByIdAndUpdate(oldFreelancerId, { $pull: { notifications: updatednotif._id } }).exec( function(err, profile) {
-              if (err) return console.error(err);
+              // if (err) return console.error(err);
             });
           });
-          console.log("Freelancer Refused");
+          // console.log("Freelancer Refused");
           res.sendStatus(204);
         }
       }else{// user
@@ -66,7 +66,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
               //no check for finding since here notification has been already found.
               var freelancerToBeContacted = updatednotif.availableFreelancers[number];
               Freelancer.findByIdAndUpdate(freelancerToBeContacted, { $push: { notifications: updatednotif._id } }).exec( function(err, profile) {
-                if (err) return console.error(err);
+                // if (err) return console.error(err);
                 sendmail(profile);
                 res.sendStatus(204);
               });
@@ -90,7 +90,7 @@ router.put('/:id/:subject/:answer',function(req, res, next){
                 }
               })
             }else{
-              console.log("error");
+              // console.log("error");
               res.sendStatus(400);
             }
           });
@@ -217,7 +217,7 @@ router.post('/', function(req, res, next) {
           function(err, freelancer) {
             // if (err) return next (err);
             if (!freelancer) {
-              console.log("freelancer not found");
+              // console.log("freelancer not found");
               res.sendStatus(400);
             } else {
               console.log("freelancer found");
@@ -240,11 +240,11 @@ router.post('/', function(req, res, next) {
                         if(Date.now() > new Date(notification.dateCreated.getTime() + time * 60000)) {
                           Notification.findByIdAndUpdate(newNotification._id,  {"status": "Refused"},{safe: true, upsert: true, new : false},
                           function(err, notif) {
-                            if (!notif) {
-                              console.log("notif not found");
-                            } else {
-                              console.log("notif updated");
-                            }
+                            // if (!notif) {
+                              // console.log("notif not found");
+                            // } else {
+                              // console.log("notif updated");
+                            // }
                           });
                         }
                       }
