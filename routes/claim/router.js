@@ -17,7 +17,7 @@ router.all('/', middleware.supportedMethods('GET, PUT, POST'));
 
 router.get('/:freelancerid', function (req, res, next) {
   Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function (err, freelancer) {
-    if (err) return next(err);
+    // if (err) return next(err);
     if (!freelancer) {
       res.status(404);
       return res.status(404).json(serverErrors.notFound);
@@ -89,11 +89,11 @@ router.get('/:freelancerid', function (req, res, next) {
 // }
 
 
-function addLinks(freelancer) {
-  freelancer.links = [{
-    "rel": "self",
-    "href": config.url + "/freelancer/" + freelancer._id
-  }];
-}
+// function addLinks(freelancer) {
+//   freelancer.links = [{
+//     "rel": "self",
+//     "href": config.url + "/freelancer/" + freelancer._id
+//   }];
+// }
 
 module.exports = router;

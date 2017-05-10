@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
   Freelancer.find({
     "verification": 'pending'
   }).exec(function (err, profiles) {
-    if (err) return console.error(err);
+    // if (err) return console.error(err);
     res.json(profiles);
   });
 });
@@ -35,7 +35,7 @@ router.put('/', function (req, res) {
   if(req.query.type == 'verified'){
     //accept
   Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type, userId: req.query.claimingUserId}}, { new: true }).exec(function(err, profile) {
-      if (err) return console.error(err);
+      // if (err) return console.error(err);
       res.json(profile);
     });
 
@@ -48,11 +48,11 @@ router.put('/', function (req, res) {
         pending: "none",
       }
     }).exec(function (err, profiles) {
-      if (err) console.error(err);
+      // if (err) console.error(err);
     });
 
     Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type}}, { new: true }, function(err, profile) {
-      if (err) return console.error(err);
+      // if (err) return console.error(err);
       if (!profile) {
         res.status(400)
         return res.status(400).json(serverErrors.badRequest);

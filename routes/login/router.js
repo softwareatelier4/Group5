@@ -29,7 +29,7 @@ router.get('/:id', function(req, res, next) {
           }
         })
     }else{
-      res.status(404);
+      // res.status(404);
       return res.status(404).json(serverErrors.notFound);
     }
   })
@@ -69,7 +69,7 @@ router.post('/signup', function(req, res, next){
     }else{
       req.session.user = newUser;
       newUser.save(function(err){
-        if(err) return next(err);
+        // if(err) return next(err);
         res.status(201).json(newUser);
       });
 

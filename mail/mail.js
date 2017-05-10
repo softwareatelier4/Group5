@@ -28,10 +28,10 @@ let sendMailTo = function (address, content, subject) {
     mailOptions.html = content;
     mailOptions.subject = subject;
     transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message %s sent: %s', info.messageId, info.response);
+        // if (error) {
+        //     return console.log(error);
+        // }
+        // console.log('Message %s sent: %s', info.messageId, info.response);
     });
 }
 
