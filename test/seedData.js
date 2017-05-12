@@ -147,7 +147,7 @@ var freelancers = {
       "profession"    : "Painter",
       "reviews"       : [reviews.data[2]],
       "events"        : [],
-      "verification"  : "none",
+      "verification"  : "not verified",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -209,7 +209,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
-      "verification"  : "none",
+      "verification"  : "not verified",
       "claimingUserId": "2625fc2bd89b84023d8c7bd6",
     },
     {
@@ -226,7 +226,7 @@ var freelancers = {
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
-      "verification"  : "none",
+      "verification"  : "not verified",
     },
 
     {

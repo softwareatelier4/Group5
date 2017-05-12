@@ -39,7 +39,7 @@ const FreelancerSchema = new mongoose.Schema(
     image         : { type: String, default: '/src/images/blank-user.jpg'},
     reviews       : { type: [ReviewSchema], default:[]},
     events        : { type: [CalendarEventSchema], default:[]},
-    verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    verification  : { type: String, enum:['verified', 'pending', 'not verified'], default:'not verified' },
     claimFilePath : { type: String},
     claimComment  : { type: String},
     claimEmail    : { type: String},
