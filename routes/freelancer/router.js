@@ -25,8 +25,14 @@ router.get('/:freelancerid', function(req, res, next) {
     if (!freelancer) {
       return res.status(404).json(serverErrors.notFound);
       return;
+    } else{
+      var toUpdate = freelancer.events;
+      var now = new Date();
+      freelancer.events = freelancer.events.filter(function(el){
+        return el.end > now;
+      })
+      res.json(freelancer);
     }
-    res.json(freelancer);
   });
 });
 
