@@ -11,7 +11,8 @@ const Freelancer = mongoose.model('Freelancer');
 const Review = mongoose.model('Review');
 const CalendarEvent = mongoose.model('CalendarEvent');
 const config = require('../../config');
-const serverErrors = require('../serverErrors')
+const serverErrors = require('../serverErrors');
+const Response = mongoose.model('Response');
 
 const fieldsFilter = { '__v': 0 };
 
@@ -50,6 +51,33 @@ router.post('/:freelancerid/review', function(req, res, next) {
       }else if (!freelancer) {
         return res.status(404).json(serverErrors.notFound);
       } else {
+        return res.json(toAdd._id);
+      }
+    })
+  });
+});
+
+router.post('/:freelancerid/review/:reviewid', function(req, res, next) {
+  var toAdd = new Response(req.body);
+  toAdd.save(function(err) {
+    if (err) {
+      console.log("000000000000000000000")
+
+      return res.status(400).json(serverErrors.badRequest);
+    }
+    Review.findByIdAndUpdate(req.params.reviewid, {$set: {"response": toAdd}},
+    {safe: true, upsert: false, new : false},
+    function(err, review) {
+      if (err) {
+        console.log("000000000000000000000")
+
+        return res.status(400).json(serverErrors.badRequest);
+      }else if (!review) {
+        console.log("000000000000000000000")
+
+        return res.status(404).json(serverErrors.notFound);
+      } else {
+        console.log("000000000000000000000")
         return res.json(toAdd._id);
       }
     })
