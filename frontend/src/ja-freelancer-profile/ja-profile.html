@@ -96,14 +96,16 @@
       }
 
       #ratearea {
+        display: block;
         position: relative;
-        width: 20%;
+        width: 100%;
         padding-left: 20px;
       }
 
       #commentarea {
+        display: block;
         position: relative;
-        width: 120%;
+        width: 100%;
       }
       /* rate button */
 
@@ -287,14 +289,14 @@
       </paper-dialog>
 
       <section id="reviews" style="width: 100%;">
-        <div id="user-rating" style="display:flex;">
+        <div id="user-rating">
           <p id="error-message">{{error}}</p>
-          <div id="commentarea" style="width:80%">
-            <textarea rows="5" style="width:100%" id="comm"> </textarea>
+          <div id="commentarea">
+            <textarea rows="5" id="comm"> </textarea>
           </div>
           <div id="ratearea">
             RATING
-            <select id="ratenum" style="width:90%" on-change="_giverating">
+            <select id="ratenum" on-change="_giverating">
             <option value="-">--Give a review--</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -303,7 +305,7 @@
             <option value="5">5</option>
           </select>
             <!-- <input id="review" type="submit" value="Rate!" on-click="_givereview" /> -->
-            <paper-button id="review" disabled style="height:20px; width: 96%; margin-top: 10px;" on-click="_givereview">Rate!</paper-button>
+            <paper-button id="review" disabled on-click="_givereview">Rate!</paper-button>
           </div>
         </div>
 
@@ -533,7 +535,7 @@
 
         this.events = res.events;
 
-        if (this.verification == 'none' && (this.user.pending == 'none')) {
+        if (this.verification == 'not verified' && (this.user.pending == 'none')) {
           console.log("hesajdsjasjkldllo");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
@@ -576,7 +578,7 @@
       _refreshUser: function (e) {
         this.user = e.detail.response.user;
         console.log(e.detail.response.user);
-        if (this.verification == 'none' && (this.user.pending == 'none')) {
+        if (this.verification == 'not verified' && (this.user.pending == 'none')) {
           console.log("hellosdfsad");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';

@@ -48,7 +48,7 @@
       </div>
 
       <!--{{user.email}} {{user._id}}-->
-      
+
       <form id="upload-form" method="post" enctype="multipart/form-data" >
         <input id="load-file" multiple="true" on-change="checkFile" type="file" name="file" class="inputfile" style="width:100%; padding-top: 10px; padding-bottom: 10px;">
         <!--<input id="claim-comment" type="text" name="comment">-->
@@ -61,7 +61,7 @@
 
 
     </section>
-    <iron-ajax auto id="request-profile" url="/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
+    <iron-ajax id="request-profile" url="/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
       on-response="_handleResponse">
     </iron-ajax>
 
