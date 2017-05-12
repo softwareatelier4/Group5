@@ -45,6 +45,34 @@ describe('Backend review tests', function(){
       });
   });
 
+
+  describe('POST /:freelancerid/review/:reviewid', function(){
+
+    before(seed);
+    after(utils.dropDb);
+
+    it('should post a new response to the review in the freelancer profile', function(done) {
+      request(app)
+      .post('/freelancer/' + freelancers[0]._id.toString() + '/review' + reviews[5]._id.toString())
+      .send({
+        "_id"                 : ObjectId("1625fc2bd82b84d23d8c7bd6"),
+        "date"                : date,
+        "comment"             : "thanks for your feedback"})
+      .expect(200, done);
+    });
+
+
+      it('should not post a new response to the review in the freelancer profile if the review is not present', function(done) {
+        request(app)
+        .post('/freelancer/' + freelancers[0]._id.toString() + '/review/1125fc2bd82b84d23d8c7bd6')
+        .send({
+          "_id"                 : ObjectId("1625fc2bd82b84d23d8c7bd6"),
+          "date"                : date,
+          "comment"             : "thanks for your feedback"})
+        .expect(404, done);
+      });
+  });
+
 });
 
 

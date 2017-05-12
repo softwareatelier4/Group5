@@ -12,7 +12,7 @@
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
-
+const ResponseSchema = require('./Response')
 
 /** @constructor
 * @augments AbstractSoundCollectionSchemaInstance
@@ -24,6 +24,7 @@ const ReviewSchema = new mongoose.Schema(
     rating  : { type: Number, required: true },
     comment : { type: String},
     date    : { type: Date },
+    response: { type: ResponseSchema}
   }
 );
 
