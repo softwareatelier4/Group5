@@ -53,7 +53,8 @@ describe('Backend review tests', function(){
 
     it('should post a new response to the review in the freelancer profile', function(done) {
       request(app)
-      .post('/freelancer/' + freelancers[0]._id.toString() + '/review' + reviews[5]._id.toString())
+      .post('/freelancer/' + freelancers[0]._id.toString() + '/review/' + reviews[5]._id.toString())
+      .set('Accept', 'application/json')
       .send({
         "_id"                 : ObjectId("1625fc2bd82b84d23d8c7bd6"),
         "date"                : date,
@@ -65,8 +66,9 @@ describe('Backend review tests', function(){
       it('should not post a new response to the review in the freelancer profile if the review is not present', function(done) {
         request(app)
         .post('/freelancer/' + freelancers[0]._id.toString() + '/review/1125fc2bd82b84d23d8c7bd6')
+        .set('Accept', 'application/json')
         .send({
-          "_id"                 : ObjectId("1625fc2bd82b84d23d8c7bd6"),
+          "_id"                 : ObjectId("1125fc2bd82b84d23d8c7bd6"),
           "date"                : date,
           "comment"             : "thanks for your feedback"})
         .expect(404, done);

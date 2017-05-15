@@ -39,6 +39,7 @@ router.get('/:freelancerid', function(req, res, next) {
 
 router.post('/:freelancerid/review', function(req, res, next) {
   var toAdd = new Review(req.body);
+  console.log("---- Inside /review ----");
   toAdd.save(function(err) {
     if (err) {
       return res.status(400).json(serverErrors.badRequest);
@@ -61,23 +62,17 @@ router.post('/:freelancerid/review/:reviewid', function(req, res, next) {
   var toAdd = new Response(req.body);
   toAdd.save(function(err) {
     if (err) {
-      console.log("000000000000000000000")
-
       return res.status(400).json(serverErrors.badRequest);
     }
+
     Review.findByIdAndUpdate(req.params.reviewid, {$set: {"response": toAdd}},
     {safe: true, upsert: false, new : false},
     function(err, review) {
       if (err) {
-        console.log("000000000000000000000")
-
         return res.status(400).json(serverErrors.badRequest);
       }else if (!review) {
-        console.log("000000000000000000000")
-
         return res.status(404).json(serverErrors.notFound);
       } else {
-        console.log("000000000000000000000")
         return res.json(toAdd._id);
       }
     })
