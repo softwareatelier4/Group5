@@ -61,6 +61,7 @@ module.exports = {
       .setValue('#emergencyDescriptionButton input', 'Need a painter')
       .setValue('#emergencyProfessionButton input', 'Painter')
       .setValue('#fphone1 input', '0916666666')
+      .setValue('#locationField input','Informatica, 6900 Lugano, Switzerland')
       .click('#emergencysubmit')
       .pause(2000)
       //.end();
@@ -68,6 +69,7 @@ module.exports = {
 
   'Test notifications accepted' : function (client) {
     client
+      // .pause(20000000)
       .assert.urlEquals('http://localhost:3005/notification/5625fc2bd82b84d23d8c9bd0/user')
       .waitForElementVisible('#notification-container', 1000)
       .waitForElementVisible('#usnt-590f2bcfda0f255fd9fb5654', 1000)

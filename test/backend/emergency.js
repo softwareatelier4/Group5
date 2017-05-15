@@ -223,7 +223,8 @@ describe('Backend emergency router tests', function(){
         location: 'Lugano',
         description: 'Need and emergency painter',
         profession: 'painter',
-        category: 'Other'
+        category: 'Other',
+        userId: "5625fc2bd82b84d23d8c9bd0"
       };
 
       request(app)
