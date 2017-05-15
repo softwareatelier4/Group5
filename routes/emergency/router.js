@@ -220,11 +220,11 @@ router.post('/', function(req, res, next) {
               // console.log("freelancer not found");
               res.sendStatus(400);
             } else {
-              console.log("freelancer found");
+              // console.log("freelancer found"); 
 
-              console.log(req.body.userId);
+              // console.log(req.body.userId);
               //add notification to user
-              User.findByIdAndUpdate(req.session.user._id, {$push: {"notifications": newNotification._id}},
+              User.findByIdAndUpdate(req.body.userId, {$push: {"notifications": newNotification._id}},
               {safe: true, upsert: true, new : false},
               function(err, user) {
                 // if (err) return next (err);
