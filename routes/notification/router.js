@@ -14,30 +14,36 @@ router.all('/', middleware.supportedMethods(' GET'));
 
 router.get('/:id/:subject', function(req, res, next){
   if(req.params.subject === "user"){
-    //retunrn an array of notification with each notification a freelancer
+    //return an array of notifications with each notification a freelancer
     User.findById(req.params.id, function(err, user){
       if(user){
-        user = user.toObject();
         var totalitem = user.notifications.length;
         var processed = 0;
         var result = [];
-        user.notifications.forEach(function(notificationid){
-          // console.log("id " + notificationid);
-          Notification.findById(notificationid, function(err, notif){
-            // console.log("notif" + notif);
-            if(notif.availableFreelancers.length > 0){
-              Freelancer.findById(notif.availableFreelancers[notif.freelancerNotified], function(err, freelancer){
-                processed++;
-                notif.availableFreelancers[notif.freelancerNotified] = freelancer;
-                result.push(notif);
-                if(processed === totalitem){
-                  res.status(200).json(result);
-                }
-              });
-            }else{
-              res.status(200).json(result);
-            }
-          })
+        var notifIdQuery = [];
+        user.notifications.forEach(function(notifId) {
+          notifIdQuery.push({ _id: new ObjectId(notifId) })
+        })
+        Notification.find().or(notifIdQuery).exec(function(err, notifs){
+          // if (err) console.error(err);
+          if(notifs) {
+            notifs.forEach(function(notification) {
+              if(notification.availableFreelancers.length > 0){
+                Freelancer.findById(notification.availableFreelancers[notification.freelancerNotified], function(err, freelancer) {
+                  processed++;
+                  notification.availableFreelancers[notification.freelancerNotified] = freelancer;
+                  result.push(notification);
+                  if(processed === totalitem) {
+                    res.status(200).json(result);
+                  }
+                });
+              } else {
+                res.status(200).json(result);
+              }
+            })
+          } else {
+            res.status(200).json(result);
+          }
         })
       }else{
         console.log("not found");

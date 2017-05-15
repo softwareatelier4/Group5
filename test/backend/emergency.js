@@ -60,8 +60,7 @@ describe('Backend notification router tests', function(){
       .get('/notification/' + users[2]._id.toString() +"/user")
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(200)
-      done();
+      .expect(200, done);
     });
 
     it('should list the user notifications matching the id', function(done) {
@@ -70,8 +69,7 @@ describe('Backend notification router tests', function(){
       .get('/notification/' + users[3]._id.toString() +"/user")
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/, 'it should respond with json')
-      .expect(200)
-      done();
+      .expect(200, done);
     });
 
     it('should give back a 400 status if the user profile does not exists', function(done) {
@@ -235,7 +233,7 @@ describe('Backend emergency router tests', function(){
       .expect(201, done);
     });
 
-    it('should return 400 if user session is not valid', function(done) {
+    it('should return 400 if userId is not provided in body', function(done) {
 
       var freelancerQuery = {
         location: 'Lugano',
