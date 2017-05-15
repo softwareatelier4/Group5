@@ -91,7 +91,7 @@ describe('Backend notification router tests', function(){
 
 
 
-  describe('PUT /emergency/:id/:subject/:answer', function(){
+  describe('PUT /emergency/:id/user/:answer', function(){
     before(seed);
     after(utils.dropDb);
 
@@ -122,18 +122,19 @@ describe('Backend notification router tests', function(){
       .expect(204, done); //modify in router 204 to 200
     });
 
-    it('should return 200 if the user say no to contact next freelancer but notification id is wrong', function(done) {
+    it('should return 400 if the user say no to contact next freelancer but notification id is wrong', function(done) {
 
       request(app)
       .put('/emergency/' + ObjectId().toString() +"/user/no")
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
-      .expect(200, done);//modify in router 400 to 404
-      done();
+      .expect(400, done);//modify in router 400 to 404
     });
+  });
 
-
-
+  describe('PUT /emergency/:id/freelancer/:answer', function(){
+    before(seed);
+    after(utils.dropDb);
     it('should accept the freelancer no to emergency call', function(done) {
 
       request(app)
@@ -141,7 +142,6 @@ describe('Backend notification router tests', function(){
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .expect(204, done);
-      done();
     });
 
     it('should accept the freelancer yes to emergency call', function(done) {
@@ -150,17 +150,15 @@ describe('Backend notification router tests', function(){
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .expect(204, done);
-      done();
     });
 
-    it('should do nothing if notification does not exists', function(done) {
+    it('should do nothing and return 400 if notification does not exists', function(done) {
 
       request(app)
       .put('/emergency/' + ObjectId().toString() +"/user/yes")
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
-      .expect(200, done); //modify in router 204 to 200
-      done();
+      .expect(400, done); //modify in router 204 to 200
     });
   });
 
