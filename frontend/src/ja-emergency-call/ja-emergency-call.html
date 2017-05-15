@@ -7,6 +7,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
 <!-- TODO
 Button to say if I want the current location or not, clickable in any moment
@@ -44,6 +45,10 @@ Add automatic location in "create freelancer page" and in "show events" in freel
       <div id="_location">
         <paper-input id="locationField" required auto-validate   label="Insert your location"  value={{_write(userLocation)}} ></paper-input>
       </div>
+
+      <!-- <div id="_autolocation">
+        <paper-checkbox checked on-click="_useautolocation">Use automatic location</paper-checkbox>
+      </div> -->
 
       <div id="_phonenumber1">
         <paper-input id="fphone1" label="Phone number" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
@@ -128,15 +133,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           window.location.href = window.location.origin+"/notification/"+ this.user._id.toString() + "/user";
         }
 
-        /*
-        for(freelancer : el.detail.response){
-          var freelancer = document.createElement("<ja-freelancer-item>");
-          this.$['freelancer-list'].appendChild(freelancer);
-        }
-
-        this.$['freelancer-list'].open();
-        */
-        this._clearall(); // Non cancellare!
+        this._clearall();
       },
         _clearall: function(){
           this.$.emergencyDescriptionButton.removeAttribute("required");
@@ -159,11 +156,11 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           this.$.fphone1.setAttribute("required", true);
       },
 
-      emergency_clicked : function(){
+      // _useautolocation: function(){
+      //   console.log("clicked");
+      // },
 
-// PROVVISORY TEST FOR FREELANCER LIST POPOUT //
-        // this.$['freelancer-list'].open();
-////////////////////////////////////////////////
+      emergency_clicked : function(){
 
         var proceed = true;
 
