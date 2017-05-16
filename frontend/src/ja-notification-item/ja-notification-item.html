@@ -1,0 +1,179 @@
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="ja-notification-item">
+
+  <template>
+    <style>
+      /* CSS rules for your element */
+      :host {
+        display: block;
+        margin: 20px 0;
+      }
+
+      paper-card {
+        padding:50px;
+        width: 100%;
+      }
+
+      #right{
+        float:right;
+        padding-right:100px;
+      }
+
+      #left{
+        float:left;
+        padding-left:100px;
+      }
+
+      #notification-status{
+        padding-top:20px;
+      }
+
+      .notification-profession {
+        font-size: 24px;
+        text-decoration: none;
+      }
+
+
+
+    </style>
+    <paper-card id="usnt-{{notification._id}}" class='papercard'>
+      <div id="left">
+        <div id="notification-profession">
+        <span> Profession Requested : {{notification.profession}}</span>
+      </div>
+      <div id="notification-description">
+        <span> Description : {{notification.description}}</span>
+      </div>
+      <div id="notification-phone">
+        <span> Phone number : {{notification.phone}}</span>
+      </div>
+      <div id="notification-location">
+        <span> Location : {{notification.location}}</span>
+      </div>
+      <div id="notification-status">
+        <span> Status : {{notification.status}}</span>
+      </div>
+
+      <div id="show">
+        <template id="yesno" is="dom-if" if="{{_notificationRefused(notification.status)}}" >
+          <span>
+
+            <div>Call another?:</div>
+            <paper-button id="buttonYes" raised on-click="_sendYes">
+              Yes
+            </paper-button>
+            <paper-button id="buttonNo" raised on-click="_sendNo">
+              No
+            </paper-button>
+
+           </span>
+        </template>
+      </div>
+
+
+      </div>
+      <div id="right">
+        FREELANCER CONTACTED:
+        <div>
+          <span id="not-name">
+            <!-- {{notification.availableFreelancers.0.firstName}} -->
+          </span>
+        </div>
+        <div>
+          <span id="not-address">
+            <!-- {{notification.availableFreelancers.0.address}} -->
+          </span>
+        </div>
+        <div>
+          <span id="not-category">
+            <!-- {{notification.availableFreelancers.0.category}} -->
+          </span>
+        </div>
+        <div>
+          <span id="not-email">
+            <!-- {{notification.availableFreelancers.0.email}} -->
+          </span>
+
+        </div>
+
+      </div>
+    </paper-card>
+
+    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/user/yes" method="PUT"  handle-as="json" on-response="_yesres"></iron-ajax>
+    <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/user/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-notification-item",
+
+      properties: {
+        notification: {
+          type: Object,
+        },
+        frnumber:{
+          type: Number,
+        },
+      },
+
+      ready: function() {
+        var i = 0;
+        this.notification.availableFreelancers.forEach(function(el){
+          if(el != null){
+            i ++;
+          }
+        })
+        if(this.frnumber < i){
+          this.$['not-email'].innerHTML=this.notification.availableFreelancers[this.frnumber].email;
+          this.$['not-category'].innerHTML=this.notification.availableFreelancers[this.frnumber].category;
+          this.$['not-address'].innerHTML=this.notification.availableFreelancers[this.frnumber].address;
+
+          this.$['not-name'].innerHTML=this.notification.availableFreelancers[this.frnumber].firstName + " " +this.notification.availableFreelancers[this.frnumber].lastName;
+
+          if(this.notification.status == null || this.notification.status == undefined){
+              this.$['notification-status'].innerHTML="Pending";
+          }
+        }else{
+          this.$['not-email'].innerHTML = "No more to contact";
+          this.$.show.style.display = "none";
+        }
+
+      },
+
+      _notificationRefused : function(status){
+        return status  == "Refused";
+      },
+
+      _sendYes : function(){
+        const ajaxel = this.$.buttonYes;
+        ajaxel.generateRequest();
+      },
+
+      _sendNo : function(){
+        const ajaxel = this.$.buttonNo;
+        ajaxel.generateRequest();
+      },
+
+      _yesres : function(el){
+        // console.log("user yes");
+        // console.log(el.detail.response);
+        window.location.reload();
+      },
+
+      _nores : function(){
+        // console.log("user no");
+        const x = this.notification._id;
+        const found = this.notifications.find(function(el){
+          return el._id === x;
+        });
+        const index = this.notifications.indexOf(found);
+        this.splice("notifications", index, 1);
+      },
+
+    });
+  </script>
+
+</dom-module>

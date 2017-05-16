@@ -7,7 +7,7 @@ module.exports = {
       .setValue('#location-search input', 'Lugano, Switzerland')
       .click('#button-search')
       .pause(500)
-      .assert.containsText('#fl-5625fc2bd66b84d23d8c7bf1 .result-verification', 'pending')
+      .assert.containsText('#fl-5625fc2bd66b84d23d8c7bf2 .result-verification', 'pending')
       .end()
   },
 
@@ -47,8 +47,8 @@ module.exports = {
       .url('http://localhost:3005/admin')
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bd6', 1000)
       .assert.containsText("#fl-5625fc2bd82b84d23d8c7bd6 .card-content a span", "Alexander Fischer")
-      .waitForElementVisible('#fl-5625fc2bd66b84d23d8c7bf1', 1000)
-      .assert.containsText("#fl-5625fc2bd66b84d23d8c7bf1 .card-content a span", "Samuele Bischof")
+      .waitForElementVisible('#fl-5625fc2bd66b84d23d8c7bf2', 1000)
+      .assert.containsText("#fl-5625fc2bd66b84d23d8c7bf2 .card-content a span", "Samuele Bischof")
       .waitForElementVisible('#fl-5625fc2bd82b84d23d8c7bd8', 1000)
       // .setValue('#fl-5625fc2bd82b84d23d8c7bd6 paper-textarea', 'test string')
       .click('#fl-5625fc2bd82b84d23d8c7bd6 paper-button')

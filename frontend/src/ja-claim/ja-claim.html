@@ -33,6 +33,7 @@
         /*display: none;*/
         margin-top: 10px;
       }
+
     </style>
 
 
@@ -54,12 +55,12 @@
 
       <!--<file-upload raised="true" method="post" id="upload-form" accept="image/*" paper-button-title="demo title">Choose File and Send</file-upload>-->
 
-      <!--<file-upload raised="false" target="/claim/" multi="false" fileDataName="input_file" method="POST" accept="*">Choose File</file-upload><br>-->
+      <!-- <file-upload raised="false" target="/claim/" multi="false" fileDataName="input_file" method="POST" accept="*">Choose File</file-upload><br> -->
       <paper-button id="btn-send" raised>Send Request</paper-button>
 
 
     </section>
-    <iron-ajax auto id="request-profile" url="/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
+    <iron-ajax  id="request-profile" url="/claim/{{id}}" method="GET" handle-as="json" content-type="application/json"
       on-response="_handleResponse">
     </iron-ajax>
 
@@ -120,7 +121,7 @@
       // },
 
       uploadFile: function () {
-        console.log("SENDING");
+        // console.log("SENDING");
         console.log(this.user.email);
         console.log(this.user._id);
 

@@ -1,0 +1,218 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../ja-review-element/ja-review-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="ja-emergency-call">
+
+  <template>
+    <style>
+
+    #emergencycontainer {
+      padding-top: 100px;
+    }
+
+    #upload {
+        --file-upload-upload-border: {
+          padding: 0;
+        }
+      }
+
+    </style>
+
+    <section id="emergencycontainer">
+
+      <div id="_emergencydescription">
+        <paper-input label="State your emergency" id="emergencyDescriptionButton" auto-validate pattern="^[a-zA-Z0-9, '.&-]+" required error-message="Write about your problem!"></paper-input>
+      </div>
+
+      <div id="_emergencyprofession">
+        <paper-input label="Profession" id="emergencyProfessionButton" auto-validate pattern="^[a-zA-Z, '.&-]+" required error-message="Profession required (only letters)!"></paper-input>
+      </div>
+
+      <div id="_location">
+        <paper-input id="locationField" required auto-validate   label="Insert your location"  value={{_write(userLocation)}} ></paper-input>
+      </div>
+
+      <div id="_autolocation">
+        <paper-checkbox id="checkbox" checked on-click="_useautolocation">Use automatic location</paper-checkbox>
+      </div>
+
+      <div id="_phonenumber1">
+        <paper-input id="fphone1" label="Phone number" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
+      </div>
+
+      <div id="_emergencycategory">
+        Category <br />
+        <paper-radio-group id="catselector" selected="Other">
+        <paper-radio-button id="TecnicalServices" name="Tecnical Services">Tecnical Services</paper-radio-button>
+        <paper-radio-button id="ITServices" name="IT Services">IT Services</paper-radio-button>
+        <paper-radio-button id="Design" name="Design">Design</paper-radio-button>
+        <paper-radio-button id="Management" name="Management">Management</paper-radio-button>
+        <paper-radio-button id="Retail" name="Retail">Retail</paper-radio-button>
+        <paper-radio-button id="HumanResources" name="Human Resources">Human Resources</paper-radio-button>
+        <paper-radio-button id="Marketing" name="Marketing">Marketing</paper-radio-button>
+        <paper-radio-button id="Consulting" name="Consulting">Consulting</paper-radio-button>
+        <paper-radio-button id="Advertising" name="Advertising">Advertising</paper-radio-button>
+        <paper-radio-button id="Logistics" name="Logistics">Logistics</paper-radio-button>
+        <paper-radio-button id="RealEstate" name="Real Estate">Real Estate</paper-radio-button>
+        <paper-radio-button id="SocialWork" name="Social Work">Social Work</paper-radio-button>
+        <paper-radio-button id="Healthcare" name="Healthcare">Healthcare</paper-radio-button>
+        <paper-radio-button id="Other" name="Other">Other</paper-radio-button>
+      </paper-radio-group>
+      </div>
+      <a id="rout" href="/freelancer/"></a>
+
+      <paper-toast id="toast0" text="No profile matching, sorry!"></paper-toast>
+      <div id="time">
+        <paper-dropdown-menu label="Time limit">
+          <paper-listbox class="dropdown-content" id="timeselector" attr-for-selected="name" selected="5">
+            <paper-item name="5">5</paper-item>
+            <paper-item name="10">10</paper-item>
+            <paper-item name="30">30</paper-item>
+            <paper-item name="60">60</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
+
+
+      <paper-button id="emergencysubmit" raised on-click="emergency_clicked">
+        Submit
+      </paper-button>
+
+      <iron-ajax id="emergencyajax" url="/emergency/" method="POST" handle-as="json" content-type="application/json" on-response="_timerStarted"></iron-ajax>
+
+    </section>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      is: "ja-emergency-call",
+      properties: {
+        autolocation: {
+          type : String,
+        }
+      },
+
+      ready: function() {
+        setTimeout(function(){
+          var inputEl = this.$['locationField'].childNodes[1].childNodes[6].childNodes[2].childNodes[2];
+          var autocomplete = new google.maps.places.Autocomplete(inputEl);
+            autocomplete.addListener('place_changed', function () {
+              var address = autocomplete.getPlace().formatted_address || "";
+                this.$['locationField'].query = address;
+            }.bind(this));
+        }.bind(this), 1000);
+      },
+
+      _write: function(el){
+        if(el !== undefined && el !== "" && el !== null){
+          this.$.checkbox.childNodes[1].innerHTML = "Use automatic location";
+          this.autolocation = el;
+          if(this.$.checkbox.checked){
+            return el;
+          }else{
+            return this.$.locationField.value;
+          }
+        }else{
+          this.$.checkbox.childNodes[1].innerHTML = "Use automatic location (getting it...)";
+        }
+
+      },
+
+      _timerStarted: function(el){
+        var res = el.detail.response;
+        if(res === "no match"){
+          this.$.toast0.open();
+        }else{
+          window.location.href = window.location.origin+"/notification/"+ this.user._id.toString() + "/user";
+        }
+
+        this._clearall();
+      },
+        _clearall: function(){
+          this.$.emergencyDescriptionButton.removeAttribute("required");
+          this.$.emergencyDescriptionButton.value = "";
+          this.$.emergencyDescriptionButton.validate();
+          this.$.emergencyDescriptionButton.setAttribute("required", true);
+          this.$.emergencyProfessionButton.removeAttribute("required");
+          this.$.emergencyProfessionButton.value = "";
+          this.$.emergencyProfessionButton.validate();
+          this.$.emergencyProfessionButton.setAttribute("required", true);
+          this.$.catselector.selected = "Other";
+          this.$.timeselector.selected = "5";
+          this.$.locationField.removeAttribute("required");
+          this.$.locationField.value = "";
+          this.$.locationField.validate();
+          this.$.locationField.setAttribute("required", true);
+          this.$.fphone1.removeAttribute("required");
+          this.$.fphone1.value = "";
+          this.$.fphone1.validate();
+          this.$.fphone1.setAttribute("required", true);
+          this.$.checkbox.checked = true;
+      },
+
+      _useautolocation: function(){
+
+        if(this.$.checkbox.checked){
+          this.$.locationField.value = this.autolocation;
+        }else{
+          this.$.locationField.value = "";
+        }
+      },
+
+      emergency_clicked : function(){
+
+        var proceed = true;
+
+        if(this.$.emergencyDescriptionButton.value == ""){
+          proceed = false;
+          this.$.emergencyDescriptionButton.focus();
+        }
+        if (this.$.emergencyProfessionButton.value == "") {
+          proceed = false;
+          this.$.emergencyProfessionButton.focus();
+        }
+
+        if (this.$.locationField.value == "") {
+          proceed = false;
+          this.$.locationField.focus();
+        }
+
+        if (this.$.fphone1.value == "") {
+          proceed = false;
+          this.$.fphone1.focus();
+        }
+        // console.log(this.user._id);
+        if(proceed){
+          const ajaxel = this.$.emergencyajax;
+          var d = new Date();
+          const obj = {
+              description : this.$.emergencyDescriptionButton.value,
+              profession  : this.$.emergencyProfessionButton.value,
+              location    : this.$.locationField.value,
+              category    : this.$.catselector.selected,
+              time        : this.$.timeselector.selected,
+              phone       : this.$.fphone1.value,
+              userId      : this.user._id,
+          };
+          ajaxel.body = obj;
+          ajaxel.generateRequest();
+
+
+        }
+
+      },
+   })
+
+  </script>
+
+</dom-module>

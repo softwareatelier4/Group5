@@ -58,7 +58,7 @@ module.exports = {
 
   'Test signup with invalid data' : function (client) {
     client
-      .setValue('#signup-email input', 'test@test')
+      .setValue('#signup-email input', 'tsadsaest@dsadsads')
       .setValue('#signup-username input', '_asd')
       .setValue('#signup-password input', '1234')
       .setValue('#signup-password-check input', '12345')

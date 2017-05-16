@@ -178,6 +178,10 @@
         color: white;
       }
 
+      .date-error-msg {
+        color: red;
+      }
+
       /*paper-textarea {
         width: 100%;
         height: 150px;
@@ -213,6 +217,10 @@
         </div>
         <div id="category">
           Category : {{category}}
+        </div>
+
+        <div id="emavailable">
+          Available for emergency : {{emergencyAvailable}}
         </div>
 
       </section>
@@ -276,6 +284,7 @@
             <paper-button raised id="event-submit-cancel" dialog-dismiss>Cancel</paper-button>
           </div>
         </div>
+        <p class="date-error-msg">{{dateError}}</p>
         <p>Default date is today, default time is now and 1 hour later.</p>
         <paper-dialog-scrollable>
           <template is="dom-repeat" items="{{events}}" as="result">
@@ -336,6 +345,9 @@
         id: {
           type: String,
           observer: '_idchanged'
+        },
+        routd:{
+          type: String,
         },
         firstname: {
           type: String
@@ -401,6 +413,15 @@
           type: String,
         },
 
+        emergencyAvailable: {
+          type : String
+        },
+
+        dateError: {
+          type: String,
+          value: "",
+        },
+
         currentDate: {
           type: String,
           reflectToAttribute: true,
@@ -436,12 +457,27 @@
         let start = new Date(startDate + ", " + startTime);
         let end = new Date(endDate + ", " + endTime);
 
-        if (validLocation && validDescription) {
+        let validDate = true;
+
+        if (start > end) {
+          validDate = false;
+          this.dateError = "End date/time must be later than the starting one!"
+          console.log("End date/time must be later than start!s");
+        } else if (start < new Date()){
+          validDate = false;
+          this.dateError = "Selected date must be later than now!"
+          console.log("Date is before now!");
+        } else {
+          this.dateError = "";
+        }
+
+
+        if (validLocation && validDescription && validDate) {
           let newEvent = {
             description: description,
             location: location,
-            start: start.toString(),
-            end: end.toString()
+            start: start.toUTCString(),
+            end: end.toUTCString()
           };
 
           let add_request = this.$['event-add-request'];
@@ -477,7 +513,8 @@
 
       _idchanged: function (id) {
         this.id = id;
-        if (this.id !== "" && this.id !== undefined) {
+        // console.log(this.routd);
+        if (this.routd === "freelancer" && this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
@@ -520,6 +557,11 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
+        if(res.emergencyAvailable){
+          this.emergencyAvailable = "Yes";
+        }else{
+          this.emergencyAvailable = "No";
+        }
         this.verification = res.verification;
         this.userId = res.claimingUserId;
         // this.userId = res._id;
