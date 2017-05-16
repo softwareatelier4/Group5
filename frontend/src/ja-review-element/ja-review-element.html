@@ -31,18 +31,18 @@
 
       <paper-button id="review-open-response-editor" raised>Respond</paper-button>
 
-      <template is="dom-if" if="{{hasResponse}}" restamp="true">
+      <template is="dom-if" if="{{_hasResponse(response)}}" restamp="true">
         <paper-card>
           <div class="card-content">
             <div id="review-response-comment">
-              {{responseComment}}
-            </div>
-            <div id="review-response-date">
-              {{_changedate(responseDate)}}
+              {{response.comment}}
             </div>
           </div>
           <div class="card-actions">
-            <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap" hidden>Cancel</paper-button>
+            <div id="review-response-date">
+              {{_changedate(response.date)}}
+            </div>
+            <!-- <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap" >Edit</paper-button> -->
           </div>
         </paper-card>
       </template>
@@ -53,6 +53,13 @@
         <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
         <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
       </template>
+
+      <iron-ajax id="review-response-submit-req" url="/freelancer/{{freelancerId}}/review/{{reviewId}}"
+      method="POST"
+      handle-as="json"
+      content-type="application/json"
+      on-response="_handleSubmitResponse"
+      on-error="_handleSubmitError"></iron-ajax>
 
     </paper-card>
 
@@ -82,15 +89,9 @@
         date: {
           type: Date
         },
-        responseComment: {
-          type: String,
-          value: "A sample response",
+        response: {
+          type: Object,
         },
-        responseDate: {
-          type: Date,
-          value: new Date(),
-        },
-
       },
 
       _changedate: function (date) {
@@ -104,14 +105,39 @@
       },
 
       _onSubmitResponseTap : function(evt) {
-        // this.responseEditorOpen = false;
-        // TODO: add request
-        // this.$['review-open-response-editor'].hidden = true;
+        const request = this.$['review-response-submit-req'];
+        const text = this.$$('#review-response-text').value;
+        request.body = {
+          comment: text,
+          date: new Date(),
+        }
+        console.log("Sending", request.body);
+        request.generateRequest();
+        this.responseEditorOpen = false;
       },
 
       _onCancelResponseTap : function(evt) {
         this.responseEditorOpen = false;
         // this.$['review-open-response-editor'].hidden = true;
+      },
+
+      _handleSubmitResponse: function(evt) {
+        console.log("Received", evt.detail.response);
+        const resp = evt.detail.response;
+        this.response = {
+          comment: resp.comment,
+          date: resp.date,
+        };
+        this.hasResponse = true;
+      },
+
+      _handleSubmitError: function(evt) {
+        console.log("Received error", evt.detail.response);
+      },
+
+      _hasResponse: function(response) {
+        console.log("asdasdasd", response);
+        return response && response.comment && response.date;
       },
 
     });
