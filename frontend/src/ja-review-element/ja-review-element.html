@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <dom-module id="ja-review-element">
 
   <template>
@@ -25,6 +27,33 @@
       <div id="userName">
         Username : {{user}}
       </div>
+      {{reviewId}}
+
+      <paper-button id="review-open-response-editor" raised>Respond</paper-button>
+
+      <template is="dom-if" if="{{hasResponse}}" restamp="true">
+        <paper-card>
+          <div class="card-content">
+            <div id="review-response-comment">
+              {{responseComment}}
+            </div>
+            <div id="review-response-date">
+              {{_changedate(responseDate)}}
+            </div>
+          </div>
+          <div class="card-actions">
+            <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap" hidden>Cancel</paper-button>
+          </div>
+        </paper-card>
+      </template>
+
+      <template is="dom-if" if="{{responseEditorOpen}}" restamp="true">
+        <paper-textarea id="review-response-text" label="Write your response here.">
+        </paper-textarea>
+        <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
+        <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
+      </template>
+
     </paper-card>
 
 
@@ -33,6 +62,13 @@
   <script>
     Polymer({
       is: "ja-review-element",
+
+      listeners : {
+        'review-open-response-editor.tap' : '_onOpenReponseEditorTap',
+        // 'review-response-submit-btn.tap' : '_onSubmitResponseTap',
+        // 'review-response-cancel.tap' : '_onCancelResponseTap',
+      },
+
       properties: {
         comment: {
           type: String
@@ -45,13 +81,39 @@
         },
         date: {
           type: Date
-        }
+        },
+        responseComment: {
+          type: String,
+          value: "A sample response",
+        },
+        responseDate: {
+          type: Date,
+          value: new Date(),
+        },
+
       },
 
       _changedate: function (date) {
         const d = new Date(date);
         return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
-      }
+      },
+
+      _onOpenReponseEditorTap : function(evt) {
+        this.responseEditorOpen = true;
+        this.$['review-open-response-editor'].hidden = true;
+      },
+
+      _onSubmitResponseTap : function(evt) {
+        // this.responseEditorOpen = false;
+        // TODO: add request
+        // this.$['review-open-response-editor'].hidden = true;
+      },
+
+      _onCancelResponseTap : function(evt) {
+        this.responseEditorOpen = false;
+        // this.$['review-open-response-editor'].hidden = true;
+      },
+
     });
   </script>
 

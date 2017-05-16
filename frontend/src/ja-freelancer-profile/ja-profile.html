@@ -311,7 +311,7 @@
         </div>
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}} review-id="{{result._id}}"></ja-review-element>
         </template>
       </section>
 
