@@ -32,6 +32,7 @@ router.get('/:freelancerid', function(req, res, next) {
       freelancer.events = freelancer.events.filter(function(el){
         return el.end > now;
       })
+      // console.log(freelancer);
       res.json(freelancer);
     }
   });
@@ -60,6 +61,7 @@ router.post('/:freelancerid/review', function(req, res, next) {
 
 router.post('/:freelancerid/review/:reviewid', function(req, res, next) {
   var toAdd = new Response(req.body);
+  console.log(toAdd);
   toAdd.save(function(err) {
     if (err) {
       return res.status(400).json(serverErrors.badRequest);
@@ -73,7 +75,8 @@ router.post('/:freelancerid/review/:reviewid', function(req, res, next) {
       }else if (!review) {
         return res.status(404).json(serverErrors.notFound);
       } else {
-        return res.json(toAdd._id);
+        console.log(review);
+        return res.json(toAdd);
       }
     })
   });
