@@ -44,10 +44,6 @@ app.post('/claim/:id', function (req, res) {
     fs.mkdirSync(dir);
   }
 
-  if (!fs.existsSync(idDir)) {
-    fs.mkdirSync(idDir);
-  }
-
   var form = new formidable.IncomingForm(),
     files = [],
     fields = [];
@@ -64,9 +60,9 @@ app.post('/claim/:id', function (req, res) {
   form.on('end', function () {
     console.log('done');
     zipFolder(__dirname + '/frontend/src/claim-documents/' + req.params.id, __dirname + '/frontend/src/claim-documents/' + req.params.id + '.zip', function (err) {
-      if (!err) {
-        console.log('EXCELLENT');
-      }
+      // if (!err) {
+      //   console.log('EXCELLENT');
+      // }
     });
   });
   // form.parse(req);
