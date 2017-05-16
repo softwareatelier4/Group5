@@ -12,6 +12,8 @@
 <link rel="import" href="../ja-admin/ja-admin.html">
 <link rel="import" href="../ja-login/ja-login.html">
 <link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
+<link rel="import" href="../ja-emergency-call/ja-emergency-call.html">
+<link rel="import" href="../ja-notification-page/ja-notification-page.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -106,6 +108,19 @@
         background-color: var(--paper-yellow-500);
         color: blue;
       }
+
+      #emergency-button{
+        float:right;
+        background-color: var(--paper-yellow-500);
+        color: blue;
+      }
+
+      #notification-button{
+        float:right;
+        background-color: var(--paper-yellow-500);
+        color: blue;
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -114,18 +129,22 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-    <!-- <div id="login"> -->
-
-    <!-- </div> -->
     <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
       <a href="/signup">
         <paper-button id="signup-button">CREATE FREELANCER</paper-button>
       </a>
     </template>
 
-    <a href="/login">
-      <paper-button id="loginBtn" raised>Login/signup</paper-button>
-    </a>
+    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+      <a href="/emergency"><paper-button id="emergency-button">EMERGENCY CALL</paper-button></a>
+    </template>
+
+    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+      <a href="/notification/{{user._id}}"><paper-button id="notification-button">NOTIFICATIONS</paper-button></a>
+    </template>
+
+    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
+
     <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
     <div id="username">
       [[_formatLoginStatus(user)]]
@@ -147,7 +166,7 @@
           <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
         </div>
         <div title="freelancer">
-          <ja-profile id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
+          <ja-profile routd={{routeData.view}} id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
         </div>
         <div title="login">
           <ja-login user={{user}}></ja-login>
@@ -165,6 +184,17 @@
             <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
           </template>
         </div>
+        <div title="emergency">
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-emergency-call user={{user}} user-location=[[userLocation]]></ja-emergency-call>
+          </template>
+        </div>
+        <div title="notification">
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-notification-page user={{user}}></ja-notification-page>
+          </template>
+        </div>
+
       </iron-pages>
     </div>
 
@@ -175,7 +205,7 @@
       is: 'jobadvisor-app',
 
       listeners: {
-        'loginBtn.tap': '_onLoginTap',
+        // 'loginBtn.tap': '_onLoginTap',
         'logoutBtn.tap': '_onLogoutTap'
       },
 
@@ -259,7 +289,7 @@
         this.results = results;
       },
       _userChanged: function (user) {
-        console.log(user);
+        // console.log(user);
         if (this.user && this.user.userType != "guest") {
           this.$['logoutBtn'].hidden = false;
           this.$['loginBtn'].hidden = true;
@@ -281,10 +311,8 @@
         this.view = page;
       },
 
-      _onLoginTap: function (evt) {},
-
       _onLogoutTap: function (evt) {
-        console.log("Logging out");
+        // console.log("Logging out");
         this.set('user', {
           userName: "guest",
           userType: "guest"
@@ -320,7 +348,7 @@
           this.set('user', JSON.parse(localStorage.getItem('user')));
           this.$['logoutBtn'].hidden = false;
         }
-        console.log("USER", this.user);
+        // console.log("USER", this.user);
       },
 
       _handleResponse: function (response) {
@@ -328,7 +356,7 @@
         if (response) {
           this.userLocation = resp.results[0].formatted_address;
           this.location = resp.results[0].formatted_address;
-          console.log("Reverse geo response", resp.results[0].formatted_address);
+          // console.log("Reverse geo response", resp.results[0].formatted_address);
           window.localStorage['userLocation'] = resp.results[0].formatted_address;
         }
 

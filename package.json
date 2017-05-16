@@ -23,9 +23,7 @@
   "author": "Francesco Sani, Thomas Del Prete, Alexander Fischer, Samuele Bischof, Lorenzo Spoleti, Davide Bucher, Camillo Malnati, Emanuele Giuseppe Esposito",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^1.0.2",
-    "bcrypt-nodejs": "0.0.3",
-    "bcryptjs": "^2.4.0",
+    "@google/maps": "^0.3.1",
     "body-parser": "^1.14.1",
     "bower": "^1.8.0",
     "cookie-parser": "^1.4.3",
@@ -38,7 +36,7 @@
     "mongodb": "^2.2.22",
     "mongoose": "^4.9.2",
     "morgan": "^1.6.1",
-    "nodemailer": "^2.7",
+    "nodemailer": "^2.7.0",
     "polymer-cli": "^0.17.0",
     "supertest": "^1.1.0",
     "zip-folder": "^1.0.0"
