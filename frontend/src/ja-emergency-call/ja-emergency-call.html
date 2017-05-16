@@ -9,12 +9,6 @@
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
-<!-- TODO
-Button to say if I want the current location or not, clickable in any moment
-Checkbox to say if I want a list of freelancers available (will return the list instead of a single object)
-Add automatic location in "create freelancer page" and in "show events" in freelancer profile page
- -->
-
 <dom-module id="ja-emergency-call">
 
   <template>
@@ -46,9 +40,9 @@ Add automatic location in "create freelancer page" and in "show events" in freel
         <paper-input id="locationField" required auto-validate   label="Insert your location"  value={{_write(userLocation)}} ></paper-input>
       </div>
 
-      <!-- <div id="_autolocation">
-        <paper-checkbox checked on-click="_useautolocation">Use automatic location</paper-checkbox>
-      </div> -->
+      <div id="_autolocation">
+        <paper-checkbox id="checkbox" checked on-click="_useautolocation">Use automatic location</paper-checkbox>
+      </div>
 
       <div id="_phonenumber1">
         <paper-input id="fphone1" label="Phone number" auto-validate pattern="^[0-9+ -]{1,14}$" required error-message="Phone required (numbers only)!"></paper-input>
@@ -85,7 +79,6 @@ Add automatic location in "create freelancer page" and in "show events" in freel
             <paper-item name="60">60</paper-item>
           </paper-listbox>
         </paper-dropdown-menu>
-        <!-- <paper-input label="Specify a time limit" auto-validate pattern="^[0-9]+" id="ftime" error-message="Numbers only!"></paper-input> -->
       </div>
 
 
@@ -103,7 +96,11 @@ Add automatic location in "create freelancer page" and in "show events" in freel
 
     Polymer({
       is: "ja-emergency-call",
-
+      properties: {
+        autolocation: {
+          type : String,
+        }
+      },
 
       ready: function() {
         setTimeout(function(){
@@ -117,15 +114,21 @@ Add automatic location in "create freelancer page" and in "show events" in freel
       },
 
       _write: function(el){
-        if(this.$.locationField.value === ""){
-          return el;
+        if(el !== undefined && el !== "" && el !== null){
+          this.$.checkbox.childNodes[1].innerHTML = "Use automatic location";
+          this.autolocation = el;
+          if(this.$.checkbox.checked){
+            return el;
+          }else{
+            return this.$.locationField.value;
+          }
         }else{
-          return this.$.locationField.value;
+          this.$.checkbox.childNodes[1].innerHTML = "Use automatic location (getting it...)";
         }
+
       },
 
       _timerStarted: function(el){
-        // console.log("done");
         var res = el.detail.response;
         if(res === "no match"){
           this.$.toast0.open();
@@ -154,11 +157,17 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           this.$.fphone1.value = "";
           this.$.fphone1.validate();
           this.$.fphone1.setAttribute("required", true);
+          this.$.checkbox.checked = true;
       },
 
-      // _useautolocation: function(){
-      //   console.log("clicked");
-      // },
+      _useautolocation: function(){
+
+        if(this.$.checkbox.checked){
+          this.$.locationField.value = this.autolocation;
+        }else{
+          this.$.locationField.value = "";
+        }
+      },
 
       emergency_clicked : function(){
 
@@ -182,7 +191,7 @@ Add automatic location in "create freelancer page" and in "show events" in freel
           proceed = false;
           this.$.fphone1.focus();
         }
-        console.log(this.user._id);
+        // console.log(this.user._id);
         if(proceed){
           const ajaxel = this.$.emergencyajax;
           var d = new Date();
