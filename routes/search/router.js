@@ -15,7 +15,7 @@ router.all('/', middleware.supportedMethods('GET'));
 router.get('/', function(req, res, next) {
   res.status(200);
 
-  var categories = ['firstName', 'lastName', 'address', 'description', 'profession', 'reviews'];
+  var categories = ['firstName', 'lastName', 'address', 'description', 'profession'];
 
   if(req.query.general || req.query.category) {
     var input = new RegExp(req.query.general, 'i');
