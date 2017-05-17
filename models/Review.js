@@ -24,7 +24,7 @@ const ReviewSchema = new mongoose.Schema(
     rating  : { type: Number, required: true },
     comment : { type: String},
     date    : { type: Date },
-    response: { type: ResponseSchema}
+    response: { type: ObjectId, ref: "Response", required: false },
   }
 );
 
