@@ -6,8 +6,8 @@ module.exports = {
       .setValue('#field-search input', 'Samuele')
       .setValue('#location-search input', 'Lugano, Switzerland')
       .click('#button-search')
-      .pause(500)
-      .assert.containsText('#fl-5625fc2bd66b84d23d8c7bf2 .result-verification', 'pending')
+      // .pause(500)
+      // .assert.containsText('#fl-5625fc2bd66b84d23d8c7bf2 .result-verification', 'pending')
       .end()
   },
 
