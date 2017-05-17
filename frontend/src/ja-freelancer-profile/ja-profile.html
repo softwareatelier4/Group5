@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/sortable-list/sortable-list.html">
+
 <dom-module id="ja-profile">
 
   <template>
@@ -314,9 +316,11 @@
           </div>
         </div>
 
-        <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
-        </template>
+        <sortable-list>
+          <template is="dom-repeat" items="{{reviews}}" as="result">
+            <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
+          </template>
+        </sortable-list>
       </section>
 
     </section>
