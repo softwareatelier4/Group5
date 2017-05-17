@@ -88,14 +88,18 @@
       #user,
       #loginBtn,
       #logoutBtn,
-      #signup-button {
+      #signup-button,
+      #emergency-button,
+      #notification-button {
         background-color: white;
         position: relative;
         width: calc(100% - 10px);
         margin: 5px;
       }
 
-      #signup-button {
+      #signup-button,
+      #emergency-button,
+      #notification-button {
         background-color: var(--paper-yellow-500);
       }
 
@@ -120,19 +124,6 @@
         background-color: #222;
         padding: 10px;
       }
-
-      #emergency-button{
-        float:right;
-        background-color: var(--paper-yellow-500);
-        color: blue;
-      }
-
-      #notification-button{
-        float:right;
-        background-color: var(--paper-yellow-500);
-        color: blue;
-      }
-
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -158,11 +149,15 @@
         </a>
       </template>
       <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-          <a href="/emergency"><paper-button id="emergency-button">EMERGENCY CALL</paper-button></a>
+        <a href="/emergency">
+          <paper-button id="emergency-button">EMERGENCY CALL</paper-button>
+        </a>
       </template>
-      
+
       <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-          <a href="/notification/{{user._id}}"><paper-button id="notification-button">NOTIFICATIONS</paper-button></a>
+        <a href="/notification/{{user._id}}">
+          <paper-button id="notification-button">NOTIFICATIONS</paper-button>
+        </a>
       </template>
       <div id="username" hidden>
         [[_formatLoginStatus(user)]]
@@ -333,7 +328,9 @@
         this.view = page;
       },
 
-      _onLoginTap: function (evt) {},
+      _onLoginTap: function (evt) {
+        // this.$['menu-container'].hidden = true;
+      },
 
       _onLogoutTap: function (evt) {
         // console.log("Logging out");
