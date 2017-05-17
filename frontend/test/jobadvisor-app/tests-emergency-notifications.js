@@ -1,4 +1,7 @@
 module.exports = {
+  // before: function(client) {
+  //   browser.resizeWindow()
+  // },
 
   'Test login and load emergency page': function (client) {
     client
@@ -6,7 +9,7 @@ module.exports = {
       .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
-      // .assert.urlEquals('http://localhost:3005/login')
+      .assert.urlEquals('http://localhost:3005/login')
       .click('#menu-close')
       .setValue('#login-username input', 'fischer')
       .setValue('#login-password input', 'fischer')
