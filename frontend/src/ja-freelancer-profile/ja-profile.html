@@ -643,17 +643,13 @@
 
       _done: function (el) {
         const d = new Date();
-        const obj = {
-          comment: this.$.comm.value,
-          rating: this.$.ratenum.value,
-          date: d,
-          userName: this.user.userName
-        };
+        const response = el.detail.response;
+        console.log("review:", response);
         this.$.comm.value = " ";
         this.$.ratenum.value = "-";
         this.$.review.removeAttribute("raised");
         this.$.review.disabled = true;
-        this.unshift('reviews', obj);
+        this.push('reviews', response);
       },
 
       _handleAddEventResponse: function(evt) {

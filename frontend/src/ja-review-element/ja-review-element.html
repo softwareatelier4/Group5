@@ -29,7 +29,9 @@
       </div>
       {{reviewId}}
 
-      <paper-button id="review-open-response-editor" raised>Respond</paper-button>
+      <!-- <template is="dom-if" if="{{!_hasResponse(response)}}" restamp="true"> -->
+        <paper-button id="review-open-response-editor" raised on-tap="_onOpenReponseEditorTap">Respond</paper-button>
+      <!-- </template> -->
 
       <template is="dom-if" if="{{_hasResponse(response)}}" restamp="true">
         <paper-card>
@@ -42,7 +44,7 @@
             <div id="review-response-date">
               {{_changedate(response.date)}}
             </div>
-            <!-- <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap" >Edit</paper-button> -->
+            <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap">Edit</paper-button>
           </div>
         </paper-card>
       </template>
@@ -71,7 +73,7 @@
       is: "ja-review-element",
 
       listeners : {
-        'review-open-response-editor.tap' : '_onOpenReponseEditorTap',
+        // 'review-open-response-editor.tap' : '_onOpenReponseEditorTap',
         // 'review-response-submit-btn.tap' : '_onSubmitResponseTap',
         // 'review-response-cancel.tap' : '_onCancelResponseTap',
       },
@@ -101,7 +103,12 @@
 
       _onOpenReponseEditorTap : function(evt) {
         this.responseEditorOpen = true;
-        this.$['review-open-response-editor'].hidden = true;
+        // this.$['review-open-response-editor'].hidden = true;
+      },
+
+      _onEditResponseTap : function(evt) {
+        this.responseEditorOpen = true;
+        // this.$['review-response-editor'].hidden = true;
       },
 
       _onSubmitResponseTap : function(evt) {
