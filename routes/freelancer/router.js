@@ -33,74 +33,60 @@ router.get('/:freelancerid', function(req, res, next) {
         return el.end > now;
       })
 
-    //populate review and events by id
-    var review_number = freelancer.reviews.length;
-    var review_processed = 0;
-    var reviewsToInsert = [];
-    if(review_number === 0){
-      var event_number = freelancer.events.length;
-      var event_processed = 0;
-      var eventToInsert = [];
-      freelancer.events.forEach(function(event_id){
-        CalendarEvent.findById(event_id, function(err, found){
-          eventToInsert.push(found);
-          event_processed++;
-          if(event_number === event_processed){
-            freelancer.events = eventToInsert;
-            res.json(freelancer);
-            // return;
-          }
-        })
-      })
-    }else{
-      freelancer.reviews.forEach(function(review_id){
-        Review.findById(review_id, function(err, found){
-          Response.findById(found.response, function(err, found2){
-            if(found2){
-              found.response = found2;
-            }
-            reviewsToInsert.push(found);
-            review_processed++;
-            if(review_processed == review_number){
-              freelancer.reviews = reviewsToInsert;
-              var event_number = freelancer.events.length;
-              var event_processed = 0;
-              var eventToInsert = [];
-              freelancer.events.forEach(function(event_id){
-                CalendarEvent.findById(event_id, function(err, found){
-                  eventToInsert.push(found);
-                  event_processed++;
-                  if(event_number === event_processed){
-                    freelancer.events = eventToInsert;
-                    res.json(freelancer);
-                    // return;
-                  }
-                })
-              })
+      //populate review and events by id
+      var review_number = freelancer.reviews.length;
+      var review_processed = 0;
+      var reviewsToInsert = [];
+      if(review_number === 0){
+        var event_number = freelancer.events.length;
+        var event_processed = 0;
+        var eventToInsert = [];
+        freelancer.events.forEach(function(event_id){
+          CalendarEvent.findById(event_id, function(err, found){
+            eventToInsert.push(found);
+            event_processed++;
+            if(event_number === event_processed){
+              freelancer.events = eventToInsert;
               res.json(freelancer);
+              return;
             }
           })
-
-
         })
-      })
-    }
+      }else{
+        freelancer.reviews.forEach(function(review_id){
+          Review.findById(review_id, function(err, found){
+            Response.findById(found.response, function(err, found2){
+              if(found2){
+                found.response = found2;
+              }
+              reviewsToInsert.push(found);
+              review_processed++;
+              if(review_processed == review_number){
+                freelancer.reviews = reviewsToInsert;
+                var event_number = freelancer.events.length;
+                var event_processed = 0;
+                var eventToInsert = [];
+                freelancer.events.forEach(function(event_id){
+                  CalendarEvent.findById(event_id, function(err, found){
+                    eventToInsert.push(found);
+                    event_processed++;
+                    if(event_number === event_processed){
+                      freelancer.events = eventToInsert;
+                      res.json(freelancer);
+                      return;
+                    }
+                  })
+                })
+                res.json(freelancer);
+                return;
+              }
+            })
 
 
-
-
-    // var options = {
-    //   path: 'Review',
-    //       model: 'Review'
-    //     };
-    // Freelancer.populate(freelancer, options, function(err,result){
-    //   console.log(result)
-    // })
-
-
-    //     .populate({ path : "events" })
-    // console.log(freelancer)
-    //   res.json(freelancer);
+          })
+        })
+      }
+      res.json(freelancer);
     }
   });
 });
