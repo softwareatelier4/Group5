@@ -1,7 +1,7 @@
 module.exports = {
-  // before: function(client) {
-  //   browser.resizeWindow()
-  // },
+  before: function(client) {
+    client.resizeWindow(1280,720);
+  },
 
   'Test login and load emergency page': function (client) {
     client
@@ -69,13 +69,13 @@ module.exports = {
       .setValue('#fphone1 input', '0916666666')
       .setValue('#locationField input', 'Informatica, 6900 Lugano, Switzerland')
       .click('#emergencysubmit')
-      .pause(2000)
+      .pause(500)
     //.end();
   },
 
   'Test notifications accepted': function (client) {
     client
-      .pause(10000)
+      .pause(500)
       .assert.urlEquals('http://localhost:3005/notification/5625fc2bd82b84d23d8c9bd0/user')
       .waitForElementVisible('#notification-container', 1000)
       .waitForElementVisible('#usnt-590f2bcfda0f255fd9fb5654', 1000)
@@ -93,7 +93,7 @@ module.exports = {
       .waitForElementVisible('paper-button#buttonNo', 1000)
       .click('paper-button#buttonYes')
       .refresh()
-      .pause(2000)
+      .pause(500)
       .assert.containsText('#usnt-590f2bcfda0f255fd9fb5654 > div#left > div#notification-status > span', 'Status : Accepted')
       .end();
   },
