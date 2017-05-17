@@ -1,13 +1,15 @@
 module.exports = {
-
+  before: function(client) {
+    client.resizeWindow(1280,720);
+  },
 'Test claim profile from search': function (client) {
     client
       .url('http://localhost:3005/')
       .setValue('#field-search input', 'Samuele')
       .setValue('#location-search input', 'Lugano, Switzerland')
       .click('#button-search')
-      // .pause(500)
-      // .assert.containsText('#fl-5625fc2bd66b84d23d8c7bf2 .result-verification', 'pending')
+      .pause(500)
+      .assert.containsText('#fl-5625fc2bd66b84d23d8c7bf2 .result-verification', 'pending')
       .end()
   },
 
@@ -65,7 +67,7 @@ module.exports = {
     client
     .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd6')
     .waitForElementVisible('#name', 1000)
-    .pause(5000)
+    .pause(500)
     .waitForElementVisible('#open-events-btn', 500)
     .click('#open-events-btn')
     .waitForElementVisible('#profile-calendar', 500)

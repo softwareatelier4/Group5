@@ -1,5 +1,7 @@
 module.exports = {
-
+  before: function(client) {
+    client.resizeWindow(1280,720);
+  },
   'Test login page elements visibility' : function (client) {
     client
       .url('http://localhost:3005/')
