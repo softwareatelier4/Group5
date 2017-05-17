@@ -223,6 +223,10 @@
           Category : {{category}}
         </div>
 
+        <div id="emavailable">
+          Available for emergency : {{emergencyAvailable}}
+        </div>
+
       </section>
 
       <section id="right">
@@ -347,6 +351,9 @@
           type: String,
           observer: '_idchanged'
         },
+        routd:{
+          type: String,
+        },
         firstname: {
           type: String
         },
@@ -409,6 +416,10 @@
 
         verification: {
           type: String,
+        },
+
+        emergencyAvailable: {
+          type : String
         },
 
         dateError: {
@@ -507,7 +518,8 @@
 
       _idchanged: function (id) {
         this.id = id;
-        if (this.id !== "" && this.id !== undefined) {
+        // console.log(this.routd);
+        if (this.routd === "freelancer" && this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
         }
@@ -550,6 +562,11 @@
         this.rating = this._setrating(res.rating);
         this.category = res.category;
         this.reviews = res.reviews;
+        if(res.emergencyAvailable){
+          this.emergencyAvailable = "Yes";
+        }else{
+          this.emergencyAvailable = "No";
+        }
         this.verification = res.verification;
         this.userId = res.claimingUserId;
         // this.userId = res._id;

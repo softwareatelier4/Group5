@@ -13,9 +13,8 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const NotificationSchema = require('./Notification')
 
 
 const userSchema = new mongoose.Schema(
@@ -26,6 +25,8 @@ const userSchema = new mongoose.Schema(
     password  : { type: String, required: true },
     email     : { type: String, required: true },
     userType  : { type: String, enum:['Admin', 'Freelancer', 'Normal'], default: 'Normal'},
+    freelancerId : { type: String },
+    notifications : { type: [ObjectId], ref: "Notification", default: [] }, // request done
     pending  : { type: String, enum:['pending','none'], default: 'none'},
   }
 );

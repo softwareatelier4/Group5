@@ -29,7 +29,7 @@ router.get('/:id', function(req, res, next) {
           }
         })
     }else{
-      res.status(404);
+      // res.status(404);
       return res.status(404).json(serverErrors.notFound);
     }
   })
@@ -46,6 +46,7 @@ router.post('/', function(req, res, next) {
           user: {
             userName: user.userName,
             userType: user.userType,
+            freelancerId: user.freelancerId,
             email: user.email,
             _id: user._id,
             pending: user.pending,
@@ -68,7 +69,7 @@ router.post('/signup', function(req, res, next){
     }else{
       req.session.user = newUser;
       newUser.save(function(err){
-        if(err) return next(err);
+        // if(err) return next(err);
         res.status(201).json(newUser);
       });
 

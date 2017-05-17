@@ -49,11 +49,21 @@
         <paper-input label="Description" id="desc"></paper-input>
       </div>
 
+      <br />
+
+      <div id="_emergency">
+        Available for emergency  <br />
+        <paper-radio-group id="emergencyselector" selected="false">
+        <paper-radio-button id="yes" name="true">Yes</paper-radio-button>
+        <paper-radio-button id="no" name="false">No</paper-radio-button>
+      </paper-radio-group>
+      </div>
+      <br />
+
       <div id="_category">
         Category <br />
         <paper-radio-group id="selector" selected="Other">
         <!-- <paper-input label="Category" id="cat"></paper-input> -->
-        <paper-radio-button id="Radio" name="Radio"> Radio  </paper-radio-button>
         <paper-radio-button id="TecnicalServices" name="Tecnical Services">Tecnical Services</paper-radio-button>
         <paper-radio-button id="ITServices" name="IT Services">IT Services</paper-radio-button>
         <paper-radio-button id="Design" name="Design">Design</paper-radio-button>
@@ -203,6 +213,7 @@
 
         if(proceed){
           const ajaxel = this.$.ajax;
+          // console.log(this.$.emergencyselector.selected);
           const obj = {
               firstName : this.$.fname.value,
               lastName  : this.$.lastname.value,
@@ -214,6 +225,7 @@
               phone_number : this.$.fphone.value,
               price  : this.$.fprice.value,
               reviews : [],
+              emergencyAvailable : this.$.emergencyselector.selected,
           };
           if(this.$.upload.files[0] !== undefined){
             ajaxel.url+= "1";

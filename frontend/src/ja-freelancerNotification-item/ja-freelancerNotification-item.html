@@ -1,0 +1,154 @@
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="ja-freelancerNotification-item">
+
+  <template>
+    <style>
+      /* CSS rules for your element */
+      :host {
+        display: block;
+        margin: 20px 0;
+      }
+
+      paper-card {
+        padding:50px;
+        width: 100%;
+      }
+
+      #right{
+        float:right;
+        padding-right:100px;
+      }
+
+      #left{
+        float:left;
+        padding-left:100px;
+      }
+
+      #notification-status{
+        padding-top:20px;
+        padding-bottom: 10px;
+      }
+
+      .notification-profession {
+        font-size: 24px;
+        text-decoration: none;
+      }
+
+    </style>
+
+    <paper-card id="flnt-{{notification._id}}" class='papercard'>
+      <div id="left">
+        <div id="notification-profession">
+        <span> Profession Requested: {{notification.profession}}</span>
+      </div>
+      <div id="notification-description">
+        <span> Description : {{notification.description}}</span>
+      </div>
+      <div id="notification-status">
+        <span> Status : {{notification.status}}</span>
+      </div>
+      <template is="dom-if" if="{{_statusispending(notification.status)}}" restamp="true">
+        <div id = "accepted">
+          <span>
+            <div>Accept?:</div>
+
+            <paper-button id="buttonYes" raised on-click="_sendYes">
+              Yes
+            </paper-button>
+            <paper-button id="buttonNo" raised on-click="_sendNo">
+              No
+            </paper-button>
+
+           </span>
+        </div>
+      </template>
+
+      </div>
+      <div id="right">
+        USER ASKING:
+        <div>
+          <span id="not-name">
+          </span>
+        </div>
+        <div>
+          <span id="not-userName">
+          </span>
+        </div>
+        <div>
+          <span id="not-email">
+          </span>
+        </div>
+        <div>
+          <span id="not-location">
+          </span>
+        </div>
+        <div>
+          <span id="not-phone">
+          </span>
+        </div>
+      </div>
+    </paper-card>
+
+    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/freelancer/yes" method="PUT" handle-as="json" on-response="_yesres"></iron-ajax> <!-- RESPONSE???? -->
+    <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/freelancer/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax> <!-- RESPONSE???? -->
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "ja-freelancerNotification-item",
+
+      properties: {
+        notification: {
+          type: Object,
+        },
+      },
+
+      ready: function() {
+        // console.log(this.notification);
+        this.$['not-email'].innerHTML = this.notification.userCalling.email;
+        this.$['not-userName'].innerHTML = this.notification.userCalling.userName;
+        this.$['not-name'].innerHTML = this.notification.userCalling.firstName + " " +this.notification.userCalling.lastName;
+        this.$['not-location'].innerHTML = this.notification.location;
+        this.$['not-phone'].innerHTML = this.notification.phone;
+      },
+
+      _sendYes : function(){
+        // console.log("Yes");
+        const ajaxel = this.$.buttonYes;
+        ajaxel.generateRequest();
+      },
+
+      _sendNo : function(){
+        // console.log("No");
+        const ajaxel = this.$.buttonNo;
+        ajaxel.generateRequest();
+      },
+
+      _yesres : function(){
+        // console.log("freelancer yes");
+        x = document.getElementById("accepted");
+        x.innerHTML = "<p>Request accepted.</p>";
+        this.$["notification-status"].style.display = "none";
+      },
+
+      _nores : function(){
+        console.log("freelancer no");
+        const x = this.notification._id;
+        const found = this.notifications.find(function(el){
+          return el._id === x;
+        });
+        const index = this.notifications.indexOf(found);
+        this.splice("notifications", index, 1);
+      },
+
+      _statusispending : function(stat){
+        return stat === "Pending"
+      }
+
+    });
+  </script>
+
+</dom-module>

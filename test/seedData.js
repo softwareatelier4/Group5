@@ -5,6 +5,43 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var date = new Date();
 
+var notifications = {
+  name : "Notification",
+  data : [
+    {
+      "_id"                 : ObjectId("590f2bcfda0f255fd9fb5654"),
+      "description"         : "I want a plumber because my sink is broken",
+      "profession"          : "Plumber",
+      "category"            : "Other",
+      "location"            : "Via Monte Bre 16, Lugano",
+      "userCalling"         :  ObjectId("5625fc2bd82b84d23d8c9bd0"),
+      "freelancerNotified"  : 0,
+      "availableFreelancers": [ObjectId("5625fc2bd82b84d23d8c7bd6"), ObjectId("5625fc2bd82b84d23d8c7bd0")],
+      "status"              : "Pending",
+      "phone"               : "000000000"
+    },
+    // {
+    //   // "_id"                 : ObjectId("5625fc2bd66b84d23d8c7bf2"),
+    //   "description"         : "I think my cat has a virus",
+    //   "profession"          : "IT guy",
+    //   "category"            : "Other",
+    //   "userCalling"         : "5625fc2bd82b84d23d8c9bd0",
+    //   "freelancerNotified"  : 0,
+    //   "availableFreelancers": [freelancers.data[3]._id]
+    // },
+    // {
+    //   // "_id"                 : ObjectId("5625fc2bd66b84d23d8c7bf2"),
+    //   "description"         : "I need a painter for my toilet",
+    //   "profession"          : "Painter",
+    //   "category"            : "Other",
+    //   "userCalling"         : "5625fc2bd82b84d23d8c9bd0",
+    //   "freelancerNotified"  : 0,
+    //   "availableFreelancers": [freelancers.data[2]._id],
+    //   "status"              : "Refused"
+    // },
+  ]
+}
+
 var events = {
   name : 'CalendarEvent',
   data : [
@@ -35,9 +72,17 @@ var events = {
       "description" : "Riparazione finestra sig.ra Bianchi",
       "start"       : new Date(2017, 1, 1, 10, 30),
       "end"         : new Date(2017, 1, 1, 12, 30)
+    },
+    {
+      "location"    : "Lugano",
+      "description" : "Riparazione finestra sig.ra Bianchi",
+      "start"       : date,
+      "end"         : new Date(date.getTime() + 50 * 60000)
     }
   ]
 }
+
+
 var users = {
   name : 'User',
   data : [
@@ -59,12 +104,25 @@ var users = {
       "userType"  : "Normal"
     },
     {
+      "_id"       : ObjectId("5625fc2bd82b84d23d8c9bd0"),
       "userName"  : "fischer",
       "firstName" : "",
       "lastName"  : "",
       "password"  : "fischer",
       "email"     : "fischer@me.ch",
-      "userType"  : "Freelancer"
+      "userType"  : "Freelancer",
+      "freelancerId" : "5625fc2bd82b84d23d8c7bd6",
+      "notifications" : [notifications.data[0]]
+    },
+    {
+      "_id"       : ObjectId("5625fc2bd82b84d23d8c9b70"),
+      "userName"  : "esposem",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "em",
+      "email"     : "em@me.ch",
+      "userType"  : "Freelancer",
+      "freelancerId" : "5625fc2bd82b84d23d8c7bd0",
     },
     {
       "userName"  : "sani",
@@ -136,18 +194,19 @@ var freelancers = {
   name : 'Freelancer',
   data : [
     {
-      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd5"),
-      "firstName"     : "Mario",
-      "lastName"      : "Rossi",
-      "address"       : "Via San Gottardo 12, 6900 Lugano",
-      "rating"        : 3,
-      "email"         : "mario.rossi@gmail.com",
-      "phone_number"  : "+41 4442323223",
-      "price"         : 100,
-      "profession"    : "Painter",
-      "reviews"       : [reviews.data[2]],
-      "events"        : [],
-      "verification"  : "not verified",
+      "_id"                 : ObjectId("5625fc2bd82b84d23d8c7bd5"),
+      "firstName"           : "Mario",
+      "lastName"            : "Rossi",
+      "address"             : "Via San Gottardo 12, 6900 Lugano",
+      "rating"              : 3,
+      "email"               : "alexander.fischer0@usi.ch",
+      "phone_number"        : "+41 4442323223",
+      "price"               : 100,
+      "profession"          : "Painter",
+      "reviews"             : [reviews.data[2]],
+      "emergencyAvailable"  : true,
+      "events"              : [events.data[1], events.data[2], events.data[4]],
+      "verification"        : "not verified",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -156,16 +215,18 @@ var freelancers = {
       "address"       : "Via Morobbi 13, 6592 Sant'Antonino",
       "description"   : "I'm the best scrum Master in Lugano.",
       "profession"    : "Software Engineer",
-      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
       "category"      : "IT Services",
       "rating"        : 5,
       "email"         : "alexander.scrummaster@hotmail.ru",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 50,
+      "emergencyAvailable"  : false,
       "reviews"       : [reviews.data[4]],
       "events"        : [events.data[0], events.data[3]],
       "verification"  : "pending",
+      "notifications" : [ObjectId(notifications.data[0]._id)],
       "claimingUserId": "2625fc2bd89b84023d8c7bd6",
+
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
@@ -176,11 +237,46 @@ var freelancers = {
       "profession"    : "Painter",
       "category"      : "Tecnical Services",
       "rating"        : 4,
-      "email"         : "giovanni.rezzonico@gmail.com",
+      "email"         : "esposem@usi.ch",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 20,
       "reviews"       : [reviews.data[3], reviews.data[5]],
+      "emergencyAvailable"  : true,
       "verification"  : "pending",
+    },
+
+    {
+      "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd0"),
+      "firstName"     : "Marco",
+      "lastName"      : "Rezzonico",
+      "address"       : "Viale stazione, Bellinzona",
+      "description"   : "I'm the painter you are searching for",
+      "profession"    : "Painter",
+      "category"      : "Other",
+      "rating"        : 4,
+      "email"         : "esposem2@usi.ch",
+      "phone_number"  : "+41 78 234 77 23",
+      "price"         : 202,
+      "reviews"       : [],
+      "emergencyAvailable"  : true,
+      "verification"  : "verified",
+      // "notifications" : [ObjectId(notifications.data[0]._id)]
+    },
+
+    {
+      // "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd7"),
+      "firstName"     : "Antonio",
+      "lastName"      : "Rezzonico",
+      "address"       : "Zurich",
+      "description"   : "I'm the painter you are searching for",
+      "profession"    : "Painter",
+      "category"      : "Other",
+      "rating"        : 4,
+      "email"         : "malnac@usi.ch",
+      "phone_number"  : "+41 78 234 77 23",
+      "price"         : 200,
+      "reviews"       : [],
+      "emergencyAvailable"  : true,
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd8"),
@@ -191,10 +287,11 @@ var freelancers = {
       "profession"    : "Warehouseman",
       "category"      : "Logistics",
       "rating"        : 5,
-      "email"         : "francesco@hotmail.ch",
+      "email"         : "francesco.sani@usi.ch",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 60,
       "reviews"       : [reviews.data[5]],
+      "emergencyAvailable"  : false,
       "verification"  : "pending",
     },
     {
@@ -205,10 +302,11 @@ var freelancers = {
       "profession"    : "Design",
       "category"      : "Management",
       "rating"        : 1,
-      "email"         : "the.painter@hotmail.ch",
+      "email"         : "the.painter@usi.ch",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
+      "emergencyAvailable"  : false,
       "verification"  : "not verified",
       "claimingUserId": "2625fc2bd89b84023d8c7bd6",
     },
@@ -219,24 +317,23 @@ var freelancers = {
       "address"       : "Piazza Duomo, 22100 Como",
       "description"   : "I'm your man",
       "profession"    : "Web developer",
-      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
       "category"      : "IT Services",
       "rating"        : 5,
-      "email"         : "real.giamma@hotmail.it",
+      "email"         : "real.giamma@usi.ch",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
+      "emergencyAvailable"  : false,
       "verification"  : "not verified",
     },
 
     {
-      "_id"           : ObjectId("5625fc2bd66b84d23d8c7bf1"),
+      "_id"           : ObjectId("5625fc2bd66b84d23d8c7bf2"),
       "firstName"     : "Samuele",
       "lastName"      : "Bischof",
       "address"       : "Via Dogana, 41, 6854 Stabio",
       "description"   : "I'll find your bugs",
       "profession"    : "Beta tester",
-      // "category"      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare'], default:'Other' },
       "category"      : "IT Services",
       "rating"        : 5,
       "email"         : "samuele.bischof@sunrise.ch",
@@ -244,15 +341,52 @@ var freelancers = {
       "price"         : 40,
       "reviews"       : [reviews.data[5]],
       "verification"  : "pending",
+      "emergencyAvailable"  : false,
+    },
+    {
+      "_id"           : ObjectId("5625fc2cd82b84d23d8c7bd6"),
+      "firstName"     : "Alexander",
+      "lastName"      : "Fischer",
+      "address"       : "Via Morobbi 13, 6592 Sant'Antonino",
+      "description"   : "I'm the best scrum Master in Lugano.",
+      "profession"    : "Software Engineer",
+      "category"      : "IT Services",
+      "rating"        : 5,
+      "email"         : "alexander.scrummaster@hotmail.ru",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 50,
+      "emergencyAvailable"  : true,
+      "reviews"       : [reviews.data[4]],
+      "events"        : [events.data[0], events.data[3]],
+      "verification"  : "verified",
+      "notifications" : [ObjectId(notifications.data[0]._id)]
+    },
+
+    {
+      "_id"                 : ObjectId("5625fc9bd82b84d23d8c7bd5"),
+      "firstName"           : "Mario",
+      "lastName"            : "Rossi",
+      "address"             : "Via San Gottardo 12, 6900 Lugano",
+      "rating"              : 3,
+      "email"               : "alexander.fischer0@usi.ch",
+      "phone_number"        : "+41 4442323223",
+      "price"               : 100,
+      "profession"          : "Painter",
+      "reviews"             : [reviews.data[2]],
+      "emergencyAvailable"  : true,
+      "events"              : [events.data[1], events.data[2], events.data[4]],
+      "verification"        : "verified",
     },
 
   ]
 }
+
 
 var seedData = [];
 seedData.push(freelancers);
 seedData.push(users);
 seedData.push(reviews);
 seedData.push(events);
+seedData.push(notifications);
 
 module.exports = seedData;

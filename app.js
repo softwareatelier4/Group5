@@ -44,10 +44,6 @@ app.post('/claim/:id', function (req, res) {
     fs.mkdirSync(dir);
   }
 
-  if (!fs.existsSync(idDir)) {
-    fs.mkdirSync(idDir);
-  }
-
   var form = new formidable.IncomingForm(),
     files = [],
     fields = [];
@@ -55,7 +51,7 @@ app.post('/claim/:id', function (req, res) {
     fields.push([field, value]);
   })
   form.on('file', function (field, file) {
-    console.log(file.name);
+    // console.log(file.name);
 
     fs.rename(file.path, __dirname + '/frontend/src/claim-documents/' + req.params.id + '/' + file.name);
 
@@ -64,11 +60,9 @@ app.post('/claim/:id', function (req, res) {
   form.on('end', function () {
     console.log('done');
     zipFolder(__dirname + '/frontend/src/claim-documents/' + req.params.id, __dirname + '/frontend/src/claim-documents/' + req.params.id + '.zip', function (err) {
-      if (err) {
-        console.log('oh no!', err);
-      } else {
-        console.log('EXCELLENT');
-      }
+      // if (!err) {
+      //   console.log('EXCELLENT');
+      // }
     });
   });
   // form.parse(req);
@@ -114,7 +108,7 @@ app.post('/claim/:id', function (req, res) {
         claimingUserId: fields.userid,
       }
     }, {new : true}).exec(function (err, profile) {
-      if (err) return console.error(err);
+      // if (err) return console.error(err);
       res.json(profile);
     });
 
@@ -124,9 +118,9 @@ app.post('/claim/:id', function (req, res) {
 
 
 app.post('/freelancer/img/:id', function (req, res) {
-  console.log(__dirname);
+  // console.log(__dirname);
   let imgname = req.params.id;
-  console.log(imgname);
+  // console.log(imgname);
   let form = new formidable.IncomingForm({
     uploadDir: __dirname + '/frontend/src/images',
     keepExtensions: true
@@ -189,7 +183,9 @@ app.use('*', function (req, res, next) {
 app.use('/admin', routers.admin);
 app.use('/claim', routers.claim);
 app.use('/freelancer', routers.freelancer);
-app.use('/login', routers.login)
+app.use('/login', routers.login);
+app.use('/emergency', routers.emergency);
+app.use('/notification', routers.notification);
 
 
 

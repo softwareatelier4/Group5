@@ -3,9 +3,9 @@ module.exports.supportedMethods = function(commaSeperatedMethods){
     return method.trim();
   });
   return function(req, res, next){
-    if(supMethods.indexOf(req.method) < 0 ){
-      return res.status(405).send('Method Not Allowed');
-    }
+    // if(supMethods.indexOf(req.method) < 0 ){
+    //   return res.status(405).send('Method Not Allowed');
+    // }
     next();
   };
 }

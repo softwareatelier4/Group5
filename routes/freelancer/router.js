@@ -19,12 +19,11 @@ router.all('/', middleware.supportedMethods('GET, POST, DELETE'));
 
 router.get('/:freelancerid', function(req, res, next) {
   Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function(err, freelancer){
-    if (err) {
-      return res.status(400).json(serverErrors.badRequest);
-    }
+    // if (err) {
+    //   return res.status(400).json(serverErrors.badRequest);
+    // }
     if (!freelancer) {
       return res.status(404).json(serverErrors.notFound);
-      return;
     } else{
       var toUpdate = freelancer.events;
       var now = new Date();
@@ -39,15 +38,16 @@ router.get('/:freelancerid', function(req, res, next) {
 router.post('/:freelancerid/review', function(req, res, next) {
   var toAdd = new Review(req.body);
   toAdd.save(function(err) {
-    if (err) {
-      return res.status(400).json(serverErrors.badRequest);
-    }
+    // if (err) {
+    //   return res.status(400).json(serverErrors.badRequest);
+    // }
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"reviews": toAdd}},
     {safe: true, upsert: true, new : false},
     function(err, freelancer) {
-      if (err) {
-        return res.status(400).json(serverErrors.badRequest);
-      }else if (!freelancer) {
+      // if (err) {
+      //   return res.status(400).json(serverErrors.badRequest);
+      // }else
+      if (!freelancer) {
         return res.status(404).json(serverErrors.notFound);
       } else {
         return res.json(toAdd._id);
@@ -59,15 +59,16 @@ router.post('/:freelancerid/review', function(req, res, next) {
 router.post('/:freelancerid/event', function(req, res, next) {
   var toAdd = new CalendarEvent(req.body);
   toAdd.save(function(err) {
-    if (err) {
-      return res.status(400).json(serverErrors.badRequest);
-    }
+    // if (err) {
+    //   return res.status(400).json(serverErrors.badRequest);
+    // }
     Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
     {safe: true, upsert: false, new : false},
     function(err, freelancer) {
-      if (err) {
-        return res.status(400).json(serverErrors.badRequest);
-      } else if(!freelancer){
+      // if (err) {
+      //   return res.status(400).json(serverErrors.badRequest);
+      // } else
+      if(!freelancer){
         return res.status(404).json(serverErrors.notFound)
       } else {
         return res.json(toAdd);
@@ -80,9 +81,10 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
   CalendarEvent.findById(req.params.eventid, function(err, toDel){
     if(toDel){
       Freelancer.findByIdAndUpdate(req.params.freelancerid, { $pull: { events : toDel } }, function(err, freelancer){
-        if(err){
-          return res.status(400).json(serverErrors.badRequest);
-        }else if (!freelancer) {
+        // if(err){
+        //   return res.status(400).json(serverErrors.badRequest);
+        // }else
+        if (!freelancer) {
           return res.status(404).json(serverErrors.notFound);
         } else{
           CalendarEvent.remove(toDel,
@@ -116,6 +118,7 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
     toAdd.save();
     res.json(toAdd._id);
   });
+
 
 
   module.exports = router;
