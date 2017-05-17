@@ -38,6 +38,7 @@
         /*display: none;*/
         margin-top: 10px;
       }
+
     </style>
 
 
@@ -47,7 +48,8 @@
         {{result.firstName}} {{result.lastName}}
       </div>
 
-      <!--{{user.email}} {{user._id}}-->
+      {{user.email}} {{user._id}}
+      <!--<paper-button id="btn-upload" raised>Upload</paper-button>-->
 
       <form id="upload-form" method="post" enctype="multipart/form-data" >
         <input id="load-file" multiple="true" on-change="checkFile" type="file" name="file" class="inputfile" style="width:100%; padding-top: 10px; padding-bottom: 10px;">
@@ -122,7 +124,7 @@
       // },
 
       uploadFile: function () {
-        console.log("SENDING");
+        // console.log("SENDING");
         console.log(this.user.email);
         console.log(this.user._id);
 
