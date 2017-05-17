@@ -19,7 +19,7 @@ const fieldsFilter = { '__v': 0 };
 router.all('/', middleware.supportedMethods('GET, POST, DELETE'));
 
 router.get('/:freelancerid', function(req, res, next) {
-  Freelancer.findById(req.params.freelancerid, fieldsFilter).lean().exec(function(err, freelancer){
+  Freelancer.findById(req.params.freelancerid).populate({path: "reviews", model: "Review"}).exec(function(err, freelancer){
     if (err) {
       return res.status(400).json(serverErrors.badRequest);
     }
@@ -32,61 +32,9 @@ router.get('/:freelancerid', function(req, res, next) {
       freelancer.events = freelancer.events.filter(function(el){
         return el.end > now;
       })
-
-      //populate review and events by id
-      var review_number = freelancer.reviews.length;
-      var review_processed = 0;
-      var reviewsToInsert = [];
-      if(review_number === 0){
-        var event_number = freelancer.events.length;
-        var event_processed = 0;
-        var eventToInsert = [];
-        freelancer.events.forEach(function(event_id){
-          CalendarEvent.findById(event_id, function(err, found){
-            eventToInsert.push(found);
-            event_processed++;
-            if(event_number === event_processed){
-              freelancer.events = eventToInsert;
-              res.json(freelancer);
-              return;
-            }
-          })
-        })
-      }else{
-        freelancer.reviews.forEach(function(review_id){
-          Review.findById(review_id, function(err, found){
-            Response.findById(found.response, function(err, found2){
-              if(found2){
-                found.response = found2;
-              }
-              reviewsToInsert.push(found);
-              review_processed++;
-              if(review_processed == review_number){
-                freelancer.reviews = reviewsToInsert;
-                var event_number = freelancer.events.length;
-                var event_processed = 0;
-                var eventToInsert = [];
-                freelancer.events.forEach(function(event_id){
-                  CalendarEvent.findById(event_id, function(err, found){
-                    eventToInsert.push(found);
-                    event_processed++;
-                    if(event_number === event_processed){
-                      freelancer.events = eventToInsert;
-                      res.json(freelancer);
-                      return;
-                    }
-                  })
-                })
-                res.json(freelancer);
-                return;
-              }
-            })
-
-
-          })
-        })
-      }
-      res.json(freelancer);
+      Freelancer.populate(freelancer, {path: "reviews.response", model : "Response"}, function(err, finished){
+        res.json(finished);
+      });
     }
   });
 });
