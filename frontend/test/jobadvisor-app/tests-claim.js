@@ -1,7 +1,5 @@
 module.exports = {
-  before: function(client) {
-    client.resizeWindow(1280,720);
-  },
+
 'Test claim profile from search': function (client) {
     client
       .url('http://localhost:3005/')
@@ -25,12 +23,14 @@ module.exports = {
       .setValue('#login-password input', 'camo')
       .click('#menu-open')
       .click('#login-button')
-      // .pause(500)
-      // .assert.urlEquals('http://localhost:3005/')
-      // .click('#menu-open')
-      // .waitForElementVisible('#logoutBtn', 1000)
-      // .waitForElementNotVisible('#loginBtn', 1000)
-      // .click('#menu-close')
+      .pause(500)
+      .assert.urlEquals('http://localhost:3005/')
+      .pause(500)
+      .assert.urlEquals('http://localhost:3005/')
+      .click('#menu-open')
+      .waitForElementVisible('#logoutBtn', 1000)
+      .waitForElementNotVisible('#loginBtn', 1000)
+      .click('#menu-close')
       .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd9')
       .waitForElementVisible('#name', 1000)
       .waitForElementVisible('#btn-claim', 1000)
@@ -65,7 +65,7 @@ module.exports = {
     client
     .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd6')
     .waitForElementVisible('#name', 1000)
-    .pause(500)
+    .pause(5000)
     .waitForElementVisible('#open-events-btn', 500)
     .click('#open-events-btn')
     .waitForElementVisible('#profile-calendar', 500)
