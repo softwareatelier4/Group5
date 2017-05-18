@@ -100,8 +100,7 @@ module.exports = {
                                'Very nice!')
       .assert.containsText('#reviews ja-review-element:nth-child(2) > paper-card  #rate',
                                '2')
-      .assert.containsText('#reviews ja-review-element:nth-child(2) > paper-card  #date',
-                               new Date().getDate() + "/" + new Date().getMonth() + "/" + new Date().getFullYear())
+      .assert.containsText('#reviews ja-review-element:nth-child(2) > paper-card  #date',[new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'))
 
       // .source(function(result) {
       //
@@ -275,8 +274,7 @@ module.exports = {
                                'Very nice!')
       .assert.containsText('#reviews ja-review-element:nth-child(2) > paper-card  #rate',
                                '2')
-      .assert.containsText('#reviews ja-review-element:nth-child(2) > paper-card  #date',
-                               new Date().getDate() + "/" + new Date().getMonth() + "/" + new Date().getFullYear())
+      .assert.containsText('#reviews ja-review-element:nth-child(2) > paper-card  #date',[new Date().getDate(), new Date().getMonth()+1, new Date().getFullYear()].join('/'))
       .end();
   },
 
@@ -380,10 +378,6 @@ module.exports = {
       .waitForElementVisible('#TecnicalServices', 1000)
       .click('#TecnicalServices')
       .assert.attributeContains('#TecnicalServices', 'aria-selected', 'true')
-
-      .waitForElementVisible('#Radio', 1000)
-      .click('#Radio')
-      .assert.attributeContains('#Radio', 'aria-selected', 'true')
 
       .waitForElementVisible('#ITServices', 1000)
       .click('#ITServices')
