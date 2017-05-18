@@ -1,10 +1,10 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
 <link rel="import" href="../ja-event-element/ja-event-element.html">
+<link rel="import" href="./sorting-list.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../bower_components/sortable-list/sortable-list.html">
 
 <dom-module id="ja-profile">
 
@@ -195,7 +195,7 @@
     </iron-ajax>
 
     <section id="container">
-
+      <sorting-list></sorting-list>
       <section id="left">
 
         <div id="imagediv">
@@ -315,12 +315,9 @@
             <paper-button id="review" disabled style="height:20px; width: 96%; margin-top: 10px;" on-click="_givereview">Rate!</paper-button>
           </div>
         </div>
-
-        <sortable-list>
-          <template is="dom-repeat" items="{{reviews}}" as="result">
-            <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
-          </template>
-        </sortable-list>
+        <template is="dom-repeat" items="{{reviews}}" as="result">
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
+        </template>
       </section>
 
     </section>
@@ -577,7 +574,7 @@
         this.events = res.events;
 
         if (this.verification == 'none' && (this.user.pending == 'none')) {
-          console.log("hesajdsjasjkldllo");
+          // console.log("hesajdsjasjkldllo");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
@@ -618,9 +615,9 @@
 
       _refreshUser: function (e) {
         this.user = e.detail.response.user;
-        console.log(e.detail.response.user);
+        // console.log(e.detail.response.user);
         if (this.verification == 'none' && (this.user.pending == 'none')) {
-          console.log("hellosdfsad");
+          // console.log("hellosdfsad");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {

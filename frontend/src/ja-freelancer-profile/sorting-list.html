@@ -1,0 +1,114 @@
+<!-- <base href="https://cdn.rawgit.com/download/polymer-cdn/1.5.0/lib/"> -->
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
+
+<dom-module id="sorting-list">
+  <template>
+    <style>
+      :host {}
+      /*css copied from dist/dragula.css*/
+
+      .gu-mirror {
+        position: fixed !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        opacity: 0.8;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+        filter: alpha(opacity=80);
+      }
+
+      .gu-hide {
+        display: none !important;
+      }
+
+      .gu-unselectable {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+      }
+
+      .gu-transit {
+        opacity: 0.2;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+        filter: alpha(opacity=20);
+      }
+    </style>
+
+    <paper-listbox style="border-style: dotted;" id="container1">
+      <paper-item>Item 1</paper-item>
+      <paper-item>Item 2</paper-item>
+      <paper-item>Item 3</paper-item>
+    </paper-listbox>
+    <paper-listbox style="border-style: dotted;" id="container2">
+      <paper-item>Item 4</paper-item>
+      <paper-item>Item 5</paper-item>
+      <paper-item>Item 6</paper-item>
+    </paper-listbox>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      Polymer({
+        is: 'sorting-list',
+
+        properties: {
+
+
+          /**
+           * indicates the options to use for dragula
+           */
+          _dragulaOptions: Object,
+
+          _drake: {
+            type: Object,
+            computed: '_createDrake(_containers)'
+          },
+
+          _containers: {
+            type: Array,
+            readOnly: true,
+            value: function() {
+              return [this.$.container1, this.$.container2];
+            }
+          }
+
+        },
+
+        // Element Lifecycle
+
+        ready: function() {
+
+        },
+
+        attached: function() {
+          this._appendLocalDom();
+
+        },
+
+        detached: function() {
+        },
+
+        // Element Behavior
+
+        _createDrake: function(containers) {
+          return dragula(containers);
+        },
+
+        _appendLocalDom: function() {
+          this._drake.on('drop', function(el, target, source, sibling) {
+            console.log("el", el);
+            console.log("target" , target);
+            console.log("source" , source);
+            console.log("sibling" , sibling);
+            Polymer.dom(target).insertBefore(el, sibling);
+          })
+        }
+
+      });
+    })();
+  </script>
+</dom-module>
