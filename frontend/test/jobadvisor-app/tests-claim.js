@@ -25,7 +25,7 @@ module.exports = {
       .setValue('#login-password input', 'camo')
       .click('#menu-open')
       .click('#login-button')
-      .pause(500)
+      // .pause(500)
       // .assert.urlEquals('http://localhost:3005/')
       // .click('#menu-open')
       // .waitForElementVisible('#logoutBtn', 1000)
