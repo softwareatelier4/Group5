@@ -12,6 +12,8 @@
 <link rel="import" href="../ja-admin/ja-admin.html">
 <link rel="import" href="../ja-login/ja-login.html">
 <link rel="import" href="../ja-freelancer-signup/ja-freelancer-signup.html">
+<link rel="import" href="../ja-emergency-call/ja-emergency-call.html">
+<link rel="import" href="../ja-notification-page/ja-notification-page.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -83,28 +85,44 @@
         text-align: right;
       }
 
-      #loginBtn,
-      #logoutBtn {
-        background-color: white;
-      }
-
+      #user,
       #loginBtn,
       #logoutBtn,
-      #username {
-        /*margin: 10px;*/
-        float: right;
-        /*margin-bottom: 5px;*/
+      #signup-button,
+      #emergency-button,
+      #notification-button {
+        background-color: white;
+        position: relative;
+        width: calc(100% - 10px);
+        margin: 5px;
       }
 
-      #login {
-        float: right;
-        text-align: right;
-      }
-
-      #signup-button {
-        float: right;
+      #signup-button,
+      #emergency-button,
+      #notification-button {
         background-color: var(--paper-yellow-500);
-        color: blue;
+      }
+
+      #menu-open {
+        color: white;
+        cursor: pointer;
+      }
+
+      #menu-close {
+        color: white;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      #menu-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 99;
+        width: 300px;
+        height: 100%;
+        background-color: #222;
+        padding: 10px;
       }
     </style>
 
@@ -114,23 +132,39 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-    <!-- <div id="login"> -->
-
-    <!-- </div> -->
-    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/signup">
-        <paper-button id="signup-button">CREATE FREELANCER</paper-button>
-      </a>
-    </template>
-
-    <a href="/login">
-      <paper-button id="loginBtn" raised>Login/signup</paper-button>
+    <a id="menu-open" class="unselectable">
+      <iron-icon icon="icons:menu"></iron-icon>
     </a>
-    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
-    <div id="username">
-      [[_formatLoginStatus(user)]]
+    <div id="menu-container" class="unselectable" hidden>
+      <div id="menu-close" class="unselectable">
+        <iron-icon icon="icons:close"></iron-icon>
+      </div>
+      <a href="/login">
+        <paper-button id="loginBtn" raised>Login/signup</paper-button>
+      </a>
+      <paper-button id="logoutBtn" hidden raised>Logout {{user.userName}}</paper-button>
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/signup">
+          <paper-button id="signup-button">CREATE FREELANCER</paper-button>
+        </a>
+      </template>
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/emergency">
+          <paper-button id="emergency-button">EMERGENCY CALL</paper-button>
+        </a>
+      </template>
+
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/notification/{{user._id}}">
+          <paper-button id="notification-button">NOTIFICATIONS</paper-button>
+        </a>
+      </template>
+      <div id="username" hidden>
+        [[_formatLoginStatus(user)]]
+      </div>
     </div>
-    <div id="title-container">
+
+    <div class="unselectable" id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
     </div>
 
@@ -147,7 +181,7 @@
           <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
         </div>
         <div title="freelancer">
-          <ja-profile id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
+          <ja-profile routd={{routeData.view}} id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
         </div>
         <div title="login">
           <ja-login user={{user}}></ja-login>
@@ -165,6 +199,17 @@
             <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
           </template>
         </div>
+        <div title="emergency">
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-emergency-call user={{user}} user-location=[[userLocation]]></ja-emergency-call>
+          </template>
+        </div>
+        <div title="notification">
+          <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+            <ja-notification-page user={{user}}></ja-notification-page>
+          </template>
+        </div>
+
       </iron-pages>
     </div>
 
@@ -176,7 +221,9 @@
 
       listeners: {
         'loginBtn.tap': '_onLoginTap',
-        'logoutBtn.tap': '_onLogoutTap'
+        'logoutBtn.tap': '_onLogoutTap',
+        'menu-open.tap': '_openMenu',
+        'menu-close.tap': '_closeMenu',
       },
 
       properties: {
@@ -259,7 +306,7 @@
         this.results = results;
       },
       _userChanged: function (user) {
-        console.log(user);
+        // console.log(user);
         if (this.user && this.user.userType != "guest") {
           this.$['logoutBtn'].hidden = false;
           this.$['loginBtn'].hidden = true;
@@ -281,10 +328,12 @@
         this.view = page;
       },
 
-      _onLoginTap: function (evt) {},
+      _onLoginTap: function (evt) {
+        // this.$['menu-container'].hidden = true;
+      },
 
       _onLogoutTap: function (evt) {
-        console.log("Logging out");
+        // console.log("Logging out");
         this.set('user', {
           userName: "guest",
           userType: "guest"
@@ -320,7 +369,7 @@
           this.set('user', JSON.parse(localStorage.getItem('user')));
           this.$['logoutBtn'].hidden = false;
         }
-        console.log("USER", this.user);
+        // console.log("USER", this.user);
       },
 
       _handleResponse: function (response) {
@@ -328,10 +377,18 @@
         if (response) {
           this.userLocation = resp.results[0].formatted_address;
           this.location = resp.results[0].formatted_address;
-          console.log("Reverse geo response", resp.results[0].formatted_address);
+          // console.log("Reverse geo response", resp.results[0].formatted_address);
           window.localStorage['userLocation'] = resp.results[0].formatted_address;
         }
 
+      },
+
+      _openMenu: function () {
+        this.$['menu-container'].hidden = false;
+      },
+
+      _closeMenu: function () {
+        this.$['menu-container'].hidden = true;
       },
 
     });
