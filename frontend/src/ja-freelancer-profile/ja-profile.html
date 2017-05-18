@@ -182,6 +182,10 @@
         color: red;
       }
 
+      #user-rating  {
+        margin-bottom: 30px;
+      }
+
       /*paper-textarea {
         width: 100%;
         height: 150px;
@@ -311,7 +315,19 @@
         </div>
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}} review-id="{{result._id}}" response={{result.response}} review={{result}} freelancer-id={{id}} is-claimer={{isClaimer}}></ja-review-element>
+          <ja-review-element
+          comment={{result.comment}}
+          rating={{result.rating}}
+          date={{result.date}}
+          user={{result.userName}}
+          review-id="{{result._id}}"
+          response={{result.response}}
+          review={{result}}
+          freelancer-id={{id}}
+          is-claimer={{isClaimer}}
+          firstname={{firstname}}
+          lastname={{lastname}}
+          ></ja-review-element>
         </template>
       </section>
 
