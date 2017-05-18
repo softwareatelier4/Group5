@@ -18,11 +18,11 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
 const CalendarEventSchema = require('./CalendarEvent');
+const NotificationSchema = require('./Notification');
 
 const FreelancerSchema = new mongoose.Schema(
   {
@@ -38,13 +38,15 @@ const FreelancerSchema = new mongoose.Schema(
     price         : { type: Number },
     image         : { type: String, default: '/src/images/blank-user.jpg'},
     reviews       : { type: [ObjectId], ref: "Review", required: false },
-    events        : { type: [ObjectId], ref: "CalendarEvent", required: false },
-    verification  : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    events        : { type: [CalendarEventSchema], default:[]},
+    verification  : { type: String, enum:['verified', 'pending', 'not verified'], default:'not verified' },
     claimFilePath : { type: String},
     claimComment  : { type: String},
     claimEmail    : { type: String},
     claimingUserId: { type: String}, // the id of the user who issued the claim request, it may be denied
     userId        : { type: String}, // the id of the user who succesfully claimed the profilea
+    notifications          : { type: [ObjectId], ref: "Notification", default: [] }, //request received
+    emergencyAvailable     : { type: Boolean, required : true},
   }
 );
 

@@ -25,7 +25,6 @@ router.get('/:freelancerid', function(req, res, next) {
     }
     if (!freelancer) {
       return res.status(404).json(serverErrors.notFound);
-      return;
     } else{
       var toUpdate = freelancer.events;
       var now = new Date();
@@ -50,7 +49,8 @@ router.post('/:freelancerid/review', function(req, res, next) {
     function(err, freelancer) {
       if (err) {
         return res.status(400).json(serverErrors.badRequest);
-      }else if (!freelancer) {
+      }else
+      if (!freelancer) {
         return res.status(404).json(serverErrors.notFound);
       } else {
         return res.json(toAdd);
@@ -92,7 +92,8 @@ router.post('/:freelancerid/event', function(req, res, next) {
     function(err, freelancer) {
       if (err) {
         return res.status(400).json(serverErrors.badRequest);
-      } else if(!freelancer){
+      } else
+      if(!freelancer){
         return res.status(404).json(serverErrors.notFound)
       } else {
         return res.json(toAdd);
@@ -141,6 +142,7 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
     toAdd.save();
     res.json(toAdd._id);
   });
+
 
 
   module.exports = router;

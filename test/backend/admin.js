@@ -53,10 +53,10 @@ describe('Backend update verification of a freelancer', function () {
         after(utils.dropDb);
 
         it('should cheange the verificataion of a freelancer, his id and what it should be set to are given in the request', function (done) {
-            
+
             request(app)
-                .put('/admin/?id=5625fc2bd66b84d23d8c7bf1&type=verified&claimingUserId=undefined')
-                // .send({'id' : '5625fc2bd66b84d23d8c7bf1' ,'type' : 'verified' ,'claimingUserId' : '12345'})
+                .put('/admin/?id=5625fc2bd66b84d23d8c7bf2&type=verified&claimingUserId=undefined')
+                // .send({'id' : '5625fc2bd66b84d23d8c7bf2' ,'type' : 'verified' ,'claimingUserId' : '12345'})
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/, 'it should respond with json')
                 .expect(200)

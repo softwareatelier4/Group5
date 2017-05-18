@@ -53,6 +53,7 @@ describe('Freelancer Model', function(done){
       freelancer.phone_number = '19821';
       freelancer.profession = 'IT guy';
       freelancer.category = 'IT Services';
+      freelancer.emergencyAvailable = 'true';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         saved.should.eql(freelancer);
@@ -131,6 +132,7 @@ describe('Freelancer Model', function(done){
       freelancer.profession = 'I fix stuff';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
+      freelancer.emergencyAvailable = 'true';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         freelancer.category.should.equal('Other');
@@ -147,11 +149,25 @@ describe('Freelancer Model', function(done){
       freelancer.profession = 'I fix stuff';
       freelancer.email = 'askhb@as.askug';
       freelancer.phone_number = '19821';
+      freelancer.emergencyAvailable = 'true';
       freelancer.save(function(err, saved){
         should.not.exist(err, 'No error should occur');
         freelancer.image.should.equal('/src/images/blank-user.jpg');
         done();
       });
+    });
+
+    it('should fail if emergencyAvailable is empty, null, or undefined', function(done){
+      var freelancer = new Freelancer();
+      freelancer.firstName = 'Mark Knopfler';
+      freelancer.lastName = 'Dire Straits';
+      freelancer.address = 'sasgfkb';
+      freelancer.email = 'askhb@as.askug';
+      freelancer.phone_number = '19821';
+      freelancer.profession = 'IT guy';
+      freelancer.category = 'IT Services';
+      // freelancer.emergencyAvailable = 'true';
+      utils.errorIfNullUndefinedOrEmpty(freelancer, 'firstName', done );
     });
   });
 });

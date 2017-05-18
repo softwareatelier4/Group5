@@ -29,12 +29,12 @@ router.get('/', function(req, res, next) {
       queryArray.push(newJson);
     });
     Freelancer.find().or(queryArray).exec(function(err, profiles) {
-      if (err) return console.error(err);
+      // if (err) return console.error(err);
       res.json(profiles);
     });
   }else{
   Freelancer.find().exec(function(err, profiles) {
-    if (err) return console.error(err);
+    // if (err) return console.error(err);
     res.json(profiles);
   });
 }
