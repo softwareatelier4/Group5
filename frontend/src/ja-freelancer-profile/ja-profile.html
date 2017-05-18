@@ -1,10 +1,13 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
 <link rel="import" href="../ja-event-element/ja-event-element.html">
-<link rel="import" href="./sorting-list.html">
+<!-- <link rel="import" href="./sorting-list.html"> -->
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
 
 <dom-module id="ja-profile">
 
@@ -12,6 +15,35 @@
     <style>
       /* CSS rules for your element */
       /* boh */
+
+      :host {}
+      /*css copied from dist/dragula.css*/
+
+      .gu-mirror {
+        position: fixed !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        opacity: 0.8;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+        filter: alpha(opacity=80);
+      }
+
+      .gu-hide {
+        display: none !important;
+      }
+
+      .gu-unselectable {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+      }
+
+      .gu-transit {
+        opacity: 0.2;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+        filter: alpha(opacity=20);
+      }
 
       #container {
         position: fixed;
@@ -194,13 +226,22 @@
       handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
 
-    <section id="container">
-      <sorting-list></sorting-list>
-      <section id="left">
 
+    <paper-listbox style="border-style: dotted;" id="container2">
+      <paper-item>Item 4</paper-item>
+      <paper-item>Item 5</paper-item>
+      <paper-item>Item 6</paper-item>
+    </paper-listbox>
+
+    <section id="container">
+      <!-- <section id="left1"> -->
+        <paper-listbox style="border-style: dotted;" id="left">
+
+          <paper-item>
         <div id="imagediv">
           <img id="image" src={{image}} />
         </div>
+      </paper-item>
 
         <div id="name">
           {{lastname}} {{firstname}}
@@ -224,8 +265,9 @@
         <div id="emavailable">
           Available for emergency : {{emergencyAvailable}}
         </div>
+        </paper-listbox>
 
-      </section>
+      <!-- </section> -->
 
       <section id="right">
 
@@ -431,7 +473,23 @@
             // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
           },
-        }
+        },
+
+        _dragulaOptions: Object,
+
+        _drake: {
+          type: Object,
+          computed: '_createDrake(_containers)'
+        },
+
+        _containers: {
+          type: Array,
+          readOnly: true,
+          value: function() {
+            return [this.$.left, this.$.container2];
+          }
+        },
+        
       },
 
       _computeDateString: function(date) {
@@ -677,6 +735,37 @@
         const item = evt.detail.response;
         this.push('events', item);
       },
+
+      // Element Lifecycle
+
+      ready: function() {
+
+      },
+
+      attached: function() {
+        this._appendLocalDom();
+
+      },
+
+      detached: function() {
+      },
+
+      // Element Behavior
+
+      _createDrake: function(containers) {
+        return dragula(containers);
+      },
+
+      _appendLocalDom: function() {
+        this._drake.on('drop', function(el, target, source, sibling) {
+          console.log("el", el);
+          console.log("target" , target);
+          console.log("source" , source);
+          console.log("sibling" , sibling);
+          Polymer.dom(target).insertBefore(el, sibling);
+        })
+      },
+
     });
   </script>
 </dom-module>
