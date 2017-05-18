@@ -29,14 +29,18 @@
       </div>
 
       <template is="dom-if" if="{{_hasNoResponse(review)}}" restamp="true">
-        <paper-button id="review-open-response-editor" raised on-tap="_onOpenReponseEditorTap">Respond</paper-button>
+        <template is="dom-if" if="{{isClaimer}}" restamp="true">
+          <paper-button id="review-open-response-editor" raised on-tap="_onOpenReponseEditorTap">Respond</paper-button>
+        </template>
       </template>
+
       <template is="dom-if" if="{{responseEditorOpen}}" restamp="true">
         <paper-textarea id="review-response-text" label="Write your response here.">
         </paper-textarea>
         <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
         <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
       </template>
+
       <template is="dom-if" if="{{_hasResponse(response)}}" restamp="true">
         <paper-card>
           <div class="card-content">
@@ -48,7 +52,9 @@
             <div id="review-response-date">
               {{_changedate(response.date)}}
             </div>
-            <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap">Edit</paper-button>
+            <template is="dom-if" if="{{isClaimer}}" restamp="true">
+              <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap">Edit</paper-button>
+            </template>
           </div>
         </paper-card>
       </template>
@@ -95,6 +101,9 @@
         review: {
           type: Object,
         },
+        isClaimer: {
+          type: Boolean,
+        }
       },
 
       _changedate: function (date) {
@@ -141,7 +150,8 @@
           date: resp.date,
         };
         this.hasResponse = true;
-        this.$$('#review-open-response-editor').hidden = true;
+        if (this.$$('#review-open-response-editor'))
+          this.$$('#review-open-response-editor').hidden = true;
       },
 
       _handleSubmitError: function(evt) {

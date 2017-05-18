@@ -311,7 +311,7 @@
         </div>
 
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}} review-id="{{result._id}}" response={{result.response}} review={{result}} freelancer-id={{id}}></ja-review-element>
+          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}} review-id="{{result._id}}" response={{result.response}} review={{result}} freelancer-id={{id}} is-claimer={{isClaimer}}></ja-review-element>
         </template>
       </section>
 
@@ -383,6 +383,10 @@
           type: String,
         },
 
+        isClaimer: {
+          type: Boolean,
+        },
+
         events: {
           type: Array,
           reflectToAttribute: true,
@@ -417,13 +421,15 @@
           value: function() {
             let date = new Date();
             // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
-            return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
+            return [date.getDay(), date.getMonth()+1, date.getFullYear()].join('.');
           },
         }
       },
 
       _computeDateString: function(date) {
-        return [date.getDate(), date.getMonth()+1, date.getFullYear()].join('.');
+        let month = date.getMonth()+1;
+        if (month < 10) month = "0" + month;
+        return [date.getFullYear(), month, date.getDate()].join('-');
       },
 
       _onSubmitEventTap: function(evt) {
@@ -443,10 +449,11 @@
         let endDate = this.$['calendar-input-end-date'].value || dateNow;
         let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
 
-        let start = new Date(startDate + ", " + startTime);
-        let end = new Date(endDate + ", " + endTime);
+        let start = new Date(startDate + " " + startTime);
+        let end = new Date(endDate + " " + endTime);
 
         let validDate = true;
+
 
         if (start > end) {
           validDate = false;
@@ -460,7 +467,8 @@
           this.dateError = "";
         }
 
-
+        console.log(startDate + " " + startTime);
+        console.log(start, end);
         if (validLocation && validDescription && validDate) {
           let newEvent = {
             description: description,
@@ -556,6 +564,9 @@
 
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
+          this.isClaimer = true;
+        } else {
+          this.isClaimer = false;
         }
 
         this.events = res.events;
