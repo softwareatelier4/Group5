@@ -70,36 +70,91 @@ module.exports = {
     .click('#open-events-btn')
     .waitForElementVisible('#profile-calendar', 500)
     // TODO: the following doesn't work on jenkins
-    // .waitForElementVisible('#calendar-input-description', 2000)
-    // .setValue('#calendar-input-description input', "Available")
-    // .waitForElementVisible('#calendar-input-location', 500)
-    // .setValue('#calendar-input-location input', "Lugano")
-    // .waitForElementVisible('#event-submit-btn', 500)
-    // .click('#event-submit-btn').pause(1000)
-    // .waitForElementVisible('paper-dialog-scrollable ja-event-element:nth-child(3)', 500)
-    // .assert.containsText('paper-dialog-scrollable ja-event-element:nth-child(3) #event-description', 'Available')
-    // .assert.containsText('paper-dialog-scrollable ja-event-element:nth-child(3) #event-location', 'Lugano')
-    // .click('paper-dialog-scrollable ja-event-element:nth-child(3) #event-remove')
-    // .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(3)', 500)
+    .waitForElementVisible('#calendar-input-description', 2000)
+    .setValue('#calendar-input-description input', "Available")
+    .waitForElementVisible('#calendar-input-location', 500)
+    .setValue('#calendar-input-location input', "Lugano")
+    .waitForElementVisible('#event-submit-btn', 500)
+    .click('#event-submit-btn').pause(1000)
+    .waitForElementVisible('paper-dialog-scrollable ja-event-element:nth-child(1)', 500)
+    .assert.containsText('paper-dialog-scrollable ja-event-element:nth-child(1) #event-description', 'Available')
+    .assert.containsText('paper-dialog-scrollable ja-event-element:nth-child(1) #event-location', 'Lugano')
+    .click('paper-dialog-scrollable ja-event-element:nth-child(1) #event-remove')
+    .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(3)', 500)
   },
 
   'Test add event with no description and close popup': function (client) {
     client
-    // .waitForElementVisible('#profile-calendar', 500)
-    // .waitForElementVisible('#calendar-input-description', 500)
-    // .clearValue('#calendar-input-description input')
-    // .clearValue('#calendar-input-location input')
-    // .setValue('#calendar-input-location input', '')
-    // .setValue('#calendar-input-description input', "Available")
-    // .waitForElementVisible('#calendar-input-location', 500)
-    // // .setValue('#calendar-input-location input', "Lugano")
-    // .waitForElementVisible('#event-submit-btn', 500)
-    // .click('#event-submit-btn').pause(500)
-    // // .assert.containsText('#calendar-input-location paper-input-error', 'Insert a valid location')
+    .waitForElementVisible('#profile-calendar', 500)
+    .waitForElementVisible('#calendar-input-description', 500)
+    .clearValue('#calendar-input-description input')
+    .clearValue('#calendar-input-location input')
+    .setValue('#calendar-input-location input', '')
+    .setValue('#calendar-input-description input', "Available")
+    .waitForElementVisible('#calendar-input-location', 500)
+    // .setValue('#calendar-input-location input', "Lugano")
+    .waitForElementVisible('#event-submit-btn', 500)
+    .click('#event-submit-btn').pause(500)
+    // .assert.containsText('#calendar-input-location paper-input-error', 'Insert a valid location')
     // .assert.containsText('#calendar-input-description paper-input-error', 'Insert a valid description')
-    // .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(3)', 500)
-    // .click('#event-submit-cancel').pause(500)
-    // .waitForElementNotVisible('#profile-calendar', 500)
+    .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(1)', 500)
+    .click('#event-submit-cancel').pause(500)
+    .waitForElementNotVisible('#profile-calendar', 500)
     .end();
+  },
+
+
+  'Test add event with no description and close popup': function (client) {
+    client
+    .waitForElementVisible('#profile-calendar', 500)
+    .waitForElementVisible('#calendar-input-description', 500)
+    .clearValue('#calendar-input-description input')
+    .clearValue('#calendar-input-location input')
+    .setValue('#calendar-input-location input', '')
+    .setValue('#calendar-input-description input', "Available")
+    .waitForElementVisible('#calendar-input-location', 500)
+    // .setValue('#calendar-input-location input', "Lugano")
+    .waitForElementVisible('#event-submit-btn', 500)
+    .click('#event-submit-btn').pause(500)
+    // .assert.containsText('#calendar-input-location paper-input-error', 'Insert a valid location')
+    // .assert.containsText('#calendar-input-description paper-input-error', 'Insert a valid description')
+    .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(1)', 500)
+    .click('#event-submit-cancel').pause(500)
+    .waitForElementNotVisible('#profile-calendar', 500)
+    // .end();
+  },
+
+
+  'Test respond to a review': function (client) {
+    client
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2)', 1000)
+    .assert.containsText('#reviews ja-review-element:nth-child(2) paper-card  #comment', 'not really good')
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2) #review-open-response-editor', 1000)
+    .click('#reviews ja-review-element:nth-child(2) #review-open-response-editor')
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2) #review-response-text', 1000)
+    .setValue('#reviews ja-review-element:nth-child(2) #review-response-text textarea', "Thank you for the feedback!")
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2) #review-response-submit', 1000)
+    .click('#reviews ja-review-element:nth-child(2) #review-response-submit')
+    .pause(500)
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2) .response', 1000)
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2) .response #review-response-edit', 1000)
+    .waitForElementVisible('#reviews ja-review-element:nth-child(2) .response #review-response-comment', 1000)
+    .assert.containsText('#reviews ja-review-element:nth-child(2) .response #review-response-comment', "Thank you for the feedback!")
+  },
+
+  'Test edit an existing response': function (client) {
+    client
+      .waitForElementVisible('#reviews ja-review-element:nth-child(2) #review-response-edit', 1000)
+      .click('#reviews ja-review-element:nth-child(2) #review-response-edit')
+      .waitForElementVisible('#reviews ja-review-element:nth-child(2) #review-response-text', 1000)
+      .setValue('#reviews ja-review-element:nth-child(2) #review-response-text textarea', "EDIT: Thank you for the feedback, my friend!")
+      .waitForElementVisible('#reviews ja-review-element:nth-child(2) #review-response-submit', 1000)
+      .click('#reviews ja-review-element:nth-child(2) #review-response-submit')
+      .pause(500)
+      .waitForElementVisible('#reviews ja-review-element:nth-child(2) .response', 1000)
+      .waitForElementVisible('#reviews ja-review-element:nth-child(2) .response #review-response-edit', 1000)
+      .waitForElementVisible('#reviews ja-review-element:nth-child(2) .response #review-response-comment', 1000)
+      .assert.containsText('#reviews ja-review-element:nth-child(2) .response #review-response-comment', "EDIT: Thank you for the feedback, my friend!")
+      .end()
   },
 }
