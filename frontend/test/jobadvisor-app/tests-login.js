@@ -94,8 +94,8 @@ module.exports = {
       .setValue('#signup-password input', '1234')
       .setValue('#signup-password-check input', '1234')
       .click('#user-signup-button')
-      // .pause(500)
-      // .assert.containsText('#signup-error', 'Empty field(s)')
+      .pause(500)
+      .assert.containsText('#signup-error', 'Empty field(s)')
   },
 
 
