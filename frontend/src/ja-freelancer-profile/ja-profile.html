@@ -548,6 +548,10 @@
         this.verification = res.verification;
         this.userId = res.claimingUserId;
         console.log(res);
+
+        this.reviews.sort(function(a, b) {
+          return a.date < b.date;
+        })
         // this.userId = res._id;
 
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
@@ -649,7 +653,7 @@
         this.$.ratenum.value = "-";
         this.$.review.removeAttribute("raised");
         this.$.review.disabled = true;
-        this.push('reviews', response);
+        this.unshift('reviews', response);
       },
 
       _handleAddEventResponse: function(evt) {
