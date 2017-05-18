@@ -31,7 +31,12 @@
       <template is="dom-if" if="{{_hasNoResponse(review)}}" restamp="true">
         <paper-button id="review-open-response-editor" raised on-tap="_onOpenReponseEditorTap">Respond</paper-button>
       </template>
-
+      <template is="dom-if" if="{{responseEditorOpen}}" restamp="true">
+        <paper-textarea id="review-response-text" label="Write your response here.">
+        </paper-textarea>
+        <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
+        <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
+      </template>
       <template is="dom-if" if="{{_hasResponse(response)}}" restamp="true">
         <paper-card>
           <div class="card-content">
@@ -48,12 +53,6 @@
         </paper-card>
       </template>
 
-      <template is="dom-if" if="{{responseEditorOpen}}" restamp="true">
-        <paper-textarea id="review-response-text" label="Write your response here.">
-        </paper-textarea>
-        <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
-        <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
-      </template>
 
       <iron-ajax id="review-response-submit-req" url="/freelancer/{{freelancerId}}/review/{{reviewId}}"
       method="POST"
@@ -100,7 +99,11 @@
 
       _changedate: function (date) {
         const d = new Date(date);
-        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+        const hour = d.getUTCHours();
+        const min = d.getUTCMinutes();
+        const sec = d.getUTCSeconds();
+        const time = [hour, min, sec].join(':');
+        return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/') + " " + time;
       },
 
       _onOpenReponseEditorTap : function(evt) {
