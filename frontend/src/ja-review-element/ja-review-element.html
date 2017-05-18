@@ -51,6 +51,10 @@
         color: white;
       }
 
+      #review-response-text {
+        margin-bottom: 30px;
+      }
+
       #date, #userName, #rate, .date {
         font-size: 14px;
       }
@@ -109,7 +113,10 @@
           {{_changedate(date)}}
         </div>
         <template is="dom-if" if="{{responseEditorOpen}}" restamp="true">
-          <paper-textarea id="review-response-text" label="Write your response here.">
+          <paper-textarea id="review-response-text"
+                          label="Respond to the review"
+                          required pattern=".+"
+                          error-message="Write something">
           </paper-textarea>
           <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
           <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
@@ -204,13 +211,17 @@
       _onSubmitResponseTap : function(evt) {
         const request = this.$['review-response-submit-req'];
         const text = this.$$('#review-response-text').value;
+        let valid = this.$$('#review-response-text').validate();
         request.body = {
           comment: text,
           date: new Date(),
         }
-        console.log("Sending", request.body);
-        request.generateRequest();
-        this.responseEditorOpen = false;
+
+        if (valid && text && text.length > 0) {
+          // console.log("Sending", request.body);
+          request.generateRequest();
+          this.responseEditorOpen = false;
+        }
       },
 
       _onCancelResponseTap : function(evt) {

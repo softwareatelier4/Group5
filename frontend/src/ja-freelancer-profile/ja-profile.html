@@ -471,9 +471,13 @@
         let validDescription = this.$['calendar-input-description'].validate();
 
         let dateNow = this._computeDateString(new Date());
-        let timeNow = new Date().toLocaleTimeString().substring(0,5);
+
+        let now = new Date();
+        now.setHours(now.getHours() + 1);
+
+        let timeNow = now.toLocaleTimeString().substring(0,5);
         let time = new Date();
-        time.setHours(time.getHours() + 1)
+        time.setHours(time.getHours() + 2)
         let timeEndDefault = time.toLocaleTimeString().substring(0,5);
 
         let startDate = this.$['calendar-input-start-date'].value || dateNow;
@@ -485,7 +489,6 @@
         let end = new Date(endDate + " " + endTime);
 
         let validDate = true;
-
 
         if (start > end) {
           validDate = false;
@@ -518,10 +521,11 @@
       _onOpenEventsTap: function(evt) {
         this.$['profile-calendar'].open();
         let currDate = new Date();
+        currDate.setHours(currDate.getHours() + 1)
         let startHour = currDate.toLocaleTimeString().substring(0,5);
         let afterDate = new Date();
-        afterDate.setHours(afterDate.getHours() + 1)
-        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0,5);
+        afterDate.setHours(afterDate.getHours() + 2)
+        this.$['calendar-input-start-hour'].value = currDate.toLocaleTimeString().substring(0,5);
         this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0,5);
       },
 
