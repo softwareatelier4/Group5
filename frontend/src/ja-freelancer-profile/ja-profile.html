@@ -1,49 +1,18 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../ja-review-element/ja-review-element.html">
 <link rel="import" href="../ja-event-element/ja-event-element.html">
-<!-- <link rel="import" href="./sorting-list.html"> -->
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
+<script src='../../bower_components/dragula.js/dist/dragula.min.js'></script>
 
 <dom-module id="ja-profile">
 
   <template>
     <style>
       /* CSS rules for your element */
-      /* boh */
-
-      :host {}
-      /*css copied from dist/dragula.css*/
-
-      .gu-mirror {
-        position: fixed !important;
-        margin: 0 !important;
-        z-index: 9999 !important;
-        opacity: 0.8;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-        filter: alpha(opacity=80);
-      }
-
-      .gu-hide {
-        display: none !important;
-      }
-
-      .gu-unselectable {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-      }
-
-      .gu-transit {
-        opacity: 0.2;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-        filter: alpha(opacity=20);
-      }
 
       #container {
         position: fixed;
@@ -226,22 +195,15 @@
       handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
 
-
-    <paper-listbox style="border-style: dotted;" id="container2">
-      <paper-item>Item 4</paper-item>
-      <paper-item>Item 5</paper-item>
-      <paper-item>Item 6</paper-item>
-    </paper-listbox>
-
     <section id="container">
       <!-- <section id="left"> -->
       <paper-listbox id="left">
 
-        <div>
+          <!-- <paper-item role="menuitem"> -->
         <div id="imagediv">
           <img id="image" src={{image}} />
         </div>
-        </div>
+      <!-- </paper-item> -->
 
         <div id="name">
           {{lastname}} {{firstname}}
@@ -364,6 +326,8 @@
           <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
         </template>
       </section>
+      <div id="hidden" style="display:none;">
+      </div>
 
     </section>
 
@@ -756,7 +720,27 @@
       // Element Behavior
 
       _createDrake: function(containers) {
-        return dragula(containers);
+        return dragula(containers, {
+          isContainer: function (el) {
+            return false; // only elements in drake.containers will be taken into account
+          },
+          moves: function (el, source, handle, sibling) {
+            return true; // elements are always draggable by default
+          },
+          accepts: function (el, target, source, sibling) {
+            return true; // elements can be dropped in any of the `containers` by default
+          },
+          invalid: function (el, handle) {
+            return false; // don't prevent any drags from initiating by default
+          },
+          direction: 'vertical',             // Y axis is considered when determining where an element would be dropped
+          copy: false,                       // elements are moved by default, not copied
+          copySortSource: false,             // elements in copy-source containers can be reordered
+          revertOnSpill: false,              // spilling will put the element back where it was dragged from, if this is true
+          removeOnSpill: false,              // spilling will `.remove` the element, if this is true
+          mirrorContainer: this.$.hidden,    // set the element that gets mirror elements appended
+          ignoreInputTextSelection: true
+        });
       },
 
       _appendLocalDom: function() {
@@ -767,6 +751,8 @@
           console.log("sibling" , sibling);
           Polymer.dom(target).insertBefore(el, sibling);
         })
+
+        console.log(this._drake.dragging);
       },
 
     });
