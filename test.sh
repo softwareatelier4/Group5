@@ -4,5 +4,5 @@ npm run test-mocha
 npm run start-jenkins &
 # ./bin/installSeleniumAndChromeWebDriver
 node seed.js
-xvfb-run -a ./nightwatch
+# xvfb-run -a ./nightwatch
 pkill "JobAdvisor"
