@@ -27,11 +27,10 @@
       <div id="userName">
         Username : {{user}}
       </div>
-      {{reviewId}}
 
-      <!-- <template is="dom-if" if="{{!_hasResponse(response)}}" restamp="true"> -->
+      <template is="dom-if" if="{{_hasNoResponse(review)}}" restamp="true">
         <paper-button id="review-open-response-editor" raised on-tap="_onOpenReponseEditorTap">Respond</paper-button>
-      <!-- </template> -->
+      </template>
 
       <template is="dom-if" if="{{_hasResponse(response)}}" restamp="true">
         <paper-card>
@@ -94,6 +93,9 @@
         response: {
           type: Object,
         },
+        review: {
+          type: Object,
+        },
       },
 
       _changedate: function (date) {
@@ -136,6 +138,7 @@
           date: resp.date,
         };
         this.hasResponse = true;
+        this.$$('#review-open-response-editor').hidden = true;
       },
 
       _handleSubmitError: function(evt) {
@@ -143,8 +146,13 @@
       },
 
       _hasResponse: function(response) {
-
+        console.log("response", response);
         return response && response.comment && response.date;
+      },
+
+      _hasNoResponse: function(review) {
+        console.log("calling no response", review.response, review.response == undefined);
+        return review.response == undefined;
       },
 
     });
