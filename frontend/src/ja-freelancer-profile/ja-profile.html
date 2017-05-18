@@ -234,14 +234,14 @@
     </paper-listbox>
 
     <section id="container">
-      <!-- <section id="left1"> -->
-        <paper-listbox style="border-style: dotted;" id="left">
+      <!-- <section id="left"> -->
+      <paper-listbox id="left">
 
-          <paper-item>
+        <div>
         <div id="imagediv">
           <img id="image" src={{image}} />
         </div>
-      </paper-item>
+        </div>
 
         <div id="name">
           {{lastname}} {{firstname}}
@@ -265,11 +265,12 @@
         <div id="emavailable">
           Available for emergency : {{emergencyAvailable}}
         </div>
-        </paper-listbox>
+      </paper-listbox>
 
       <!-- </section> -->
 
-      <section id="right">
+      <!-- <section id="right"> -->
+      <paper-listbox  id="right">
 
         <div id="address">
           ADDRESS <br> {{address}}
@@ -281,8 +282,9 @@
           PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
-        <br><br> E-MAIL
+        <br><br>
         <div id="email">
+          E-MAIL <br>
           <a id="emaillink">{{email}}</a>
         </div>
 
@@ -291,7 +293,8 @@
           Distance from you: {{distance}}
         </div>
 
-      </section>
+      <!-- </section> -->
+      </paper-listbox>
 
       <section class="divisor"></section>
 
@@ -486,10 +489,10 @@
           type: Array,
           readOnly: true,
           value: function() {
-            return [this.$.left, this.$.container2];
+            return [this.$.left, this.$.right];
           }
         },
-        
+
       },
 
       _computeDateString: function(date) {
