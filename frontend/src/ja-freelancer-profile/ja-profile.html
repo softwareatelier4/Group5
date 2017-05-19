@@ -196,79 +196,65 @@
     </iron-ajax>
 
     <section id="container">
-      <!-- <section id="left"> -->
       <paper-listbox id="left">
-
-          <!-- <paper-item role="menuitem"> -->
-        <div id="imagediv">
+        <div id="imagediv" num="1">
           <img id="image" src={{image}} />
         </div>
-      <!-- </paper-item> -->
 
-        <div id="name">
+        <div id="name" num="2">
           {{lastname}} {{firstname}}
         </div>
 
-        <div id="container-verification"></div>
+        <div id="container-verification" num="3"></div>
 
-        <div id="container-claim"></div>
+        <div id="container-claim" num="4"></div>
 
-        <div id="profession">
+        <div id="profession" num="5">
           {{profession}}
         </div>
 
-        <div id="rating">
+        <div id="rating" num="6">
           Rating : {{_checkratisprovided(rating)}}
         </div>
-        <div id="category">
+        <div id="category" num="7">
           Category : {{category}}
         </div>
 
-        <div id="emavailable">
+        <div id="emavailable" num="8">
           Available for emergency : {{emergencyAvailable}}
         </div>
       </paper-listbox>
 
-      <!-- </section> -->
 
-      <!-- <section id="right"> -->
       <paper-listbox  id="right">
 
-        <div id="address">
+        <div id="address" num="9">
           ADDRESS <br> {{address}}
         </div>
 
-        <br><br>
 
-        <div id="phone">
+        <div id="phone" num="10">
           PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
-        <br><br>
-        <div id="email">
+        <div id="email" num="11">
           E-MAIL <br>
           <a id="emaillink">{{email}}</a>
         </div>
 
-        <br><br>
-        <div id="distance">
+        <div id="distance" num="12">
           Distance from you: {{distance}}
         </div>
 
-      <!-- </section> -->
-      </paper-listbox>
-
-      <section class="divisor"></section>
-
-      <section id="price">
+      <section id="price" num="13">
         Cost/hour: {{_checkprisprovided(price)}}
       </section>
 
-      <section class="divisor"></section>
-
-      <section id="description">
+      <section id="description" num="14">
         Description : {{_checkdescisprovided(description)}}
       </section>
+
+      </paper-listbox>
 
       <paper-button id="open-events-btn" hidden raised>Edit availability</paper-button>
 
@@ -352,6 +338,11 @@
       },
 
       properties: {
+        leftchild: {
+          type: Number,
+          value: 8,
+        },
+
         id: {
           type: String,
           observer: '_idchanged'
@@ -488,11 +479,11 @@
         if (start > end) {
           validDate = false;
           this.dateError = "End date/time must be later than the starting one!"
-          console.log("End date/time must be later than start!s");
+          // console.log("End date/time must be later than start!s");
         } else if (start < new Date()){
           validDate = false;
           this.dateError = "Selected date must be later than now!"
-          console.log("Date is before now!");
+          // console.log("Date is before now!");
         } else {
           this.dateError = "";
         }
@@ -703,23 +694,14 @@
         this.push('events', item);
       },
 
-      // Element Lifecycle
-
-      ready: function() {
-
-      },
-
       attached: function() {
+        if(JSON.parse(window.localStorage.user).freelancerId === this.id){
         this._appendLocalDom();
-
+        }
       },
-
-      detached: function() {
-      },
-
-      // Element Behavior
 
       _createDrake: function(containers) {
+        if(JSON.parse(window.localStorage.user).freelancerId === this.id){
         return dragula(containers, {
           isContainer: function (el) {
             return false; // only elements in drake.containers will be taken into account
@@ -741,19 +723,58 @@
           mirrorContainer: this.$.hidden,    // set the element that gets mirror elements appended
           ignoreInputTextSelection: true
         });
+      }
+      },
+
+      _countnodes: function(elem, after, parent, src){
+        if(src === "right" && parent === "left"){
+          this.leftchild ++;
+        }
+        if(src === "left" && parent === "right"){
+          this.leftchild --;
+        }
+        var arr = [];
+        this.$.left.childNodes.forEach(function(el){
+          if(el.attributes){
+            arr.push(el.attributes[1].nodeValue);
+          }
+        });
+
+        this.$.right.childNodes.forEach(function(el){
+          if(el.attributes){
+            arr.push(el.attributes[1].nodeValue);
+          }
+        });
+        var index;
+        if(after === null){
+          if(parent === "left"){
+            index = 8;
+          }else{
+            index = 15;
+          }
+        }else{
+          after = after.attributes[1].nodeValue;
+          index = arr.indexOf(after) ;
+        }
+        arr.splice(index, 0, elem.attributes[1].value);
+        // console.log(arr);
+        // console.log(this.leftchild);
       },
 
       _appendLocalDom: function() {
-        this._drake.on('drop', function(el, target, source, sibling) {
-          console.log("el", el);
-          console.log("target" , target);
-          console.log("source" , source);
-          console.log("sibling" , sibling);
-          Polymer.dom(target).insertBefore(el, sibling);
-        })
+          this._drake.on('drop', function(el, target, source, sibling) {
+            Polymer.dom(target).insertBefore(el, sibling);
+            // console.log(el);
+            // console.log(sibling); //null if last
+            // console.log(target.attributes[0].nodeValue);
+            this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
 
-        console.log(this._drake.dragging);
+          }.bind(this))
+
+
       },
+
+
 
     });
   </script>
