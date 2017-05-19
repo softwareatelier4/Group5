@@ -48,14 +48,9 @@
         font-weight: normal;
       }
 
-      #price {
+      #left>div:not(#imagediv), #right>div {
         width: 100%;
-        padding: 20px;
-      }
-
-      #description {
-        width: 100%;
-        padding: 20px;
+        padding: 10px;
       }
 
       #imagediv {
@@ -71,10 +66,6 @@
         display: block;
         text-transform: uppercase;
         color: rgb(200, 30, 38);
-      }
-
-      #profession {
-        text-transform: uppercase;
       }
 
       .divisor {
@@ -197,6 +188,7 @@
 
     <section id="container">
       <paper-listbox id="left">
+
         <div id="imagediv" num="1">
           <img id="image" src={{image}} />
         </div>
@@ -210,18 +202,19 @@
         <div id="container-claim" num="4"></div>
 
         <div id="profession" num="5">
-          {{profession}}
+          PROFESSION <br> {{profession}}
         </div>
 
         <div id="rating" num="6">
-          Rating : {{_checkratisprovided(rating)}}
+          RATING <br> {{_checkratisprovided(rating)}}
         </div>
+
         <div id="category" num="7">
-          Category : {{category}}
+          CATEGORY <br> {{category}}
         </div>
 
         <div id="emavailable" num="8">
-          Available for emergency : {{emergencyAvailable}}
+          AVAILABLE FOR EMERGENCY <br> {{emergencyAvailable}}
         </div>
       </paper-listbox>
 
@@ -243,16 +236,16 @@
         </div>
 
         <div id="distance" num="12">
-          Distance from you: {{distance}}
+          DISTANCE <br> {{distance}}
         </div>
 
-      <section id="price" num="13">
-        Cost/hour: {{_checkprisprovided(price)}}
-      </section>
+      <div id="price" num="13">
+        COST/HOUR <br> {{_checkprisprovided(price)}}
+      </div>
 
-      <section id="description" num="14">
-        Description : {{_checkdescisprovided(description)}}
-      </section>
+      <div id="description" num="14">
+        DESCRIPTION <br> {{_checkdescisprovided(description)}}
+      </div>
 
       </paper-listbox>
 
@@ -762,6 +755,7 @@
       },
 
       _appendLocalDom: function() {
+        if(JSON.parse(window.localStorage.user).freelancerId === this.id){
           this._drake.on('drop', function(el, target, source, sibling) {
             Polymer.dom(target).insertBefore(el, sibling);
             // console.log(el);
@@ -770,6 +764,7 @@
             this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
 
           }.bind(this))
+        }
 
 
       },
