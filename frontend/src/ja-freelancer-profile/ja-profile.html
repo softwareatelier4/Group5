@@ -48,7 +48,7 @@
         font-weight: normal;
       }
 
-      #left>div:not(#imagediv), #right>div {
+      #left>div:not(#imagediv), #right>div:not(#imagediv) {
         width: 100%;
         padding: 10px;
       }
@@ -421,7 +421,6 @@
           reflectToAttribute: true,
           value: function() {
             let date = new Date();
-            // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
           },
         },
@@ -435,7 +434,6 @@
 
         _containers: {
           type: Array,
-          readOnly: true,
           value: function() {
             return [this.$.left, this.$.right];
           }
@@ -510,6 +508,11 @@
         if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
+          if(id === JSON.parse(window.localStorage.user).freelancerId){
+            this.$.left.classList.remove('no-dnd');
+          }else{
+            this.$.left.classList.add('no-dnd');
+          }
         }
 
         var inputEl = this.$['calendar-input-location'].childNodes[1].childNodes[3].childNodes[2].childNodes[2];
@@ -523,10 +526,15 @@
 
       _idchanged: function (id) {
         this.id = id;
-        // console.log(this.routd);
         if (this.routd === "freelancer" && this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
+
+          if(id === JSON.parse(window.localStorage.user).freelancerId){
+            this.$.left.classList.remove('no-dnd');
+          }else{
+            this.$.left.classList.add('no-dnd');
+          }
         }
       },
 
@@ -688,22 +696,21 @@
       },
 
       attached: function() {
-        if(JSON.parse(window.localStorage.user).freelancerId === this.id){
         this._appendLocalDom();
-        }
       },
 
       _createDrake: function(containers) {
-        if(JSON.parse(window.localStorage.user).freelancerId === this.id){
         return dragula(containers, {
           isContainer: function (el) {
             return false; // only elements in drake.containers will be taken into account
           },
-          moves: function (el, source, handle, sibling) {
-            return true; // elements are always draggable by default
+          accepts: function(el, target) {
+            var l = window.location.href.split('/');
+            return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
           },
-          accepts: function (el, target, source, sibling) {
-            return true; // elements can be dropped in any of the `containers` by default
+          moves: function(el, container, handle) {
+            var l = window.location.href.split('/');
+            return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
           },
           invalid: function (el, handle) {
             return false; // don't prevent any drags from initiating by default
@@ -716,7 +723,6 @@
           mirrorContainer: this.$.hidden,    // set the element that gets mirror elements appended
           ignoreInputTextSelection: true
         });
-      }
       },
 
       _countnodes: function(elem, after, parent, src){
@@ -755,18 +761,11 @@
       },
 
       _appendLocalDom: function() {
-        if(JSON.parse(window.localStorage.user).freelancerId === this.id){
-          this._drake.on('drop', function(el, target, source, sibling) {
-            Polymer.dom(target).insertBefore(el, sibling);
-            // console.log(el);
-            // console.log(sibling); //null if last
-            // console.log(target.attributes[0].nodeValue);
-            this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
+        this._drake.on('drop', function(el, target, source, sibling) {
+          Polymer.dom(target).insertBefore(el, sibling);
+          this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
 
-          }.bind(this))
-        }
-
-
+        }.bind(this))
       },
 
 
