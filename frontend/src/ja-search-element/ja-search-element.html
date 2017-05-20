@@ -20,14 +20,16 @@
 
       #div-search {
         /*padding-bottom: 20px;*/
-        display: flex;
         width: 100%;
         top: 100px;
       }
 
       #div-dropdown {
-        flex-basis: 20%;
         background: #fff;
+        padding-left: 10px;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: lightgray;
       }
 
       #div-dropdown button {
@@ -42,6 +44,11 @@
         color: #757575;
         cursor: pointer;
       }
+
+      #div-dropdown iron-icon {
+        padding-right: 8px;
+      }
+
 
       #div-dropdown:hover {
         background: #F7F8FB;
@@ -60,25 +67,95 @@
         top: 127px;
       }
 
-      #location-search {
-        flex-basis: 20%;
-      }
-
       #field-search {
-        flex-basis: 51%;
         border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
         /*border-bottom-left-radius: 3px;*/
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: lightgray;
       }
 
       paper-button {
         /*max-width: 30px;*/
         box-shadow: none !important;
-        flex-basis: 10%;
         background: #F2D847;
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
+        border-radius: 0px;
         margin: 0px;
+        width: 100%;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: lightgray;
+      }
+
+      #location-search {
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: lightgray;
+      }
+
+
+      @media screen and (min-width: 948px) {
+        #div-search {
+          /*padding-bottom: 20px;*/
+          display: flex;
+          width: 100%;
+          top: 100px;
+        }
+
+        #div-dropdown {
+          flex-basis: 20%;
+          background: #fff;
+        }
+
+        #div-dropdown button {
+          border: none;
+          padding: 5px;
+          margin: 0;
+          width: 100%;
+          /* this is completely hardcoded will change later */
+          height: 46.38px;
+          background-color: rgba(0, 0, 0, 0);
+          text-align: left;
+          color: #757575;
+          cursor: pointer;
+        }
+
+        #div-dropdown:hover {
+          background: #F7F8FB;
+        }
+
+        #div-dropdown button:focus {
+          outline: none;
+        }
+
+        shibui-dropdown {
+          max-height: 300px;
+          overflow: auto;
+        }
+
+        shibui-dropdown a {
+          top: 127px;
+        }
+
+        #location-search {
+          flex-basis: 20%;
+        }
+
+        #field-search {
+          flex-basis: 51%;
+          border-top-left-radius: 3px;
+          border-top-right-radius: 0px;
+        }
+
+        paper-button {
+          /*max-width: 30px;*/
+          box-shadow: none !important;
+          flex-basis: 10%;
+          background: #F2D847;
+          border-top-right-radius: 3px;
+          margin: 0px;
+        }
       }
       /* ======================= FILTERS ======================= */
 
@@ -89,30 +166,45 @@
         border-bottom-right-radius: 3px;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: space-around;
         width: 100%;
         height: auto;
         top: 145px;
         background-color: #eee;
       }
 
-      #div-filters paper-range-slider {
-        flex: wrap;
-        flex-grow: 1;
+
+      .filter-element {
+        /*position: relative;*/
+        /*flex-grow: 1;*/
+        padding-left: 20px;
+        padding-right: 10px;
       }
 
+      .outer-filters {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .filter-element paper-range-slider {
+        display: inline-block;
+        margin: 0;
+      }
+
+
       .filter-title {
-        position: relative;
-        flex-grow: 1;
-        padding-left: 20px;
+        display: inline-block;
         /*bottom: 6px;*/
         /*margin-left: 5px;*/
         font-size: 12px;
+        width: 80px;
       }
     </style>
 
 
-    <div id="div-search" on-keydown="checkForEnter">
+    <div id="div-search" class="unselectable" on-keydown="checkForEnter">
       <paper-search-bar hide-filter-button label="test" id="field-search" icon="search" placeholder="General"> </paper-search-bar>
       <div id="div-dropdown">
         <button id="dropdown-toggle" value=""><iron-icon icon="work" suffix style="color: #9B9B9B"></iron-icon> Category : Any </button>
@@ -140,31 +232,27 @@
         <iron-icon icon="search" suffix></iron-icon>
       </paper-button>
     </div>
-    <div id="div-filters">
-      <!--<div>-->
-      <div class="filter-title">
-        <p> Distance(km) : </p>
+    <div id="div-filters" class="unselectable">
+      <div class="outer-filters">
+        <div class="filter-element">
+          <p class="filter-title"> Distance(km) : </p>
+          <paper-range-slider id="slider-distance" pin value-max="500" min="0" max="300"></paper-range-slider>
+        </div>
+        <div class="filter-element">
+          <p class="filter-title"> Time by car : </p>
+          <paper-range-slider id="slider-time" pin step="0.5" value-max="500" min="0" max="8"></paper-range-slider>
+        </div>
       </div>
-      <paper-range-slider id="slider-distance" pin value-max="500" min="0" max="300"></paper-range-slider>
-      <!--</div>-->
-      <!--<div>-->
-      <div class="filter-title">
-        <p> Time by car : </p>
+      <div class="outer-filters">
+        <div class="filter-element">
+          <p class="filter-title"> Rating : </p>
+          <paper-range-slider id="slider-rating" pin min="0" max="5"></paper-range-slider>
+        </div>
+        <div class="filter-element">
+          <p class="filter-title"> Price range : </p>
+          <paper-range-slider id="slider-price" pin min="0" max="500"></paper-range-slider>
+        </div>
       </div>
-      <paper-range-slider id="slider-time" pin step="0.5" value-max="500" min="0" max="8"></paper-range-slider>
-      <!--</div>
-      <div>-->
-      <div class="filter-title">
-        <p> Rating : </p>
-      </div>
-      <paper-range-slider id="slider-rating" pin min="0" max="5"></paper-range-slider>
-      <!--</div>
-      <div>-->
-      <div class="filter-title">
-        <p> Price range : </p>
-      </div>
-      <paper-range-slider id="slider-price" pin min="0" max="500"></paper-range-slider>
-      <!--</div>-->
     </div>
 
 
@@ -173,11 +261,7 @@
       handle-as="json" on-response="_handleResponseDistance">
     </iron-ajax>
 
-    <iron-ajax  id="search-request"
-                url="/search/"
-                params="{{req}}"
-                handle-as="json"
-                on-response="_handleResponse">
+    <iron-ajax id="search-request" url="/search/" params="{{req}}" handle-as="json" on-response="_handleResponse">
     </iron-ajax>
   </template>
 
@@ -244,7 +328,7 @@
       },
 
 
-      _filtersChanged: function(filters) {
+      _filtersChanged: function (filters) {
         // console.log("filters", filters);
       },
 
@@ -286,7 +370,7 @@
 
       _locationChanged: function (location) {},
 
-      ready: function() {
+      ready: function () {
         var inputEl = this.$['location-search'].childNodes[1].childNodes[3];
         var autocomplete = new google.maps.places.Autocomplete(inputEl);
 

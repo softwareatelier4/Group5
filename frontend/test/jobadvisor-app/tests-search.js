@@ -1,5 +1,7 @@
 module.exports = {
-
+  before: function(client) {
+    client.resizeWindow(1280,720);
+  },
   'Test main elements visibility' : function (client) {
     client
       .url('http://localhost:3005')
@@ -17,8 +19,10 @@ module.exports = {
 
   'Test input, get results and click on a profile [FULL TEST]' : function (client) {
     client
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
@@ -53,7 +57,7 @@ module.exports = {
       // .assert.containsText('#fl-5625fc2bd82b84d23d8c7bf1 .result-distance',
       //                      '33.2 km')
       .click('#fl-5625fc2bd82b84d23d8c7bf1 a')
-      .pause(1000)
+      .pause(500)
       .assert.urlContains('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bf1')
 
       .waitForElementVisible('#imagediv', 1000)
@@ -91,7 +95,7 @@ module.exports = {
       .setValue('#ratenum', '2')
       .assert.attributeContains('#review', 'raised', '')
       .click('#review')
-      .pause(1000)
+      .pause(500)
       // .assert.attributeContains('#review', 'disabled', '')
       .waitForElementVisible('#reviews ja-review-element:nth-child(2) > paper-card  #comment', 1000)
       .waitForElementVisible('#reviews ja-review-element:nth-child(2) > paper-card  #rate', 1000)
@@ -113,7 +117,7 @@ module.exports = {
   'Get back to the home page' : function (client) {
     client
       .click('#page-title')
-      .pause(2000)
+      .pause(500)
       .waitForElementVisible('ja-search-element', 1000)
       .waitForElementVisible('ja-results-list', 1000)
       .waitForElementVisible('#field-search', 1000)
@@ -141,7 +145,7 @@ module.exports = {
       .setValue('#dropdown-toggle', 'IT Services')
       .setValue('#location-search input', 'Zurich, Switzerland')
       .click('#button-search')
-      .pause(2000)
+      .pause(500)
       // .assert.containsText('ja-results-list > h3',
       //                      'Zurich, Switzerland')
       .waitForElementVisible('ja-results-item', 1000)
@@ -239,20 +243,22 @@ module.exports = {
   'Test review insertion' : function (client) {
     client
       .url('http://localhost:3005/')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
+      .click('#menu-open')
       .click('#login-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
-      .pause(5000)
-      .assert.urlEquals('http://localhost:3005/')
+      .click('#menu-open')
       .waitForElementVisible('#logoutBtn', 1000)
       .waitForElementNotVisible('#loginBtn', 1000)
-      .assert.containsText('#username',
-                           'myUsername')
+      .assert.containsText('#logoutBtn',
+                           'LOGOUT MYUSERNAME')
       .url('http://localhost:3005/freelancer/5625fc2bd82b84d23d8c7bd5')
       .waitForElementVisible('#reviews', 1000)
       .waitForElementVisible('#commentarea', 1000)
@@ -266,7 +272,7 @@ module.exports = {
       .setValue('#ratenum', '2')
       .assert.attributeContains('#review', 'raised', '')
       .click('#review')
-      .pause(1000)
+      .pause(500)
       // .assert.attributeContains('#review', 'disabled', '')
       .waitForElementVisible('#reviews ja-review-element:nth-child(2) > paper-card  #comment', 1000)
       .waitForElementVisible('#reviews ja-review-element:nth-child(2) > paper-card  #rate', 1000)
@@ -285,8 +291,10 @@ module.exports = {
   'Freelancer creation :Test signup' : function (client) {
     client
       .url('http://localhost:3005/')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')
@@ -301,10 +309,12 @@ module.exports = {
       .waitForElementVisible('#location-search', 1000)
       .waitForElementVisible('#dropdown-toggle', 1000)
       .waitForElementVisible('#div-filters', 1000)
+      .click('#menu-open')
       .waitForElementVisible('#signup-button', 1000)
       .assert.containsText('#signup-button', 'CREATE FREELANCER')
       .click('#signup-button')
-      .pause(1000)
+      .click('#menu-close')
+      .pause(500)
       .waitForElementVisible('ja-freelancer-signup', 1000)
       // .waitForElementVisible('#container', 1000)
       .waitForElementVisible('#_firstname', 1000)
@@ -346,8 +356,10 @@ module.exports = {
     'Freelancer creation : no fields inserted' : function (client) {
       client
       .url('http://localhost:3005/')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername')
       .setValue('#login-password input', '1234')

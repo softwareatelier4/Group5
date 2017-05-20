@@ -18,6 +18,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
 const CalendarEventSchema = require('./CalendarEvent');
@@ -39,7 +40,7 @@ const FreelancerSchema = new mongoose.Schema(
     reviews                : { type: [ReviewSchema], default:[]},
     emergencyAvailable     : { type: Boolean, required : true},
     events                 : { type: [CalendarEventSchema], default:[]},
-    verification           : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    verification           : { type: String, enum:['verified', 'pending', 'not verified'], default:'not verified' },
     claimFilePath          : { type: String},
     notifications          : { type: [ObjectId], ref: "Notification", default: [] }, //request received
     claimComment           : { type: String},

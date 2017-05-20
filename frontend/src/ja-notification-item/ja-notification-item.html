@@ -6,60 +6,86 @@
   <template>
     <style>
       /* CSS rules for your element */
-      :host {
+
+       :host {
         display: block;
         margin: 20px 0;
       }
 
       paper-card {
-        padding:50px;
+        padding: 20px;
         width: 100%;
       }
 
-      #right{
-        float:right;
-        padding-right:100px;
+      #notification-container{
+        display: flex;
+        flex-flow: wrap;
       }
 
-      #left{
-        float:left;
-        padding-left:100px;
+      .flex-item{
+        min-width: 200px;
+        margin-right: 30px;
       }
 
-      #notification-status{
-        padding-top:20px;
+      #notification-status {
+        padding-top: 20px;
       }
 
       .notification-profession {
         font-size: 24px;
         text-decoration: none;
       }
-
-
-
     </style>
     <paper-card id="usnt-{{notification._id}}" class='papercard'>
-      <div id="left">
-        <div id="notification-profession">
-        <span> Profession Requested : {{notification.profession}}</span>
-      </div>
-      <div id="notification-description">
-        <span> Description : {{notification.description}}</span>
-      </div>
-      <div id="notification-phone">
-        <span> Phone number : {{notification.phone}}</span>
-      </div>
-      <div id="notification-location">
-        <span> Location : {{notification.location}}</span>
-      </div>
-      <div id="notification-status">
-        <span> Status : {{notification.status}}</span>
+      <div class="card-content">
+        <div id="notification-container">
+          <div class="flex-item">
+            <div id="notification-profession">
+               Profession Requested : {{notification.profession}}
+            </div>
+            <div id="notification-description">
+               Description : {{notification.description}}
+            </div>
+            <div id="notification-phone">
+               Phone number : {{notification.phone}}
+            </div>
+            <div id="notification-location">
+               Location : {{notification.location}}
+            </div>
+            <div id="notification-status">
+               Status : {{notification.status}}
+
+            </div>
+          </div>
+          <div class="flex-item">
+            FREELANCER CONTACTED:
+            <div>
+              <span id="not-name">
+            <!-- {{notification.availableFreelancers.0.firstName}} -->
+          </span>
+            </div>
+            <div>
+              <span id="not-address">
+            <!-- {{notification.availableFreelancers.0.address}} -->
+          </span>
+            </div>
+            <div>
+              <span id="not-category">
+            <!-- {{notification.availableFreelancers.0.category}} -->
+          </span>
+            </div>
+            <div>
+              <span id="not-email">
+            <!-- {{notification.availableFreelancers.0.email}} -->
+          </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="show">
-        <template id="yesno" is="dom-if" if="{{_notificationRefused(notification.status)}}" >
-          <span>
-
+        <div class="card-actions">
+          <template id="yesno" is="dom-if" if="{{_notificationRefused(notification.status)}}">
             <div>Call another?:</div>
             <paper-button id="buttonYes" raised on-click="_sendYes">
               Yes
@@ -67,41 +93,12 @@
             <paper-button id="buttonNo" raised on-click="_sendNo">
               No
             </paper-button>
-
-           </span>
-        </template>
-      </div>
-
-
-      </div>
-      <div id="right">
-        FREELANCER CONTACTED:
-        <div>
-          <span id="not-name">
-            <!-- {{notification.availableFreelancers.0.firstName}} -->
-          </span>
+          </template>
         </div>
-        <div>
-          <span id="not-address">
-            <!-- {{notification.availableFreelancers.0.address}} -->
-          </span>
-        </div>
-        <div>
-          <span id="not-category">
-            <!-- {{notification.availableFreelancers.0.category}} -->
-          </span>
-        </div>
-        <div>
-          <span id="not-email">
-            <!-- {{notification.availableFreelancers.0.email}} -->
-          </span>
-
-        </div>
-
       </div>
     </paper-card>
 
-    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/user/yes" method="PUT"  handle-as="json" on-response="_yesres"></iron-ajax>
+    <iron-ajax id="buttonYes" url="/emergency/{{notification._id}}/user/yes" method="PUT" handle-as="json" on-response="_yesres"></iron-ajax>
     <iron-ajax id="buttonNo" url="/emergency/{{notification._id}}/user/no" method="PUT" handle-as="json" on-response="_nores"></iron-ajax>
 
   </template>
@@ -114,59 +111,60 @@
         notification: {
           type: Object,
         },
-        frnumber:{
+        frnumber: {
           type: Number,
         },
       },
 
-      ready: function() {
+      ready: function () {
         var i = 0;
-        this.notification.availableFreelancers.forEach(function(el){
-          if(el != null){
-            i ++;
+        this.notification.availableFreelancers.forEach(function (el) {
+          if (el != null) {
+            i++;
           }
         })
-        if(this.frnumber < i){
-          this.$['not-email'].innerHTML=this.notification.availableFreelancers[this.frnumber].email;
-          this.$['not-category'].innerHTML=this.notification.availableFreelancers[this.frnumber].category;
-          this.$['not-address'].innerHTML=this.notification.availableFreelancers[this.frnumber].address;
+        if (this.frnumber < i) {
+          this.$['not-email'].innerHTML = this.notification.availableFreelancers[this.frnumber].email;
+          this.$['not-category'].innerHTML = this.notification.availableFreelancers[this.frnumber].category;
+          this.$['not-address'].innerHTML = this.notification.availableFreelancers[this.frnumber].address;
 
-          this.$['not-name'].innerHTML=this.notification.availableFreelancers[this.frnumber].firstName + " " +this.notification.availableFreelancers[this.frnumber].lastName;
+          this.$['not-name'].innerHTML = this.notification.availableFreelancers[this.frnumber].firstName + " " +
+            this.notification.availableFreelancers[this.frnumber].lastName;
 
-          if(this.notification.status == null || this.notification.status == undefined){
-              this.$['notification-status'].innerHTML="Pending";
+          if (this.notification.status == null || this.notification.status == undefined) {
+            this.$['notification-status'].innerHTML = "Pending";
           }
-        }else{
+        } else {
           this.$['not-email'].innerHTML = "No more to contact";
           this.$.show.style.display = "none";
         }
 
       },
 
-      _notificationRefused : function(status){
-        return status  == "Refused";
+      _notificationRefused: function (status) {
+        return status == "Refused";
       },
 
-      _sendYes : function(){
+      _sendYes: function () {
         const ajaxel = this.$.buttonYes;
         ajaxel.generateRequest();
       },
 
-      _sendNo : function(){
+      _sendNo: function () {
         const ajaxel = this.$.buttonNo;
         ajaxel.generateRequest();
       },
 
-      _yesres : function(el){
+      _yesres: function (el) {
         // console.log("user yes");
         // console.log(el.detail.response);
         window.location.reload();
       },
 
-      _nores : function(){
+      _nores: function () {
         // console.log("user no");
         const x = this.notification._id;
-        const found = this.notifications.find(function(el){
+        const found = this.notifications.find(function (el) {
           return el._id === x;
         });
         const index = this.notifications.indexOf(found);

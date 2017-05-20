@@ -206,7 +206,7 @@ var freelancers = {
       "reviews"             : [reviews.data[2]],
       "emergencyAvailable"  : true,
       "events"              : [events.data[1], events.data[2], events.data[4]],
-      "verification"        : "none",
+      "verification"        : "not verified",
     },
     {
       "_id"           : ObjectId("5625fc2bd82b84d23d8c7bd6"),
@@ -307,7 +307,7 @@ var freelancers = {
       "price"         : 100,
       "reviews"       : [reviews.data[2]],
       "emergencyAvailable"  : false,
-      "verification"  : "none",
+      "verification"  : "not verified",
       "claimingUserId": "2625fc2bd89b84023d8c7bd6",
     },
     {
@@ -324,7 +324,7 @@ var freelancers = {
       "price"         : 100,
       "reviews"       : [reviews.data[3]],
       "emergencyAvailable"  : false,
-      "verification"  : "none",
+      "verification"  : "not verified",
     },
 
     {
