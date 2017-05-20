@@ -1,13 +1,17 @@
 module.exports = {
-
+  before: function(client) {
+    client.resizeWindow(1280,720);
+  },
   'Test login page elements visibility' : function (client) {
     client
       .url('http://localhost:3005/')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
+      .click('#menu-open')
       .waitForElementVisible('#loginBtn', 1000)
       .waitForElementNotVisible('#logoutBtn', 1000)
       .click('#loginBtn')
+      .click('#menu-close')
       .pause(500)
       .assert.urlContains('http://localhost:3005/login')
       // .waitForElementVisible('ja-login', 1000)
@@ -33,10 +37,11 @@ module.exports = {
       .click('#user-signup-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
+      .click('#menu-open')
       .waitForElementVisible('#logoutBtn', 1000)
       .waitForElementNotVisible('#loginBtn', 1000)
-      .assert.containsText('#username',
-                           'myUsername')
+      .assert.containsText('#logoutBtn',
+                           'LOGOUT MYUSERNAME')
       .click('#logoutBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
@@ -44,6 +49,7 @@ module.exports = {
 
   'Test signup with already existing user' : function (client) {
     client
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlContains('http://localhost:3005/login')
@@ -53,6 +59,8 @@ module.exports = {
       .setValue('#signup-password-check input', '1234')
       .click('#user-signup-button')
       .pause(500)
+      // .click('#menu-close')
+      // .pause(1000)
       .assert.containsText('#signup-error', 'User already exists')
   },
 
@@ -75,6 +83,7 @@ module.exports = {
       .url('http://localhost:3005/')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('jobadvisor-app', 10000)
+      .click('#menu-open')
       .waitForElementVisible('#loginBtn', 1000)
       .waitForElementNotVisible('#logoutBtn', 1000)
       .click('#loginBtn')
@@ -92,6 +101,7 @@ module.exports = {
 
   'Test login with previously created account' : function (client) {
     client
+      // .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
@@ -100,10 +110,11 @@ module.exports = {
       .click('#login-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
+      .click('#menu-open')
       .waitForElementVisible('#logoutBtn', 1000)
       .waitForElementNotVisible('#loginBtn', 1000)
-      .assert.containsText('#username',
-                           'myUsername')
+      .assert.containsText('#logoutBtn',
+                           'LOGOUT MYUSERNAME')
       .click('#logoutBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
@@ -111,6 +122,7 @@ module.exports = {
 
   'Test login with wrong username' : function (client) {
     client
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
@@ -127,6 +139,7 @@ module.exports = {
 
   'Test login with wrong password' : function (client) {
     client
+      // .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
@@ -134,9 +147,11 @@ module.exports = {
       .setValue('#login-password input', 'asddasasg')
       .click('#login-button')
       .pause(500)
+      .click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login') // no redirect
       .assert.containsText('#login-error', "User doesn't exist or password is wrong")
       .waitForElementNotVisible('#logoutBtn', 1000)
+      .click('#menu-open')
       .waitForElementVisible('#loginBtn', 1000)
       .end();
   },

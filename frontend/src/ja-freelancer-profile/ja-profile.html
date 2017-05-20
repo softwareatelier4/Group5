@@ -40,6 +40,7 @@
         display: inline-block;
         padding: 20px;
         font-weight: normal;
+        min-width: 250px;
       }
 
       #right {
@@ -47,6 +48,7 @@
         display: inline-block;
         padding: 20px;
         font-weight: normal;
+        min-width: 250px;
       }
 
       #left>div:not(#imagediv), #right>div:not(#imagediv) {
@@ -79,36 +81,38 @@
       }
 
       textarea {
+        width:100%;
         border-color: lightgray;
       }
 
-      #reviews, #profile-calendar {
+      #reviews,
+      #profile-calendar {
         padding-left: 20px;
         padding-right: 20px;
       }
 
       #ratearea {
-        position: relative;
-        width: 20%;
-        padding-left: 20px;
+        display: block;
+        width: 100%;
+        /*padding-left: 20px;*/
       }
 
       #commentarea {
-        position: relative;
-        width: 120%;
+        display: block;
+        width: 100%;
       }
       /* rate button */
 
       #review {
-        width: calc(100% - 20px);
+        /*width: calc(100% - 20px);
         position: absolute;
         bottom: 0px;
-        right: 0px;
+        right: 0px;*/
       }
       /* rating menu */
 
       #ratenum {
-        width: 100%!important;
+        /*width: 100%!important;*/
       }
 
       #error-message {
@@ -123,7 +127,7 @@
         width: 100%;
       }
 
-      .event-start-end > paper-input {
+      .event-start-end>paper-input {
         display: inline-block;
         width: 49%;
       }
@@ -283,14 +287,14 @@
       </paper-dialog>
 
       <section id="reviews" style="width: 100%;">
-        <div id="user-rating" style="display:flex;">
+        <div id="user-rating">
           <p id="error-message">{{error}}</p>
-          <div id="commentarea" style="width:80%">
-            <textarea rows="5" style="width:100%" id="comm"> </textarea>
+          <div id="commentarea">
+            <textarea rows="5" id="comm"> </textarea>
           </div>
           <div id="ratearea">
-            RATING
-            <select id="ratenum" style="width:90%" on-change="_giverating">
+            <p>RATING</p>
+            <select id="ratenum" on-change="_giverating">
             <option value="-">--Give a review--</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -299,7 +303,7 @@
             <option value="5">5</option>
           </select>
             <!-- <input id="review" type="submit" value="Rate!" on-click="_givereview" /> -->
-            <paper-button id="review" disabled style="height:20px; width: 96%; margin-top: 10px;" on-click="_givereview">Rate!</paper-button>
+            <paper-button id="review" disabled on-click="_givereview">Rate!</paper-button>
           </div>
         </div>
         <template is="dom-repeat" items="{{reviews}}" as="result">
@@ -315,7 +319,8 @@
     <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
     </iron-ajax>
 
-    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json" on-response="_handleAddEventResponse">
+    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json"
+      on-response="_handleAddEventResponse">
     </iron-ajax>
 
     <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
@@ -331,7 +336,7 @@
       is: "ja-profile",
 
       listeners: {
-        'open-events-btn.tap':'_onOpenEventsTap'
+        'open-events-btn.tap': '_onOpenEventsTap'
       },
 
       properties: {
@@ -423,7 +428,7 @@
         currentDate: {
           type: String,
           reflectToAttribute: true,
-          value: function() {
+          value: function () {
             let date = new Date();
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
           },
@@ -583,6 +588,7 @@
 
         this.events = res.events;
 
+
         if (this.verification == 'none' && (this.user.pending == 'none')) {
           // console.log("hesajdsjasjkldllo");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
@@ -690,7 +696,7 @@
         this.unshift('reviews', obj);
       },
 
-      _handleAddEventResponse: function(evt) {
+      _handleAddEventResponse: function (evt) {
         const item = evt.detail.response;
         this.push('events', item);
       },
