@@ -202,7 +202,7 @@
           {{lastname}} {{firstname}}
         </div>
 
-        <div id="container-verification" num="3"> VERIFICATION STATUS <br> </div>
+        <div id="container-verification" num="3"> VERIFICATION STATUS: <br> </div>
 
         <div id="container-claim" num="4"></div>
 
@@ -607,7 +607,7 @@
 
         this.$['refresh-user'].generateRequest();
 
-        this.$['container-verification'].innerHTML += this.verification;
+        this.$['container-verification'].innerHTML = "VERIFICATION STATUS: <br>" + this.verification;
 
         // console.log("from server", res.fieldsOrder);
         // console.log("left from server", res.leftFields);
@@ -715,10 +715,7 @@
             return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
           },
           moves: function(el, container, handle, sibling) {
-            // console.log("el",el );
-            // console.log("container",container );
-            // console.log("handle",handle );
-            // console.log("sibling",sibling );
+            // return this.userId && this.userId === this.user._id && this.verification === "verified"
             var l = window.location.href.split('/');
             return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
           },
