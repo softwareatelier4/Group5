@@ -188,67 +188,67 @@
     </iron-ajax>
 
     <section id="container">
-      <paper-listbox id="left">
+      <section id="left">
 
         <div id="imagediv" num="1">
-          <img id="image" src={{image}} /> 1
+          <img id="image" src={{image}} />
         </div>
 
         <div id="name" num="2">
-          {{lastname}} {{firstname}} 2
+          {{lastname}} {{firstname}}
         </div>
 
-        <div id="container-verification" num="3">3 VERIFICATION STATUS: </div>
+        <div id="container-verification" num="3"> VERIFICATION STATUS: </div>
 
         <div id="container-claim" num="4"></div>
 
-        <div id="profession" num="5">5
+        <div id="profession" num="5">
           PROFESSION <br> {{profession}}
         </div>
 
-        <div id="rating" num="6"> 6
+        <div id="rating" num="6">
           RATING <br> {{_checkratisprovided(rating)}}
         </div>
 
-        <div id="category" num="7"> 7
+        <div id="category" num="7">
           CATEGORY <br> {{category}}
         </div>
 
-        <div id="emavailable" num="8"> 8
+        <div id="emavailable" num="8">
           AVAILABLE FOR EMERGENCY <br> {{emergencyAvailable}}
         </div>
-      </paper-listbox>
+      </section>
 
 
-      <paper-listbox  id="right">
+      <section  id="right">
 
-        <div id="address" num="9"> 9
+        <div id="address" num="9">
           ADDRESS <br> {{address}}
         </div>
 
 
-        <div id="phone" num="10"> 10
+        <div id="phone" num="10">
           PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
         <div id="email" num="11">
-          E-MAIL <br>11
+          E-MAIL <br>
           <a id="emaillink">{{email}}</a>
         </div>
 
-        <div id="distance" num="12">12
+        <div id="distance" num="12">
           DISTANCE <br> {{distance}}
         </div>
 
-      <div id="price" num="13">13
+      <div id="price" num="13">
         COST/HOUR <br> {{_checkprisprovided(price)}}
       </div>
 
-      <div id="description" num="14">14
+      <div id="description" num="14">
         DESCRIPTION <br> {{_checkdescisprovided(description)}}
       </div>
 
-      </paper-listbox>
+    </section>
 
       <paper-button id="open-events-btn" hidden raised>Edit availability</paper-button>
 
@@ -708,7 +708,11 @@
             var l = window.location.href.split('/');
             return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
           },
-          moves: function(el, container, handle) {
+          moves: function(el, container, handle, sibling) {
+            // console.log("el",el );
+            // console.log("container",container );
+            // console.log("handle",handle );
+            // console.log("sibling",sibling );
             var l = window.location.href.split('/');
             return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
           },
@@ -750,7 +754,7 @@
         ajaxRequest.url = "/freelancer/" + JSON.parse(window.localStorage.user).freelancerId;
         ajaxRequest.body = { leftFields: this.leftFields, fieldsOrder: arr }
         ajaxRequest.generateRequest();
-        // console.log("new arr", arr);
+        console.log("new arr", arr);
         // console.log("new left after move", this.leftFields);
       },
 
@@ -788,12 +792,12 @@
         }
       },
 
-      _udatedOrder : function(el){
-        var mess = el.detail.response.message;
+      _udatedOrder: function(el){
+        var mess = el.detail.response;
         if(mess === "OK"){
           this.$.toast.open();
         }
-      }
+      },
 
 
 

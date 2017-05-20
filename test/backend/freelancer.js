@@ -51,7 +51,7 @@ describe('Backend freelancers tests', function(){
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .send(update)
-      .expect(204, done);
+      .expect(200, done);
     });
   });
 
