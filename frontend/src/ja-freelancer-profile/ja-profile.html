@@ -335,6 +335,10 @@
       },
 
       properties: {
+        leftFields: {
+          type: Number,
+          value: 8,
+        },
 
         id: {
           type: String,
@@ -423,14 +427,6 @@
             let date = new Date();
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
           },
-        },
-
-        fieldsOrder: {
-          type: Array
-        },
-
-        leftFields: {
-          type: Number
         },
 
         _dragulaOptions: Object,
@@ -751,7 +747,7 @@
         var index;
         if(after === null){
           if(parent === "left"){
-            index = document.getElementById('left').children.length;
+            index = this.$.left.children.length;
           }else{
             index = 15;
           }
@@ -772,7 +768,10 @@
 
       _appendLocalDom: function() {
         this._drake.on('drop', function(el, target, source, sibling) {
-          Polymer.dom(target).insertBefore(el, sibling);
+          if (!sibling) {
+            sibling = target.childNodes[target.childNodes.length - 1]
+          }
+          target.insertBefore(el, sibling);
           this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
         }.bind(this))
       },
