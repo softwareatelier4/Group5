@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <script src='../../bower_components/dragula.js/dist/dragula.min.js'></script>
 
@@ -190,30 +191,30 @@
       <paper-listbox id="left">
 
         <div id="imagediv" num="1">
-          <img id="image" src={{image}} />
+          <img id="image" src={{image}} /> 1
         </div>
 
         <div id="name" num="2">
-          {{lastname}} {{firstname}}
+          {{lastname}} {{firstname}} 2
         </div>
 
-        <div id="container-verification" num="3"></div>
+        <div id="container-verification" num="3">3 VERIFICATION STATUS: </div>
 
         <div id="container-claim" num="4"></div>
 
-        <div id="profession" num="5">
+        <div id="profession" num="5">5
           PROFESSION <br> {{profession}}
         </div>
 
-        <div id="rating" num="6">
+        <div id="rating" num="6"> 6
           RATING <br> {{_checkratisprovided(rating)}}
         </div>
 
-        <div id="category" num="7">
+        <div id="category" num="7"> 7
           CATEGORY <br> {{category}}
         </div>
 
-        <div id="emavailable" num="8">
+        <div id="emavailable" num="8"> 8
           AVAILABLE FOR EMERGENCY <br> {{emergencyAvailable}}
         </div>
       </paper-listbox>
@@ -221,29 +222,29 @@
 
       <paper-listbox  id="right">
 
-        <div id="address" num="9">
+        <div id="address" num="9"> 9
           ADDRESS <br> {{address}}
         </div>
 
 
-        <div id="phone" num="10">
+        <div id="phone" num="10"> 10
           PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
         <div id="email" num="11">
-          E-MAIL <br>
+          E-MAIL <br>11
           <a id="emaillink">{{email}}</a>
         </div>
 
-        <div id="distance" num="12">
+        <div id="distance" num="12">12
           DISTANCE <br> {{distance}}
         </div>
 
-      <div id="price" num="13">
+      <div id="price" num="13">13
         COST/HOUR <br> {{_checkprisprovided(price)}}
       </div>
 
-      <div id="description" num="14">
+      <div id="description" num="14">14
         DESCRIPTION <br> {{_checkdescisprovided(description)}}
       </div>
 
@@ -307,7 +308,7 @@
       </section>
       <div id="hidden" style="display:none;">
       </div>
-
+      <paper-toast id="toast" text="Order succesfully updated!" duration="500"></paper-toast>
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
@@ -320,7 +321,7 @@
     <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
     </iron-ajax>
 
-    <iron-ajax id="refresh-freelancer-container-info" method="PUT" handle-as="json" content-type="application/json" >
+    <iron-ajax id="refresh-freelancer-container-info" method="PUT" handle-as="json" content-type="application/json" on-response="_udatedOrder">
     </iron-ajax>
 
   </template>
@@ -334,10 +335,6 @@
       },
 
       properties: {
-        leftchild: {
-          type: Number,
-          value: 8,
-        },
 
         id: {
           type: String,
@@ -519,11 +516,6 @@
         if (this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
-          if(id === JSON.parse(window.localStorage.user).freelancerId){
-            this.$.left.classList.remove('no-dnd');
-          }else{
-            this.$.left.classList.add('no-dnd');
-          }
         }
 
         var inputEl = this.$['calendar-input-location'].childNodes[1].childNodes[3].childNodes[2].childNodes[2];
@@ -540,12 +532,6 @@
         if (this.routd === "freelancer" && this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
-
-          if(id === JSON.parse(window.localStorage.user).freelancerId){
-            this.$.left.classList.remove('no-dnd');
-          }else{
-            this.$.left.classList.add('no-dnd');
-          }
         }
       },
 
@@ -619,8 +605,13 @@
 
         this.$['refresh-user'].generateRequest();
 
-        this.$['container-verification'].innerHTML = this.verification;
+        this.$['container-verification'].innerHTML = "VERIFICATION STATUS: " + this.verification;
 
+        // console.log("from server", res.fieldsOrder);
+        console.log("left from server", res.leftFields);
+        this.leftFields = res.leftFields;
+        this.fieldsOrder = res.fieldsOrder;
+        console.log(res.fieldsOrder);
         this._populateContainer(res.leftFields, res.fieldsOrder)
 
       },
@@ -740,10 +731,10 @@
 
       _countnodes: function(elem, after, parent, src){
         if(src === "right" && parent === "left"){
-          this.leftchild ++;
+          this.leftFields ++;
         }
         if(src === "left" && parent === "right"){
-          this.leftchild --;
+          this.leftFields --;
         }
         var arr = [];
         this.$.left.childNodes.forEach(function(el){
@@ -762,7 +753,7 @@
           if(parent === "left"){
             index = document.getElementById('left').children.length;
           }else{
-            index = 14;
+            index = 15;
           }
         }else{
           after = after.attributes[1].nodeValue;
@@ -773,12 +764,10 @@
         var ajaxRequest = this.$['refresh-freelancer-container-info'];
 
         ajaxRequest.url = "/freelancer/" + JSON.parse(window.localStorage.user).freelancerId;
-        ajaxRequest.body = { leftFields: this.$.left.children.length, fieldsOrder: arr }
+        ajaxRequest.body = { leftFields: this.leftFields, fieldsOrder: arr }
         ajaxRequest.generateRequest();
-
-
-        // console.log(arr);
-        // console.log(this.leftchild);
+        // console.log("new arr", arr);
+        console.log("new left after move", this.leftFields);
       },
 
       _appendLocalDom: function() {
@@ -789,15 +778,15 @@
       },
 
       _populateContainer: function(leftFields, fieldsOrder) {
-        if (!leftFields || !fieldsOrder) {
-          leftFields = 7;
-          fieldsOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
-        }
+        // if (!leftFields || !fieldsOrder) {
+        //   leftFields = 8;
+        //   fieldsOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"];
+        // }
         var leftCounter = 0;
         var rightCounter = 0;
         for (let i = 0; i < fieldsOrder.length; i++) {
           var query = '[num=\"' + fieldsOrder[i] + '\"]'
-          if (i <= leftFields) {
+          if (i < leftFields) {
             document.getElementById('left').insertBefore(document.querySelectorAll(query)[0], document.getElementById('left').childNodes[leftCounter]);
             leftCounter++;
           } else {
@@ -806,6 +795,13 @@
           }
         }
       },
+
+      _udatedOrder : function(el){
+        var mess = el.detail.response.message;
+        if(mess === "OK"){
+          this.$.toast.open();
+        }
+      }
 
 
 

@@ -46,8 +46,8 @@ const FreelancerSchema = new mongoose.Schema(
     claimEmail             : { type: String},
     claimingUserId         : { type: String}, // the id of the user who issued the claim request, it may be denied
     userId                 : { type: String}, // the id of the user who succesfully claimed the profilea
-    leftFields             : { type: Number},
-    fieldsOrder            : { type: [String]}
+    leftFields             : { type: Number, default: 8},
+    fieldsOrder            : { type: [String], default: ["1", "2",  "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]}
   }
 );
 
