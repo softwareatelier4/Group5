@@ -589,7 +589,7 @@
         this.events = res.events;
 
 
-        if (this.verification == 'none' && (this.user.pending == 'none')) {
+        if (this.verification == 'not verified' && (this.user.pending == 'none')) {
           // console.log("hesajdsjasjkldllo");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
@@ -639,7 +639,7 @@
       _refreshUser: function (e) {
         this.user = e.detail.response.user;
         // console.log(e.detail.response.user);
-        if (this.verification == 'none' && (this.user.pending == 'none')) {
+        if (this.verification == 'not verified' && (this.user.pending == 'none')) {
           // console.log("hellosdfsad");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
