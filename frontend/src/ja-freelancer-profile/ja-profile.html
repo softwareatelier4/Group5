@@ -320,6 +320,9 @@
     <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
     </iron-ajax>
 
+    <iron-ajax id="refresh-freelancer-container-info" method="PUT" handle-as="json" content-type="application/json" >
+    </iron-ajax>
+
   </template>
 
   <script>
@@ -423,6 +426,14 @@
             let date = new Date();
             return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
           },
+        },
+
+        fieldsOrder: {
+          type: Array
+        },
+
+        leftFields: {
+          type: Number
         },
 
         _dragulaOptions: Object,
@@ -610,6 +621,8 @@
 
         this.$['container-verification'].innerHTML = this.verification;
 
+        this._populateContainer(res.leftFields, res.fieldsOrder)
+
       },
 
       _giverating: function (el) {
@@ -756,6 +769,14 @@
           index = arr.indexOf(after) ;
         }
         arr.splice(index, 0, elem.attributes[1].value);
+
+        var ajaxRequest = this.$['refresh-freelancer-container-info'];
+
+        ajaxRequest.url = "/freelancer/" + JSON.parse(window.localStorage.user).freelancerId;
+        ajaxRequest.body = { leftFields: this.$.left.children.length, fieldsOrder: arr }
+        ajaxRequest.generateRequest();
+
+
         // console.log(arr);
         // console.log(this.leftchild);
       },
@@ -764,8 +785,29 @@
         this._drake.on('drop', function(el, target, source, sibling) {
           Polymer.dom(target).insertBefore(el, sibling);
           this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
-
         }.bind(this))
+      },
+
+      _populateContainer: function(leftFields, fieldsOrder) {
+        console.log(leftFields);
+        console.log(fieldsOrder);
+        if (leftFields && fieldsOrder) {
+          console.log("if");
+          var leftCounter = 0;
+          var rightCounter = 0;
+          for (let i = 0; i < fieldsOrder.length; i++) {
+            console.log(i);
+            var query = '[num=\"' + fieldsOrder[i] + '\"]'
+            if (parseInt(fieldsOrder[i]) <= leftFields) {
+              document.getElementById('left').insertBefore(document.querySelectorAll(query)[0], document.getElementById('left').childNodes[leftCounter]);
+              leftCounter++;
+            } else {
+              document.getElementById('right').insertBefore(document.querySelectorAll(query)[0], document.getElementById('right').childNodes[rightCounter]);
+              rightCounter++;
+            }
+          }
+        }
+
       },
 
 

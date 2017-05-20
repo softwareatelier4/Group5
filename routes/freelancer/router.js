@@ -119,6 +119,11 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
     res.json(toAdd._id);
   });
 
+router.put('/:id', function(req, res, next) {
+  Freelancer.findByIdAndUpdate(req.params.id, req.body, function(err, freelancer) {
+    res.sendStatus(204);
+  })
+})
 
 
   module.exports = router;
