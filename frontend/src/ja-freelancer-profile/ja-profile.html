@@ -308,7 +308,7 @@
       </section>
       <div id="hidden" style="display:none;">
       </div>
-      <paper-toast id="toast" text="Order succesfully updated!" duration="500"></paper-toast>
+      <paper-toast id="toast" text="Order succesfully updated!" duration="600"></paper-toast>
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
@@ -604,10 +604,10 @@
         this.$['container-verification'].innerHTML = "VERIFICATION STATUS: " + this.verification;
 
         // console.log("from server", res.fieldsOrder);
-        console.log("left from server", res.leftFields);
+        // console.log("left from server", res.leftFields);
         this.leftFields = res.leftFields;
         this.fieldsOrder = res.fieldsOrder;
-        console.log(res.fieldsOrder);
+        // console.log(res.fieldsOrder);
         this._populateContainer(res.leftFields, res.fieldsOrder)
 
       },
@@ -744,18 +744,6 @@
             arr.push(el.attributes[1].nodeValue);
           }
         });
-        var index;
-        if(after === null){
-          if(parent === "left"){
-            index = this.$.left.children.length;
-          }else{
-            index = 15;
-          }
-        }else{
-          after = after.attributes[1].nodeValue;
-          index = arr.indexOf(after);
-        }
-        arr.splice(index, 0, elem.attributes[1].value);
 
         var ajaxRequest = this.$['refresh-freelancer-container-info'];
 
@@ -763,15 +751,20 @@
         ajaxRequest.body = { leftFields: this.leftFields, fieldsOrder: arr }
         ajaxRequest.generateRequest();
         // console.log("new arr", arr);
-        console.log("new left after move", this.leftFields);
+        // console.log("new left after move", this.leftFields);
       },
 
       _appendLocalDom: function() {
         this._drake.on('drop', function(el, target, source, sibling) {
-          if (!sibling) {
-            sibling = target.childNodes[target.childNodes.length - 1]
-          }
-          target.insertBefore(el, sibling);
+          // console.log("el",el );
+          // console.log("target",target );
+          // console.log("source",source );
+          // console.log("sibling",sibling );
+          // if (!sibling) {
+          //   sibling = target.childNodes[target.childNodes.length - 1]
+          // }
+          // target.insertBefore(el, sibling);
+          // Polymer.dom(target).insertBefore(el, sibling);
           this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
         }.bind(this))
       },

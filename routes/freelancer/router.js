@@ -30,7 +30,7 @@ router.get('/:freelancerid', function(req, res, next) {
       freelancer.events = freelancer.events.filter(function(el){
         return el.end > now;
       })
-      console.log("GET ", freelancer.leftFields);
+      // console.log("GET ", freelancer.leftFields);
       res.json(freelancer);
     }
   });
@@ -121,7 +121,7 @@ router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
   });
 
 router.put('/:id', function(req, res, next) {
-  console.log("PUT ",req.body.leftFields);
+  // console.log("PUT ",req.body.leftFields);
   Freelancer.findByIdAndUpdate(req.params.id, req.body, function(err, freelancer) {
     res.json({
       statusCode: 204,
