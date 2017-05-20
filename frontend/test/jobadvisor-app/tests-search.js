@@ -73,7 +73,7 @@ module.exports = {
                           'IT Services')
       .waitForElementVisible('#profession', 1000)
       .assert.containsText('#profession',
-                           'WEB DEVELOPER')
+                           'Web developer')
       .waitForElementVisible('#phone', 1000)
       .assert.containsText('#phone',
                            '+41 79 524 34 54')
@@ -173,7 +173,7 @@ module.exports = {
                            'Via Morobbi 13, 6592 Sant\'Antonino')
       .waitForElementVisible('#profession', 1000)
       .assert.containsText('#profession',
-                           'SOFTWARE ENGINEER')
+                           'Software Engineer')
       .assert.containsText('#category',
                        'IT Services')
       .waitForElementVisible('#phone', 1000)
@@ -215,8 +215,9 @@ module.exports = {
       .assert.containsText('#address',
                            'Via San Gottardo 12, 6900 Lugano')
       .waitForElementVisible('#profession', 1000)
+      // .pause(10000000)
       .assert.containsText('#profession',
-                           'PAINTER')
+                           'PROFESSION\nPainter')
       .assert.containsText('#category',
                          'Other')
       .waitForElementVisible('#phone', 1000)
