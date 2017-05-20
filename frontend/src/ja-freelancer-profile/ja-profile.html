@@ -760,13 +760,13 @@
         var index;
         if(after === null){
           if(parent === "left"){
-            index = 8;
+            index = document.getElementById('left').children.length;
           }else{
-            index = 15;
+            index = 14;
           }
         }else{
           after = after.attributes[1].nodeValue;
-          index = arr.indexOf(after) ;
+          index = arr.indexOf(after);
         }
         arr.splice(index, 0, elem.attributes[1].value);
 
@@ -789,25 +789,22 @@
       },
 
       _populateContainer: function(leftFields, fieldsOrder) {
-        console.log(leftFields);
-        console.log(fieldsOrder);
-        if (leftFields && fieldsOrder) {
-          console.log("if");
-          var leftCounter = 0;
-          var rightCounter = 0;
-          for (let i = 0; i < fieldsOrder.length; i++) {
-            console.log(i);
-            var query = '[num=\"' + fieldsOrder[i] + '\"]'
-            if (parseInt(fieldsOrder[i]) <= leftFields) {
-              document.getElementById('left').insertBefore(document.querySelectorAll(query)[0], document.getElementById('left').childNodes[leftCounter]);
-              leftCounter++;
-            } else {
-              document.getElementById('right').insertBefore(document.querySelectorAll(query)[0], document.getElementById('right').childNodes[rightCounter]);
-              rightCounter++;
-            }
+        if (!leftFields || !fieldsOrder) {
+          leftFields = 7;
+          fieldsOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
+        }
+        var leftCounter = 0;
+        var rightCounter = 0;
+        for (let i = 0; i < fieldsOrder.length; i++) {
+          var query = '[num=\"' + fieldsOrder[i] + '\"]'
+          if (i <= leftFields) {
+            document.getElementById('left').insertBefore(document.querySelectorAll(query)[0], document.getElementById('left').childNodes[leftCounter]);
+            leftCounter++;
+          } else {
+            document.getElementById('right').insertBefore(document.querySelectorAll(query)[0], document.getElementById('right').childNodes[rightCounter]);
+            rightCounter++;
           }
         }
-
       },
 
 
