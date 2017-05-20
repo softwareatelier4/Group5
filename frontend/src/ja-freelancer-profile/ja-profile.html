@@ -202,7 +202,7 @@
           {{lastname}} {{firstname}}
         </div>
 
-        <div id="container-verification" num="3"> VERIFICATION STATUS: </div>
+        <div id="container-verification" num="3"> VERIFICATION STATUS <br> </div>
 
         <div id="container-claim" num="4"></div>
 
@@ -607,7 +607,7 @@
 
         this.$['refresh-user'].generateRequest();
 
-        this.$['container-verification'].innerHTML = "VERIFICATION STATUS: " + this.verification;
+        this.$['container-verification'].innerHTML += this.verification;
 
         // console.log("from server", res.fieldsOrder);
         // console.log("left from server", res.leftFields);
