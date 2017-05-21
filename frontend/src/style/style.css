@@ -15,7 +15,7 @@ a {
     color: dimgray;
 }
 
-      .unselectable {
+.unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
