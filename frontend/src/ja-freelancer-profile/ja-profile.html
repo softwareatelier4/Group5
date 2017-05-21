@@ -581,12 +581,10 @@
         this.verification = res.verification;
         this.userId = res.claimingUserId;
 
-        window.localStorage.dnd = false;
         this.$['open-events-btn'].hidden = true;
 
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
-          window.localStorage.dnd = true;
         }
 
         this.events = res.events;
@@ -713,11 +711,11 @@
             return false; // only elements in drake.containers will be taken into account
           },
           accepts: function(el, target) {
-            return window.localStorage.dnd === 'true';
-          },
+            return this.userId && this.userId === this.user._id && this.verification === "verified";
+          }.bind(this),
           moves: function(el, container, handle, sibling) {
-            return window.localStorage.dnd === 'true';
-          },
+            return this.userId && this.userId === this.user._id && this.verification === "verified";
+          }.bind(this),
           invalid: function (el, handle) {
             return false; // don't prevent any drags from initiating by default
           },
