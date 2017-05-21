@@ -30,10 +30,13 @@ module.exports = {
 
   'Test signup correct and logout' : function (client) {
     client
+      .resizeWindow(1920,2000)
       .setValue('#signup-email input', 'test@test.com')
       .setValue('#signup-username input', 'myUsername')
       .setValue('#signup-password input', '1234')
       .setValue('#signup-password-check input', '1234')
+      .waitForElementVisible('#user-signup-button', 1000)
+      .waitForElementVisible('#anchor', 1000)
       .click('#user-signup-button')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/')
@@ -140,9 +143,10 @@ module.exports = {
 
   'Test login with wrong password' : function (client) {
     client
-      .click('#menu-open')
-      .click('#loginBtn')
-      .pause(500)
+    .resizeWindow(1920,2000)
+      // .click('#menu-open')
+      // .click('#loginBtn')
+      // .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
       .setValue('#login-username input', 'myUsername134')
       .setValue('#login-password input', 'asddasasg')
@@ -151,9 +155,9 @@ module.exports = {
       //.click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login') // no redirect
       .assert.containsText('#login-error', "User doesn't exist or password is wrong")
-      .click('#menu-open')
-      .waitForElementNotVisible('#logoutBtn', 1000)
-      .waitForElementVisible('#loginBtn', 1000)
+      // .click('#menu-open')
+      // .waitForElementNotVisible('#logoutBtn', 1000)
+      // .waitForElementVisible('#loginBtn', 1000)
       .end();
   },
 
