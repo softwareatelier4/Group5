@@ -487,6 +487,8 @@
         let validDescription = this.$['calendar-input-description'].validate();
 
         let dateNow = this._computeDateString(new Date());
+        let next = new Date();
+
 
         let now = new Date();
         now.setHours(now.getHours() + 1);
@@ -494,15 +496,25 @@
         let timeNow = now.toLocaleTimeString().substring(0,5);
         let time = new Date();
         time.setHours(time.getHours() + 2)
+        console.log("asd", now, time);
+
+        if (time.getHours() < now.getHours()) {
+          console.log("asd");
+          next.setDate(next.getDate()+1);
+        }
+
+        let dateNowNext = this._computeDateString(next);
+
         let timeEndDefault = time.toLocaleTimeString().substring(0,5);
 
         let startDate = this.$['calendar-input-start-date'].value || dateNow;
         let startTime = this.$['calendar-input-start-hour'].value || timeNow;
-        let endDate = this.$['calendar-input-end-date'].value || dateNow;
+        let endDate = this.$['calendar-input-end-date'].value || dateNowNext;
         let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
 
         let start = new Date(startDate + " " + startTime);
         let end = new Date(endDate + " " + endTime);
+        console.log(dateNowNext);
 
         let validDate = true;
 
