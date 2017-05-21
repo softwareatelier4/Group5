@@ -165,7 +165,7 @@ router.post('/', function(req, res, next) {
       // console.log("restricted to " + profiles.length + " freelancers!");
 
       var googleMapsClient = require('@google/maps').createClient({
-        key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
+        key: 'AIzaSyBj5VNkVFDRKCNEqkSolhdFLuvgOZ7cLCY'
       });
 
 
