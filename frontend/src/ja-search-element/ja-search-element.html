@@ -441,10 +441,12 @@
           if (status !== 'ZERO_RESULTS' && status !== 'NOT_FOUND') {
             var resp = response.detail.response.rows[0];
             for (var index in this.results) {
-              this.set('results.' + index + '.distance_text', resp.elements[index].distance.text);
-              this.set('results.' + index + '.distance_value', resp.elements[index].distance.value);
-              this.set('results.' + index + '.time_text', resp.elements[index].duration.text);
-              this.set('results.' + index + '.time_value', resp.elements[index].duration.value);
+              if (resp.elements[index].distance && resp.elements[index].duration) {
+                this.set('results.' + index + '.distance_text', resp.elements[index].distance.text);
+                this.set('results.' + index + '.distance_value', resp.elements[index].distance.value);
+                this.set('results.' + index + '.time_text', resp.elements[index].duration.text);
+                this.set('results.' + index + '.time_value', resp.elements[index].duration.value);
+              }
             }
           }
         }

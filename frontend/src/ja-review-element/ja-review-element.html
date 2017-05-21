@@ -230,7 +230,7 @@
       },
 
       _handleSubmitResponse: function(evt) {
-        console.log("Received", evt.detail.response);
+        // console.log("Received", evt.detail.response);
         const resp = evt.detail.response;
         this.response = {
           comment: resp.comment,
@@ -242,16 +242,16 @@
       },
 
       _handleSubmitError: function(evt) {
-        console.log("Received error", evt.detail.response);
+        // console.log("Received error", evt.detail.response);
       },
 
       _hasResponse: function(response) {
-        console.log("response", response);
+        // console.log("response", response);
         return response && response.comment && response.date;
       },
 
       _hasNoResponse: function(review) {
-        console.log("calling no response", review.response, review.response == undefined);
+        // console.log("calling no response", review.response, review.response == undefined);
         return review.response == undefined;
       },
 
