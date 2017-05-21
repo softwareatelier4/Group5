@@ -26,27 +26,29 @@ const NotificationSchema = require('./Notification');
 
 const FreelancerSchema = new mongoose.Schema(
   {
-    firstName     : { type: String, required: true },
-    lastName      : { type: String, required: true },
-    address       : { type: String, required: true },
-    description   : { type: String},
-    profession    : { type: String, required: true},
-    category      : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare', 'Other'], default:'Other' },
-    rating        : { type: Number },
-    email         : { type: String, required : true},
-    phone_number  : { type: String, required : true},
-    price         : { type: Number },
-    image         : { type: String, default: '/src/images/blank-user.jpg'},
-    reviews       : { type: [ObjectId], ref: "Review", required: false },
-    events        : { type: [CalendarEventSchema], default:[]},
-    verification  : { type: String, enum:['verified', 'pending', 'not verified'], default:'not verified' },
-    claimFilePath : { type: String},
-    claimComment  : { type: String},
-    claimEmail    : { type: String},
-    claimingUserId: { type: String}, // the id of the user who issued the claim request, it may be denied
-    userId        : { type: String}, // the id of the user who succesfully claimed the profilea
-    notifications          : { type: [ObjectId], ref: "Notification", default: [] }, //request received
+    firstName              : { type: String, required: true },
+    lastName               : { type: String, required: true },
+    address                : { type: String, required: true },
+    description            : { type: String},
+    profession             : { type: String, required: true},
+    category               : { type: String, enum:['Tecnical Services', 'IT Services', 'Design', 'Management', 'Retail', 'Human Resources', 'Marketing', 'Consulting', 'Advertising', 'Logistics', 'Real Estate', 'Social Work', 'Healthcare', 'Other'], default:'Other' },
+    rating                 : { type: Number },
+    email                  : { type: String, required : true},
+    phone_number           : { type: String, required : true},
+    price                  : { type: Number },
+    image                  : { type: String, default: '/src/images/blank-user.jpg'},
+    reviews       		   : { type: [ObjectId], ref: "Review", required: false },
     emergencyAvailable     : { type: Boolean, required : true},
+    events                 : { type: [CalendarEventSchema], default:[]},
+    verification           : { type: String, enum:['verified', 'pending', 'not verified'], default:'not verified' },
+    claimFilePath          : { type: String},
+    notifications          : { type: [ObjectId], ref: "Notification", default: [] }, //request received
+    claimComment           : { type: String},
+    claimEmail             : { type: String},
+    claimingUserId         : { type: String}, // the id of the user who issued the claim request, it may be denied
+    userId                 : { type: String}, // the id of the user who succesfully claimed the profilea
+    leftFields             : { type: Number, default: 8},
+    fieldsOrder            : { type: [String], default: ["1", "2",  "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]}
   }
 );
 

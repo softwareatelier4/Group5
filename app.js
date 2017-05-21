@@ -44,15 +44,16 @@ app.post('/claim/:id', function (req, res) {
     fs.mkdirSync(dir);
   }
 
-  var form = new formidable.IncomingForm(),
-    files = [],
-    fields = [];
+  var form = new formidable.IncomingForm();
+  var files = [];
+  var fields = [];
   form.on('field', function (field, value) {
     fields.push([field, value]);
   })
   form.on('file', function (field, file) {
     // console.log(file.name);
 
+    fs.mkdirSync(__dirname + '/frontend/src/claim-documents/' + req.params.id);
     fs.rename(file.path, __dirname + '/frontend/src/claim-documents/' + req.params.id + '/' + file.name);
 
     files.push([field, file]);

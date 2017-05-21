@@ -76,11 +76,11 @@ module.exports = {
     .setValue('#calendar-input-location input', "Lugano")
     .waitForElementVisible('#event-submit-btn', 500)
     .click('#event-submit-btn').pause(1000)
-    .waitForElementVisible('paper-dialog-scrollable ja-event-element:nth-child(1)', 500)
-    .assert.containsText('paper-dialog-scrollable ja-event-element:nth-child(1) #event-description', 'Available')
-    .assert.containsText('paper-dialog-scrollable ja-event-element:nth-child(1) #event-location', 'Lugano')
-    .click('paper-dialog-scrollable ja-event-element:nth-child(1) #event-remove')
-    .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(3)', 500)
+    .waitForElementVisible('#events-container ja-event-element:nth-child(1)', 500)
+    .assert.containsText('#events-container ja-event-element:nth-child(1) #event-description', 'Available')
+    .assert.containsText('#events-container ja-event-element:nth-child(1) #event-location', 'Lugano')
+    .click('#events-container ja-event-element:nth-child(1) #event-remove')
+    .waitForElementNotPresent('#events-container ja-event-element:nth-child(3)', 500)
   },
 
   'Test add event with no description and close popup': function (client) {
@@ -97,7 +97,7 @@ module.exports = {
     .click('#event-submit-btn').pause(500)
     // .assert.containsText('#calendar-input-location paper-input-error', 'Insert a valid location')
     // .assert.containsText('#calendar-input-description paper-input-error', 'Insert a valid description')
-    .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(1)', 500)
+    .waitForElementNotPresent('#events-container ja-event-element:nth-child(1)', 500)
     .click('#event-submit-cancel').pause(500)
     .waitForElementNotVisible('#profile-calendar', 500)
     .end();
@@ -118,7 +118,7 @@ module.exports = {
     .click('#event-submit-btn').pause(500)
     // .assert.containsText('#calendar-input-location paper-input-error', 'Insert a valid location')
     // .assert.containsText('#calendar-input-description paper-input-error', 'Insert a valid description')
-    .waitForElementNotPresent('paper-dialog-scrollable ja-event-element:nth-child(1)', 500)
+    .waitForElementNotPresent('#events-container ja-event-element:nth-child(1)', 500)
     .click('#event-submit-cancel').pause(500)
     .waitForElementNotVisible('#profile-calendar', 500)
     // .end();

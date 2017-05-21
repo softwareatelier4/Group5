@@ -37,6 +37,47 @@ describe('Backend freelancers tests', function(){
       .expect(404, done);
     });
   });
+
+  describe('PUT /freelancer/:freelancerid', function(){
+    before(seed);
+    after(utils.dropDb);
+
+    it('should update the freelancer profile container info', function(done) {
+
+      var update = { leftFields: 3, fieldsOrder: ["5", "6", "10", "11", "12", "7", "8", "2", "3", "4", "9", "13", "1"] }
+
+      request(app)
+      .put('/freelancer/' + freelancers[0]._id.toString())
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .send(update)
+      .expect(200, done);
+    });
+  });
+
+  describe('POST /freelancer/:freelancerid', function(){
+    before(seed);
+    after(utils.dropDb);
+
+    it('post freelancers test', function(done) {
+
+      request(app)
+      .post('/freelancer/' + 1)
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect(200, done);
+    });
+
+    it('post freelancers test', function(done) {
+
+      request(app)
+      .post('/freelancer/' + 0)
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .expect(200, done);
+    });
+  });
+
 });
 
 

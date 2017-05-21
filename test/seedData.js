@@ -132,6 +132,15 @@ var users = {
       "email"     : "sani@me.ch",
       "userType"  : "Normal"
     },
+    {
+      "_id"       : ObjectId("7625fc2bd89b84023d8c7bd6"),
+      "userName"  : "jack",
+      "firstName" : "",
+      "lastName"  : "",
+      "password"  : "jack",
+      "email"     : "jack27@me.ch",
+      "userType"  : "Freelancer"
+    },
   ]
 }
 
@@ -376,6 +385,26 @@ var freelancers = {
       "emergencyAvailable"  : true,
       "events"              : [events.data[1], events.data[2], events.data[4]],
       "verification"        : "verified",
+    },
+    {
+      "_id"           : ObjectId("2725fc2bd82b84d23d8c7bd6"),
+      "firstName"     : "Jack",
+      "lastName"      : "Daniels",
+      "address"       : "10 Downing St, Westminster, London SW1A 2AA, UK",
+      "description"   : "I'm your last consolation",
+      "profession"    : "Confort Manager",
+      "category"      : "IT Services",
+      "rating"        : 5,
+      "email"         : "jack.daniels27@usi.ch",
+      "phone_number"  : "+41 79 524 34 54",
+      "price"         : 50,
+      "emergencyAvailable"  : true,
+      "reviews"       : [reviews.data[4]],
+      "events"        : [events.data[0], events.data[3]],
+      "verification"  : "verified",
+      "notifications" : [ObjectId(notifications.data[0]._id)],
+      "claimingUserId": "7625fc2bd89b84023d8c7bd6",
+
     },
 
   ]
