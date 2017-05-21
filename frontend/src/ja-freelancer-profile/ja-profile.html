@@ -4,12 +4,16 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<script src='../../bower_components/dragula.js/dist/dragula.min.js'></script>
+
 <dom-module id="ja-profile">
 
   <template>
     <style>
       /* CSS rules for your element */
-      /* boh */
 
       #container {
         position: fixed;
@@ -21,7 +25,7 @@
         overflow: scroll;
         flex-wrap: wrap;
         width: 100%;
-        color: dimgray;
+        color: black;
         background: white;
         border-radius: 3px;
         padding-bottom: 10px;
@@ -47,14 +51,9 @@
         min-width: 250px;
       }
 
-      #price {
+      #left>div:not(#imagediv), #right>div:not(#imagediv) {
         width: 100%;
-        padding: 20px;
-      }
-
-      #description {
-        width: 100%;
-        padding: 20px;
+        padding: 10px;
       }
 
       #imagediv {
@@ -70,10 +69,6 @@
         display: block;
         text-transform: uppercase;
         color: rgb(200, 30, 38);
-      }
-
-      #profession {
-        text-transform: uppercase;
       }
 
       .divisor {
@@ -206,73 +201,67 @@
     </iron-ajax>
 
     <section id="container">
-
       <section id="left">
 
-        <div id="imagediv">
+        <div id="imagediv" num="1">
           <img id="image" src={{image}} />
         </div>
 
-        <div id="name">
+        <div id="name" num="2">
           {{lastname}} {{firstname}}
         </div>
 
-        <div id="container-verification"></div>
+        <div id="container-verification" num="3"> VERIFICATION STATUS: <br> </div>
 
-        <div id="container-claim"></div>
+        <div id="container-claim" num="4"></div>
 
-        <div id="profession">
-          {{profession}}
+        <div id="profession" num="5">
+          PROFESSION <br> {{profession}}
         </div>
 
-        <div id="rating">
-          Rating : {{_checkratisprovided(rating)}}
-        </div>
-        <div id="category">
-          Category : {{category}}
+        <div id="rating" num="6">
+          RATING <br> {{_checkratisprovided(rating)}}
         </div>
 
-        <div id="emavailable">
-          Available for emergency : {{emergencyAvailable}}
+        <div id="category" num="7">
+          CATEGORY <br> {{category}}
         </div>
 
+        <div id="emavailable" num="8">
+          AVAILABLE FOR EMERGENCY <br> {{emergencyAvailable}}
+        </div>
       </section>
 
-      <section id="right">
 
-        <div id="address">
+      <section  id="right">
+
+        <div id="address" num="9">
           ADDRESS <br> {{address}}
         </div>
 
-        <br><br>
 
-        <div id="phone">
+        <div id="phone" num="10">
           PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
-        <br><br> E-MAIL
-        <div id="email">
+        <div id="email" num="11">
+          E-MAIL <br>
           <a id="emaillink">{{email}}</a>
         </div>
 
-        <br><br>
-        <div id="distance">
-          Distance from you: {{distance}}
+        <div id="distance" num="12">
+          DISTANCE <br> {{distance}}
         </div>
 
-      </section>
+      <div id="price" num="13">
+        COST/HOUR <br> {{_checkprisprovided(price)}}
+      </div>
 
-      <section class="divisor"></section>
+      <div id="description" num="14">
+        DESCRIPTION <br> {{_checkdescisprovided(description)}}
+      </div>
 
-      <section id="price">
-        Cost/hour: {{_checkprisprovided(price)}}
-      </section>
-
-      <section class="divisor"></section>
-
-      <section id="description">
-        Description : {{_checkdescisprovided(description)}}
-      </section>
+    </section>
 
       <paper-button id="open-events-btn" hidden raised>Edit availability</paper-button>
 
@@ -326,7 +315,6 @@
             <paper-button id="review" disabled on-click="_givereview">Rate!</paper-button>
           </div>
         </div>
-
         <template is="dom-repeat" items="{{reviews}}" as="result">
           <ja-review-element
           comment={{result.comment}}
@@ -343,7 +331,9 @@
           ></ja-review-element>
         </template>
       </section>
-
+      <div id="hidden" style="display:none;">
+      </div>
+      <paper-toast id="toast" text="Order succesfully updated!" duration="600"></paper-toast>
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
@@ -357,6 +347,9 @@
     <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
     </iron-ajax>
 
+    <iron-ajax id="refresh-freelancer-container-info" method="PUT" handle-as="json" content-type="application/json" on-response="_udatedOrder">
+    </iron-ajax>
+
   </template>
 
   <script>
@@ -368,6 +361,11 @@
       },
 
       properties: {
+        leftFields: {
+          type: Number,
+          value: 8,
+        },
+
         id: {
           type: String,
           observer: '_idchanged'
@@ -460,7 +458,22 @@
             // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
             return [date.getDay(), date.getMonth()+1, date.getFullYear()].join('.');
           },
-        }
+        },
+
+        _dragulaOptions: Object,
+
+        _drake: {
+          type: Object,
+          computed: '_createDrake(_containers)'
+        },
+
+        _containers: {
+          type: Array,
+          value: function() {
+            return [this.$.left, this.$.right];
+          }
+        },
+
       },
 
       _computeDateString: function(date) {
@@ -498,11 +511,11 @@
         if (start > end) {
           validDate = false;
           this.dateError = "End date/time must be later than the starting one!"
-          console.log("End date/time must be later than start!s");
+          // console.log("End date/time must be later than start!s");
         } else if (start < new Date()){
           validDate = false;
           this.dateError = "Selected date must be later than now!"
-          console.log("Date is before now!");
+          // console.log("Date is before now!");
         } else {
           this.dateError = "";
         }
@@ -551,7 +564,6 @@
 
       _idchanged: function (id) {
         this.id = id;
-        // console.log(this.routd);
         if (this.routd === "freelancer" && this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
@@ -609,6 +621,8 @@
         })
         // this.userId = res._id;
 
+        this.$['open-events-btn'].hidden = true;
+
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
           this.isClaimer = true;
@@ -618,8 +632,9 @@
 
         this.events = res.events;
 
+
         if (this.verification == 'not verified' && (this.user.pending == 'none')) {
-          console.log("hesajdsjasjkldllo");
+          // console.log("hesajdsjasjkldllo");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
@@ -636,7 +651,13 @@
 
         this.$['refresh-user'].generateRequest();
 
-        this.$['container-verification'].innerHTML = this.verification;
+        this.$['container-verification'].innerHTML = "VERIFICATION STATUS: <br>" + this.verification;
+
+        // console.log("from server", res.fieldsOrder);
+        // console.log("left from server", res.leftFields);
+        this.leftFields = res.leftFields;
+        this.fieldsOrder = res.fieldsOrder;
+        this._populateContainer(res.leftFields, res.fieldsOrder)
 
       },
 
@@ -660,9 +681,9 @@
 
       _refreshUser: function (e) {
         this.user = e.detail.response.user;
-        console.log(e.detail.response.user);
+        // console.log(e.detail.response.user);
         if (this.verification == 'not verified' && (this.user.pending == 'none')) {
-          console.log("hellosdfsad");
+          // console.log("hellosdfsad");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
@@ -718,6 +739,107 @@
         const item = evt.detail.response;
         this.push('events', item);
       },
+
+      attached: function() {
+        this._appendLocalDom();
+      },
+
+      _createDrake: function(containers) {
+        return dragula(containers, {
+          isContainer: function (el) {
+            return false; // only elements in drake.containers will be taken into account
+          },
+          accepts: function(el, target) {
+            return this.userId && this.userId === this.user._id && this.verification === "verified";
+          }.bind(this),
+          moves: function(el, container, handle, sibling) {
+            return this.userId && this.userId === this.user._id && this.verification === "verified";
+          }.bind(this),
+          invalid: function (el, handle) {
+            return false; // don't prevent any drags from initiating by default
+          },
+          direction: 'vertical',             // Y axis is considered when determining where an element would be dropped
+          copy: false,                       // elements are moved by default, not copied
+          copySortSource: false,             // elements in copy-source containers can be reordered
+          revertOnSpill: false,              // spilling will put the element back where it was dragged from, if this is true
+          removeOnSpill: false,              // spilling will `.remove` the element, if this is true
+          mirrorContainer: this.$.hidden,    // set the element that gets mirror elements appended
+          ignoreInputTextSelection: true
+        });
+      },
+
+      _countnodes: function(elem, after, parent, src){
+        if(src === "right" && parent === "left"){
+          this.leftFields ++;
+        }
+        if(src === "left" && parent === "right"){
+          this.leftFields --;
+        }
+        var arr = [];
+        this.$.left.childNodes.forEach(function(el){
+          if(el.attributes){
+            arr.push(el.attributes[1].nodeValue);
+          }
+        });
+
+        this.$.right.childNodes.forEach(function(el){
+          if(el.attributes){
+            arr.push(el.attributes[1].nodeValue);
+          }
+        });
+
+        var ajaxRequest = this.$['refresh-freelancer-container-info'];
+
+        var l = window.location.href.split('/');
+
+        ajaxRequest.url = "/freelancer/" + l[l.length - 1];
+        ajaxRequest.body = { leftFields: this.leftFields, fieldsOrder: arr }
+        ajaxRequest.generateRequest();
+      },
+
+      _appendLocalDom: function() {
+        this._drake.on('drop', function(el, target, source, sibling) {
+          // console.log("el",el );
+          // console.log("target",target );
+          // console.log("source",source );
+          // console.log("sibling",sibling );
+          // if (!sibling) {
+          //   sibling = target.childNodes[target.childNodes.length - 1]
+          // }
+          // target.insertBefore(el, sibling);
+          // Polymer.dom(target).insertBefore(el, sibling);
+          this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
+        }.bind(this))
+      },
+
+      _populateContainer: function(leftFields, fieldsOrder) {
+        // if (!leftFields || !fieldsOrder) {
+        //   leftFields = 8;
+        //   fieldsOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"];
+        // }
+        var leftCounter = 0;
+        var rightCounter = 0;
+        for (let i = 0; i < fieldsOrder.length; i++) {
+          var query = '[num=\"' + fieldsOrder[i] + '\"]'
+          if (i < leftFields) {
+            document.getElementById('left').insertBefore(document.querySelectorAll(query)[0], document.getElementById('left').childNodes[leftCounter]);
+            leftCounter++;
+          } else {
+            document.getElementById('right').insertBefore(document.querySelectorAll(query)[0], document.getElementById('right').childNodes[rightCounter]);
+            rightCounter++;
+          }
+        }
+      },
+
+      _udatedOrder: function(el){
+        var mess = el.detail.response;
+        if(mess === "OK"){
+          this.$.toast.open();
+        }
+      },
+
+
+
     });
   </script>
 </dom-module>

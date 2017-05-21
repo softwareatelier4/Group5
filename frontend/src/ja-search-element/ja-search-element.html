@@ -360,7 +360,7 @@
       },
 
       _correctLocation: function (location) {
-        console.log("Correct location", location || this.userLocation);
+        // console.log("Correct location", location || this.userLocation);
         if (this.userLocation.length > 0)
           return location || this.userLocation;
         else {
@@ -412,9 +412,9 @@
         for (var index in this.results) {
           dest.push(this.results[index].address);
         }
-        console.log("destinations", dest);
+        // console.log("destinations", dest);
         var dest_joined = dest.join('|')
-        console.log("destinations joined", dest_joined);
+        // console.log("destinations joined", dest_joined);
         this.req_distance = {
           origins: this.$['location-search'].query || this.userLocation,
           destinations: dest_joined,
@@ -425,11 +425,11 @@
       },
 
       _userLocationChanged: function (location) {
-        console.log("user changed to", location);
+        // console.log("user changed to", location);
       },
 
       _resultsChanged: function (results) {
-        console.log("RESULTS:SEARCH");
+        // console.log("RESULTS:SEARCH");
         this.results = results;
 
       },
