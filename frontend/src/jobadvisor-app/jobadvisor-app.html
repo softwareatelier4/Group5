@@ -145,18 +145,18 @@
       <paper-button id="logoutBtn" hidden raised>Logout {{user.userName}}</paper-button>
       <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
         <a href="/signup">
-          <paper-button id="signup-button">CREATE FREELANCER</paper-button>
+          <paper-button id="signup-button" on-tap="_closeMenu">CREATE FREELANCER</paper-button>
         </a>
       </template>
       <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
         <a href="/emergency">
-          <paper-button id="emergency-button">EMERGENCY CALL</paper-button>
+          <paper-button id="emergency-button" on-tap="_closeMenu">EMERGENCY CALL</paper-button>
         </a>
       </template>
 
       <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
         <a href="/notification/{{user._id}}">
-          <paper-button id="notification-button">NOTIFICATIONS</paper-button>
+          <paper-button id="notification-button" on-tap="_closeMenu">NOTIFICATIONS</paper-button>
         </a>
       </template>
       <div id="username" hidden>
@@ -329,7 +329,7 @@
       },
 
       _onLoginTap: function (evt) {
-        // this.$['menu-container'].hidden = true;
+        this._closeMenu();
       },
 
       _onLogoutTap: function (evt) {
@@ -342,6 +342,8 @@
         this.$['logoutBtn'].hidden = true;
         this.$['loginBtn'].hidden = false;
         location.href = '/';
+
+        this._closeMenu();
       },
 
       _onLogoutResponse: function (response) {
