@@ -15,6 +15,18 @@ a {
     color: dimgray;
 }
 
+#container {
+    width: 80%!important;
+    max-width: 1200px;
+    left: 10%;
+}
+
+@media screen and (min-width : 1500px) {
+    #container {
+        left: calc(50% - 600px);
+    }
+}
+
 .unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
