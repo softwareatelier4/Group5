@@ -580,10 +580,13 @@
         }
         this.verification = res.verification;
         this.userId = res.claimingUserId;
-        // this.userId = res._id;
+
+        window.localStorage.dnd = false;
+        this.$['open-events-btn'].hidden = true;
 
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
+          window.localStorage.dnd = true;
         }
 
         this.events = res.events;
@@ -613,7 +616,6 @@
         // console.log("left from server", res.leftFields);
         this.leftFields = res.leftFields;
         this.fieldsOrder = res.fieldsOrder;
-        // console.log(res.fieldsOrder);
         this._populateContainer(res.leftFields, res.fieldsOrder)
 
       },
@@ -711,13 +713,10 @@
             return false; // only elements in drake.containers will be taken into account
           },
           accepts: function(el, target) {
-            var l = window.location.href.split('/');
-            return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
+            return window.localStorage.dnd === 'true';
           },
           moves: function(el, container, handle, sibling) {
-            // return this.userId && this.userId === this.user._id && this.verification === "verified"
-            var l = window.location.href.split('/');
-            return window.localStorage.user && JSON.parse(window.localStorage.user).freelancerId === l[l.length - 1];
+            return window.localStorage.dnd === 'true';
           },
           invalid: function (el, handle) {
             return false; // don't prevent any drags from initiating by default
@@ -754,11 +753,11 @@
 
         var ajaxRequest = this.$['refresh-freelancer-container-info'];
 
-        ajaxRequest.url = "/freelancer/" + JSON.parse(window.localStorage.user).freelancerId;
+        var l = window.location.href.split('/');
+
+        ajaxRequest.url = "/freelancer/" + l[l.length - 1];
         ajaxRequest.body = { leftFields: this.leftFields, fieldsOrder: arr }
         ajaxRequest.generateRequest();
-        console.log("new arr", arr);
-        // console.log("new left after move", this.leftFields);
       },
 
       _appendLocalDom: function() {
