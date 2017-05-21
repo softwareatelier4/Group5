@@ -11,7 +11,7 @@ module.exports = {
       .waitForElementVisible('#loginBtn', 1000)
       .waitForElementNotVisible('#logoutBtn', 1000)
       .click('#loginBtn')
-      .click('#menu-close')
+      //.click('#menu-close')
       .pause(500)
       .assert.urlContains('http://localhost:3005/login')
       // .waitForElementVisible('ja-login', 1000)
@@ -101,7 +101,7 @@ module.exports = {
 
   'Test login with previously created account' : function (client) {
     client
-      // .click('#menu-open')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
@@ -132,6 +132,7 @@ module.exports = {
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login') // no redirect
       .assert.containsText('#login-error', "User doesn't exist or password is wrong")
+      .click('#menu-open')
       .waitForElementNotVisible('#logoutBtn', 1000)
       .waitForElementVisible('#loginBtn', 1000)
       // .end();
@@ -139,7 +140,7 @@ module.exports = {
 
   'Test login with wrong password' : function (client) {
     client
-      // .click('#menu-open')
+      .click('#menu-open')
       .click('#loginBtn')
       .pause(500)
       .assert.urlEquals('http://localhost:3005/login')
@@ -147,11 +148,11 @@ module.exports = {
       .setValue('#login-password input', 'asddasasg')
       .click('#login-button')
       .pause(500)
-      .click('#menu-close')
+      //.click('#menu-close')
       .assert.urlEquals('http://localhost:3005/login') // no redirect
       .assert.containsText('#login-error', "User doesn't exist or password is wrong")
-      .waitForElementNotVisible('#logoutBtn', 1000)
       .click('#menu-open')
+      .waitForElementNotVisible('#logoutBtn', 1000)
       .waitForElementVisible('#loginBtn', 1000)
       .end();
   },
