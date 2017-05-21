@@ -190,6 +190,11 @@
         margin-bottom: 30px;
       }
 
+      #events-container{
+        height: 200px;
+        overflow: scroll;
+      }
+
       /*paper-textarea {
         width: 100%;
         height: 150px;
@@ -294,11 +299,11 @@
         </div>
         <p class="date-error-msg">{{dateError}}</p>
         <p>Default date is today, default time is now and 1 hour later.</p>
-        <paper-dialog-scrollable>
+        <div id="events-container">
           <template is="dom-repeat" items="{{events}}" as="result">
             <ja-event-element fid={{id}} events={{events}} data={{result}}></ja-event-element>
           </template>
-        </paper-dialog-scrollable>
+        </div>
       </paper-dialog>
 
       <section id="reviews" style="width: 100%;">
