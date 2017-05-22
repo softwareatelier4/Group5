@@ -603,6 +603,7 @@
 
       _finished: function (e) {
         const res = e.detail.response;
+        console.log(res);
         this.$.emaillink.href = "mailto:" + res.email;
         this.$.phonelink.href = "tel:" + res.phone_number.replace(/\s+/g, '');;
         this.firstname = res.firstName;
