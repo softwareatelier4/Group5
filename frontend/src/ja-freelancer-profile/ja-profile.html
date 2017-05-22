@@ -4,24 +4,26 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<script src='../../bower_components/dragula.js/dist/dragula.min.js'></script>
+
 <dom-module id="ja-profile">
 
   <template>
     <style>
       /* CSS rules for your element */
-      /* boh */
 
       #container {
         position: fixed;
-        height: calc(100% - 110px);
-        width: 80%!important;
-        top: 100px;
+        height: calc(100% - 150px);
+        top: 140px;
         bottom: 0px;
         display: flex;
         overflow: scroll;
         flex-wrap: wrap;
-        width: 100%;
-        color: dimgray;
+        color: black;
         background: white;
         border-radius: 3px;
         padding-bottom: 10px;
@@ -36,6 +38,7 @@
         display: inline-block;
         padding: 20px;
         font-weight: normal;
+        min-width: 250px;
       }
 
       #right {
@@ -43,16 +46,12 @@
         display: inline-block;
         padding: 20px;
         font-weight: normal;
+        min-width: 250px;
       }
 
-      #price {
+      #left>div:not(#imagediv), #right>div:not(#imagediv) {
         width: 100%;
-        padding: 20px;
-      }
-
-      #description {
-        width: 100%;
-        padding: 20px;
+        padding: 10px;
       }
 
       #imagediv {
@@ -70,10 +69,6 @@
         color: rgb(200, 30, 38);
       }
 
-      #profession {
-        text-transform: uppercase;
-      }
-
       .divisor {
         display: block;
         border-width: 0.1px;
@@ -84,36 +79,38 @@
       }
 
       textarea {
+        width:100%;
         border-color: lightgray;
       }
 
-      #reviews, #profile-calendar {
+      #reviews,
+      #profile-calendar {
         padding-left: 20px;
         padding-right: 20px;
       }
 
       #ratearea {
-        position: relative;
-        width: 20%;
-        padding-left: 20px;
+        display: block;
+        width: 100%;
+        /*padding-left: 20px;*/
       }
 
       #commentarea {
-        position: relative;
-        width: 120%;
+        display: block;
+        width: 100%;
       }
       /* rate button */
 
       #review {
-        width: calc(100% - 20px);
+        /*width: calc(100% - 20px);
         position: absolute;
         bottom: 0px;
-        right: 0px;
+        right: 0px;*/
       }
       /* rating menu */
 
       #ratenum {
-        width: 100%!important;
+        /*width: 100%!important;*/
       }
 
       #error-message {
@@ -128,7 +125,7 @@
         width: 100%;
       }
 
-      .event-start-end > paper-input {
+      .event-start-end>paper-input {
         display: inline-block;
         width: 49%;
       }
@@ -182,6 +179,15 @@
         color: red;
       }
 
+      #user-rating  {
+        margin-bottom: 30px;
+      }
+
+      #events-container{
+        height: 200px;
+        overflow: scroll;
+      }
+
       /*paper-textarea {
         width: 100%;
         height: 150px;
@@ -193,73 +199,67 @@
     </iron-ajax>
 
     <section id="container">
-
       <section id="left">
 
-        <div id="imagediv">
+        <div id="imagediv" num="1">
           <img id="image" src={{image}} />
         </div>
 
-        <div id="name">
+        <div id="name" num="2">
           {{lastname}} {{firstname}}
         </div>
 
-        <div id="container-verification"></div>
+        <div id="container-verification" num="3"> VERIFICATION STATUS: <br> </div>
 
-        <div id="container-claim"></div>
+        <div id="container-claim" num="4"></div>
 
-        <div id="profession">
-          {{profession}}
+        <div id="profession" num="5">
+          PROFESSION <br> {{profession}}
         </div>
 
-        <div id="rating">
-          Rating : {{_checkratisprovided(rating)}}
-        </div>
-        <div id="category">
-          Category : {{category}}
+        <div id="rating" num="6">
+          RATING <br> {{_checkratisprovided(rating)}}
         </div>
 
-        <div id="emavailable">
-          Available for emergency : {{emergencyAvailable}}
+        <div id="category" num="7">
+          CATEGORY <br> {{category}}
         </div>
 
+        <div id="emavailable" num="8">
+          AVAILABLE FOR EMERGENCY <br> {{emergencyAvailable}}
+        </div>
       </section>
 
-      <section id="right">
 
-        <div id="address">
+      <section  id="right">
+
+        <div id="address" num="9">
           ADDRESS <br> {{address}}
         </div>
 
-        <br><br>
 
-        <div id="phone">
+        <div id="phone" num="10">
           PHONE <br> <a id="phonelink"> {{phone_number}} </a>
         </div>
 
-        <br><br> E-MAIL
-        <div id="email">
+        <div id="email" num="11">
+          E-MAIL <br>
           <a id="emaillink">{{email}}</a>
         </div>
 
-        <br><br>
-        <div id="distance">
-          Distance from you: {{distance}}
+        <div id="distance" num="12">
+          DISTANCE <br> {{distance}}
         </div>
 
-      </section>
+      <div id="price" num="13">
+        COST/HOUR <br> {{_checkprisprovided(price)}}
+      </div>
 
-      <section class="divisor"></section>
+      <div id="description" num="14">
+        DESCRIPTION <br> {{_checkdescisprovided(description)}}
+      </div>
 
-      <section id="price">
-        Cost/hour: {{_checkprisprovided(price)}}
-      </section>
-
-      <section class="divisor"></section>
-
-      <section id="description">
-        Description : {{_checkdescisprovided(description)}}
-      </section>
+    </section>
 
       <paper-button id="open-events-btn" hidden raised>Edit availability</paper-button>
 
@@ -286,22 +286,22 @@
         </div>
         <p class="date-error-msg">{{dateError}}</p>
         <p>Default date is today, default time is now and 1 hour later.</p>
-        <paper-dialog-scrollable>
+        <div id="events-container">
           <template is="dom-repeat" items="{{events}}" as="result">
             <ja-event-element fid={{id}} events={{events}} data={{result}}></ja-event-element>
           </template>
-        </paper-dialog-scrollable>
+        </div>
       </paper-dialog>
 
       <section id="reviews" style="width: 100%;">
-        <div id="user-rating" style="display:flex;">
+        <div id="user-rating">
           <p id="error-message">{{error}}</p>
-          <div id="commentarea" style="width:80%">
-            <textarea rows="5" style="width:100%" id="comm"> </textarea>
+          <div id="commentarea">
+            <textarea rows="5" id="comm"> </textarea>
           </div>
           <div id="ratearea">
-            RATING
-            <select id="ratenum" style="width:90%" on-change="_giverating">
+            <p>RATING</p>
+            <select id="ratenum" on-change="_giverating">
             <option value="-">--Give a review--</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -310,25 +310,42 @@
             <option value="5">5</option>
           </select>
             <!-- <input id="review" type="submit" value="Rate!" on-click="_givereview" /> -->
-            <paper-button id="review" disabled style="height:20px; width: 96%; margin-top: 10px;" on-click="_givereview">Rate!</paper-button>
+            <paper-button id="review" disabled on-click="_givereview">Rate!</paper-button>
           </div>
         </div>
-
         <template is="dom-repeat" items="{{reviews}}" as="result">
-          <ja-review-element comment={{result.comment}} rating={{result.rating}} date={{result.date}} user={{result.userName}}></ja-review-element>
+          <ja-review-element
+          comment={{result.comment}}
+          rating={{result.rating}}
+          date={{result.date}}
+          user={{result.userName}}
+          review-id="{{result._id}}"
+          response={{result.response}}
+          review={{result}}
+          freelancer-id={{id}}
+          is-claimer={{isClaimer}}
+          firstname={{firstname}}
+          lastname={{lastname}}
+          ></ja-review-element>
         </template>
       </section>
-
+      <div id="hidden" style="display:none;">
+      </div>
+      <paper-toast id="toast" text="Order succesfully updated!" duration="600"></paper-toast>
     </section>
 
     <iron-ajax id="ajax" url="/freelancer/{{id}}" method="GET" handle-as="json" content-type="application/json" on-response="_finished"></iron-ajax>
     <iron-ajax id="ajax2" url="/freelancer/{{id}}/review" method="POST" handle-as="json" content-type="application/json" on-response="_done">
     </iron-ajax>
 
-    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json" on-response="_handleAddEventResponse">
+    <iron-ajax id="event-add-request" url="/freelancer/{{id}}/event" method="POST" handle-as="json" content-type="application/json"
+      on-response="_handleAddEventResponse">
     </iron-ajax>
 
     <iron-ajax id="refresh-user" url="/login/{{user._id}}" method="GET" handle-as="json" content-type="application/json" on-response="_refreshUser">
+    </iron-ajax>
+
+    <iron-ajax id="refresh-freelancer-container-info" method="PUT" handle-as="json" content-type="application/json" on-response="_udatedOrder">
     </iron-ajax>
 
   </template>
@@ -338,10 +355,15 @@
       is: "ja-profile",
 
       listeners: {
-        'open-events-btn.tap':'_onOpenEventsTap'
+        'open-events-btn.tap': '_onOpenEventsTap'
       },
 
       properties: {
+        leftFields: {
+          type: Number,
+          value: 8,
+        },
+
         id: {
           type: String,
           observer: '_idchanged'
@@ -390,6 +412,10 @@
           type: String,
         },
 
+        isClaimer: {
+          type: Boolean,
+        },
+
         events: {
           type: Array,
           reflectToAttribute: true,
@@ -425,16 +451,33 @@
         currentDate: {
           type: String,
           reflectToAttribute: true,
-          value: function() {
+          value: function () {
             let date = new Date();
             // console.log([date.getDay(), date.getMonth(), date.getFullYear()].join('.'));
-            return [date.getDay(), date.getMonth(), date.getFullYear()].join('.');
+            return [date.getDay(), date.getMonth()+1, date.getFullYear()].join('.');
           },
-        }
+        },
+
+        _dragulaOptions: Object,
+
+        _drake: {
+          type: Object,
+          computed: '_createDrake(_containers)'
+        },
+
+        _containers: {
+          type: Array,
+          value: function() {
+            return [this.$.left, this.$.right];
+          }
+        },
+
       },
 
       _computeDateString: function(date) {
-        return [date.getDate(), date.getMonth()+1, date.getFullYear()].join('.');
+        let month = date.getMonth()+1;
+        if (month < 10) month = "0" + month;
+        return [date.getFullYear(), month, date.getDate()].join('-');
       },
 
       _onSubmitEventTap: function(evt) {
@@ -444,34 +487,51 @@
         let validDescription = this.$['calendar-input-description'].validate();
 
         let dateNow = this._computeDateString(new Date());
-        let timeNow = new Date().toLocaleTimeString().substring(0,5);
+        let next = new Date();
+
+
+        let now = new Date();
+        now.setHours(now.getHours() + 1);
+
+        let timeNow = now.toLocaleTimeString().substring(0,5);
         let time = new Date();
-        time.setHours(time.getHours() + 1)
+        time.setHours(time.getHours() + 2)
+        console.log("asd", now, time);
+
+        if (time.getHours() < now.getHours()) {
+          console.log("asd");
+          next.setDate(next.getDate()+1);
+        }
+
+        let dateNowNext = this._computeDateString(next);
+
         let timeEndDefault = time.toLocaleTimeString().substring(0,5);
 
         let startDate = this.$['calendar-input-start-date'].value || dateNow;
         let startTime = this.$['calendar-input-start-hour'].value || timeNow;
-        let endDate = this.$['calendar-input-end-date'].value || dateNow;
+        let endDate = this.$['calendar-input-end-date'].value || dateNowNext;
         let endTime = this.$['calendar-input-end-hour'].value || timeEndDefault;
 
-        let start = new Date(startDate + ", " + startTime);
-        let end = new Date(endDate + ", " + endTime);
+        let start = new Date(startDate + " " + startTime);
+        let end = new Date(endDate + " " + endTime);
+        console.log(dateNowNext);
 
         let validDate = true;
 
         if (start > end) {
           validDate = false;
           this.dateError = "End date/time must be later than the starting one!"
-          console.log("End date/time must be later than start!s");
+          // console.log("End date/time must be later than start!s");
         } else if (start < new Date()){
           validDate = false;
           this.dateError = "Selected date must be later than now!"
-          console.log("Date is before now!");
+          // console.log("Date is before now!");
         } else {
           this.dateError = "";
         }
 
-
+        console.log(startDate + " " + startTime);
+        console.log(start, end);
         if (validLocation && validDescription && validDate) {
           let newEvent = {
             description: description,
@@ -489,10 +549,11 @@
       _onOpenEventsTap: function(evt) {
         this.$['profile-calendar'].open();
         let currDate = new Date();
+        currDate.setHours(currDate.getHours() + 1)
         let startHour = currDate.toLocaleTimeString().substring(0,5);
         let afterDate = new Date();
-        afterDate.setHours(afterDate.getHours() + 1)
-        this.$['calendar-input-start-hour'].value = new Date().toLocaleTimeString().substring(0,5);
+        afterDate.setHours(afterDate.getHours() + 2)
+        this.$['calendar-input-start-hour'].value = currDate.toLocaleTimeString().substring(0,5);
         this.$['calendar-input-end-hour'].value = afterDate.toLocaleTimeString().substring(0,5);
       },
 
@@ -513,7 +574,6 @@
 
       _idchanged: function (id) {
         this.id = id;
-        // console.log(this.routd);
         if (this.routd === "freelancer" && this.id !== "" && this.id !== undefined) {
           const ajaxel = this.$.ajax;
           ajaxel.generateRequest();
@@ -543,6 +603,7 @@
 
       _finished: function (e) {
         const res = e.detail.response;
+        console.log(res);
         this.$.emaillink.href = "mailto:" + res.email;
         this.$.phonelink.href = "tel:" + res.phone_number.replace(/\s+/g, '');;
         this.firstname = res.firstName;
@@ -564,16 +625,29 @@
         }
         this.verification = res.verification;
         this.userId = res.claimingUserId;
+        console.log(res);
+
+        this.reviews.sort(function(a, b) {
+          return a.date < b.date;
+        })
+
+        console.log(this.user);
         // this.userId = res._id;
+
+        this.$['open-events-btn'].hidden = true;
 
         if (this.userId && this.userId === this.user._id && this.verification === "verified") {
           this.$['open-events-btn'].hidden = false;
+          this.isClaimer = true;
+        } else {
+          this.isClaimer = false;
         }
 
         this.events = res.events;
 
-        if (this.verification == 'none' && (this.user.pending == 'none')) {
-          console.log("hesajdsjasjkldllo");
+
+        if (this.verification == 'not verified' && (this.user.pending == 'none')) {
+          // console.log("hesajdsjasjkldllo");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
@@ -584,13 +658,19 @@
         this.req_distance = {
           origins: this.location || this.userLocation,
           destinations: this.address,
-          key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+          key: 'AIzaSyBj5VNkVFDRKCNEqkSolhdFLuvgOZ7cLCY',
         };
         this.$['distance-request'].generateRequest();
 
         this.$['refresh-user'].generateRequest();
 
-        this.$['container-verification'].innerHTML = this.verification;
+        this.$['container-verification'].innerHTML = "VERIFICATION STATUS: <br>" + this.verification;
+
+        // console.log("from server", res.fieldsOrder);
+        // console.log("left from server", res.leftFields);
+        this.leftFields = res.leftFields;
+        this.fieldsOrder = res.fieldsOrder;
+        this._populateContainer(res.leftFields, res.fieldsOrder)
 
       },
 
@@ -614,9 +694,9 @@
 
       _refreshUser: function (e) {
         this.user = e.detail.response.user;
-        console.log(e.detail.response.user);
-        if (this.verification == 'none' && (this.user.pending == 'none')) {
-          console.log("hellosdfsad");
+        // console.log(e.detail.response.user);
+        if (this.verification == 'not verified' && (this.user.pending == 'none')) {
+          // console.log("hellosdfsad");
           this.$['container-claim'].innerHTML = '<a href="/claim/' + this.id +
             ' "><paper-button id="btn-claim" raised>Claim</paper-button></a>';
         } else {
@@ -659,23 +739,120 @@
 
       _done: function (el) {
         const d = new Date();
-        const obj = {
-          comment: this.$.comm.value,
-          rating: this.$.ratenum.value,
-          date: d,
-          userName: this.user.userName
-        };
+        const response = el.detail.response;
+        console.log("review:", response);
         this.$.comm.value = " ";
         this.$.ratenum.value = "-";
         this.$.review.removeAttribute("raised");
         this.$.review.disabled = true;
-        this.unshift('reviews', obj);
+        this.unshift('reviews', response);
       },
 
-      _handleAddEventResponse: function(evt) {
+      _handleAddEventResponse: function (evt) {
         const item = evt.detail.response;
         this.push('events', item);
       },
+
+      attached: function() {
+        this._appendLocalDom();
+      },
+
+      _createDrake: function(containers) {
+        return dragula(containers, {
+          isContainer: function (el) {
+            return false; // only elements in drake.containers will be taken into account
+          },
+          accepts: function(el, target) {
+            return this.userId && this.userId === this.user._id && this.verification === "verified";
+          }.bind(this),
+          moves: function(el, container, handle, sibling) {
+            return this.userId && this.userId === this.user._id && this.verification === "verified";
+          }.bind(this),
+          invalid: function (el, handle) {
+            return false; // don't prevent any drags from initiating by default
+          },
+          direction: 'vertical',             // Y axis is considered when determining where an element would be dropped
+          copy: false,                       // elements are moved by default, not copied
+          copySortSource: false,             // elements in copy-source containers can be reordered
+          revertOnSpill: false,              // spilling will put the element back where it was dragged from, if this is true
+          removeOnSpill: false,              // spilling will `.remove` the element, if this is true
+          mirrorContainer: this.$.hidden,    // set the element that gets mirror elements appended
+          ignoreInputTextSelection: true
+        });
+      },
+
+      _countnodes: function(elem, after, parent, src){
+        if(src === "right" && parent === "left"){
+          this.leftFields ++;
+        }
+        if(src === "left" && parent === "right"){
+          this.leftFields --;
+        }
+        var arr = [];
+        this.$.left.childNodes.forEach(function(el){
+          if(el.attributes){
+            arr.push(el.attributes[1].nodeValue);
+          }
+        });
+
+        this.$.right.childNodes.forEach(function(el){
+          if(el.attributes){
+            arr.push(el.attributes[1].nodeValue);
+          }
+        });
+
+        var ajaxRequest = this.$['refresh-freelancer-container-info'];
+
+        var l = window.location.href.split('/');
+
+        ajaxRequest.url = "/freelancer/" + l[l.length - 1];
+        ajaxRequest.body = { leftFields: this.leftFields, fieldsOrder: arr }
+        ajaxRequest.generateRequest();
+      },
+
+      _appendLocalDom: function() {
+        this._drake.on('drop', function(el, target, source, sibling) {
+          // console.log("el",el );
+          // console.log("target",target );
+          // console.log("source",source );
+          // console.log("sibling",sibling );
+          // if (!sibling) {
+          //   sibling = target.childNodes[target.childNodes.length - 1]
+          // }
+          // target.insertBefore(el, sibling);
+          // Polymer.dom(target).insertBefore(el, sibling);
+          this._countnodes(el, sibling, target.attributes[0].nodeValue, source.attributes[0].nodeValue);
+        }.bind(this))
+      },
+
+      _populateContainer: function(leftFields, fieldsOrder) {
+        // if (!leftFields || !fieldsOrder) {
+        //   leftFields = 8;
+        //   fieldsOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"];
+        // }
+        var leftCounter = 0;
+        var rightCounter = 0;
+        for (let i = 0; i < fieldsOrder.length; i++) {
+          var query = '[num=\"' + fieldsOrder[i] + '\"]'
+          if (i < leftFields) {
+            document.getElementById('left').insertBefore(document.querySelectorAll(query)[0], document.getElementById('left').childNodes[leftCounter]);
+            leftCounter++;
+          } else {
+            document.getElementById('right').insertBefore(document.querySelectorAll(query)[0], document.getElementById('right').childNodes[rightCounter]);
+            rightCounter++;
+          }
+        }
+      },
+
+      _udatedOrder: function(el){
+        var mess = el.detail.response;
+        if(mess === "OK"){
+          this.$.toast.open();
+        }
+      },
+
+
+
     });
   </script>
 </dom-module>

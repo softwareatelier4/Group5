@@ -44,12 +44,50 @@
 
       #inner-container {
         position: absolute;
-        overflow: scroll;
-        top: 100px;
+        display: flex;
+        flex-wrap: wrap;
+        top: 140px;
         bottom: 0;
         height: calc(100% - 100px);
         width: 80%;
         left: 10%;
+        max-width: 1200px;
+      }
+      
+
+      @media screen and (min-width : 1500px) {
+        #inner-container {
+          left: calc(50% - 600px);
+        }
+      }
+
+      #search {
+        height: 80vh;
+      }
+
+      #container-search {
+        z-index: 99;
+      }
+
+      #container-result-list {
+        overflow: scroll;
+        height: calc(100vh - 520px);
+        top: 140px;
+        flex-grow: 1;
+        width: 100%;
+      }
+
+      .container-scroll {
+        overflow: scroll;
+        height: calc(100vh - 140px);
+        top: 0px;
+        width: 100%;
+      }
+
+      @media screen and (min-width: 948px) {
+        #container-result-list {
+          height: calc(100vh - 320px);
+        }
       }
 
       #inner-container::-webkit-scrollbar {
@@ -59,9 +97,9 @@
       #background-results {
         z-index: -1;
         position: absolute;
-        top: 200px;
+        top: 120px;
         background: rgb(249, 250, 251);
-        height: calc(100% - 165px);
+        height: calc(100% - 85px);
         width: 100%;
         left: 0;
       }
@@ -85,42 +123,49 @@
         text-align: right;
       }
 
-      #loginBtn,
-      #logoutBtn {
-        background-color: white;
-      }
-
+      #user,
       #loginBtn,
       #logoutBtn,
-      #username {
-        /*margin: 10px;*/
-        float: right;
-        /*margin-bottom: 5px;*/
+      #signup-button,
+      #emergency-button,
+      #notification-button {
+        background-color: white;
+        position: relative;
+        width: calc(100% - 10px);
+        margin: 5px;
       }
 
-      #login {
-        float: right;
-        text-align: right;
-      }
-
-      #signup-button {
-        float: right;
+      #signup-button,
+      #emergency-button,
+      #notification-button {
         background-color: var(--paper-yellow-500);
-        color: blue;
       }
 
-      #emergency-button{
-        float:right;
-        background-color: var(--paper-yellow-500);
-        color: blue;
+      #menu-open {
+        /*position: absolute;
+        top: 40px;*/
+        color: white;
+        cursor: pointer;
       }
 
-      #notification-button{
-        float:right;
-        background-color: var(--paper-yellow-500);
-        color: blue;
+      #menu-close {
+        /*position: absolute;
+        top: 40px;*/
+        color: white;
+        margin-bottom: 10px;
+        cursor: pointer;
       }
 
+      #menu-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 99;
+        width: 300px;
+        height: 100%;
+        background-color: #222;
+        padding: 10px;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -129,27 +174,39 @@
     <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}">
     </app-route>
 
-    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/signup">
-        <paper-button id="signup-button">CREATE FREELANCER</paper-button>
+    <a id="menu-open" class="unselectable">
+      <iron-icon icon="icons:menu"></iron-icon>
+    </a>
+    <div id="menu-container" class="unselectable" hidden>
+      <div id="menu-close" class="unselectable">
+        <iron-icon icon="icons:close"></iron-icon>
+      </div>
+      <a href="/login">
+        <paper-button id="loginBtn" raised>Login/signup</paper-button>
       </a>
-    </template>
+      <paper-button id="logoutBtn" hidden raised>Logout {{user.userName}}</paper-button>
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/signup">
+          <paper-button id="signup-button" on-tap="_closeMenu">CREATE FREELANCER</paper-button>
+        </a>
+      </template>
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/emergency">
+          <paper-button id="emergency-button" on-tap="_closeMenu">EMERGENCY CALL</paper-button>
+        </a>
+      </template>
 
-    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/emergency"><paper-button id="emergency-button">EMERGENCY CALL</paper-button></a>
-    </template>
-
-    <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
-      <a href="/notification/{{user._id}}"><paper-button id="notification-button">NOTIFICATIONS</paper-button></a>
-    </template>
-
-    <a href="/login"><paper-button id="loginBtn" raised>Login/signup</paper-button></a>
-
-    <paper-button id="logoutBtn" hidden raised>Logout</paper-button>
-    <div id="username">
-      [[_formatLoginStatus(user)]]
+      <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
+        <a href="/notification/{{user._id}}">
+          <paper-button id="notification-button" on-tap="_closeMenu">NOTIFICATIONS</paper-button>
+        </a>
+      </template>
+      <div id="username" hidden>
+        [[_formatLoginStatus(user)]]
+      </div>
     </div>
-    <div id="title-container">
+
+    <div class="unselectable" id="title-container">
       <a href="/"><img id="page-title" src="../images/logo.png"></a>
     </div>
 
@@ -160,36 +217,40 @@
     <div id="background-results"></div>
 
     <div id="inner-container">
-      <iron-pages selected="[[routeData.view]]" attr-for-selected="title" fallback-selection="search" role="main">
-        <div title="search">
-          <ja-search-element filters={{filters}} results={{results}} location={{location}} user-location=[[userLocation]] profession={{profession}}></ja-search-element>
-          <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
+      <iron-pages selected="[[routeData.view]]" attr-for-selected="title" fallback-selection="search" role="main" style="width: 100%">
+        <div title="search" id="search">
+          <div id="container-search">
+            <ja-search-element filters={{filters}} results={{results}} location={{location}} user-location=[[userLocation]] profession={{profession}}></ja-search-element>
+          </div>
+          <div id="container-result-list">
+            <ja-results-list filters={{filters}} results={{results}} location=[[location]] profession={{profession}} user-location=[[userLocation]]></ja-results-list>
+          </div>
         </div>
-        <div title="freelancer">
+        <div class="container-scroll" title="freelancer">
           <ja-profile routd={{routeData.view}} id={{subrouteData.id}} user-location={{userLocation}} user={{user}}></ja-profile>
         </div>
-        <div title="login">
+        <div class="container-scroll" title="login">
           <ja-login user={{user}}></ja-login>
         </div>
-        <div title="claim">
+        <div class="container-scroll" title="claim">
           <ja-claim id={{subrouteData.id}} user={{user}}></ja-claim>
         </div>
         <template is="dom-if" if="{{_userIsAdmin(user)}}" restamp="true">
-          <div title="admin">
+          <div class="container-scroll" title="admin">
             <ja-admin id={{subrouteData.id}}></ja-admin>
           </div>
         </template>
-        <div title="signup">
+        <div class="container-scroll" title="signup">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
             <ja-freelancer-signup user={{user}}></ja-freelancer-signup>
           </template>
         </div>
-        <div title="emergency">
+        <div class="container-scroll" title="emergency">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
             <ja-emergency-call user={{user}} user-location=[[userLocation]]></ja-emergency-call>
           </template>
         </div>
-        <div title="notification">
+        <div class="container-scroll" title="notification">
           <template is="dom-if" if="{{_userIsRegistered(user)}}" restamp="true">
             <ja-notification-page user={{user}}></ja-notification-page>
           </template>
@@ -205,8 +266,10 @@
       is: 'jobadvisor-app',
 
       listeners: {
-        // 'loginBtn.tap': '_onLoginTap',
-        'logoutBtn.tap': '_onLogoutTap'
+        'loginBtn.tap': '_onLoginTap',
+        'logoutBtn.tap': '_onLogoutTap',
+        'menu-open.tap': '_openMenu',
+        'menu-close.tap': '_closeMenu',
       },
 
       properties: {
@@ -311,6 +374,10 @@
         this.view = page;
       },
 
+      _onLoginTap: function (evt) {
+        this._closeMenu();
+      },
+
       _onLogoutTap: function (evt) {
         // console.log("Logging out");
         this.set('user', {
@@ -321,6 +388,8 @@
         this.$['logoutBtn'].hidden = true;
         this.$['loginBtn'].hidden = false;
         location.href = '/';
+
+        this._closeMenu();
       },
 
       _onLogoutResponse: function (response) {
@@ -334,7 +403,7 @@
             const lng = position.coords.longitude.toString();
             this.req_reversegeo = {
               latlng: lat + "," + lng,
-              key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ',
+              key: 'AIzaSyBj5VNkVFDRKCNEqkSolhdFLuvgOZ7cLCY',
             };
             this.$['reverse-geo-request'].generateRequest();
 
@@ -360,6 +429,14 @@
           window.localStorage['userLocation'] = resp.results[0].formatted_address;
         }
 
+      },
+
+      _openMenu: function () {
+        this.$['menu-container'].hidden = false;
+      },
+
+      _closeMenu: function () {
+        this.$['menu-container'].hidden = true;
       },
 
     });

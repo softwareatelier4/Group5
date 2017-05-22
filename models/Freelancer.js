@@ -18,6 +18,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const SALT_WORK_FACTOR = 10;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const ReviewSchema = require('./Review');
 const CalendarEventSchema = require('./CalendarEvent');
@@ -36,16 +37,18 @@ const FreelancerSchema = new mongoose.Schema(
     phone_number           : { type: String, required : true},
     price                  : { type: Number },
     image                  : { type: String, default: '/src/images/blank-user.jpg'},
-    reviews                : { type: [ReviewSchema], default:[]},
+    reviews       		   : { type: [ObjectId], ref: "Review", required: false },
     emergencyAvailable     : { type: Boolean, required : true},
     events                 : { type: [CalendarEventSchema], default:[]},
-    verification           : { type: String, enum:['verified', 'pending', 'none'], default:'none' },
+    verification           : { type: String, enum:['verified', 'pending', 'not verified'], default:'not verified' },
     claimFilePath          : { type: String},
     notifications          : { type: [ObjectId], ref: "Notification", default: [] }, //request received
     claimComment           : { type: String},
     claimEmail             : { type: String},
     claimingUserId         : { type: String}, // the id of the user who issued the claim request, it may be denied
     userId                 : { type: String}, // the id of the user who succesfully claimed the profilea
+    leftFields             : { type: Number, default: 8},
+    fieldsOrder            : { type: [String], default: ["1", "2",  "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]}
   }
 );
 

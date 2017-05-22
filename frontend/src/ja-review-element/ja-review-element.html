@@ -1,5 +1,11 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/image-icons.html">
+
 <dom-module id="ja-review-element">
 
   <template>
@@ -9,30 +15,150 @@
         width: 100%;
         padding: 20px;
         margin: 10px 0 10px 0;
+        border-radius: 2px;
+        background-color: var(--paper-grey-50);
+      }
+
+      paper-card.response {
+        border-color: var(--paper-green-500);
+        border-width: 2px;
+        /*background-color: var(--paper-green-100);*/
+      }
+
+      .owner-name {
+        color: var(--paper-green-700);
+        font-size: 14px;
+        text-align: right;
+      }
+
+      #review-open-response-editor, #review-response-edit {
+        --paper-fab-background: var(--paper-green-600);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 30px;
+        height: 30px;
+        color: white;
+      }
+
+      #review-response-cancel {
+        background-color: var(--paper-red-700);
+        color: white;
+      }
+
+      #review-response-submit {
+        background-color: var(--paper-green-700);
+        color: white;
+      }
+
+      #review-response-text {
+        margin-bottom: 30px;
+      }
+
+      #date, #userName, #rate, .date {
+        font-size: 14px;
+      }
+
+      #date, .date {
+        text-align: right;
+        color: var(--paper-grey-700);
+      }
+      #userName {
+        text-align: right;
+        color: var(--paper-blue-900);
+      }
+
+      #comment, #review-response-comment {
+        color: black;
+      }
+
+      #rate {
+        text-align: right;
+        color: var(--paper-green-800);
+      }
+
+      #event-description {
+        padding: 10px;
       }
 
     </style>
+
+    <iron-ajax id="review-response-submit-req" url="/freelancer/{{freelancerId}}/review/{{reviewId}}"
+    method="POST"
+    handle-as="json"
+    content-type="application/json"
+    on-response="_handleSubmitResponse"
+    on-error="_handleSubmitError"></iron-ajax>
+
     <paper-card>
-      <div id="comment">
-        Comment : {{comment}}
+      <template is="dom-if" if="{{_hasNoResponse(review)}}" restamp="true">
+        <template is="dom-if" if="{{isClaimer}}" restamp="true">
+          <!-- <paper-button id="review-open-response-editor" raised on-tap="_onOpenReponseEditorTap">Respond</paper-button> -->
+          <paper-fab mini id="review-open-response-editor" icon="reply" on-tap="_onOpenReponseEditorTap"></paper-fab>
+        </template>
+      </template>
+      <div class="card-content">
+        <div id="comment">
+          {{comment}}
+        </div>
       </div>
-      <div id="rate">
-        Rating : {{rating}}
-      </div>
-      <div id="date">
-        Date : {{_changedate(date)}}
-      </div>
-      <div id="userName">
-        Username : {{user}}
+      <div class="card-actions">
+        <div id="userName">
+          by <b>{{user}}</b>
+        </div>
+        <div id="rate">
+          Rating <b>{{rating}}/5</b>
+        </div>
+        <div id="date">
+          {{_changedate(date)}}
+        </div>
+        <template is="dom-if" if="{{responseEditorOpen}}" restamp="true">
+          <paper-textarea id="review-response-text"
+                          label="Respond to the review"
+                          required pattern=".+"
+                          error-message="Write something">
+          </paper-textarea>
+          <paper-button id="review-response-submit" raised on-tap="_onSubmitResponseTap">Submit</paper-button>
+          <paper-button id="review-response-cancel" raised on-tap="_onCancelResponseTap">Cancel</paper-button>
+        </template>
+
+        <template is="dom-if" if="{{_hasResponse(response)}}" restamp="true">
+          <paper-card class="response">
+            <template is="dom-if" if="{{isClaimer}}" restamp="true">
+              <!-- <paper-button id="review-response-edit" raised on-tap="_onEditResponseTap">Edit</paper-button> -->
+              <paper-fab mini id="review-response-edit" icon="image:edit" on-tap="_onEditResponseTap"></paper-fab>
+            </template>
+            <div class="card-content">
+              <div id="review-response-comment">
+                {{response.comment}}
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="owner-name">
+                by <b>{{firstname}} {{lastname}}</b>
+              </div>
+              <div id="review-response-date" class="date">
+                {{_changedate(response.date)}}
+              </div>
+            </div>
+          </paper-card>
+
+        </template>
       </div>
     </paper-card>
-
 
   </template>
 
   <script>
     Polymer({
       is: "ja-review-element",
+
+      listeners : {
+        // 'review-open-response-editor.tap' : '_onOpenReponseEditorTap',
+        // 'review-response-submit-btn.tap' : '_onSubmitResponseTap',
+        // 'review-response-cancel.tap' : '_onCancelResponseTap',
+      },
+
       properties: {
         comment: {
           type: String
@@ -45,13 +171,90 @@
         },
         date: {
           type: Date
+        },
+        response: {
+          type: Object,
+        },
+        review: {
+          type: Object,
+        },
+        isClaimer: {
+          type: Boolean,
         }
       },
 
+      _padNumber: function(num) {
+        if (num < 10) return "0" + num;
+        else return num;
+      },
+
+
       _changedate: function (date) {
         const d = new Date(date);
-        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
-      }
+        const hour = this._padNumber(d.getUTCHours());
+        const min= this._padNumber(d.getUTCMinutes());
+        const sec = this._padNumber(d.getUTCSeconds());
+        const time = [hour, min, sec].join(':');
+        return time + " " + [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+      },
+
+      _onOpenReponseEditorTap : function(evt) {
+        this.responseEditorOpen = true;
+        // this.$['review-open-response-editor'].hidden = true;
+      },
+
+      _onEditResponseTap : function(evt) {
+        this.responseEditorOpen = true;
+        // this.$['review-response-editor'].hidden = true;
+      },
+
+      _onSubmitResponseTap : function(evt) {
+        const request = this.$['review-response-submit-req'];
+        const text = this.$$('#review-response-text').value;
+        let valid = this.$$('#review-response-text').validate();
+        request.body = {
+          comment: text,
+          date: new Date(),
+        }
+
+        if (valid && text && text.length > 0) {
+          // console.log("Sending", request.body);
+          request.generateRequest();
+          this.responseEditorOpen = false;
+        }
+      },
+
+      _onCancelResponseTap : function(evt) {
+        this.responseEditorOpen = false;
+        // this.$['review-open-response-editor'].hidden = true;
+      },
+
+      _handleSubmitResponse: function(evt) {
+        // console.log("Received", evt.detail.response);
+        const resp = evt.detail.response;
+        this.response = {
+          comment: resp.comment,
+          date: resp.date,
+        };
+        this.hasResponse = true;
+        if (this.$$('#review-open-response-editor'))
+          this.$$('#review-open-response-editor').hidden = true;
+      },
+
+      _handleSubmitError: function(evt) {
+        // console.log("Received error", evt.detail.response);
+      },
+
+      _hasResponse: function(response) {
+        // console.log("response", response);
+        return response && response.comment && response.date;
+      },
+
+      _hasNoResponse: function(review) {
+        // console.log("calling no response", review.response, review.response == undefined);
+        return review.response == undefined;
+      },
+
     });
   </script>
 

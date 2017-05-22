@@ -17,7 +17,7 @@ function sendmail(freelancer){
   var jobAdvisorLink = 'http://localhost:3005';
 
   //send mail to the first freelancer
-  var mailContent = 'Hello ' + freelancer.firstName + ' ' + freelancer.lastName + ', you received an emergency call! <br> Click the following link to reply: <br> <a href="' + jobAdvisorLink + '/emergency/' + freelancer._id +'/freelancer"> ' + jobAdvisorLink + '/emergency/' + freelancer._id +'/freelancer </a>  ';
+  var mailContent = 'Hello ' + freelancer.firstName + ' ' + freelancer.lastName + ', you received an emergency call! <br> Click the following link to reply: <br> <a href="' + jobAdvisorLink + '/notification/' + freelancer._id +'/freelancer"> ' + jobAdvisorLink + '/notification/' + freelancer._id +'/freelancer </a>  ';
   // console.log("sent mail to " + freelancer.email);
   mail.sendMailTo(freelancer.email, mailContent, 'Jobadvisor: You Got A New Notification');
 }
@@ -165,7 +165,7 @@ router.post('/', function(req, res, next) {
       // console.log("restricted to " + profiles.length + " freelancers!");
 
       var googleMapsClient = require('@google/maps').createClient({
-        key: 'AIzaSyAolcHbiX1slqHH0Vv3F_YC2fI_0JGFGfQ'
+        key: 'AIzaSyBj5VNkVFDRKCNEqkSolhdFLuvgOZ7cLCY'
       });
 
 

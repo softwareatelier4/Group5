@@ -7,13 +7,11 @@
       #container {
         position: fixed;
         height: calc(100% - 110px);
-        width: 80%!important;
-        top: 100px;
+        top: 140px;
         bottom: 0px;
         /*display: flex;*/
         overflow: scroll;
         /*flex-wrap: wrap;*/
-        width: 100%;
         color: dimgray;
         background: white;
         border-radius: 3px;
@@ -47,7 +45,7 @@
 
       .signup-login {
         width: 100%;
-        margin-top: 40px;
+        /*margin-top: 40px;*/
       }
     </style>
 
@@ -101,6 +99,8 @@
           <paper-input id="signup-password-check"required label="repeat password" type="password" error-message="Insert a valid password" pattern="^[a-zA-Z0-9]+"></paper-input>
           <paper-button class="signup-login" id="user-signup-button" raised>signup</paper-button>
         </form>
+        <div id="anchor">
+        </div>
       </div>
     </div>
 
