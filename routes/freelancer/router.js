@@ -87,7 +87,7 @@ router.post('/:freelancerid/event', function(req, res, next) {
     if (err) {
       return res.status(400).json(serverErrors.badRequest);
     }
-    Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd._id}},
+    Freelancer.findByIdAndUpdate(req.params.freelancerid, {$push: {"events": toAdd}},
     {safe: true, upsert: false, new : false},
     function(err, freelancer) {
       if (err) {
@@ -105,7 +105,7 @@ router.post('/:freelancerid/event', function(req, res, next) {
 router.delete('/:freelancerid/event/:eventid', function(req, res, next) {
   CalendarEvent.findById(req.params.eventid, function(err, toDel){
     if(toDel){
-      Freelancer.findByIdAndUpdate(req.params.freelancerid, { $pull: { events : toDel._id } }, function(err, freelancer){
+      Freelancer.findByIdAndUpdate(req.params.freelancerid, { $pull: { events : toDel } }, function(err, freelancer){
         if(err){
           return res.status(400).json(serverErrors.badRequest);
         }else if (!freelancer) {
