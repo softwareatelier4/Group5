@@ -120,7 +120,7 @@ var users = {
       "firstName" : "",
       "lastName"  : "",
       "password"  : "em",
-      "email"     : "em@me.ch",
+      "email"     : "fischa@usi.ch",
       "userType"  : "Freelancer",
       "freelancerId" : "5625fc2bd82b84d23d8c7bd0",
     },
@@ -139,7 +139,8 @@ var users = {
       "lastName"  : "",
       "password"  : "jack",
       "email"     : "jack27@me.ch",
-      "userType"  : "Freelancer"
+      "userType"  : "Freelancer",
+      "freelancerId": "2725fc2bd82b84d23d8c7bd6"
     },
   ]
 }
@@ -263,7 +264,7 @@ var freelancers = {
       "profession"    : "Painter",
       "category"      : "Other",
       "rating"        : 4,
-      "email"         : "esposem2@usi.ch",
+      "email"         : "fischa@usi.ch",
       "phone_number"  : "+41 78 234 77 23",
       "price"         : 202,
       "reviews"       : [],
@@ -377,7 +378,7 @@ var freelancers = {
       "lastName"            : "Rossi",
       "address"             : "Via San Gottardo 12, 6900 Lugano",
       "rating"              : 3,
-      "email"               : "alexander.fischer0@usi.ch",
+      "email"               : "alexander.fischer@usi.ch",
       "phone_number"        : "+41 4442323223",
       "price"               : 100,
       "profession"          : "Painter",
@@ -400,7 +401,7 @@ var freelancers = {
       "price"         : 50,
       "emergencyAvailable"  : true,
       "reviews"       : [reviews.data[4]],
-      "events"        : [events.data[0], events.data[3]],
+      "events"        : [events.data[0], events.data[3], events.data[4]],
       "verification"  : "verified",
       "notifications" : [ObjectId(notifications.data[0]._id)],
       "claimingUserId": "7625fc2bd89b84023d8c7bd6",

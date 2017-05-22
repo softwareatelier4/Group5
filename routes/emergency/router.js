@@ -17,7 +17,7 @@ function sendmail(freelancer){
   var jobAdvisorLink = 'http://localhost:3005';
 
   //send mail to the first freelancer
-  var mailContent = 'Hello ' + freelancer.firstName + ' ' + freelancer.lastName + ', you received an emergency call! <br> Click the following link to reply: <br> <a href="' + jobAdvisorLink + '/emergency/' + freelancer._id +'/freelancer"> ' + jobAdvisorLink + '/emergency/' + freelancer._id +'/freelancer </a>  ';
+  var mailContent = 'Hello ' + freelancer.firstName + ' ' + freelancer.lastName + ', you received an emergency call! <br> Click the following link to reply: <br> <a href="' + jobAdvisorLink + '/notification/' + freelancer._id +'/freelancer"> ' + jobAdvisorLink + '/notification/' + freelancer._id +'/freelancer </a>  ';
   // console.log("sent mail to " + freelancer.email);
   mail.sendMailTo(freelancer.email, mailContent, 'Jobadvisor: You Got A New Notification');
 }
