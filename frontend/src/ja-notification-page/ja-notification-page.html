@@ -62,7 +62,7 @@
         //console.log(this.user);
         const ajaxel = this.$.notificationlist;
         ajaxel.generateRequest();
-        if(this.user.userType == 'Freelancer'){
+        if(this.user.userType == 'Freelancer' || this.user.userType == 'Normal'){
           // console.log("user has a freelancer");
           const ajaxel2 = this.$.freelancernotificationlist;
           ajaxel2.generateRequest();
