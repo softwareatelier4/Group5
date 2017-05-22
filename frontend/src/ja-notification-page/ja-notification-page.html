@@ -72,6 +72,7 @@
       _onResponse: function(evt) { //user
         // console.log(evt.detail.response);
         this.notifications = evt.detail.response;
+        console.log(this.notifications);
       },
 
 
@@ -81,7 +82,7 @@
         // console.log("-------------------");
         //this.notifications.concat(evt.detail.response);
         this.freelancerNotifications = evt.detail.response;
-        //console.log(this.freelancerNotifications);
+        console.log(this.freelancerNotifications);
       },
 
     });

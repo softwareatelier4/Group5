@@ -26,6 +26,7 @@ router.get('/:id', function(req, res, next) {
             email: user.email,
             _id: user._id,
             pending: user.pending,
+            freelancerId: user.freelancerId,
           }
         })
     }else{

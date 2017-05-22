@@ -630,6 +630,8 @@
         this.reviews.sort(function(a, b) {
           return a.date < b.date;
         })
+
+        console.log(this.user);
         // this.userId = res._id;
 
         this.$['open-events-btn'].hidden = true;
