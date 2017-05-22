@@ -35,8 +35,13 @@ router.put('/', function (req, res) {
   if(req.query.type == 'verified'){
     //accept
   Freelancer.findOneAndUpdate({_id: req.query.id}, { $set:{verification: req.query.type, userId: req.query.claimingUserId}}, { new: true }).exec(function(err, profile) {
+      var p = profile;
+      User.findOneAndUpdate({_id: req.query.claimingUserId}, {$set:{freelancerId: req.query.id}}, { new: true }).exec(function(err, user) {
+        console.log(user);
+        res.json(p);
+      });
       // if (err) return console.error(err);
-      res.json(profile);
+      // res.json(profile);
     });
 
   }else{
