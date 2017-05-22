@@ -270,6 +270,7 @@ var freelancers = {
       "reviews"       : [],
       "emergencyAvailable"  : true,
       "verification"  : "verified",
+      "events"        : [events.data[4]],
       // "notifications" : [ObjectId(notifications.data[0]._id)]
     },
 
