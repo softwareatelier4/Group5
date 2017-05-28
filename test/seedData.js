@@ -151,7 +151,7 @@ var reviews = {
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd6"),
       "date"                : date,
-      "comment"             : "nice job",
+      "comment"             : "Nice guy and great work!",
       "rating"              : 5,
       "userName"            : "goodguy27"
     },
@@ -160,7 +160,7 @@ var reviews = {
       "date"                : date,
       "comment"             : "very kind",
       "rating"              : 4,
-      "userName"            : "goodguy27"
+      "userName"            : "SpongebobIsCool"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd8"),
@@ -172,7 +172,7 @@ var reviews = {
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7bd9"),
       "date"                : date,
-      "comment"             : "nice and helpful",
+      "comment"             : "nice work and helpful",
       "rating"              : 5,
       "userName"            : "tizio42"
     },
@@ -181,21 +181,42 @@ var reviews = {
       "date"                : date,
       "comment"             : "not really good",
       "rating"              : 2,
-      "userName"            : "tizio42"
+      "userName"            : "hero123"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be2"),
       "date"                : date,
-      "comment"             : "cheap salary",
+      "comment"             : "cheap salary but solid work",
       "rating"              : 3,
-      "userName"            : "tizio42"
+      "userName"            : "babaman21"
     },
     {
       "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be3"),
       "date"                : date,
-      "comment"             : "perfect job",
+      "comment"             : "eehm, why does my web page about cats plays songs?",
       "rating"              : 5,
       "userName"            : "asdrubaldo23"
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be4"),
+      "date"                : date,
+      "comment"             : "I gave you my server to test, and you told me everything was okay. It crashed mid-presentation! Never contacting you again",
+      "rating"              : 1,
+      "userName"            : "fischer"
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be5"),
+      "date"                : date,
+      "comment"             : "This guy knows how to paint! Great work my boy!",
+      "rating"              : 5,
+      "userName"            : "leeroyJenkins"
+    },
+    {
+      "_id"                 : ObjectId("6625fc2bd82b84d23d8c7be6"),
+      "date"                : date,
+      "comment"             : "I asked him to do a Bob Marley memorial page, and he gave me some weird Atelier Beats stuff...",
+      "rating"              : 2,
+      "userName"            : "reggaeman18"
     },
   ]
 }
@@ -208,8 +229,9 @@ var freelancers = {
       "firstName"           : "Mario",
       "lastName"            : "Rossi",
       "address"             : "Via San Gottardo 12, 6900 Lugano",
+      "description"         : "Picasso is my middle name!",
       "rating"              : 3,
-      "email"               : "alexander.fischer0@usi.ch",
+      "email"               : "mario.painting@bubu.ch",
       "phone_number"        : "+41 4442323223",
       "price"               : 100,
       "profession"          : "Painter",
@@ -243,7 +265,7 @@ var freelancers = {
       "firstName"     : "Giovanni",
       "lastName"      : "Rezzonico",
       "address"       : "Via Centrale 42, 6912 Lugano",
-      "description"   : "I'm the painter you are searching for",
+      "description"   : "Doing painting jobs all around Lugano. Call me!",
       "profession"    : "Painter",
       "category"      : "Tecnical Services",
       "rating"        : 4,
@@ -265,7 +287,7 @@ var freelancers = {
       "category"      : "Other",
       "rating"        : 4,
       "email"         : "fischa@usi.ch",
-      "phone_number"  : "+41 78 234 77 23",
+      "phone_number"  : "+41 78 234 18 18",
       "price"         : 202,
       "reviews"       : [],
       "emergencyAvailable"  : true,
@@ -280,12 +302,12 @@ var freelancers = {
       "firstName"     : "Antonio",
       "lastName"      : "Rezzonico",
       "address"       : "Zurich",
-      "description"   : "I'm the painter you are searching for",
+      "description"   : "I always liked to paint stuff when I was little.",
       "profession"    : "Painter",
       "category"      : "Other",
       "rating"        : 4,
       "email"         : "malnac@usi.ch",
-      "phone_number"  : "+41 78 234 77 23",
+      "phone_number"  : "+41 78 234 37 56",
       "price"         : 200,
       "reviews"       : [],
       "emergencyAvailable"  : true,
@@ -302,7 +324,7 @@ var freelancers = {
       "email"         : "francesco.sani@usi.ch",
       "phone_number"  : "+41 79 524 34 54",
       "price"         : 60,
-      "reviews"       : [reviews.data[5]._id],
+      "reviews"       : [reviews.data[0]._id],
       "emergencyAvailable"  : false,
       "verification"  : "pending",
     },
@@ -315,7 +337,7 @@ var freelancers = {
       "category"      : "Management",
       "rating"        : 1,
       "email"         : "the.painter@usi.ch",
-      "phone_number"  : "+41 79 524 34 54",
+      "phone_number"  : "+41 79 524 95 78",
       "price"         : 100,
       "reviews"       : [reviews.data[2]._id],
       "emergencyAvailable"  : false,
@@ -327,14 +349,14 @@ var freelancers = {
       "firstName"     : "Gianmarco",
       "lastName"      : "Palazzi",
       "address"       : "Piazza Duomo, 22100 Como",
-      "description"   : "I'm your man",
+      "description"   : "For breakfast I usually eat bread, butter and node.js",
       "profession"    : "Web developer",
       "category"      : "IT Services",
       "rating"        : 5,
       "email"         : "real.giamma@usi.ch",
-      "phone_number"  : "+41 79 524 34 54",
+      "phone_number"  : "+41 79 782 56 55",
       "price"         : 100,
-      "reviews"       : [reviews.data[3]._id],
+      "reviews"       : [reviews.data[6]._id, reviews.data[9]._id],
       "emergencyAvailable"  : false,
       "verification"  : "not verified",
     },
@@ -347,11 +369,11 @@ var freelancers = {
       "description"   : "I'll find your bugs",
       "profession"    : "Beta tester",
       "category"      : "IT Services",
-      "rating"        : 5,
+      "rating"        : 3,
       "email"         : "samuele.bischof@sunrise.ch",
-      "phone_number"  : "+41 79 524 34 54",
+      "phone_number"  : "+41 79 672 56 90",
       "price"         : 40,
-      "reviews"       : [reviews.data[5]._id],
+      "reviews"       : [reviews.data[5]._id,reviews.data[7]._id],
       "verification"  : "pending",
       "emergencyAvailable"  : false,
     },
